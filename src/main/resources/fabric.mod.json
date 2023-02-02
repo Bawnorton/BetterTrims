@@ -16,10 +16,10 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.bawnorton.ExampleMod"
+			"com.bawnorton.BetterTrims"
 		],
 		"client": [
-			"com.bawnorton.ExampleModClient"
+			"com.bawnorton.BetterTrimsClient"
 		]
 	},
 	"mixins": [

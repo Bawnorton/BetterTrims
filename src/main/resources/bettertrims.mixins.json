@@ -3,7 +3,7 @@
 	"package": "com.bawnorton.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ExampleMixin"
+		"ArmorTrimMaterialsMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
