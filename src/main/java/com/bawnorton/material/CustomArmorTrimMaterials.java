@@ -6,6 +6,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class CustomArmorTrimMaterials {
-    public static RegistryKey<ArmorTrimMaterial> PRISMARINE;
-    public static RegistryKey<ArmorTrimMaterial> ECHO_SHARD;
+    public static RegistryKey<ArmorTrimMaterial> PRISMARINE = RegistryKey.of(RegistryKeys.TRIM_MATERIAL, new Identifier("prismarine"));
+    public static RegistryKey<ArmorTrimMaterial> ECHO = RegistryKey.of(RegistryKeys.TRIM_MATERIAL, new Identifier("echo"));
 }

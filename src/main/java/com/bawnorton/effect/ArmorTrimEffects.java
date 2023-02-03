@@ -5,7 +5,8 @@ import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
 
-public class ArmorTrimEffects {
+
+public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect QUARTZ = of(ArmorTrimMaterials.QUARTZ);
     public static final ArmorTrimEffect IRON = of(ArmorTrimMaterials.IRON);
     public static final ArmorTrimEffect NETHERITE = of(ArmorTrimMaterials.NETHERITE);
@@ -18,9 +19,9 @@ public class ArmorTrimEffects {
     public static final ArmorTrimEffect AMETHYST = of(ArmorTrimMaterials.AMETHYST);
     
     public static final ArmorTrimEffect PRISMARINE = of(CustomArmorTrimMaterials.PRISMARINE);
-    public static final ArmorTrimEffect ECHO_SHARD = of(CustomArmorTrimMaterials.ECHO_SHARD);
+    public static final ArmorTrimEffect ECHO_SHARD = of(CustomArmorTrimMaterials.ECHO);
     
     private static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
         return new ArmorTrimEffect(material);
-    } 
+    }
 }
