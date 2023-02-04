@@ -16,6 +16,6 @@ public abstract class ItemEntityMixin {
     @Inject(method = "isFireImmune", at = @At("RETURN"), cancellable = true)
     private void isFireImmune(CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) return;
-        cir.setReturnValue(ArmorTrimEffects.NETHERITE.apply(getStack()));
+        cir.setReturnValue(ArmorTrimEffects.NETHERITE.appliesTo(getStack()));
     }
 }

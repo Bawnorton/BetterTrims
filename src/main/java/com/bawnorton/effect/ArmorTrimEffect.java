@@ -1,13 +1,10 @@
 package com.bawnorton.effect;
 
-import com.bawnorton.BetterTrims;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 public class ArmorTrimEffect {
@@ -25,7 +22,18 @@ public class ArmorTrimEffect {
         return new Identifier(nbtCompound.getString("material"));
     }
 
-    public boolean apply(ItemStack stack) {
+    public boolean appliesTo(ItemStack stack) {
         return TrimEffectLookup.get(material).equals(getTrimMaterial(stack));
+    }
+
+    public void apply(Iterable<ItemStack> armour, Effect effect) {
+        for(ItemStack stack : armour) {
+            if(appliesTo(stack)) effect.applyEffect(stack);
+        }
+    }
+
+    @FunctionalInterface
+    public interface Effect {
+        void applyEffect(ItemStack stack);
     }
 }

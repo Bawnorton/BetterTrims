@@ -2,6 +2,7 @@ package com.bawnorton.mixin;
 
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.RandomHelper;
+import com.bawnorton.util.Wrapper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -21,12 +22,8 @@ public abstract class StatusEffectInstanceMixin {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;updateDuration()I", shift = At.Shift.AFTER))
     private void modifyDuration(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
-        float chance = 0f;
-        for(ItemStack item: entity.getArmorItems()) {
-            if (ArmorTrimEffects.AMETHYST.apply(item)) chance += 0.0625f;
-        }
-        if (RandomHelper.nextFloat() < chance) {
-            duration += type.isBeneficial() ? 1 : -1;
-        }
+        Wrapper<Float> chance = Wrapper.of(0f);
+        ArmorTrimEffects.AMETHYST.apply(entity.getArmorItems(), stack -> chance.set(chance.get() + 0.0625f));
+        if (RandomHelper.nextFloat() < chance.get()) duration += type.isBeneficial() ? 1 : -1;
     }
 }

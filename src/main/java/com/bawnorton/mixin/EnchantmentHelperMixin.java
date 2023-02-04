@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class EnchantmentHelperMixin {
     @ModifyExpressionValue(method = "generateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getEnchantability()I"))
     private static int getTrimEnchantability(int orignal, Random random, ItemStack stack, int level, boolean treasureAllowed) {
-        if(ArmorTrimEffects.LAPIS.apply(stack)) return 30;
+        if(ArmorTrimEffects.LAPIS.appliesTo(stack)) return 30;
         return orignal;
     }
 }

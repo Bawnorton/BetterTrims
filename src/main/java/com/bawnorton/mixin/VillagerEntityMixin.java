@@ -1,7 +1,7 @@
 package com.bawnorton.mixin;
 
-import com.bawnorton.BetterTrims;
 import com.bawnorton.effect.ArmorTrimEffects;
+import com.bawnorton.util.Wrapper;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,15 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class VillagerEntityMixin {
     @Inject(method = "prepareOffersFor", at = @At("TAIL"))
     private void prepareOffersFor(PlayerEntity player, CallbackInfo ci) {
-        double discount = 0;
-        for(ItemStack stack: player.getArmorItems()) {
-            if(ArmorTrimEffects.EMERALD.apply(stack)) {
-                discount += 0.05;
-            }
-        }
-        if(discount > 0) {
+        Wrapper<Float> discount = new Wrapper<>(0f);
+        ArmorTrimEffects.EMERALD.apply(player.getArmorItems(), stack -> discount.set(discount.get() + 0.05f));
+        if(discount.get() > 0) {
             for(TradeOffer offer: ((VillagerEntity)(Object)this).getOffers()) {
-                offer.increaseSpecialPrice(-MathHelper.ceil(discount * offer.getOriginalFirstBuyItem().getCount()));
+                offer.increaseSpecialPrice(-MathHelper.ceil(discount.get() * offer.getOriginalFirstBuyItem().getCount()));
             }
         }
     }
