@@ -3,13 +3,13 @@
 	"id": "bettertrims",
 	"version": "${version}",
 	"name": "bettertrims",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Gives each armour trim material a unique effect when worn.",
 	"authors": [
-		"Me!"
+		"Bawnorton"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://bawnorton.com",
+		"sources": "https://github.com/Benjamin-Norton/BetterTrims"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/bettertrims/icon.png",
