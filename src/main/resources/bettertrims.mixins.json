@@ -4,8 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ArmorTrimMaterialsMixin",
+    "EnchantmentHelperMixin",
     "ItemEntityMixin",
+    "LivingEntityMixin",
     "PiglinBrainMixin",
+    "PlayerEntityMixin",
+    "StatusEffectInstanceMixin",
     "VillagerEntityMixin"
   ],
   "injectors": {
