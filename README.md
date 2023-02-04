@@ -3,7 +3,7 @@ BetterTrims
 ## Gives each armour trim material a unique effect when worn.
 
 [![Modrinth](https://img.shields.io/modrinth/dt/bettertrims?color=00AF5C&label=downloads&logo=modrinth)](https://modrinth.com/mod/bettertrims)
-[![CurseForge](https://cf.way2muchnoise.eu/full_693364_downloads.svg)](https://curseforge.com/minecraft/mc-mods/better-trims)
+[![CurseForge](https://cf.way2muchnoise.eu/full_821752_downloads.svg)](https://curseforge.com/minecraft/mc-mods/better-trims)
 
 ### Trim Material Effects
 - Quartz: +5% Experience gain per piece.
@@ -12,6 +12,7 @@ BetterTrims
 - Redstone: +10% Movement speed per piece.
 - Copper: +0.05 Swim velocity per piece (does not stack with depth strider or dolphins grace).
 - Gold: Piglins will not attack you.
+- Emerald: +5% Discount on trades with villagers per piece.
 - Diamond: +5% Damage reduction per piece.
 - Lapis: Increases enchantability of the piece to 30. (Diamond is 10, Gold is 25)
 - Amethyst: 6.25% chance per piece per second to reduce the duration of a negative potion effect by 1 second, or increase the duration of a positive potion effect by 1 second.
