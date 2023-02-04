@@ -1,5 +1,7 @@
 package com.bawnorton.mixin;
 
+import com.bawnorton.BetterTrims;
+import com.bawnorton.config.Config;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
 import net.minecraft.block.BlockState;
@@ -22,21 +24,21 @@ public abstract class PlayerEntityMixin {
     private int modifyExperience(int experience) {
         if(experience <= 0) return experience;
         Wrapper<Float> increase = Wrapper.of(1F);
-        ArmorTrimEffects.QUARTZ.apply(getArmorItems(), stack -> increase.set(increase.get() + 0.05F));
+        ArmorTrimEffects.QUARTZ.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.quartzExperienceBonus));
         return (int) (experience * increase.get());
     }
 
     @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
     private float modifyMiningSpeed(PlayerInventory instance, BlockState block) {
         Wrapper<Float> increase = Wrapper.of(instance.getBlockBreakingSpeed(block));
-        ArmorTrimEffects.IRON.apply(getArmorItems(), stack -> increase.set(increase.get() + 8));
+        ArmorTrimEffects.IRON.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.ironMiningSpeedIncrease));
         return increase.get();
     }
 
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     private void modifyMovementSpeed(CallbackInfoReturnable<Float> cir) {
-        Wrapper<Float> increase = Wrapper.of(1F);
-        ArmorTrimEffects.REDSTONE.apply(getArmorItems(), stack -> increase.set(increase.get() + 0.1F));
+        Wrapper<Float> increase = Wrapper.of(1f);
+        ArmorTrimEffects.REDSTONE.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.redstoneMovementSpeedIncrease));
         cir.setReturnValue(cir.getReturnValue() * increase.get());
     }
 }
