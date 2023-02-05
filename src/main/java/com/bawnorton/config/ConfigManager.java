@@ -17,14 +17,23 @@ public class ConfigManager {
     public static void loadConfig() {
         Config config = load();
 
-        if(config.quartzExperienceBonus == null || config.quartzExperienceBonus < 0) config.quartzExperienceBonus = 0.05f;
-        if(config.ironMiningSpeedIncrease == null || config.ironMiningSpeedIncrease < 0) config.ironMiningSpeedIncrease = 8f;
-        if(config.redstoneMovementSpeedIncrease == null || config.redstoneMovementSpeedIncrease < 0) config.redstoneMovementSpeedIncrease = 0.1f;
-        if(config.copperSwimSpeedIncrease == null || config.copperSwimSpeedIncrease < 0) config.copperSwimSpeedIncrease = 0.05f;
-        if(config.emeraldVillagerDiscount == null || config.emeraldVillagerDiscount < 0) config.emeraldVillagerDiscount = 0.05f;
-        if(config.diamondDamageReduction == null || config.diamondDamageReduction < 0) config.diamondDamageReduction = 0.05f;
-        if(config.lapisEnchantability == null || config.lapisEnchantability < 0) config.lapisEnchantability = 30;
-        if(config.amethystEffectChance == null || config.amethystEffectChance < 0) config.amethystEffectChance = 0.0625f;
+        if (config.quartzExperienceBonus == null || config.quartzExperienceBonus < 0)
+            config.quartzExperienceBonus = 0.05f;
+        if (config.ironMiningSpeedIncrease == null || config.ironMiningSpeedIncrease < 0)
+            config.ironMiningSpeedIncrease = 8f;
+        if (config.netheriteFireResistance == null || config.netheriteFireResistance < 0)
+            config.netheriteFireResistance = 0.25f;
+        if (config.redstoneMovementSpeedIncrease == null || config.redstoneMovementSpeedIncrease < 0)
+            config.redstoneMovementSpeedIncrease = 0.1f;
+        if (config.copperSwimSpeedIncrease == null || config.copperSwimSpeedIncrease < 0)
+            config.copperSwimSpeedIncrease = 0.05f;
+        if (config.emeraldVillagerDiscount == null || config.emeraldVillagerDiscount < 0)
+            config.emeraldVillagerDiscount = 0.05f;
+        if (config.diamondDamageReduction == null || config.diamondDamageReduction < 0)
+            config.diamondDamageReduction = 0.05f;
+        if (config.lapisEnchantability == null || config.lapisEnchantability < 0) config.lapisEnchantability = 30;
+        if (config.amethystEffectChance == null || config.amethystEffectChance < 0)
+            config.amethystEffectChance = 0.0625f;
 
         Config.update(config);
         save();

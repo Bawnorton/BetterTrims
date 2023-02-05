@@ -18,7 +18,7 @@ public class ArmorTrimEffect {
         NbtCompound nbt = stack.getNbt();
         if (nbt == null) return null;
         NbtElement trimElement = nbt.get("Trim");
-        if(!(trimElement instanceof NbtCompound nbtCompound)) return null;
+        if (!(trimElement instanceof NbtCompound nbtCompound)) return null;
         return new Identifier(nbtCompound.getString("material"));
     }
 
@@ -27,8 +27,8 @@ public class ArmorTrimEffect {
     }
 
     public void apply(Iterable<ItemStack> armour, Effect effect) {
-        for(ItemStack stack : armour) {
-            if(appliesTo(stack)) effect.applyEffect(stack);
+        for (ItemStack stack : armour) {
+            if (appliesTo(stack)) effect.applyEffect(stack);
         }
     }
 

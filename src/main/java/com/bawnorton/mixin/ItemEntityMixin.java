@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
-    @Shadow public abstract ItemStack getStack();
+    @Shadow
+    public abstract ItemStack getStack();
 
     @Inject(method = "isFireImmune", at = @At("RETURN"), cancellable = true)
     private void isFireImmune(CallbackInfoReturnable<Boolean> cir) {

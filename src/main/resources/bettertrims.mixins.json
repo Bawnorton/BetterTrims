@@ -5,6 +5,7 @@
   "mixins": [
     "ArmorTrimMaterialsMixin",
     "EnchantmentHelperMixin",
+    "EntityMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
     "PiglinBrainMixin",

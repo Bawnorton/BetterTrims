@@ -1,7 +1,6 @@
 package com.bawnorton.mixin;
 
 import com.bawnorton.BetterTrims;
-import com.bawnorton.config.Config;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
 import net.minecraft.block.BlockState;
@@ -18,11 +17,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin {
-    @Shadow public abstract Iterable<ItemStack> getArmorItems();
+    @Shadow
+    public abstract Iterable<ItemStack> getArmorItems();
 
     @ModifyVariable(method = "addExperience", at = @At("HEAD"), argsOnly = true)
     private int modifyExperience(int experience) {
-        if(experience <= 0) return experience;
+        if (experience <= 0) return experience;
         Wrapper<Float> increase = Wrapper.of(1F);
         ArmorTrimEffects.QUARTZ.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.quartzExperienceBonus));
         return (int) (experience * increase.get());

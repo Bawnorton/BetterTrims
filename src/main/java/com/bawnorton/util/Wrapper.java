@@ -1,7 +1,7 @@
 package com.bawnorton.util;
 
 public class Wrapper<T> {
-private T value;
+    private T value;
 
     public Wrapper(T value) {
         this.value = value;

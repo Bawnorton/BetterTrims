@@ -11,7 +11,7 @@ public abstract class RandomHelper {
     }
 
     private static void flush() {
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             RANDOM.nextFloat();
         }
     }

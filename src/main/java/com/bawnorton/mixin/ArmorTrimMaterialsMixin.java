@@ -17,7 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ArmorTrimMaterials.class)
 public abstract class ArmorTrimMaterialsMixin {
 
-    @Shadow private static void register(Registerable<ArmorTrimMaterial> registerable, RegistryKey<ArmorTrimMaterial> registryKey, Item item, Style style, float f) {}
+    @Shadow
+    private static void register(Registerable<ArmorTrimMaterial> registerable, RegistryKey<ArmorTrimMaterial> registryKey, Item item, Style style, float f) {
+    }
 
     @Inject(method = "oneTwentyBootstrap", at = @At("HEAD"))
     private static void oneTwentyBootstrap(Registerable<ArmorTrimMaterial> registry, CallbackInfo ci) {
