@@ -8,7 +8,7 @@ BetterTrims
 ### Trim Material Effects
 - Quartz: +5% Experience gain per piece.
 - Iron: +8 Mining speed per piece. (full set + efficiency 5 netherite pick + haste 2 can instantly mine deepslate).
-- Netherite: Can't be destroyed by lava or fire, grants +25% damage reduction to fire/lava per piece. (Full set acts likes fire resistance)
+- Netherite: Can't be destroyed by lava or fire, grants +25% damage reduction to fire/lava per piece. (Full set acts like fire resistance)
 - Redstone: +10% Movement speed per piece.
 - Copper: +0.05 Swim velocity per piece (does not stack with depth strider or dolphins grace).
 - Gold: Piglins will not attack you.
