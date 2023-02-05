@@ -1,5 +1,6 @@
 package com.bawnorton.mixin;
 
+import com.bawnorton.BetterTrims;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -17,15 +18,15 @@ public abstract class EntityMixin {
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean isFireImmune(boolean original) {
-        Wrapper<Integer> netheriteCount = Wrapper.of(0);
-        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + 1));
-        return original || netheriteCount.get() == 4;
+        Wrapper<Float> netheriteCount = Wrapper.of(0f);
+        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + BetterTrims.CONFIG.netheriteFireResistance));
+        return original || netheriteCount.get() >= 0.99f;
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private float setOnFireFromLava(float original) {
-        Wrapper<Integer> netheriteCount = Wrapper.of(0);
-        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + 1));
-        return original * (1 - netheriteCount.get() * 0.25f);
+        Wrapper<Float> netheriteCount = Wrapper.of(0f);
+        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + BetterTrims.CONFIG.netheriteFireResistance));
+        return original * (1 - netheriteCount.get());
     }
 }
