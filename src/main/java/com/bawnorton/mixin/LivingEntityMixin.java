@@ -41,11 +41,4 @@ public abstract class LivingEntityMixin {
         ArmorTrimEffects.DIAMOND.apply(getArmorItems(), stack -> decrease.set(decrease.get() - BetterTrims.CONFIG.diamondDamageReduction));
         return decrease.get() * orignal;
     }
-
-    @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z"))
-    private boolean isFireImmune(boolean original) {
-        Wrapper<Float> increase = Wrapper.of(0f);
-        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.netheriteFireResistance));
-        return original || increase.get() >= 0.99f;
-    }
 }

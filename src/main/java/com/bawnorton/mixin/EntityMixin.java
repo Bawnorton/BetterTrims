@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
@@ -28,5 +29,12 @@ public abstract class EntityMixin {
         Wrapper<Float> netheriteCount = Wrapper.of(0f);
         ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + BetterTrims.CONFIG.netheriteFireResistance));
         return original * (1 - netheriteCount.get());
+    }
+
+    @ModifyArg(method = "setOnFireFor", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setFireTicks(I)V"))
+    private int setFireTicks(int original) {
+        Wrapper<Float> netheriteCount = Wrapper.of(0f);
+        ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + BetterTrims.CONFIG.netheriteFireResistance));
+        return (int) (original * (1 - netheriteCount.get()));
     }
 }
