@@ -21,7 +21,7 @@ public abstract class EntityMixin {
     private void isFireImmune(CallbackInfoReturnable<Boolean> cir) {
         Wrapper<Float> netheriteCount = Wrapper.of(0f);
         ArmorTrimEffects.NETHERITE.apply(getArmorItems(), stack -> netheriteCount.set(netheriteCount.get() + BetterTrims.CONFIG.netheriteFireResistance));
-        cir.setReturnValue(cir.getReturnValue() ||  netheriteCount.get() >= 0.99f);
+        cir.setReturnValue(cir.getReturnValue() || netheriteCount.get() >= 0.99f);
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))

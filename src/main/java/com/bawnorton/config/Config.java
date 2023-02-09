@@ -22,7 +22,7 @@ public class Config {
     public Float copperSwimSpeedIncrease = 0.05f;
     @Expose
     @SerializedName("emerald_villager_discount")
-    public Float emeraldVillagerDiscount = 0.05f;
+    public Float emeraldVillagerDiscount = 0.125f;
     @Expose
     @SerializedName("diamond_damage_reduction")
     public Float diamondDamageReduction = 0.05f;

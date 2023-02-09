@@ -28,10 +28,11 @@ public class ConfigManager {
         if (config.copperSwimSpeedIncrease == null || config.copperSwimSpeedIncrease < 0)
             config.copperSwimSpeedIncrease = 0.05f;
         if (config.emeraldVillagerDiscount == null || config.emeraldVillagerDiscount < 0)
-            config.emeraldVillagerDiscount = 0.05f;
+            config.emeraldVillagerDiscount = 0.125f;
         if (config.diamondDamageReduction == null || config.diamondDamageReduction < 0)
             config.diamondDamageReduction = 0.05f;
-        if (config.lapisEnchantability == null || config.lapisEnchantability < 0) config.lapisEnchantability = 30;
+        if (config.lapisEnchantability == null || config.lapisEnchantability < 0)
+            config.lapisEnchantability = 30;
         if (config.amethystEffectChance == null || config.amethystEffectChance < 0)
             config.amethystEffectChance = 0.0625f;
 

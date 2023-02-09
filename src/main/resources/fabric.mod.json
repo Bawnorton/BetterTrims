@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"com.bawnorton.BetterTrimsClient"
+		],
+		"preLaunch": [
+			"com.bawnorton.BetterTrimsPreLaunch"
 		]
 	},
 	"mixins": [

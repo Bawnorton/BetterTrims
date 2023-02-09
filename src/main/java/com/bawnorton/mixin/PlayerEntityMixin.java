@@ -3,6 +3,8 @@ package com.bawnorton.mixin;
 import com.bawnorton.BetterTrims;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -12,7 +14,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
@@ -28,10 +29,14 @@ public abstract class PlayerEntityMixin {
         return (int) (experience * increase.get());
     }
 
-    @Redirect(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
-    private float modifyMiningSpeed(PlayerInventory instance, BlockState block) {
-        Wrapper<Float> increase = Wrapper.of(instance.getBlockBreakingSpeed(block));
-        ArmorTrimEffects.IRON.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.ironMiningSpeedIncrease));
+    @WrapOperation(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
+    private float modifyMiningSpeed(PlayerInventory instance, BlockState block, Operation<Float> original) {
+        Wrapper<Float> increase = Wrapper.of(original.call(instance, block));
+        ArmorTrimEffects.IRON.apply(getArmorItems(), stack -> {
+            if(instance.getMainHandStack().isSuitableFor(block)) {
+                increase.set(increase.get() + BetterTrims.CONFIG.ironMiningSpeedIncrease);
+            }
+        });
         return increase.get();
     }
 

@@ -16,9 +16,6 @@ public class BetterTrims implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing Better Trims");
-        MixinExtrasBootstrap.init();
         ConfigManager.loadConfig();
     }
-
-
 }

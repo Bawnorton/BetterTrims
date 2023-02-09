@@ -3,8 +3,8 @@ package com.bawnorton.mixin;
 import com.bawnorton.BetterTrims;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.entity.DamageUtil;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -34,9 +33,9 @@ public abstract class LivingEntityMixin {
         cir.setReturnValue(cir.getReturnValue() * increase.get());
     }
 
-    @Redirect(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
-    private float modifyDamage(float damage, float armor, float armorToughness) {
-        float orignal = DamageUtil.getDamageLeft(damage, armor, armorToughness);
+    @WrapOperation(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
+    private float modifyDamage(float damage, float armor, float armorToughness, Operation<Float> original) {
+        float orignal = original.call(damage, armor, armorToughness);
         Wrapper<Float> decrease = Wrapper.of(1f);
         ArmorTrimEffects.DIAMOND.apply(getArmorItems(), stack -> decrease.set(decrease.get() - BetterTrims.CONFIG.diamondDamageReduction));
         return decrease.get() * orignal;
