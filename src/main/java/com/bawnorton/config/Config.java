@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 public class Config {
     private static Config INSTANCE;
     @Expose
+    @SerializedName("trim_durability")
+    public Integer trimDurability = 2;
+    @Expose
     @SerializedName("quartz_experience_bonus")
     public Float quartzExperienceBonus = 0.05f;
     @Expose

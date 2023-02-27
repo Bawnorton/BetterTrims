@@ -17,6 +17,8 @@ public class ConfigManager {
     public static void loadConfig() {
         Config config = load();
 
+        if (config.trimDurability == null || config.trimDurability < 0)
+            config.trimDurability = 2;
         if (config.quartzExperienceBonus == null || config.quartzExperienceBonus < 0)
             config.quartzExperienceBonus = 0.05f;
         if (config.ironMiningSpeedIncrease == null || config.ironMiningSpeedIncrease < 0)
