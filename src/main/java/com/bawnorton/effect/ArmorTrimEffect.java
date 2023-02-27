@@ -1,11 +1,14 @@
 package com.bawnorton.effect;
 
+import com.bawnorton.compat.StackedTrimsCompat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+
+import java.util.List;
 
 public class ArmorTrimEffect {
     private final RegistryKey<ArmorTrimMaterial> material;
@@ -23,6 +26,11 @@ public class ArmorTrimEffect {
     }
 
     public boolean appliesTo(ItemStack stack) {
+        if (StackedTrimsCompat.isLoaded()) {
+            List<Identifier> materials = StackedTrimsCompat.getTrimMaterials(stack);
+            if (materials == null) return false;
+            return materials.contains(TrimEffectLookup.get(material));
+        }
         return TrimEffectLookup.get(material).equals(getTrimMaterial(stack));
     }
 
