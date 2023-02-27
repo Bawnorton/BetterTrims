@@ -1,6 +1,5 @@
 package com.bawnorton.effect;
 
-import com.bawnorton.material.CustomArmorTrimMaterials;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
@@ -19,9 +18,7 @@ public abstract class TrimEffectLookup {
             Map.entry(ArmorTrimMaterials.LAPIS, new Identifier("lapis")),
             Map.entry(ArmorTrimMaterials.NETHERITE, new Identifier("netherite")),
             Map.entry(ArmorTrimMaterials.QUARTZ, new Identifier("quartz")),
-            Map.entry(ArmorTrimMaterials.REDSTONE, new Identifier("redstone")),
-            Map.entry(CustomArmorTrimMaterials.PRISMARINE, new Identifier("prismarine")),
-            Map.entry(CustomArmorTrimMaterials.ECHO, new Identifier("echo"))
+            Map.entry(ArmorTrimMaterials.REDSTONE, new Identifier("redstone"))
     );
 
     public static Identifier get(RegistryKey<ArmorTrimMaterial> material) {

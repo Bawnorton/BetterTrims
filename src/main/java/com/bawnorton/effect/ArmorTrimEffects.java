@@ -1,6 +1,5 @@
 package com.bawnorton.effect;
 
-import com.bawnorton.material.CustomArmorTrimMaterials;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
@@ -17,9 +16,6 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect DIAMOND = of(ArmorTrimMaterials.DIAMOND);
     public static final ArmorTrimEffect LAPIS = of(ArmorTrimMaterials.LAPIS);
     public static final ArmorTrimEffect AMETHYST = of(ArmorTrimMaterials.AMETHYST);
-
-    public static final ArmorTrimEffect PRISMARINE = of(CustomArmorTrimMaterials.PRISMARINE);
-    public static final ArmorTrimEffect ECHO_SHARD = of(CustomArmorTrimMaterials.ECHO);
 
     private static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
         return new ArmorTrimEffect(material);

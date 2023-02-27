@@ -3,7 +3,6 @@
   "package": "com.bawnorton.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ArmorTrimMaterialsMixin",
     "EnchantmentHelperMixin",
     "EntityMixin",
     "ItemEntityMixin",
