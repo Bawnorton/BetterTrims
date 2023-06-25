@@ -7,34 +7,34 @@ public class Config {
     private static Config INSTANCE;
     @Expose
     @SerializedName("trim_durability")
-    public Integer trimDurability = 2;
+    public Integer trimDurability;
     @Expose
     @SerializedName("quartz_experience_bonus")
-    public Float quartzExperienceBonus = 0.05f;
+    public Float quartzExperienceBonus;
     @Expose
     @SerializedName("iron_mining_speed_increase")
-    public Float ironMiningSpeedIncrease = 8f;
+    public Float ironMiningSpeedIncrease;
     @Expose
     @SerializedName("netherite_fire_resistance")
-    public Float netheriteFireResistance = 0.25f;
+    public Float netheriteFireResistance;
     @Expose
     @SerializedName("redstone_movement_speed_increase")
-    public Float redstoneMovementSpeedIncrease = 0.1f;
+    public Float redstoneMovementSpeedIncrease;
     @Expose
     @SerializedName("copper_swim_speed_increase")
-    public Float copperSwimSpeedIncrease = 0.05f;
+    public Float copperSwimSpeedIncrease;
     @Expose
     @SerializedName("emerald_villager_discount")
-    public Float emeraldVillagerDiscount = 0.125f;
+    public Float emeraldVillagerDiscount;
     @Expose
     @SerializedName("diamond_damage_reduction")
-    public Float diamondDamageReduction = 0.05f;
+    public Float diamondDamageReduction;
     @Expose
     @SerializedName("lapis_enchantability")
-    public Integer lapisEnchantability = 30;
+    public Integer lapisEnchantability;
     @Expose
     @SerializedName("amethyst_potion_duration_modify_chance")
-    public Float amethystEffectChance = 0.0625f;
+    public Float amethystEffectChance;
 
     private Config() {
     }
@@ -46,5 +46,21 @@ public class Config {
 
     public static void update(Config config) {
         INSTANCE = config;
+    }
+
+    @Override
+    public String toString() {
+        return "Config{" +
+                "trimDurability=" + trimDurability +
+                ", quartzExperienceBonus=" + quartzExperienceBonus +
+                ", ironMiningSpeedIncrease=" + ironMiningSpeedIncrease +
+                ", netheriteFireResistance=" + netheriteFireResistance +
+                ", redstoneMovementSpeedIncrease=" + redstoneMovementSpeedIncrease +
+                ", copperSwimSpeedIncrease=" + copperSwimSpeedIncrease +
+                ", emeraldVillagerDiscount=" + emeraldVillagerDiscount +
+                ", diamondDamageReduction=" + diamondDamageReduction +
+                ", lapisEnchantability=" + lapisEnchantability +
+                ", amethystEffectChance=" + amethystEffectChance +
+                '}';
     }
 }

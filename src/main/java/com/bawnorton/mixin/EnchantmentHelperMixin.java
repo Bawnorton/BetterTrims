@@ -1,6 +1,6 @@
 package com.bawnorton.mixin;
 
-import com.bawnorton.BetterTrims;
+import com.bawnorton.config.Config;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class EnchantmentHelperMixin {
     @ModifyExpressionValue(method = "generateEnchantments", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;getEnchantability()I"))
     private static int getTrimEnchantability(int orignal, Random random, ItemStack stack, int level, boolean treasureAllowed) {
-        if (ArmorTrimEffects.LAPIS.appliesTo(stack)) return BetterTrims.CONFIG.lapisEnchantability;
+        if (ArmorTrimEffects.LAPIS.appliesTo(stack)) return Config.getInstance().lapisEnchantability;
         return orignal;
     }
 }

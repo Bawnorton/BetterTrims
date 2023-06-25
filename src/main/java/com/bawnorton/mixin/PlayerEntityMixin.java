@@ -1,6 +1,6 @@
 package com.bawnorton.mixin;
 
-import com.bawnorton.BetterTrims;
+import com.bawnorton.config.Config;
 import com.bawnorton.effect.ArmorTrimEffects;
 import com.bawnorton.util.Wrapper;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -26,7 +26,7 @@ public abstract class PlayerEntityMixin {
     private int modifyExperience(int experience) {
         if (experience <= 0) return experience;
         Wrapper<Float> increase = Wrapper.of(1F);
-        ArmorTrimEffects.QUARTZ.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.quartzExperienceBonus));
+        ArmorTrimEffects.QUARTZ.apply(getArmorItems(), stack -> increase.set(increase.get() + Config.getInstance().quartzExperienceBonus));
         return (int) (experience * increase.get());
     }
 
@@ -35,7 +35,7 @@ public abstract class PlayerEntityMixin {
         Wrapper<Float> increase = Wrapper.of(original.call(instance, block));
         ArmorTrimEffects.IRON.apply(getArmorItems(), stack -> {
             if(instance.getMainHandStack().isSuitableFor(block)) {
-                increase.set(increase.get() + BetterTrims.CONFIG.ironMiningSpeedIncrease);
+                increase.set(increase.get() + Config.getInstance().ironMiningSpeedIncrease);
             }
         });
         return increase.get();
@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin {
     @Inject(method = "getMovementSpeed", at = @At("RETURN"), cancellable = true)
     private void modifyMovementSpeed(CallbackInfoReturnable<Float> cir) {
         Wrapper<Float> increase = Wrapper.of(1f);
-        ArmorTrimEffects.REDSTONE.apply(getArmorItems(), stack -> increase.set(increase.get() + BetterTrims.CONFIG.redstoneMovementSpeedIncrease));
+        ArmorTrimEffects.REDSTONE.apply(getArmorItems(), stack -> increase.set(increase.get() + Config.getInstance().redstoneMovementSpeedIncrease));
         cir.setReturnValue(cir.getReturnValue() * increase.get());
     }
 }
