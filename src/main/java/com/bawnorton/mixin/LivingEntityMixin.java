@@ -35,12 +35,9 @@ public abstract class LivingEntityMixin {
     @Inject(method = "getMovementSpeed()F", at = @At("RETURN"), cancellable = true)
     private void modifyMovementSpeed(CallbackInfoReturnable<Float> cir) {
         if(((LivingEntity) (Object) this) instanceof AbstractHorseEntity horseEntity) {
-            System.out.println("a");
             if(horseEntity.getControllingPassenger() instanceof PlayerEntity player) {
-                System.out.println("b");
                 Wrapper<Float> increase = Wrapper.of(1f);
                 ArmorTrimEffects.REDSTONE.apply(player.getArmorItems(), stack -> {
-                    System.out.println("c");
                     increase.set(increase.get() + Config.getInstance().redstoneMovementSpeedIncrease);
                 });
                 cir.setReturnValue(cir.getReturnValue() * increase.get());
