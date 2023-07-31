@@ -1,6 +1,6 @@
-package com.bawnorton.mixin;
+package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.effect.ArmorTrimEffects;
+import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

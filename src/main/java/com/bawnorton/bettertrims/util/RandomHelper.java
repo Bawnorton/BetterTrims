@@ -1,4 +1,4 @@
-package com.bawnorton.util;
+package com.bawnorton.bettertrims.util;
 
 import java.util.Random;
 

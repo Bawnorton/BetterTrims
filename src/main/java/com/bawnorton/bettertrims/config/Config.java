@@ -1,4 +1,4 @@
-package com.bawnorton.config;
+package com.bawnorton.bettertrims.config;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

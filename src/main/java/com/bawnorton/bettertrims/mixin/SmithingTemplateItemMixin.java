@@ -1,6 +1,6 @@
-package com.bawnorton.mixin;
+package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.config.Config;
+import com.bawnorton.bettertrims.config.Config;
 import net.minecraft.item.Item;
 import net.minecraft.item.SmithingTemplateItem;
 import org.spongepowered.asm.mixin.Mixin;

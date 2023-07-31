@@ -1,4 +1,4 @@
-package com.bawnorton.mixin;
+package com.bawnorton.bettertrims.mixin;
 
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.entity.player.PlayerInventory;

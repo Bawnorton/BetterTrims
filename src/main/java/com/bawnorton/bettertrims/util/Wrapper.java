@@ -1,4 +1,4 @@
-package com.bawnorton.util;
+package com.bawnorton.bettertrims.util;
 
 public class Wrapper<T> {
     private T value;

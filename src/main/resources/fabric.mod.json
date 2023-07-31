@@ -16,13 +16,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.bawnorton.BetterTrims"
+			"com.bawnorton.bettertrims.BetterTrims"
 		],
 		"client": [
-			"com.bawnorton.BetterTrimsClient"
+			"com.bawnorton.bettertrims.BetterTrimsClient"
 		],
 		"preLaunch": [
-			"com.bawnorton.BetterTrimsPreLaunch"
+			"com.bawnorton.bettertrims.BetterTrimsPreLaunch"
 		]
 	},
 	"mixins": [

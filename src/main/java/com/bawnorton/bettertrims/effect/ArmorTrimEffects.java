@@ -1,8 +1,9 @@
-package com.bawnorton.effect;
+package com.bawnorton.bettertrims.effect;
 
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
 
 
 public abstract class ArmorTrimEffects {
@@ -17,7 +18,14 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect LAPIS = of(ArmorTrimMaterials.LAPIS);
     public static final ArmorTrimEffect AMETHYST = of(ArmorTrimMaterials.AMETHYST);
 
+    // modded materials
+    public static final ArmorTrimEffect PLATINUM = of(new Identifier("illagerinvasion", "platinum"));
+
     private static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
+        return of(material.getValue());
+    }
+
+    private static ArmorTrimEffect of(Identifier material) {
         return new ArmorTrimEffect(material);
     }
 }

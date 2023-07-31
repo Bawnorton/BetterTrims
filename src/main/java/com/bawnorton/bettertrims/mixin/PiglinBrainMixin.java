@@ -1,6 +1,7 @@
-package com.bawnorton.mixin;
+package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.effect.ArmorTrimEffects;
+import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
+import com.bawnorton.bettertrims.extend.EntityExtender;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +14,6 @@ public abstract class PiglinBrainMixin {
     @Inject(method = "wearsGoldArmor", at = @At("RETURN"), cancellable = true)
     private static void wearsGoldTrim(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) return;
-        ArmorTrimEffects.GOLD.apply(entity.getArmorItems(), stack -> cir.setReturnValue(true));
+        ArmorTrimEffects.GOLD.apply(((EntityExtender) entity).betterTrims$getTrimmables(), stack -> cir.setReturnValue(true));
     }
 }

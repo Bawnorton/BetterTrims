@@ -1,7 +1,7 @@
-package com.bawnorton.mixin;
+package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.config.Config;
-import com.bawnorton.effect.ArmorTrimEffects;
+import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
+import com.bawnorton.bettertrims.config.Config;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;

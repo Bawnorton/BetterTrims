@@ -1,6 +1,6 @@
-package com.bawnorton.config;
+package com.bawnorton.bettertrims.config;
 
-import com.bawnorton.BetterTrims;
+import com.bawnorton.bettertrims.BetterTrims;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;

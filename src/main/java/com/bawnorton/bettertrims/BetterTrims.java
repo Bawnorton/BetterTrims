@@ -1,4 +1,4 @@
-package com.bawnorton;
+package com.bawnorton.bettertrims;
 
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
@@ -11,6 +11,6 @@ public class BetterTrims implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Initializing Better Trims");
+        LOGGER.debug("Initializing Better Trims");
     }
 }

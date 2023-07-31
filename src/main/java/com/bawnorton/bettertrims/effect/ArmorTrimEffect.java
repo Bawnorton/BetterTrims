@@ -1,6 +1,7 @@
-package com.bawnorton.effect;
+package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.compat.StackedTrimsCompat;
+import com.bawnorton.bettertrims.compat.Compat;
+import com.bawnorton.bettertrims.compat.StackedTrimsCompat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
@@ -11,9 +12,9 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class ArmorTrimEffect {
-    private final RegistryKey<ArmorTrimMaterial> material;
+    private final Identifier material;
 
-    protected ArmorTrimEffect(RegistryKey<ArmorTrimMaterial> matieral) {
+    public ArmorTrimEffect(Identifier matieral) {
         this.material = matieral;
     }
 
@@ -26,12 +27,19 @@ public class ArmorTrimEffect {
     }
 
     public boolean appliesTo(ItemStack stack) {
-        if (StackedTrimsCompat.isLoaded()) {
+        if (Compat.isStackedTrimsLoaded()) {
             List<Identifier> materials = StackedTrimsCompat.getTrimMaterials(stack);
             if (materials == null) return false;
-            return materials.contains(TrimEffectLookup.get(material));
+            return materials.contains(material);
         }
-        return TrimEffectLookup.get(material).equals(getTrimMaterial(stack));
+        return material.equals(getTrimMaterial(stack));
+    }
+
+    public boolean appliesTo(Iterable<ItemStack> stacks) {
+        for (ItemStack stack : stacks) {
+            if (appliesTo(stack)) return true;
+        }
+        return false;
     }
 
     public void apply(Iterable<ItemStack> armour, Effect effect) {
