@@ -18,6 +18,10 @@ BetterTrims
 - Amethyst: 6.25% chance per piece per second to reduce the duration of a negative potion effect by 1 second, or increase the duration of a positive potion effect by 1 second.
   - On average this will cause positive potions effect to last 33% longer and negative potion effects to end 20% sooner.
 
+### Modded Trim Material Effects
+- Illager Invasion 
+  - Platinum: Illagers will not attack you.
+
 ### Config
 All numerical values can be changed in the config file. The config file is located in the `config` folder in your `.minecraft` folder.
 

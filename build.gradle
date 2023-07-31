@@ -64,6 +64,8 @@ dependencies {
 
 	// mod compats
 	modImplementation("maven.modrinth:illager-invasion:${project.illager_invasion_version}")
+	modImplementation("maven.modrinth:puzzles-lib:${project.puzzles_lib_version}")
+	modImplementation("maven.modrinth:forge-config-api-port:${project.forge_config_api_port_version}")
 }
 
 processResources {
