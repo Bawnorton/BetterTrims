@@ -63,9 +63,10 @@ dependencies {
 	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}")))
 
 	// mod compats
-	modImplementation("maven.modrinth:illager-invasion:${project.illager_invasion_version}")
-	modImplementation("maven.modrinth:puzzles-lib:${project.puzzles_lib_version}")
-	modImplementation("maven.modrinth:forge-config-api-port:${project.forge_config_api_port_version}")
+	modCompileOnly("maven.modrinth:illager-invasion:${project.illager_invasion_version}")
+	modCompileOnly("maven.modrinth:puzzles-lib:${project.puzzles_lib_version}")
+	modCompileOnly("maven.modrinth:forge-config-api-port:${project.forge_config_api_port_version}")
+	modCompileOnly("maven.modrinth:friends-and-foes:${project.friends_and_foes_version}")
 }
 
 processResources {
