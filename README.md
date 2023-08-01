@@ -14,7 +14,7 @@ BetterTrims
 - Gold: Piglins will not attack you.
 - Emerald: +12.5% Discount on trades with villagers per piece.
 - Diamond: +5% Damage reduction per piece.
-- Lapis: Increases enchantability of the piece to 30. (Diamond is 10, Gold is 25)
+- Lapis: Increases enchantability of the piece by 30. (Base enchantability of Diamond is 10, Gold is 25)
 - Amethyst: 6.25% chance per piece per second to reduce the duration of a negative potion effect by 1 second, or increase the duration of a positive potion effect by 1 second.
   - On average this will cause positive potions effect to last 33% longer and negative potion effects to end 20% sooner.
 
