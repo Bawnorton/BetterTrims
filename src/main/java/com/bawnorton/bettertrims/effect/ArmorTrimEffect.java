@@ -6,15 +6,18 @@ import com.bawnorton.bettertrims.util.RegexIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
 
 public class ArmorTrimEffect {
     private final RegexIdentifier material;
+    private final Text tooltip;
 
-    public ArmorTrimEffect(RegexIdentifier matieral) {
+    public ArmorTrimEffect(RegexIdentifier matieral, Text tooltip) {
         this.material = matieral;
+        this.tooltip = tooltip;
     }
 
     private Identifier getTrimMaterial(ItemStack stack) {
@@ -45,6 +48,10 @@ public class ArmorTrimEffect {
         for (ItemStack stack : armour) {
             if (appliesTo(stack)) effect.applyEffect(stack);
         }
+    }
+
+    public Text getTooltip() {
+        return tooltip;
     }
 
     @FunctionalInterface

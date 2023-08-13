@@ -1,13 +1,20 @@
 package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.util.RegexIdentifier;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.text.Text;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 
 public abstract class ArmorTrimEffects {
+    private static final List<ArmorTrimEffect> EFFECTS = new ArrayList<>();
+
     public static final ArmorTrimEffect QUARTZ = of(ArmorTrimMaterials.QUARTZ);
     public static final ArmorTrimEffect IRON = of(ArmorTrimMaterials.IRON);
     public static final ArmorTrimEffect NETHERITE = of(ArmorTrimMaterials.NETHERITE);
@@ -28,6 +35,20 @@ public abstract class ArmorTrimEffects {
     }
 
     private static ArmorTrimEffect of(RegexIdentifier material) {
-        return new ArmorTrimEffect(material);
+        ArmorTrimEffect effect = new ArmorTrimEffect(material, getTooltip(material.path()));
+        EFFECTS.add(effect);
+        return effect;
+    }
+
+    private static Text getTooltip(String path) {
+        return Text.translatable("effect.bettertrims." + path + ".tooltip");
+    }
+
+    public static void forEachEffect(ItemStack stack, Consumer<ArmorTrimEffect> effectConsumer) {
+        for(ArmorTrimEffect effect : EFFECTS) {
+            if(effect.appliesTo(stack)) {
+                effectConsumer.accept(effect);
+            }
+        }
     }
 }
