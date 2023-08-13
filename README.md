@@ -19,8 +19,14 @@ BetterTrims
   - On average this will cause positive potions effect to last 33% longer and negative potion effects to end 20% sooner.
 
 ### Modded Trim Material Effects
-- Illager Invasion 
-  - Platinum: Illagers will not attack you.
+- Platinum: Illagers will not attack you.
+- Silver: Stronger at Night
+  - +5% Movement speed per piece
+  - +0.5 Jump height per piece
+  - +0.5 Attack damage per piece
+  - +0.3 Attack speed per piece
+  - +3% Damage reduction per piece
+  - +25% Improved vision
 
 ### Config
 All numerical values can be changed in the config file. The config file is located in the `config` folder in your `.minecraft` folder.
