@@ -38,9 +38,31 @@ public class ConfigManager {
         if (config.amethystEffectChance == null || config.amethystEffectChance < 0)
             config.amethystEffectChance = 0.0625f;
 
+        validateSilverBonus(config);
+
         Config.update(config);
         save();
         BetterTrims.LOGGER.info("Loaded config");
+    }
+
+    private static void validateSilverBonus(Config config) {
+        Config.SilverBonus silverBonus = config.silverNightBonus;
+        if(silverBonus == null) {
+            silverBonus = new Config.SilverBonus();
+            config.silverNightBonus = silverBonus;
+        }
+        if (silverBonus.movementSpeed == null || silverBonus.movementSpeed < 0)
+            silverBonus.movementSpeed = 0.05f;
+        if (silverBonus.jumpHeight == null || silverBonus.jumpHeight < 0)
+            silverBonus.jumpHeight = 0.05f;
+        if (silverBonus.attackDamage == null || silverBonus.attackDamage < 0)
+            silverBonus.attackDamage = 0.5f;
+        if (silverBonus.attackSpeed == null || silverBonus.attackSpeed < 0)
+            silverBonus.attackSpeed = 0.3f;
+        if (silverBonus.damageReduction == null || silverBonus.damageReduction < 0)
+            silverBonus.damageReduction = 0.03f;
+        if (silverBonus.improveVision == null || silverBonus.improveVision < 0)
+            silverBonus.improveVision = 0.25f;
     }
 
     private static Config load() {

@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.effect;
 
+import com.bawnorton.bettertrims.util.RegexIdentifier;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.RegistryKey;
@@ -19,13 +20,14 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect AMETHYST = of(ArmorTrimMaterials.AMETHYST);
 
     // modded materials
-    public static final ArmorTrimEffect PLATINUM = of(new Identifier("illagerinvasion", "platinum"));
+    public static final ArmorTrimEffect PLATINUM = of(new RegexIdentifier(".*", "platinum"));
+    public static final ArmorTrimEffect SILVER = of(new RegexIdentifier(".*", "silver"));
 
     private static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
-        return of(material.getValue());
+        return of(new RegexIdentifier(".*", material.getValue().getPath()));
     }
 
-    private static ArmorTrimEffect of(Identifier material) {
+    private static ArmorTrimEffect of(RegexIdentifier material) {
         return new ArmorTrimEffect(material);
     }
 }

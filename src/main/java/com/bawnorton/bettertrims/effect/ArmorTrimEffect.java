@@ -2,19 +2,18 @@ package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.compat.Compat;
 import com.bawnorton.bettertrims.compat.StackedTrimsCompat;
+import com.bawnorton.bettertrims.util.RegexIdentifier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
 
 public class ArmorTrimEffect {
-    private final Identifier material;
+    private final RegexIdentifier material;
 
-    public ArmorTrimEffect(Identifier matieral) {
+    public ArmorTrimEffect(RegexIdentifier matieral) {
         this.material = matieral;
     }
 
@@ -30,9 +29,9 @@ public class ArmorTrimEffect {
         if (Compat.isStackedTrimsLoaded()) {
             List<Identifier> materials = StackedTrimsCompat.getTrimMaterials(stack);
             if (materials == null) return false;
-            return materials.contains(material);
+            return material.matchesAny(materials);
         }
-        return material.equals(getTrimMaterial(stack));
+        return material.matches(getTrimMaterial(stack));
     }
 
     public boolean appliesTo(Iterable<ItemStack> stacks) {

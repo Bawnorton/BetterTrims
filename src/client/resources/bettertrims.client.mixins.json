@@ -3,6 +3,8 @@
   "package": "com.bawnorton.bettertrims.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "BackgroundRendererMixin",
+    "LightmapTextureManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

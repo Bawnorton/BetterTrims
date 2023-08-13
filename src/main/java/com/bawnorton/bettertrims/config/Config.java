@@ -35,6 +35,9 @@ public class Config {
     @Expose
     @SerializedName("amethyst_potion_duration_modify_chance")
     public Float amethystEffectChance;
+    @Expose
+    @SerializedName("silver_night_bonus")
+    public SilverBonus silverNightBonus;
 
     private Config() {
     }
@@ -61,6 +64,40 @@ public class Config {
                 ", diamondDamageReduction=" + diamondDamageReduction +
                 ", lapisEnchantability=" + lapisEnchantability +
                 ", amethystEffectChance=" + amethystEffectChance +
+                ", silverNightBonus=" + silverNightBonus +
                 '}';
+    }
+
+    public static class SilverBonus {
+        @Expose
+        @SerializedName("movement_speed")
+        public Float movementSpeed;
+        @Expose
+        @SerializedName("jump_height")
+        public Float jumpHeight;
+        @Expose
+        @SerializedName("attack_damage")
+        public Float attackDamage;
+        @Expose
+        @SerializedName("attack_speed")
+        public Float attackSpeed;
+        @Expose
+        @SerializedName("damage_reduction")
+        public Float damageReduction;
+        @Expose
+        @SerializedName("improve_vision")
+        public Float improveVision;
+
+        @Override
+        public String toString() {
+            return "SilverBonus{" +
+                    "movementSpeed=" + movementSpeed +
+                    ", jumpHeight=" + jumpHeight +
+                    ", attackDamage=" + attackDamage +
+                    ", attackSpeed=" + attackSpeed +
+                    ", damageReduction=" + damageReduction +
+                    ", improveVision=" + improveVision +
+                    '}';
+        }
     }
 }

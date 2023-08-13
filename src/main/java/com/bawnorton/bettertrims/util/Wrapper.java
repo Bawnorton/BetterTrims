@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.util;
 
 public class Wrapper<T> {
-    private T value;
+    protected T value;
 
     public Wrapper(T value) {
         this.value = value;
@@ -17,5 +17,13 @@ public class Wrapper<T> {
 
     public void set(T value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        if (value == null) return "null";
+        return "Wrapper{" +
+                "value=" + value +
+                '}';
     }
 }

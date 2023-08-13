@@ -3,6 +3,7 @@ package com.bawnorton.bettertrims.mixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.extend.EntityExtender;
+import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.bawnorton.bettertrims.util.RandomHelper;
 import com.bawnorton.bettertrims.util.Wrapper;
 import net.minecraft.entity.LivingEntity;
@@ -26,8 +27,8 @@ public abstract class StatusEffectInstanceMixin {
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;updateDuration()I", shift = At.Shift.AFTER))
     private void modifyDuration(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
-        Wrapper<Float> chance = Wrapper.of(0f);
-        ArmorTrimEffects.AMETHYST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), stack -> chance.set(chance.get() + Config.getInstance().amethystEffectChance));
-        if (RandomHelper.nextFloat() < chance.get()) duration += type.isBeneficial() ? 1 : -1;
+        NumberWrapper chance = NumberWrapper.of(0f);
+        ArmorTrimEffects.AMETHYST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), stack -> chance.increment(Config.getInstance().amethystEffectChance));
+        if (RandomHelper.nextFloat() < chance.getFloat()) duration += type.isBeneficial() ? 1 : -1;
     }
 }
