@@ -4,7 +4,6 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.bawnorton.bettertrims.BetterTrimsMixinPlugin",
   "mixins": [
-    "EnchantmentHelperMixin",
     "EntityMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
@@ -14,6 +13,10 @@
     "SmithingTemplateItemMixin",
     "StatusEffectInstanceMixin",
     "VillagerEntityMixin",
+    "connector.fabric.EnchantmentHelperMixin",
+    "connector.fabric.PlayerEntityMixin",
+    "connector.forge.EnchantmentHelperMixin",
+    "connector.forge.PlayerEntityMixin",
     "friendsandfoes.IceologerMixin",
     "illagerinvasion.IllagerEntityMixin"
   ],
