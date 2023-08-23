@@ -29,14 +29,14 @@ public abstract class EntityMixin implements EntityExtender {
     @Shadow public abstract World getWorld();
 
     @Inject(method = "isFireImmune", at = @At("RETURN"), cancellable = true)
-    private void isFireImmune(CallbackInfoReturnable<Boolean> cir) {
+    private void checkIfNetheriteTrimmed(CallbackInfoReturnable<Boolean> cir) {
         NumberWrapper netheriteCount = NumberWrapper.of(0f);
         ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), stack -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
         cir.setReturnValue(cir.getReturnValue() || netheriteCount.getFloat() >= 0.99f);
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
-    private float modifyDamage(float original) {
+    private float reduceNetheriteTrimDamage(float original) {
         NumberWrapper netheriteCount = NumberWrapper.of(0f);
         ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), stack -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
         return original * (1 - netheriteCount.getFloat());

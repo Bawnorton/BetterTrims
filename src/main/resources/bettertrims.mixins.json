@@ -9,6 +9,7 @@
     "LivingEntityMixin",
     "PiglinBrainMixin",
     "PlayerEntityMixin",
+    "ShulkerBulletEntityMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTemplateItemMixin",
     "StatusEffectInstanceMixin",

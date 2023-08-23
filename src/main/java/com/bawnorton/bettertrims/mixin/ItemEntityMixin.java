@@ -15,7 +15,7 @@ public abstract class ItemEntityMixin {
     public abstract ItemStack getStack();
 
     @Inject(method = "isFireImmune", at = @At("RETURN"), cancellable = true)
-    private void isFireImmune(CallbackInfoReturnable<Boolean> cir) {
+    private void checkIfNetheriteTrimmed(CallbackInfoReturnable<Boolean> cir) {
         if (cir.getReturnValue()) return;
         cir.setReturnValue(ArmorTrimEffects.NETHERITE.appliesTo(getStack()));
     }

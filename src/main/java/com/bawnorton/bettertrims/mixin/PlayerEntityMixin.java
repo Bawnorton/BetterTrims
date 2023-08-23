@@ -20,7 +20,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     @Shadow @Final private static Logger LOGGER;
 
     @ModifyVariable(method = "addExperience", at = @At("HEAD"), argsOnly = true)
-    private int modifyExperience(int experience) {
+    private int applyTrimExperienceIncrease(int experience) {
         if (experience <= 0) return experience;
         NumberWrapper increase = NumberWrapper.of(1F);
         ArmorTrimEffects.QUARTZ.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().quartzExperienceBonus));
@@ -28,7 +28,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     }
 
     @ModifyReturnValue(method = "getMovementSpeed", at = @At("RETURN"))
-    private float modifyMovementSpeed(float original) {
+    private float applyTrimSpeedIncrease(float original) {
         NumberWrapper increase = NumberWrapper.of(1f);
         ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if (betterTrims$shouldSilverApply()) {
@@ -38,7 +38,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     }
 
     @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
-    private float modifyAttributeModifiers(float original) {
+    private float applyTrimDamageIncrease(float original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if(betterTrims$shouldSilverApply()) {
             ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.attackDamage));
@@ -47,7 +47,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     }
 
     @ModifyExpressionValue(method = "getAttackCooldownProgressPerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D"))
-    private double modifyAttackCooldown(double original) {
+    private double applyTrimAttackSpeedIncrease(double original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if(betterTrims$shouldSilverApply()) {
             ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.attackSpeed));

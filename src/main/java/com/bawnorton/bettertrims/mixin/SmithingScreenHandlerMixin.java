@@ -20,7 +20,7 @@ public abstract class SmithingScreenHandlerMixin extends ForgingScreenHandler {
     }
 
     @WrapWithCondition(method = "onTakeOutput", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/SmithingScreenHandler;decrementStack(I)V", ordinal = 0))
-    private boolean onTakeOutput(SmithingScreenHandler instance, int slot) {
+    private boolean shouldDecrementElseDamage(SmithingScreenHandler instance, int slot) {
         ItemStack stack = input.getStack(slot);
         if(stack.getItem() == Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE) return true;
         stack.setDamage(stack.getDamage() + 1);

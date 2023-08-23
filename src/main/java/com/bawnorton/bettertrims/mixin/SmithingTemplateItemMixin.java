@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public abstract class SmithingTemplateItemMixin {
 
     @ModifyArg(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/Item;<init>(Lnet/minecraft/item/Item$Settings;)V"))
-    private static Item.Settings modifyItemSettings(Item.Settings settings) {
+    private static Item.Settings grantIncreasedDurability(Item.Settings settings) {
         if (Config.getInstance().trimDurability == 1) return settings;
         return settings.maxDamage(Config.getInstance().trimDurability);
     }

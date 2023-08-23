@@ -26,7 +26,7 @@ public abstract class StatusEffectInstanceMixin {
     private int duration;
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;updateDuration()I", shift = At.Shift.AFTER))
-    private void modifyDuration(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
+    private void applyTrimDurationBuff(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
         NumberWrapper chance = NumberWrapper.of(0f);
         ArmorTrimEffects.AMETHYST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), stack -> chance.increment(Config.getInstance().amethystEffectChance));
         if (RandomHelper.nextFloat() < chance.getFloat()) duration += type.isBeneficial() ? 1 : -1;

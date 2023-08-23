@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @ConditionalMixin(modid = "connectormod", applyIfPresent = false)
 public abstract class PlayerEntityMixin extends LivingEntityMixin {
     @WrapOperation(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
-    private float modifyMiningSpeed(PlayerInventory instance, BlockState block, Operation<Float> original) {
+    private float applyTrimMiningSpeedIncrease(PlayerInventory instance, BlockState block, Operation<Float> original) {
         NumberWrapper increase = NumberWrapper.of(original.call(instance, block));
         ArmorTrimEffects.IRON.apply(betterTrims$getTrimmables(), stack -> {
             if(instance.getMainHandStack().isSuitableFor(block)) {

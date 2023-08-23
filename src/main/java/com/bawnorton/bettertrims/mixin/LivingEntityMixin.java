@@ -37,14 +37,14 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
-    private float modifySwimSpeed(float speed) {
+    private float applyTrimSwimSpeedIncrease(float speed) {
         NumberWrapper increase = NumberWrapper.of(0f);
         ArmorTrimEffects.COPPER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().copperSwimSpeedIncrease));
         return speed + increase.getFloat();
     }
 
     @ModifyReturnValue(method = "getMovementSpeed()F", at = @At("RETURN"))
-    private float modifyMovementSpeed(float original) {
+    private float applyTrimSpeedIncrease(float original) {
         if(((LivingEntity) (Object) this) instanceof AbstractHorseEntity horseEntity) {
             if(horseEntity.getControllingPassenger() instanceof PlayerEntity player) {
                 NumberWrapper increase = NumberWrapper.of(1f);
@@ -67,7 +67,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @Slice(
             from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isFallFlying()Z")
     ))
-    private Vec3d modifyFlightSpeed(Vec3d original) {
+    private Vec3d applyTrimSpeedIncrease(Vec3d original) {
         NumberWrapper increase = NumberWrapper.of(1f);
         ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if(betterTrims$shouldSilverApply()) {
@@ -77,7 +77,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
     }
 
     @WrapOperation(method = "applyArmorToDamage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/DamageUtil;getDamageLeft(FFF)F"))
-    private float modifyDamage(float damage, float armor, float armorToughness, Operation<Float> original) {
+    private float applyTrimDamageReduction(float damage, float armor, float armorToughness, Operation<Float> original) {
         float orignal = original.call(damage, armor, armorToughness);
         NumberWrapper decrease = NumberWrapper.of(1f);
         ArmorTrimEffects.DIAMOND.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().diamondDamageReduction));
@@ -88,7 +88,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
     }
 
     @ModifyReturnValue(method = "getJumpVelocity", at = @At("RETURN"))
-    private float modifyJumpHeight(float original) {
+    private float applyTrimJumpHeight(float original) {
         if(betterTrims$shouldSilverApply()) {
             NumberWrapper increase = NumberWrapper.of(0f);
             ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.jumpHeight));

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
+    @SuppressWarnings("unused")
     @ModifyReturnValue(method = "wearsGoldArmor", at = @At("RETURN"))
     private static boolean wearsGoldTrim(boolean original, LivingEntity entity) {
         if (original) return true;
