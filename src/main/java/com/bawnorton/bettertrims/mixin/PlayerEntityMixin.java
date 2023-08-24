@@ -22,14 +22,14 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     @ModifyVariable(method = "addExperience", at = @At("HEAD"), argsOnly = true)
     private int applyTrimExperienceIncrease(int experience) {
         if (experience <= 0) return experience;
-        NumberWrapper increase = NumberWrapper.of(1F);
+        NumberWrapper increase = NumberWrapper.one();
         ArmorTrimEffects.QUARTZ.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().quartzExperienceBonus));
         return (int) (experience * increase.getFloat());
     }
 
     @ModifyReturnValue(method = "getMovementSpeed", at = @At("RETURN"))
     private float applyTrimSpeedIncrease(float original) {
-        NumberWrapper increase = NumberWrapper.of(1f);
+        NumberWrapper increase = NumberWrapper.one();
         ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if (betterTrims$shouldSilverApply()) {
             ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));

@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin;
 
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,9 +15,8 @@ public abstract class ItemEntityMixin {
     @Shadow
     public abstract ItemStack getStack();
 
-    @Inject(method = "isFireImmune", at = @At("RETURN"), cancellable = true)
-    private void checkIfNetheriteTrimmed(CallbackInfoReturnable<Boolean> cir) {
-        if (cir.getReturnValue()) return;
-        cir.setReturnValue(ArmorTrimEffects.NETHERITE.appliesTo(getStack()));
+    @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
+    private boolean checkIfNetheriteTrimmed(boolean original) {
+        return original || ArmorTrimEffects.NETHERITE.appliesTo(getStack());
     }
 }

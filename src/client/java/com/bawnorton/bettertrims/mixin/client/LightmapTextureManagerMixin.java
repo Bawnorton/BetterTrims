@@ -20,7 +20,7 @@ public abstract class LightmapTextureManagerMixin {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getNightVisionStrength(Lnet/minecraft/entity/LivingEntity;F)F")
     ))
     private float modifyLight(float original) {
-        NumberWrapper increase = NumberWrapper.of(0f);
+        NumberWrapper increase = NumberWrapper.zero();
         if(client.player instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
             ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
         }

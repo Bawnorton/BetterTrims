@@ -3,7 +3,7 @@ package com.bawnorton.bettertrims.util;
 public class Wrapper<T> {
     protected T value;
 
-    public Wrapper(T value) {
+    protected Wrapper(T value) {
         this.value = value;
     }
 

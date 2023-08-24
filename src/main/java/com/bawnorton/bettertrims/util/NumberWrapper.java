@@ -1,7 +1,15 @@
 package com.bawnorton.bettertrims.util;
 
 public class NumberWrapper extends Wrapper<Number> {
-    public NumberWrapper(Number value) {
+    public static NumberWrapper zero() {
+        return of(0);
+    }
+
+    public static NumberWrapper one() {
+        return of(1);
+    }
+
+    protected NumberWrapper(Number value) {
         super(value);
     }
 
@@ -23,5 +31,9 @@ public class NumberWrapper extends Wrapper<Number> {
 
     public double getDouble() {
         return get().doubleValue();
+    }
+
+    public int getInt() {
+        return get().intValue();
     }
 }

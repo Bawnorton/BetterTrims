@@ -33,6 +33,7 @@ public abstract class ArmorTrimEffects {
     // added vanilla materials
     public static final ArmorTrimEffect COAL = of(Items.COAL);
     public static final ArmorTrimEffect DRAGONS_BREATH = of(Items.DRAGON_BREATH);
+    public static final ArmorTrimEffect CHORUS_FRUIT = of(Items.CHORUS_FRUIT);
     public static final ArmorTrimEffect ECHO_SHARD = of(Items.ECHO_SHARD);
     public static final ArmorTrimEffect ENDER_PEARL = of(Items.ENDER_PEARL);
     public static final ArmorTrimEffect FIRE_CHARGE = of(Items.FIRE_CHARGE);

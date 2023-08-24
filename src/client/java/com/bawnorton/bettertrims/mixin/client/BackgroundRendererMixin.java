@@ -20,7 +20,7 @@ public abstract class BackgroundRendererMixin {
             from = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getNightVisionStrength(Lnet/minecraft/entity/LivingEntity;F)F")
     ))
     private static float modifyLight(float original, @Local Entity entity) {
-        NumberWrapper increase = NumberWrapper.of(0f);
+        NumberWrapper increase = NumberWrapper.zero();
         if(entity instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
             ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
         }

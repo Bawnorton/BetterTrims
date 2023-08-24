@@ -4,9 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.bawnorton.bettertrims.BetterTrimsMixinPlugin",
   "mixins": [
+    "ElderGuardianEntityMixin",
+    "EndermanEntityMixin",
     "EntityMixin",
+    "GuardianTargetPredicateMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
+    "MobEntityMixin",
     "PiglinBrainMixin",
     "PlayerEntityMixin",
     "ShulkerBulletEntityMixin",
