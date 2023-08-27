@@ -18,7 +18,6 @@ import java.util.Set;
 public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
-
     }
 
     @Override
@@ -76,7 +75,8 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
+            BetterTrims.LOGGER.error("BetterTrimsMixinPlugin: Failed to load class " + className + ", it will not be applied", e);
+            return false;
         }
         return true;
     }

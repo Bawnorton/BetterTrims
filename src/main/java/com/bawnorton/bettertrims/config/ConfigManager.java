@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.config;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class ConfigManager {
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES).setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
     private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve(BetterTrims.MOD_ID + ".json");
 
     public static void loadConfig() {
@@ -28,10 +27,11 @@ public class ConfigManager {
         config.emeraldVillagerDiscount = validate(config.emeraldVillagerDiscount, 0.125f);
         config.diamondDamageReduction = validate(config.diamondDamageReduction, 0.05f);
         config.lapisEnchantability = validate(config.lapisEnchantability, 30);
-        config.amethystPotionDurabilityModifyChance = validate(config.amethystPotionDurabilityModifyChance, 0.0625f);
+        config.amethystPotionDurationModifyChance = validate(config.amethystPotionDurationModifyChance, 0.0625f);
         config.chorusFruitDodgeChance = validate(config.chorusFruitDodgeChance, 0.25f);
         config.fireChargeFireDuration = validate(config.fireChargeFireDuration, 1f);
         config.leatherStepHeightIncrease = validate(config.leatherStepHeightIncrease, 0.4f);
+        config.dragonBreathRadius = validate(config.dragonBreathRadius, 1.25f);
 
         validateSilverBonus(config);
         validateSlimeBall(config);
@@ -63,7 +63,7 @@ public class ConfigManager {
             config.slimeBallEffects = slimeBall;
         }
 
-        slimeBall.knockbacIncrease = validate(slimeBall.knockbacIncrease, 0.25f);
+        slimeBall.knockbackIncrease = validate(slimeBall.knockbackIncrease, 0.25f);
         slimeBall.fallDamageReduction = validate(slimeBall.fallDamageReduction, 0.25f);
     }
 

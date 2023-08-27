@@ -1,9 +1,9 @@
 package com.bawnorton.bettertrims.mixin;
 
+import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
-import com.bawnorton.bettertrims.config.Config;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -27,14 +27,17 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityExtender {
     @Shadow
     public abstract Iterable<ItemStack> getArmorItems();
-
     @Shadow public abstract Iterable<ItemStack> getHandItems();
-
     @Shadow public abstract World getWorld();
+    @Shadow public abstract double getZ();
+    @Shadow public abstract double getY();
+    @Shadow public abstract double getX();
+    @Shadow public abstract Vec3d getPos();
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {

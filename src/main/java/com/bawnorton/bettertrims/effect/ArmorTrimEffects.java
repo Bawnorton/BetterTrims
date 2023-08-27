@@ -9,7 +9,6 @@ import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +47,6 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect PLATINUM = of(new RegexIdentifier(".*", "platinum"));
     public static final ArmorTrimEffect SILVER = of(new RegexIdentifier(".*", "silver"));
 
-
-
     private static ArmorTrimEffect of(Item item) {
         return of(new RegexIdentifier(".*", Registries.ITEM.getId(item).getPath()));
     }
@@ -65,10 +62,10 @@ public abstract class ArmorTrimEffects {
     }
 
     private static Text getTooltip(String path) {
-        return Text.translatable("effect.bettertrims." + path + ".tooltip");
+        return Text.translatable("effect.bettertrims.%s.tooltip".formatted(path));
     }
 
-    public static void forEachEffect(ItemStack stack, Consumer<ArmorTrimEffect> effectConsumer) {
+    public static void forEachAppliedEffect(ItemStack stack, Consumer<ArmorTrimEffect> effectConsumer) {
         for(ArmorTrimEffect effect : EFFECTS) {
             if(effect.appliesTo(stack)) {
                 effectConsumer.accept(effect);

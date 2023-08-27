@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.config;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Config {
     private static Config INSTANCE;
@@ -24,13 +23,15 @@ public class Config {
     @Expose
     public Integer lapisEnchantability;
     @Expose
-    public Float amethystPotionDurabilityModifyChance;
+    public Float amethystPotionDurationModifyChance;
     @Expose
     public Float chorusFruitDodgeChance;
     @Expose
     public Float fireChargeFireDuration;
     @Expose
     public Float leatherStepHeightIncrease;
+    @Expose
+    public Float dragonBreathRadius;
     @Expose
     public SilverBonus silverNightBonus;
     @Expose
@@ -62,18 +63,6 @@ public class Config {
         public Float damageReduction;
         @Expose
         public Float improveVision;
-
-        @Override
-        public String toString() {
-            return "SilverBonus{" +
-                    "movementSpeed=" + movementSpeed +
-                    ", jumpHeight=" + jumpHeight +
-                    ", attackDamage=" + attackDamage +
-                    ", attackSpeed=" + attackSpeed +
-                    ", damageReduction=" + damageReduction +
-                    ", improveVision=" + improveVision +
-                    '}';
-        }
     }
 
     public static class SlimeBall {
@@ -81,6 +70,6 @@ public class Config {
         public Float fallDamageReduction;
 
         @Expose
-        public Float knockbacIncrease;
+        public Float knockbackIncrease;
     }
 }

@@ -4,21 +4,23 @@ import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
+import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,22 +28,23 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Slice;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Map;
 
 @SuppressWarnings("unused")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow public abstract AttributeContainer getAttributes();
-
     @Shadow @Final private AttributeContainer attributes;
-
     @Shadow protected abstract float modifyAppliedDamage(DamageSource source, float amount);
-
     @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
-
     @Shadow protected abstract void fall(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition);
-
     @Shadow public abstract float getStepHeight();
+    @Shadow public abstract void remove(Entity.RemovalReason reason);
+    @Shadow @Final private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
+    @Shadow public abstract ImmutableList<EntityPose> getPoses();
+    @Shadow protected abstract void onStatusEffectApplied(StatusEffectInstance effect, @Nullable Entity source);
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
     private float applyTrimSwimSpeedIncrease(float speed) {
@@ -104,10 +107,10 @@ public abstract class LivingEntityMixin extends EntityMixin {
         return original;
     }
 
-    @SuppressWarnings("CancellableInjectionUsage")
-    @Inject(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
-    protected void canTargetOverride(LivingEntity target, CallbackInfoReturnable<Boolean> cir) {
-        // overriden in IllagerEntityMixin
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    @ModifyReturnValue(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("RETURN"))
+    protected boolean shouldTargetTrimmedPlayer(boolean original, LivingEntity target) {
+        return original;
     }
 
     @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
@@ -130,7 +133,23 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @ModifyExpressionValue(method = "takeKnockback", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D"))
     private double applyTrimKnockbackDecrease(double original) {
         NumberWrapper decrease = NumberWrapper.one();
-        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().slimeBallEffects.knockbacIncrease));
+        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().slimeBallEffects.knockbackIncrease));
         return original * decrease.getFloat();
+    }
+
+    @Inject(method = "tickStatusEffects", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", remap = false))
+    private void manageAreaEffectCloud(CallbackInfo ci) {
+        if(!ArmorTrimEffects.DRAGONS_BREATH.appliesTo(betterTrims$getTrimmables())) return;
+        NumberWrapper radius = NumberWrapper.zero();
+        ArmorTrimEffects.DRAGONS_BREATH.apply(betterTrims$getTrimmables(), stack -> radius.increment(Config.getInstance().dragonBreathRadius));
+
+        AreaEffectCloudEntity areaEffectCloud = new AreaEffectCloudEntity(getWorld(), getX(), getY(), getZ());
+        areaEffectCloud.setOwner((LivingEntity) (Object) this);
+        areaEffectCloud.setDuration(1);
+        if(!getWorld().isClient()) {
+            activeStatusEffects.values().forEach(areaEffectCloud::addEffect);
+            areaEffectCloud.setRadius(radius.getFloat());
+            getWorld().spawnEntity(areaEffectCloud);
+        }
     }
 }
