@@ -45,7 +45,7 @@ public abstract class ActiveTargetGoalMixin {
     @Unique
     private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, EntityExtender extender, ArmorTrimEffect effect, int required) {
         NumberWrapper trimCount = NumberWrapper.zero();
-        effect.apply(extender.betterTrims$getTrimmables(), stack -> trimCount.increment(1));
+        effect.apply(extender.betterTrims$getTrimmables(), () -> trimCount.increment(1));
         return target -> trimCount.getInt() < required && (original == null || original.test(target));
     }
 }

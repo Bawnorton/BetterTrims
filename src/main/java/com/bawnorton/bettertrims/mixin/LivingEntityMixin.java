@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -45,11 +46,17 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow @Final private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
     @Shadow public abstract ImmutableList<EntityPose> getPoses();
     @Shadow protected abstract void onStatusEffectApplied(StatusEffectInstance effect, @Nullable Entity source);
+    @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
+    @Shadow public abstract void setAbsorptionAmount(float amount);
+    @Shadow public abstract float getAbsorptionAmount();
+
+    @Unique
+    private int stopwatch = 0;
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
     private float applyTrimSwimSpeedIncrease(float speed) {
         NumberWrapper increase = NumberWrapper.zero();
-        ArmorTrimEffects.COPPER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().copperSwimSpeedIncrease));
+        ArmorTrimEffects.COPPER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().copperSwimSpeedIncrease));
         return speed + increase.getFloat();
     }
 
@@ -58,17 +65,17 @@ public abstract class LivingEntityMixin extends EntityMixin {
         if(((LivingEntity) (Object) this) instanceof AbstractHorseEntity horseEntity) {
             if(horseEntity.getControllingPassenger() instanceof PlayerEntity player) {
                 NumberWrapper increase = NumberWrapper.one();
-                ArmorTrimEffects.REDSTONE.apply(((EntityExtender) player).betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
+                ArmorTrimEffects.REDSTONE.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
                 if(betterTrims$shouldSilverApply()) {
-                    ArmorTrimEffects.SILVER.apply(((EntityExtender) player).betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
+                    ArmorTrimEffects.SILVER.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
                 }
                 return original * increase.getFloat();
             }
         }
         NumberWrapper increase = NumberWrapper.one();
-        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
+        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if(betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
         }
         return original * increase.getFloat();
     }
@@ -79,9 +86,9 @@ public abstract class LivingEntityMixin extends EntityMixin {
     ))
     private Vec3d applyTrimSpeedIncrease(Vec3d original) {
         NumberWrapper increase = NumberWrapper.one();
-        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
+        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if(betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
         }
         return original.multiply(increase.getFloat(), 1, increase.getFloat());
     }
@@ -90,9 +97,9 @@ public abstract class LivingEntityMixin extends EntityMixin {
     private float applyTrimDamageReduction(float damage, float armor, float armorToughness, Operation<Float> original) {
         float orignal = original.call(damage, armor, armorToughness);
         NumberWrapper decrease = NumberWrapper.one();
-        ArmorTrimEffects.DIAMOND.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().diamondDamageReduction));
+        ArmorTrimEffects.DIAMOND.apply(betterTrims$getTrimmables(), () -> decrease.decrement(Config.getInstance().diamondDamageReduction));
         if(betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().silverNightBonus.damageReduction));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> decrease.decrement(Config.getInstance().silverNightBonus.damageReduction));
         }
         return decrease.getFloat() * orignal;
     }
@@ -101,7 +108,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
     private float applyTrimJumpHeight(float original) {
         if(betterTrims$shouldSilverApply()) {
             NumberWrapper increase = NumberWrapper.zero();
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.jumpHeight));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.jumpHeight));
             return original + increase.getFloat();
         }
         return original;
@@ -115,9 +122,11 @@ public abstract class LivingEntityMixin extends EntityMixin {
 
     @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     private Entity applyFireChargeTrim(Entity original) {
+        if(!ArmorTrimEffects.FIRE_CHARGE.appliesTo(betterTrims$getTrimmables())) return original;
+
         NumberWrapper duration = NumberWrapper.zero();
-        ArmorTrimEffects.FIRE_CHARGE.apply(betterTrims$getTrimmables(), stack -> duration.increment(Config.getInstance().fireChargeFireDuration));
-        if(duration.getFloat() > 0) {
+        ArmorTrimEffects.FIRE_CHARGE.apply(betterTrims$getTrimmables(), () -> duration.increment(Config.getInstance().fireChargeFireDuration));
+        if(duration.getInt() > 0) {
             original.setOnFireFor(duration.getInt());
         }
         return original;
@@ -126,14 +135,14 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @ModifyReturnValue(method = "computeFallDamage", at = @At("RETURN"))
     private int applyTrimFallDamageReduction(int original) {
         NumberWrapper decrease = NumberWrapper.one();
-        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().slimeBallEffects.fallDamageReduction));
+        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> decrease.decrement(Config.getInstance().slimeBallEffects.fallDamageReduction));
         return (int) (original * decrease.getFloat());
     }
 
     @ModifyExpressionValue(method = "takeKnockback", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D"))
     private double applyTrimKnockbackDecrease(double original) {
         NumberWrapper decrease = NumberWrapper.one();
-        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), stack -> decrease.decrement(Config.getInstance().slimeBallEffects.knockbackIncrease));
+        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> decrease.decrement(Config.getInstance().slimeBallEffects.knockbackIncrease));
         return original * decrease.getFloat();
     }
 
@@ -141,15 +150,33 @@ public abstract class LivingEntityMixin extends EntityMixin {
     private void manageAreaEffectCloud(CallbackInfo ci) {
         if(!ArmorTrimEffects.DRAGONS_BREATH.appliesTo(betterTrims$getTrimmables())) return;
         NumberWrapper radius = NumberWrapper.zero();
-        ArmorTrimEffects.DRAGONS_BREATH.apply(betterTrims$getTrimmables(), stack -> radius.increment(Config.getInstance().dragonBreathRadius));
+        ArmorTrimEffects.DRAGONS_BREATH.apply(betterTrims$getTrimmables(), () -> radius.increment(Config.getInstance().dragonBreathRadius));
 
         AreaEffectCloudEntity areaEffectCloud = new AreaEffectCloudEntity(getWorld(), getX(), getY(), getZ());
         areaEffectCloud.setOwner((LivingEntity) (Object) this);
         areaEffectCloud.setDuration(1);
-        if(!getWorld().isClient()) {
-            activeStatusEffects.values().forEach(areaEffectCloud::addEffect);
-            areaEffectCloud.setRadius(radius.getFloat());
-            getWorld().spawnEntity(areaEffectCloud);
+        areaEffectCloud.setRadius(radius.getFloat());
+        activeStatusEffects.values().forEach(areaEffectCloud::addEffect);
+        getWorld().spawnEntity(areaEffectCloud);
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void addAbsorptionHearts(CallbackInfo ci) {
+        stopwatch++;
+        if (!ArmorTrimEffects.ENCHANTED_GOLDEN_APPLE.appliesTo(betterTrims$getTrimmables())) return;
+
+        NumberWrapper ticksUntilHeal = NumberWrapper.of(Config.getInstance().enchantedGoldenAppleEffects.absorptionDelay);
+        NumberWrapper absorptionAmount = NumberWrapper.zero();
+        ArmorTrimEffects.ENCHANTED_GOLDEN_APPLE.apply(betterTrims$getTrimmables(), () -> {
+            ticksUntilHeal.decrement(Config.getInstance().enchantedGoldenAppleEffects.absorptionDelayReduction);
+            absorptionAmount.increment(Config.getInstance().enchantedGoldenAppleEffects.absorptionAmount);
+        });
+        ticksUntilHeal.decrement(stopwatch);
+        if (ticksUntilHeal.getInt() > 0) return;
+
+        stopwatch = 0;
+        if(getAbsorptionAmount() < absorptionAmount.getFloat()) {
+            setAbsorptionAmount(absorptionAmount.getFloat());
         }
     }
 }

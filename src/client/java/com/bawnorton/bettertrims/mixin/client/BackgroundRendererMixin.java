@@ -22,7 +22,7 @@ public abstract class BackgroundRendererMixin {
     private static float modifyLight(float original, @Local Entity entity) {
         NumberWrapper increase = NumberWrapper.zero();
         if(entity instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
+            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
         }
         return original + increase.getFloat();
     }

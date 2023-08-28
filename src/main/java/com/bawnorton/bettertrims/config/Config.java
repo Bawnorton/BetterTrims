@@ -25,6 +25,8 @@ public class Config {
     @Expose
     public Float amethystPotionDurationModifyChance;
     @Expose
+    public Float glowstonePotionAmplifierIncreaseChance;
+    @Expose
     public Float chorusFruitDodgeChance;
     @Expose
     public Float fireChargeFireDuration;
@@ -33,10 +35,15 @@ public class Config {
     @Expose
     public Float dragonBreathRadius;
     @Expose
-    public SilverBonus silverNightBonus;
+    public Float echoShardVibrationDistanceReduction;
+    @Expose
+    public EnchantedGoldenApple enchantedGoldenAppleEffects;
+    @Expose
+    public Silver silverNightBonus;
     @Expose
     public SlimeBall slimeBallEffects;
-
+    @Expose
+    public Coal coalEffects;
 
     private Config() {
     }
@@ -50,7 +57,18 @@ public class Config {
         INSTANCE = config;
     }
 
-    public static class SilverBonus {
+    public static class EnchantedGoldenApple {
+        @Expose
+        public Float absorptionDelay;
+        @Expose
+        public Float absorptionDelayReduction;
+        @Expose
+        public Integer absorptionAmount;
+        @Expose
+        public Integer maxAbsorption;
+    }
+
+    public static class Silver {
         @Expose
         public Float movementSpeed;
         @Expose
@@ -71,5 +89,14 @@ public class Config {
 
         @Expose
         public Float knockbackIncrease;
+    }
+
+    public static class Coal {
+        @Expose
+        public Boolean disableEffectToReduceLag;
+        @Expose
+        public Float playerDetectionRadius;
+        @Expose
+        public Integer furnaceSpeedMultiplier;
     }
 }

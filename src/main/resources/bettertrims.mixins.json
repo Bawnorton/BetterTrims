@@ -4,10 +4,12 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.bawnorton.bettertrims.BetterTrimsMixinPlugin",
   "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
     "ActiveTargetGoalMixin",
     "ElderGuardianEntityMixin",
     "EndermanEntityMixin",
     "EntityMixin",
+    "GameEventDispatchManagerMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
     "MobEntityMixin",
@@ -18,12 +20,13 @@
     "SmithingTemplateItemMixin",
     "StatusEffectInstanceMixin",
     "VillagerEntityMixin",
-    "connector.fabric.EnchantmentHelperMixin",
-    "connector.fabric.PlayerEntityMixin",
-    "connector.forge.EnchantmentHelperMixin",
-    "connector.forge.PlayerEntityMixin",
-    "friendsandfoes.IceologerMixin",
-    "illagerinvasion.IllagerEntityMixin"
+    "accessor.AbstractFurnaceBlockEntityAccessor",
+    "compat.connector.fabric.EnchantmentHelperMixin",
+    "compat.connector.fabric.PlayerEntityMixin",
+    "compat.connector.forge.EnchantmentHelperMixin",
+    "compat.connector.forge.PlayerEntityMixin",
+    "compat.friendsandfoes.IceologerMixin",
+    "compat.illagerinvasion.IllagerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

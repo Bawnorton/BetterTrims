@@ -13,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @SuppressWarnings("unused")
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
-    @Shadow
-    public abstract ItemStack getStack();
+    @Shadow public abstract ItemStack getStack();
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {

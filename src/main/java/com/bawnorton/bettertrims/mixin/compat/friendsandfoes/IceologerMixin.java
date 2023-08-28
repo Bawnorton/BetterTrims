@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.friendsandfoes;
+package com.bawnorton.bettertrims.mixin.compat.friendsandfoes;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.annotation.MultiConditionMixin;

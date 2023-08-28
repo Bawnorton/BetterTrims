@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.connector.forge;
+package com.bawnorton.bettertrims.mixin.compat.connector.forge;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.config.Config;

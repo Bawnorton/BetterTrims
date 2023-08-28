@@ -23,16 +23,16 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private int applyTrimExperienceIncrease(int experience) {
         if (experience <= 0) return experience;
         NumberWrapper increase = NumberWrapper.one();
-        ArmorTrimEffects.QUARTZ.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().quartzExperienceBonus));
+        ArmorTrimEffects.QUARTZ.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().quartzExperienceBonus));
         return (int) (experience * increase.getFloat());
     }
 
     @ModifyReturnValue(method = "getMovementSpeed", at = @At("RETURN"))
     private float applyTrimSpeedIncrease(float original) {
         NumberWrapper increase = NumberWrapper.one();
-        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
+        ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().redstoneMovementSpeedIncrease));
         if (betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.movementSpeed));
         }
         return original * increase.getFloat();
     }
@@ -41,7 +41,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private float applyTrimDamageIncrease(float original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if(betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.attackDamage));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.attackDamage));
         }
         return increase.getFloat();
     }
@@ -50,7 +50,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private double applyTrimAttackSpeedIncrease(double original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if(betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.attackSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.attackSpeed));
         }
         return increase.getFloat();
     }

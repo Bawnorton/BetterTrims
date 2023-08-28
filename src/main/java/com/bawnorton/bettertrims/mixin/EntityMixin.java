@@ -30,8 +30,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityExtender {
-    @Shadow
-    public abstract Iterable<ItemStack> getArmorItems();
+    @Shadow public abstract Iterable<ItemStack> getArmorItems();
     @Shadow public abstract Iterable<ItemStack> getHandItems();
     @Shadow public abstract World getWorld();
     @Shadow public abstract double getZ();
@@ -42,21 +41,21 @@ public abstract class EntityMixin implements EntityExtender {
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {
         NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), stack -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
         return original || netheriteCount.getFloat() >= 0.99f;
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private float reduceNetheriteTrimDamage(float original) {
         NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), stack -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
         return original * (1 - netheriteCount.getFloat());
     }
 
     @ModifyReturnValue(method = "getStepHeight", at = @At("RETURN"))
     private float applyTrimStepHeightIncrease(float original) {
         NumberWrapper increase = NumberWrapper.zero();
-        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().leatherStepHeightIncrease));
+        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().leatherStepHeightIncrease));
         return original + increase.getFloat();
     }
 
@@ -79,7 +78,7 @@ public abstract class EntityMixin implements EntityExtender {
     @Unique
     protected boolean didDodgeAttack(Entity entity) {
         NumberWrapper dodgeChance = NumberWrapper.zero();
-        ArmorTrimEffects.CHORUS_FRUIT.apply(((EntityExtender) entity).betterTrims$getTrimmables(), stack -> dodgeChance.increment(Config.getInstance().chorusFruitDodgeChance));
+        ArmorTrimEffects.CHORUS_FRUIT.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> dodgeChance.increment(Config.getInstance().chorusFruitDodgeChance));
         if(Math.random() > dodgeChance.getFloat()) {
             return false;
         } else if (entity instanceof LivingEntity livingEntity) {

@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.illagerinvasion;
+package com.bawnorton.bettertrims.mixin.compat.illagerinvasion;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;

@@ -12,8 +12,9 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class PiglinBrainMixin {
     @SuppressWarnings("unused")
     @ModifyReturnValue(method = "wearsGoldArmor", at = @At("RETURN"))
-    private static boolean wearsGoldTrim(boolean original, LivingEntity entity) {
-        if (original) return true;
-        return ArmorTrimEffects.GOLD.appliesTo(((EntityExtender) entity).betterTrims$getTrimmables());
+    private static boolean checkPlayerTrims(boolean original, LivingEntity entity) {
+        boolean hasGoldTrim = ArmorTrimEffects.GOLD.appliesTo(((EntityExtender) entity).betterTrims$getTrimmables());
+        boolean hasNetherBrickTrim = ArmorTrimEffects.NETHER_BRICK.appliesTo(((EntityExtender) entity).betterTrims$getTrimmables());
+        return (original || hasGoldTrim) && !hasNetherBrickTrim;
     }
 }

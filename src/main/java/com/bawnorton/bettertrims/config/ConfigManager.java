@@ -28,32 +28,49 @@ public class ConfigManager {
         config.diamondDamageReduction = validate(config.diamondDamageReduction, 0.05f);
         config.lapisEnchantability = validate(config.lapisEnchantability, 30);
         config.amethystPotionDurationModifyChance = validate(config.amethystPotionDurationModifyChance, 0.0625f);
+        config.glowstonePotionAmplifierIncreaseChance = validate(config.glowstonePotionAmplifierIncreaseChance, 0.25f);
         config.chorusFruitDodgeChance = validate(config.chorusFruitDodgeChance, 0.25f);
         config.fireChargeFireDuration = validate(config.fireChargeFireDuration, 1f);
         config.leatherStepHeightIncrease = validate(config.leatherStepHeightIncrease, 0.4f);
         config.dragonBreathRadius = validate(config.dragonBreathRadius, 1.25f);
+        config.echoShardVibrationDistanceReduction = validate(config.echoShardVibrationDistanceReduction, 1.5f);
 
-        validateSilverBonus(config);
+        validateEnchantedGoldenApple(config);
+        validateSilver(config);
         validateSlimeBall(config);
+        validateCoal(config);
 
         Config.update(config);
         save();
         BetterTrims.LOGGER.info("Loaded config");
     }
 
-    private static void validateSilverBonus(Config config) {
-        Config.SilverBonus silverBonus = config.silverNightBonus;
-        if(silverBonus == null) {
-            silverBonus = new Config.SilverBonus();
-            config.silverNightBonus = silverBonus;
+    private static void validateEnchantedGoldenApple(Config config) {
+        Config.EnchantedGoldenApple enchantedGoldenApple = config.enchantedGoldenAppleEffects;
+        if(enchantedGoldenApple == null) {
+            enchantedGoldenApple = new Config.EnchantedGoldenApple();
+            config.enchantedGoldenAppleEffects = enchantedGoldenApple;
         }
 
-        silverBonus.movementSpeed = validate(silverBonus.movementSpeed, 0.05f);
-        silverBonus.jumpHeight = validate(silverBonus.jumpHeight, 0.05f);
-        silverBonus.attackDamage = validate(silverBonus.attackDamage, 0.5f);
-        silverBonus.attackSpeed = validate(silverBonus.attackSpeed, 0.3f);
-        silverBonus.damageReduction = validate(silverBonus.damageReduction, 0.03f);
-        silverBonus.improveVision = validate(silverBonus.improveVision, 0.25f);
+        enchantedGoldenApple.absorptionDelay = validate(enchantedGoldenApple.absorptionDelay, 1200f);
+        enchantedGoldenApple.absorptionDelayReduction = validate(enchantedGoldenApple.absorptionDelayReduction, 250f);
+        enchantedGoldenApple.absorptionAmount = validate(enchantedGoldenApple.absorptionAmount, 2);
+        enchantedGoldenApple.maxAbsorption = validate(enchantedGoldenApple.maxAbsorption, 3);
+    }
+
+    private static void validateSilver(Config config) {
+        Config.Silver silver = config.silverNightBonus;
+        if(silver == null) {
+            silver = new Config.Silver();
+            config.silverNightBonus = silver;
+        }
+
+        silver.movementSpeed = validate(silver.movementSpeed, 0.05f);
+        silver.jumpHeight = validate(silver.jumpHeight, 0.05f);
+        silver.attackDamage = validate(silver.attackDamage, 0.5f);
+        silver.attackSpeed = validate(silver.attackSpeed, 0.3f);
+        silver.damageReduction = validate(silver.damageReduction, 0.03f);
+        silver.improveVision = validate(silver.improveVision, 0.25f);
     }
 
     private static void validateSlimeBall(Config config) {
@@ -67,8 +84,24 @@ public class ConfigManager {
         slimeBall.fallDamageReduction = validate(slimeBall.fallDamageReduction, 0.25f);
     }
 
+    private static void validateCoal(Config config) {
+        Config.Coal coal = config.coalEffects;
+        if(coal == null) {
+            coal = new Config.Coal();
+            config.coalEffects = coal;
+        }
+
+        coal.disableEffectToReduceLag = validate(coal.disableEffectToReduceLag, false);
+        coal.playerDetectionRadius = validate(coal.playerDetectionRadius, 5f);
+        coal.furnaceSpeedMultiplier = validate(coal.furnaceSpeedMultiplier, 1);
+    }
+
     private static <T extends Number> T validate(T value, T defaultValue) {
         return value == null || value.floatValue() < 0 ? defaultValue : value;
+    }
+
+    private static Boolean validate(Boolean value, Boolean defaultValue) {
+        return value == null ? defaultValue : value;
     }
 
     private static Config load() {

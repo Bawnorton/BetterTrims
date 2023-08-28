@@ -18,7 +18,7 @@ public abstract class VillagerEntityMixin {
     @Inject(method = "prepareOffersFor", at = @At("TAIL"))
     private void applyEmeraldTrimDiscount(PlayerEntity player, CallbackInfo ci) {
         NumberWrapper discount = NumberWrapper.zero();
-        ArmorTrimEffects.EMERALD.apply(((EntityExtender) player).betterTrims$getTrimmables(), stack -> discount.increment(Config.getInstance().emeraldVillagerDiscount));
+        ArmorTrimEffects.EMERALD.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> discount.increment(Config.getInstance().emeraldVillagerDiscount));
         if (discount.getFloat() > 0) {
             for (TradeOffer offer : ((VillagerEntity) (Object) this).getOffers()) {
                 offer.increaseSpecialPrice(-MathHelper.ceil(discount.getFloat() * offer.getOriginalFirstBuyItem().getCount()));

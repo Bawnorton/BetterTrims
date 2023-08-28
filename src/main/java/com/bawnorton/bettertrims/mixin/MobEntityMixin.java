@@ -22,8 +22,10 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
     @SuppressWarnings("unused")
     @ModifyExpressionValue(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"))
     private int addFireFromTrim(int original) {
+        if(!ArmorTrimEffects.FIRE_CHARGE.appliesTo(betterTrims$getTrimmables())) return original;
+
         NumberWrapper duration = NumberWrapper.of(original);
-        ArmorTrimEffects.FIRE_CHARGE.apply(betterTrims$getTrimmables(), stack -> duration.increment(1));
+        ArmorTrimEffects.FIRE_CHARGE.apply(betterTrims$getTrimmables(), () -> duration.increment(1));
         return Math.max(original + duration.getInt(), Enchantments.FIRE_ASPECT.getMaxLevel() * 4);
     }
 }

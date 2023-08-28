@@ -42,6 +42,7 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect PRISMARINE_SHARD = of(Items.PRISMARINE_SHARD);
     public static final ArmorTrimEffect RABBIT_HIDE = of(Items.RABBIT_HIDE);
     public static final ArmorTrimEffect SLIME_BALL = of(Items.SLIME_BALL);
+    public static final ArmorTrimEffect ENCHANTED_GOLDEN_APPLE = of(Items.ENCHANTED_GOLDEN_APPLE);
 
     // modded materials
     public static final ArmorTrimEffect PLATINUM = of(new RegexIdentifier(".*", "platinum"));

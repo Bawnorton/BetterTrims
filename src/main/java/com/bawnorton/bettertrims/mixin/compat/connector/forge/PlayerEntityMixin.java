@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.connector.fabric;
+package com.bawnorton.bettertrims.mixin.compat.connector.forge;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.config.Config;
@@ -15,12 +15,13 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @SuppressWarnings("unused")
 @Mixin(PlayerEntity.class)
-@ConditionalMixin(modid = "connectormod", applyIfPresent = false)
+@ConditionalMixin(modid = "connectormod")
 public abstract class PlayerEntityMixin extends LivingEntityMixin {
-    @WrapOperation(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
+    @SuppressWarnings("MixinAnnotationTarget")
+    @WrapOperation(method = "getDigSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
     private float applyTrimMiningSpeedIncrease(PlayerInventory instance, BlockState block, Operation<Float> original) {
         NumberWrapper increase = NumberWrapper.of(original.call(instance, block));
-        ArmorTrimEffects.IRON.apply(betterTrims$getTrimmables(), stack -> {
+        ArmorTrimEffects.IRON.apply(betterTrims$getTrimmables(), () -> {
             if(instance.getMainHandStack().isSuitableFor(block)) {
                 increase.increment(Config.getInstance().ironMiningSpeedIncrease);
             }

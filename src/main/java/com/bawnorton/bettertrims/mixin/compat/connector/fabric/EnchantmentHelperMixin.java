@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.connector.fabric;
+package com.bawnorton.bettertrims.mixin.compat.connector.fabric;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;

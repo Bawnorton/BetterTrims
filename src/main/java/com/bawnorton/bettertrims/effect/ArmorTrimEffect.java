@@ -46,7 +46,7 @@ public class ArmorTrimEffect {
 
     public void apply(Iterable<ItemStack> armour, Effect effect) {
         for (ItemStack stack : armour) {
-            if (appliesTo(stack)) effect.applyEffect(stack);
+            if (appliesTo(stack)) effect.applyEffect();
         }
     }
 
@@ -56,6 +56,6 @@ public class ArmorTrimEffect {
 
     @FunctionalInterface
     public interface Effect {
-        void applyEffect(ItemStack stack);
+        void applyEffect();
     }
 }

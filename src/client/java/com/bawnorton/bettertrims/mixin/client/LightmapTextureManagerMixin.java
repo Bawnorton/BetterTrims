@@ -22,7 +22,7 @@ public abstract class LightmapTextureManagerMixin {
     private float modifyLight(float original) {
         NumberWrapper increase = NumberWrapper.zero();
         if(client.player instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), stack -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
+            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
         }
         return original + increase.getFloat();
     }
