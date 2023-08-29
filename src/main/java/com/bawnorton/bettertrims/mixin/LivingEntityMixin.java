@@ -114,12 +114,6 @@ public abstract class LivingEntityMixin extends EntityMixin {
         return original;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    @ModifyReturnValue(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("RETURN"))
-    protected boolean shouldTargetTrimmedPlayer(boolean original, LivingEntity target) {
-        return original;
-    }
-
     @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
     private Entity applyFireChargeTrim(Entity original) {
         if(!ArmorTrimEffects.FIRE_CHARGE.appliesTo(betterTrims$getTrimmables())) return original;

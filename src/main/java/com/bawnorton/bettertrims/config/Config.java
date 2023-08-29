@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 
 public class Config {
     private static Config INSTANCE;
+
     @Expose
     public Integer trimDurability;
     @Expose
@@ -86,7 +87,6 @@ public class Config {
     public static class SlimeBall {
         @Expose
         public Float fallDamageReduction;
-
         @Expose
         public Float knockbackIncrease;
     }

@@ -9,6 +9,8 @@
     "ElderGuardianEntityMixin",
     "EndermanEntityMixin",
     "EntityMixin",
+    "EscapeDanagerGoalMixin",
+    "FleeEntityGoalMixin",
     "GameEventDispatchManagerMixin",
     "ItemEntityMixin",
     "LivingEntityMixin",
@@ -21,12 +23,11 @@
     "StatusEffectInstanceMixin",
     "VillagerEntityMixin",
     "accessor.AbstractFurnaceBlockEntityAccessor",
+    "compat.IllagerEntityMixin",
     "compat.connector.fabric.EnchantmentHelperMixin",
     "compat.connector.fabric.PlayerEntityMixin",
     "compat.connector.forge.EnchantmentHelperMixin",
-    "compat.connector.forge.PlayerEntityMixin",
-    "compat.friendsandfoes.IceologerMixin",
-    "compat.illagerinvasion.IllagerEntityMixin"
+    "compat.connector.forge.PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

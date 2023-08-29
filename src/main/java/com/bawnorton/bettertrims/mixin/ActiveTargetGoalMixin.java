@@ -20,32 +20,32 @@ import java.util.function.Predicate;
 public abstract class ActiveTargetGoalMixin {
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/TargetPredicate;setPredicate(Ljava/util/function/Predicate;)Lnet/minecraft/entity/ai/TargetPredicate;"))
     private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local MobEntity mob) {
-        if(!(mob instanceof EntityExtender extender)) return predicate;
-
         if(mob instanceof IllagerEntity) {
-            return getTrimPredicate(predicate, extender, ArmorTrimEffects.PLATINUM);
+            return getTrimPredicate(predicate, ArmorTrimEffects.PLATINUM);
         }
         if(mob instanceof GuardianEntity) {
-            return getTrimPredicate(predicate, extender, ArmorTrimEffects.PRISMARINE_SHARD);
+            return getTrimPredicate(predicate, ArmorTrimEffects.PRISMARINE_SHARD);
         }
         if(mob instanceof BlazeEntity) {
-            return getTrimPredicate(predicate, extender, ArmorTrimEffects.NETHER_BRICK, 2);
+            return getTrimPredicate(predicate, ArmorTrimEffects.NETHER_BRICK);
         }
         if(mob instanceof WitherSkeletonEntity) {
-            return getTrimPredicate(predicate, extender, ArmorTrimEffects.NETHER_BRICK, 4);
+            return getTrimPredicate(predicate, ArmorTrimEffects.NETHER_BRICK, 2);
         }
         return predicate;
     }
 
     @Unique
-    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, EntityExtender extender, ArmorTrimEffect effect) {
-        return getTrimPredicate(original, extender, effect, 1);
+    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect) {
+        return getTrimPredicate(original, effect, 1);
     }
 
     @Unique
-    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, EntityExtender extender, ArmorTrimEffect effect, int required) {
-        NumberWrapper trimCount = NumberWrapper.zero();
-        effect.apply(extender.betterTrims$getTrimmables(), () -> trimCount.increment(1));
-        return target -> trimCount.getInt() < required && (original == null || original.test(target));
+    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect, int required) {
+        return target -> {
+            NumberWrapper trimCount = NumberWrapper.zero();
+            effect.apply(((EntityExtender) target).betterTrims$getTrimmables(), () -> trimCount.increment(1));
+            return trimCount.getInt() < required && (original == null || original.test(target));
+        };
     }
 }
