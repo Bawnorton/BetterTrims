@@ -45,6 +45,8 @@ public class Config {
     public SlimeBall slimeBallEffects;
     @Expose
     public Coal coalEffects;
+    @Expose
+    public EnderPearl enderPearlEffects;
 
     private Config() {
     }
@@ -98,5 +100,12 @@ public class Config {
         public Float playerDetectionRadius;
         @Expose
         public Integer furnaceSpeedMultiplier;
+    }
+
+    public static class EnderPearl {
+        @Expose
+        public Float dodgeChance;
+        @Expose
+        public Boolean waterDamagesUser;
     }
 }

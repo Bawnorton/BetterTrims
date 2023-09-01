@@ -4,6 +4,7 @@ import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
+import com.bawnorton.bettertrims.util.RandomHelper;
 import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -18,6 +19,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
@@ -36,17 +38,7 @@ import java.util.Map;
 @SuppressWarnings("unused")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
-    @Shadow public abstract AttributeContainer getAttributes();
-    @Shadow @Final private AttributeContainer attributes;
-    @Shadow protected abstract float modifyAppliedDamage(DamageSource source, float amount);
-    @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
-    @Shadow protected abstract void fall(double heightDifference, boolean onGround, BlockState state, BlockPos landedPosition);
-    @Shadow public abstract float getStepHeight();
-    @Shadow public abstract void remove(Entity.RemovalReason reason);
     @Shadow @Final private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
-    @Shadow public abstract ImmutableList<EntityPose> getPoses();
-    @Shadow protected abstract void onStatusEffectApplied(StatusEffectInstance effect, @Nullable Entity source);
-    @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
     @Shadow public abstract void setAbsorptionAmount(float amount);
     @Shadow public abstract float getAbsorptionAmount();
 
@@ -172,5 +164,24 @@ public abstract class LivingEntityMixin extends EntityMixin {
         if(getAbsorptionAmount() < absorptionAmount.getFloat()) {
             setAbsorptionAmount(absorptionAmount.getFloat());
         }
+    }
+
+    @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isDead()Z", ordinal = 0))
+    private boolean shouldDodge(boolean original, DamageSource source, float amount) {
+        if(original) return true;
+        if(!ArmorTrimEffects.ENDER_PEARL.appliesTo(betterTrims$getTrimmables())) return false;
+
+        NumberWrapper chance = NumberWrapper.zero();
+        ArmorTrimEffects.ENDER_PEARL.apply(betterTrims$getTrimmables(), () -> chance.increment(Config.getInstance().enderPearlEffects.dodgeChance));
+        if(chance.getFloat() > RandomHelper.nextFloat() || source.isIn(DamageTypeTags.IS_DROWNING)) {
+            betterTrims$randomTpEntity((LivingEntity) (Object) this);
+        }
+        return false;
+    }
+
+    @ModifyReturnValue(method = "hurtByWater", at = @At("RETURN"))
+    private boolean checkTrims(boolean original) {
+        if(original) return true;
+        return ArmorTrimEffects.ENDER_PEARL.appliesTo(betterTrims$getTrimmables());
     }
 }

@@ -39,6 +39,7 @@ public class ConfigManager {
         validateSilver(config);
         validateSlimeBall(config);
         validateCoal(config);
+        validateEnderPearl(config);
 
         Config.update(config);
         save();
@@ -94,6 +95,17 @@ public class ConfigManager {
         coal.disableEffectToReduceLag = validate(coal.disableEffectToReduceLag, false);
         coal.playerDetectionRadius = validate(coal.playerDetectionRadius, 5f);
         coal.furnaceSpeedMultiplier = validate(coal.furnaceSpeedMultiplier, 1);
+    }
+
+    private static void validateEnderPearl(Config config) {
+        Config.EnderPearl enderPearl = config.enderPearlEffects;
+        if(enderPearl == null) {
+            enderPearl = new Config.EnderPearl();
+            config.enderPearlEffects = enderPearl;
+        }
+
+        enderPearl.dodgeChance = validate(enderPearl.dodgeChance, 0.05f);
+        enderPearl.waterDamagesUser = validate(enderPearl.waterDamagesUser, true);
     }
 
     private static <T extends Number> T validate(T value, T defaultValue) {

@@ -36,7 +36,6 @@ public abstract class EntityMixin implements EntityExtender {
     @Shadow public abstract double getZ();
     @Shadow public abstract double getY();
     @Shadow public abstract double getX();
-    @Shadow public abstract Vec3d getPos();
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {
@@ -91,30 +90,28 @@ public abstract class EntityMixin implements EntityExtender {
      * Chorus fruit teleportation code
      */
     @Unique
-    private void betterTrims$randomTpEntity(LivingEntity entity) {
+    protected void betterTrims$randomTpEntity(LivingEntity entity) {
         World world = entity.getWorld();
-        if (!world.isClient) {
-            double x = entity.getX();
-            double y = entity.getY();
-            double z = entity.getZ();
+        if (world.isClient) return;
 
-            for(int i = 0; i < 16; ++i) {
-                double newX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * 16.0;
-                double newY = MathHelper.clamp(entity.getY() + (double)(entity.getRandom().nextInt(16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld)world).getLogicalHeight() - 1);
-                double newZ = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * 16.0;
-                if (entity.hasVehicle()) {
-                    entity.stopRiding();
-                }
+        double x = entity.getX();
+        double y = entity.getY();
+        double z = entity.getZ();
 
-                Vec3d vec3d = entity.getPos();
-                if (entity.teleport(newX, newY, newZ, true)) {
-                    world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
-                    SoundEvent soundEvent = entity instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
-                    world.playSound(null, x, y, z, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
-                    entity.playSound(soundEvent, 1.0F, 1.0F);
-                    break;
-                }
-            }
+        for(int i = 0; i < 16; ++i) {
+            double newX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
+            double newY = MathHelper.clamp(entity.getY() + (double)(entity.getRandom().nextInt((int) (float) 16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld)world).getLogicalHeight() - 1);
+            double newZ = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
+            if (entity.hasVehicle()) entity.stopRiding();
+
+            Vec3d vec3d = entity.getPos();
+            if (!entity.teleport(newX, newY, newZ, true)) continue;
+
+            world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
+            SoundEvent soundEvent = entity instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
+            world.playSound(null, x, y, z, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            entity.playSound(soundEvent, 1.0F, 1.0F);
+            break;
         }
     }
 }

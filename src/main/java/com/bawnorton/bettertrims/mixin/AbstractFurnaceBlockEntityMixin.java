@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@SuppressWarnings("unused")
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class AbstractFurnaceBlockEntityMixin {
     @SuppressWarnings("MixinAnnotationTarget") // shut up mcdev, you're clueless

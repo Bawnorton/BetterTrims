@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @SuppressWarnings("unused")
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin {
-    @Shadow @Final private static Logger LOGGER;
-
     @ModifyVariable(method = "addExperience", at = @At("HEAD"), argsOnly = true)
     private int applyTrimExperienceIncrease(int experience) {
         if (experience <= 0) return experience;
