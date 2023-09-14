@@ -10,5 +10,18 @@
   "effect.bettertrims.lapis.tooltip": "More Enchantable",
   "effect.bettertrims.amethyst.tooltip": "Stronger Potion Effects",
   "effect.bettertrims.platinum.tooltip": "Illagers Ignore You",
-  "effect.bettertrims.silver.tooltip": "Stronger at Night"
+  "effect.bettertrims.silver.tooltip": "Stronger at Night",
+  "effect.bettertrims.coal.tooltip": "Faster Furnances",
+  "effect.bettertrims.dragons_breath.tooltip": "Share Potion Effects",
+  "effect.bettertrims.chorus_fruit.tooltip": "Dodge End Attacks",
+  "effect.bettertrims.echo_shard.tooltip": "Harder to Detect",
+  "effect.bettertrims.fire_charge.tooltip": "Hot to the Touch",
+  "effect.bettertrims.ender_pearl.tooltip": "Dodge Attacks",
+  "effect.bettertrims.glowstone_dust.tooltip": "Stronger Potion Effects",
+  "effect.bettertrims.leather.tooltip": "Bigger Strides",
+  "effect.bettertrims.nether_brick.tooltip": "One with the Fortress",
+  "effect.bettertrims.prismarine_shard.tooltip": "Guardians Ignore You",
+  "effect.bettertrims.rabbit_hide.tooltip": "Animals do not Fear You",
+  "effect.bettertrims.slime_ball.tooltip": "Kinetic Absorper",
+  "effect.bettertrims.enchanted_golden_apple.toolip": "Gain Absorption Over Time"
 }

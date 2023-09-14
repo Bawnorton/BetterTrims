@@ -23,7 +23,7 @@ public class Wrapper<T> {
     public String toString() {
         if (value == null) return "null";
         return "Wrapper{" +
-                "value=" + value +
+                "type=" + value +
                 '}';
     }
 }

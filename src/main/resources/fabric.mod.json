@@ -19,10 +19,13 @@
 			"com.bawnorton.bettertrims.BetterTrims"
 		],
 		"client": [
-			"com.bawnorton.bettertrims.BetterTrimsClient"
+          "com.bawnorton.bettertrims.client.BetterTrimsClient"
 		],
 		"preLaunch": [
 			"com.bawnorton.bettertrims.BetterTrimsPreLaunch"
+		],
+		"modmenu": [
+			"com.bawnorton.bettertrims.client.impl.ModMenuApiImpl"
 		]
 	},
 	"mixins": [
@@ -37,8 +40,5 @@
 		"minecraft": "~1.20",
 		"java": ">=17",
 		"fabric-api": ">=0.83.0"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }

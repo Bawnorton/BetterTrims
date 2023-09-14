@@ -1,15 +1,13 @@
 {
   "required": true,
-  "package": "com.bawnorton.bettertrims.mixin.client",
+  "package": "com.bawnorton.bettertrims.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "BackgroundRendererMixin",
-    "LightmapTextureManagerMixin"
+    "LightmapTextureManagerMixin",
+    "ArmorTrimMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "ArmorTrimMixin"
-  ]
+  }
 }

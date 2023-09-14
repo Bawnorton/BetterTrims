@@ -157,6 +157,9 @@ public abstract class LivingEntityMixin extends EntityMixin {
             ticksUntilHeal.decrement(Config.getInstance().enchantedGoldenAppleEffects.absorptionDelayReduction);
             absorptionAmount.increment(Config.getInstance().enchantedGoldenAppleEffects.absorptionAmount);
         });
+        if(absorptionAmount.getFloat() > Config.getInstance().enchantedGoldenAppleEffects.maxAbsorption) {
+            absorptionAmount.set(Config.getInstance().enchantedGoldenAppleEffects.maxAbsorption);
+        }
         ticksUntilHeal.decrement(stopwatch);
         if (ticksUntilHeal.getInt() > 0) return;
 
@@ -182,6 +185,6 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @ModifyReturnValue(method = "hurtByWater", at = @At("RETURN"))
     private boolean checkTrims(boolean original) {
         if(original) return true;
-        return ArmorTrimEffects.ENDER_PEARL.appliesTo(betterTrims$getTrimmables());
+        return Config.getInstance().enderPearlEffects.waterDamagesUser && ArmorTrimEffects.ENDER_PEARL.appliesTo(betterTrims$getTrimmables());
     }
 }

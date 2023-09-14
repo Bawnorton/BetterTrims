@@ -1,6 +1,13 @@
 package com.bawnorton.bettertrims.config;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.config.option.ConfigOptionReference;
+import com.bawnorton.bettertrims.config.option.NestedConfigOption;
+import com.bawnorton.bettertrims.config.option.annotation.BooleanOption;
+import com.bawnorton.bettertrims.config.option.annotation.FloatOption;
+import com.bawnorton.bettertrims.config.option.annotation.IntOption;
+import com.bawnorton.bettertrims.config.option.annotation.NestedOption;
+import com.bawnorton.bettertrims.util.Reflection;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -18,102 +26,86 @@ public class ConfigManager {
     public static void loadConfig() {
         Config config = load();
 
-        config.trimDurability = validate(config.trimDurability, 1);
-        config.quartzExperienceBonus = validate(config.quartzExperienceBonus, 0.05f);
-        config.ironMiningSpeedIncrease = validate(config.ironMiningSpeedIncrease, 8f);
-        config.netheriteFireResistance = validate(config.netheriteFireResistance, 0.25f);
-        config.redstoneMovementSpeedIncrease = validate(config.redstoneMovementSpeedIncrease, 0.1f);
-        config.copperSwimSpeedIncrease = validate(config.copperSwimSpeedIncrease, 0.05f);
-        config.emeraldVillagerDiscount = validate(config.emeraldVillagerDiscount, 0.125f);
-        config.diamondDamageReduction = validate(config.diamondDamageReduction, 0.05f);
-        config.lapisEnchantability = validate(config.lapisEnchantability, 30);
-        config.amethystPotionDurationModifyChance = validate(config.amethystPotionDurationModifyChance, 0.0625f);
-        config.glowstonePotionAmplifierIncreaseChance = validate(config.glowstonePotionAmplifierIncreaseChance, 0.25f);
-        config.chorusFruitDodgeChance = validate(config.chorusFruitDodgeChance, 0.25f);
-        config.fireChargeFireDuration = validate(config.fireChargeFireDuration, 1f);
-        config.leatherStepHeightIncrease = validate(config.leatherStepHeightIncrease, 0.4f);
-        config.dragonBreathRadius = validate(config.dragonBreathRadius, 1.25f);
-        config.echoShardVibrationDistanceReduction = validate(config.echoShardVibrationDistanceReduction, 1.5f);
-
-        validateEnchantedGoldenApple(config);
-        validateSilver(config);
-        validateSlimeBall(config);
-        validateCoal(config);
-        validateEnderPearl(config);
+        validateFields(config);
 
         Config.update(config);
         save();
         BetterTrims.LOGGER.info("Loaded config");
     }
 
-    private static void validateEnchantedGoldenApple(Config config) {
-        Config.EnchantedGoldenApple enchantedGoldenApple = config.enchantedGoldenAppleEffects;
-        if(enchantedGoldenApple == null) {
-            enchantedGoldenApple = new Config.EnchantedGoldenApple();
-            config.enchantedGoldenAppleEffects = enchantedGoldenApple;
-        }
-
-        enchantedGoldenApple.absorptionDelay = validate(enchantedGoldenApple.absorptionDelay, 1200f);
-        enchantedGoldenApple.absorptionDelayReduction = validate(enchantedGoldenApple.absorptionDelayReduction, 250f);
-        enchantedGoldenApple.absorptionAmount = validate(enchantedGoldenApple.absorptionAmount, 2);
-        enchantedGoldenApple.maxAbsorption = validate(enchantedGoldenApple.maxAbsorption, 3);
+    private static void validateFields(Object instance) {
+        validateFloatFields(instance);
+        validateIntFields(instance);
+        validateBooleanFields(instance);
+        validateNestedFields(instance);
     }
 
-    private static void validateSilver(Config config) {
-        Config.Silver silver = config.silverNightBonus;
-        if(silver == null) {
-            silver = new Config.Silver();
-            config.silverNightBonus = silver;
-        }
-
-        silver.movementSpeed = validate(silver.movementSpeed, 0.05f);
-        silver.jumpHeight = validate(silver.jumpHeight, 0.05f);
-        silver.attackDamage = validate(silver.attackDamage, 0.5f);
-        silver.attackSpeed = validate(silver.attackSpeed, 0.3f);
-        silver.damageReduction = validate(silver.damageReduction, 0.03f);
-        silver.improveVision = validate(silver.improveVision, 0.25f);
+    private static void validateFloatFields(Object instance) {
+        Reflection.forEachFieldByAnnotation(instance, FloatOption.class, (field, annotation) -> {
+            validateFloatField(field, annotation.value());
+            ConfigOptionReference reference = ConfigOptionReference.of(field);
+            if(reference.floatValue() < annotation.min()) reference.floatValue(annotation.min());
+            if(reference.floatValue() > annotation.max()) reference.floatValue(annotation.max());
+        });
     }
 
-    private static void validateSlimeBall(Config config) {
-        Config.SlimeBall slimeBall = config.slimeBallEffects;
-        if(slimeBall == null) {
-            slimeBall = new Config.SlimeBall();
-            config.slimeBallEffects = slimeBall;
-        }
-
-        slimeBall.knockbackIncrease = validate(slimeBall.knockbackIncrease, 0.25f);
-        slimeBall.fallDamageReduction = validate(slimeBall.fallDamageReduction, 0.25f);
+    private static void validateIntFields(Object instance) {
+        Reflection.forEachFieldByAnnotation(instance, IntOption.class, (field, annotation) -> {
+            validateIntField(field, annotation.value());
+            ConfigOptionReference reference = ConfigOptionReference.of(field);
+            if(reference.intValue() < annotation.min()) reference.intValue(annotation.min());
+            if(reference.intValue() > annotation.max()) reference.intValue(annotation.max());
+        });
     }
 
-    private static void validateCoal(Config config) {
-        Config.Coal coal = config.coalEffects;
-        if(coal == null) {
-            coal = new Config.Coal();
-            config.coalEffects = coal;
-        }
-
-        coal.disableEffectToReduceLag = validate(coal.disableEffectToReduceLag, false);
-        coal.playerDetectionRadius = validate(coal.playerDetectionRadius, 5f);
-        coal.furnaceSpeedMultiplier = validate(coal.furnaceSpeedMultiplier, 1);
+    private static void validateBooleanFields(Object instance) {
+        Reflection.forEachFieldByAnnotation(instance, BooleanOption.class, (field, annotation) -> validateBooleanField(field, annotation.value()));
     }
 
-    private static void validateEnderPearl(Config config) {
-        Config.EnderPearl enderPearl = config.enderPearlEffects;
-        if(enderPearl == null) {
-            enderPearl = new Config.EnderPearl();
-            config.enderPearlEffects = enderPearl;
-        }
+    private static void validateNestedFields(Object instance) {
+        Reflection.forEachFieldByAnnotation(instance, NestedOption.class, (field, annotation) -> {
+            validateNestedField(field);
 
-        enderPearl.dodgeChance = validate(enderPearl.dodgeChance, 0.05f);
-        enderPearl.waterDamagesUser = validate(enderPearl.waterDamagesUser, true);
+            NestedConfigOption nestedOption = Reflection.accessField(field, instance, NestedConfigOption.class);
+            validateFields(nestedOption);
+        });
     }
 
-    private static <T extends Number> T validate(T value, T defaultValue) {
-        return value == null || value.floatValue() < 0 ? defaultValue : value;
+    private static void validateFloatField(Field field, Float fallback) {
+        Config instance = Config.getInstance();
+        if(Reflection.accessField(field, instance) != null) return;
+
+        Reflection.setField(field, instance, fallback);
     }
 
-    private static Boolean validate(Boolean value, Boolean defaultValue) {
-        return value == null ? defaultValue : value;
+    private static void validateIntField(Field field, Integer fallback) {
+        Config instance = Config.getInstance();
+        if(Reflection.accessField(field, instance) != null) return;
+
+        Reflection.setField(field, instance, fallback);
+    }
+
+    private static void validateBooleanField(Field field, Boolean fallback) {
+        Config instance = Config.getInstance();
+        if(Reflection.accessField(field, instance) != null) return;
+
+        Reflection.setField(field, instance, fallback);
+    }
+
+    private static void validateNestedField(Field field) {
+        Config instance = Config.getInstance();
+        if(Reflection.accessField(field, instance) != null) return;
+
+        Reflection.setField(field, instance, Reflection.newInstance(field.getType()));
+    }
+
+    public static String serializeConfig() {
+        return GSON.toJson(Config.getInstance());
+    }
+
+    public static void deserializeConfig(String serialized) {
+        Config.update(GSON.fromJson(serialized, Config.class));
+        save();
     }
 
     private static Config load() {
@@ -142,5 +134,10 @@ public class ConfigManager {
         } catch (IOException e) {
             BetterTrims.LOGGER.error("Failed to save config", e);
         }
+    }
+
+    public static void saveConfig() {
+        save();
+        BetterTrims.LOGGER.info("Saved config");
     }
 }

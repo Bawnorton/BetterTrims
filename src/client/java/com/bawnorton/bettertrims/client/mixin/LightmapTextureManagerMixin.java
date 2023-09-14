@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.client;
+package com.bawnorton.bettertrims.client.mixin;
 
 import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
