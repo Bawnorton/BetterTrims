@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims;
 
-import com.bawnorton.bettertrims.events.EventManager;
 import com.bawnorton.bettertrims.networking.Networking;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
@@ -15,7 +14,6 @@ public class BetterTrims implements ModInitializer {
     public void onInitialize() {
         LOGGER.debug("Initializing Better Trims");
         Networking.init();
-        EventManager.init();
     }
 
     public static Identifier id(String path) {
