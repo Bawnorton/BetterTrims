@@ -1,6 +1,7 @@
-package com.bawnorton.bettertrims.config.option;
+package com.bawnorton.bettertrims.config.option.reference;
 
-import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.config.option.NestedConfigOption;
+import com.bawnorton.bettertrims.config.option.OptionType;
 import com.bawnorton.bettertrims.config.option.annotation.BooleanOption;
 import com.bawnorton.bettertrims.config.option.annotation.FloatOption;
 import com.bawnorton.bettertrims.config.option.annotation.IntOption;
@@ -11,18 +12,38 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
-public final class ConfigOptionReference {
+public class ConfigOptionReference {
+    private final Object instance;
     private final Field field;
     private @NotNull Object value;
 
-    public ConfigOptionReference(Field field) {
+    protected ConfigOptionReference(Object instance, Field field) {
+        this.instance = instance;
         this.field = field;
-        this.value = Reflection.accessField(field, Config.getInstance());
+        this.value = Reflection.accessField(field, instance);
         if(value == null) throw new IllegalStateException("Value for " + field.getName() + " field is null.");
     }
 
-    public static ConfigOptionReference of(Field field) {
-        return new ConfigOptionReference(field);
+    public static ConfigOptionReference of(Object instance, Field field) {
+        return new ConfigOptionReference(instance, field);
+    }
+
+    private void validateType(Class<?> clazz) {
+        if (!clazz.isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException("Invalid type " + clazz.getName() + " for " + value.getClass().getName());
+        }
+    }
+
+    private  <T> void setConfigValue(T value) {
+        if (value == null) throw new IllegalArgumentException("Value cannot be null.");
+        validateType(value.getClass());
+        Reflection.setField(field, instance, value);
+        this.value = value;
+    }
+
+    private  <T> T getValueAsType(Class<T> clazz) {
+        validateType(clazz);
+        return clazz.cast(value);
     }
 
     public String getFormattedName() {
@@ -38,14 +59,6 @@ public final class ConfigOptionReference {
         return builder.toString();
     }
 
-    public Type getType() {
-        if (value instanceof Boolean) return Type.BOOLEAN;
-        if (value instanceof Integer) return Type.INTEGER;
-        if (value instanceof Float) return Type.FLOAT;
-        if (value instanceof NestedConfigOption) return Type.NESTED;
-        throw new IllegalArgumentException("Unknown optionType: " + value.getClass().getName());
-    }
-
     public boolean notOf(OptionType type) {
         return type != switch (getType()) {
             case BOOLEAN -> field.getAnnotation(BooleanOption.class).type();
@@ -55,15 +68,12 @@ public final class ConfigOptionReference {
         };
     }
 
-    private void validateType(Class<?> clazz) {
-        if (!clazz.isAssignableFrom(value.getClass())) throw new IllegalArgumentException("Expected type " + clazz.getName() + ", got " + value.getClass().getName());
+    public boolean isNested() {
+        return getType() == FieldType.NESTED;
     }
 
-    private <T> void setConfigValue(T value) {
-        if (value == null) throw new IllegalArgumentException("Value cannot be null.");
-        validateType(value.getClass());
-        Reflection.setField(field, Config.getInstance(), value);
-        this.value = value;
+    public FieldType getType() {
+        return FieldType.of(field.getType());
     }
 
     public void booleanValue(Boolean value) {
@@ -76,11 +86,6 @@ public final class ConfigOptionReference {
 
     public void floatValue(Float value) {
         setConfigValue(value);
-    }
-
-    private <T> T getValueAsType(Class<T> clazz) {
-        validateType(clazz);
-        return clazz.cast(value);
     }
 
     public Boolean booleanValue() {
@@ -99,7 +104,7 @@ public final class ConfigOptionReference {
         return getValueAsType(NestedConfigOption.class);
     }
 
-    public Number minValue() {
+    private Number minValue() {
         return switch (getType()) {
             case FLOAT -> field.getAnnotation(FloatOption.class).min();
             case INTEGER -> field.getAnnotation(IntOption.class).min();
@@ -107,7 +112,7 @@ public final class ConfigOptionReference {
         };
     }
 
-    public Number maxValue() {
+    private Number maxValue() {
         return switch (getType()) {
             case FLOAT -> field.getAnnotation(FloatOption.class).max();
             case INTEGER -> field.getAnnotation(IntOption.class).max();
@@ -146,14 +151,22 @@ public final class ConfigOptionReference {
 
     @Override
     public String toString() {
-        return "ConfigOptionReference[" +
+        return "DirectConfigOptionReference[" +
                 "field=" + field + ']';
     }
 
-    public enum Type {
+    public enum FieldType {
         BOOLEAN,
         INTEGER,
         FLOAT,
-        NESTED
+        NESTED;
+
+        public static FieldType of(Class<?> clazz) {
+            if (Boolean.class.isAssignableFrom(clazz)) return BOOLEAN;
+            if (Integer.class.isAssignableFrom(clazz)) return INTEGER;
+            if (Float.class.isAssignableFrom(clazz)) return FLOAT;
+            if (NestedConfigOption.class.isAssignableFrom(clazz)) return NESTED;
+            throw new IllegalArgumentException("Unknown type " + clazz.getName());
+        }
     }
 }

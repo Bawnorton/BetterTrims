@@ -52,7 +52,7 @@ public class Config {
     public Silver silverNightBonus;
     @Expose @NestedOption(type = OptionType.ADDED_VANILLA)
     public SlimeBall slimeBallEffects;
-    @Expose @NestedOption
+    @Expose @NestedOption(type = OptionType.ADDED_VANILLA)
     public Coal coalEffects;
     @Expose @NestedOption(type = OptionType.ADDED_VANILLA)
     public EnderPearl enderPearlEffects;

@@ -7,11 +7,11 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 
 public abstract class ClientNetworking {
     public static void init() {
-        ClientPlayNetworking.registerReceiver(Networking.CONFIG_SYNC, (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(Networking.CONFIG_SYNC, (client, handler, buf, responseSender) -> {
             String serialized = buf.readString();
             ConfigManager.deserializeConfig(serialized);
         });
-        ClientPlayNetworking.registerReceiver(Networking.CONFIG_OP_CHECK, (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(Networking.CONFIG_OP_CHECK, (client, handler, buf, responseSender) -> {
             boolean canSendConfig = buf.readBoolean();
             if (canSendConfig) sendConfigToServer();
         });

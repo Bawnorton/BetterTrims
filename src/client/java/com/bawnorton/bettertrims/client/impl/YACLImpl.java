@@ -4,10 +4,10 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
 import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.config.ConfigManager;
-import com.bawnorton.bettertrims.config.option.ConfigOptionReference;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
-import com.bawnorton.bettertrims.config.option.annotation.NestedOption;
+import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
+import com.bawnorton.bettertrims.config.option.reference.ParentedConfigOptionReference;
 import com.bawnorton.bettertrims.util.Reflection;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
@@ -61,10 +61,10 @@ public abstract class YACLImpl {
     private static Collection<? extends Option<?>> generateOptionsForType(OptionType type) {
         Collection<Option<?>> options = new HashSet<>();
         Reflection.forEachAnnotatedField(Config.getInstance(), field -> {
-            ConfigOptionReference reference = ConfigOptionReference.of(field);
+            ConfigOptionReference reference = ConfigOptionReference.of(Config.getInstance(), field);
             if(reference.notOf(type)) return;
 
-            if(field.isAnnotationPresent(NestedOption.class)) {
+            if(reference.isNested()) {
                 options.addAll(createNestedOptions(reference, type));
             } else {
                 options.add(createOption(reference));
@@ -74,16 +74,18 @@ public abstract class YACLImpl {
     }
 
     private static Collection<? extends Option<?>> createNestedOptions(ConfigOptionReference reference, OptionType type) {
+        if(!reference.isNested()) throw new IllegalArgumentException("Reference \"%s\" is not nested".formatted(reference.getFormattedName()));
+
         Collection<Option<?>> options = new ArrayList<>();
         NestedConfigOption instance = reference.nestedValue();
         Reflection.forEachAnnotatedField(instance, nestedField -> {
-            ConfigOptionReference nestedReference = ConfigOptionReference.of(nestedField);
-            if(nestedReference.notOf(type)) return;
+            ParentedConfigOptionReference parentedReference = ParentedConfigOptionReference.of(reference, instance, nestedField);
+            if(parentedReference.notOf(type)) return;
 
-            if(nestedField.isAnnotationPresent(NestedOption.class)) {
-                options.addAll(createNestedOptions(nestedReference, type));
+            if(parentedReference.isNested()) {
+                options.addAll(createNestedOptions(parentedReference, type));
             } else {
-                options.add(createOption(nestedReference));
+                options.add(createOption(parentedReference));
             }
         });
         return options;
@@ -94,7 +96,7 @@ public abstract class YACLImpl {
             case BOOLEAN -> booleanOption(reference);
             case INTEGER -> integerOption(reference);
             case FLOAT -> floatOption(reference);
-            case NESTED -> throw new IllegalArgumentException("Nested options should be handled by createNestedOptions");
+            case NESTED -> throw new IllegalArgumentException("Attempted to of non-nested option for nested reference \"%s\"".formatted(reference.getFormattedName()));
         };
     }
 
@@ -106,7 +108,8 @@ public abstract class YACLImpl {
                 .binding(Binding.generic(reference.floatValue(), reference::floatValue, reference::floatValue))
                 .controller(option -> FloatSliderControllerBuilder
                         .create(option)
-                        .range(reference.minFloatValue(), reference.maxFloatValue()))
+                        .range(reference.minFloatValue(), reference.maxFloatValue())
+                        .step(reference.maxFloatValue() / 100f))
                 .listener((option, value) -> reference.floatValue(value))
                 .build();
     }
@@ -130,32 +133,37 @@ public abstract class YACLImpl {
                 .binding(Binding.generic(reference.intValue(), reference::intValue, reference::intValue))
                 .controller(option -> IntegerSliderControllerBuilder
                         .create(option)
-                        .range(reference.minIntValue(), reference.maxIntValue()))
+                        .range(reference.minIntValue(), reference.maxIntValue())
+                        .step(Math.max(1, reference.maxIntValue() / 100)))
                 .listener((option, value) -> reference.intValue(value))
                 .build();
     }
 
     private static Text title(String path) {
-        return Text.translatable("%s.yacl.title.%s", BetterTrims.MOD_ID, path);
+        return yaclText("title", path);
     }
 
     private static Text category(String path) {
-        return Text.translatable("%s.yacl.category.%s", BetterTrims.MOD_ID, path);
+        return yaclText("category", path);
     }
 
     private static Text tooltip(String path) {
-        return Text.translatable("%s.yacl.tooltip.%s", BetterTrims.MOD_ID, path);
+        return yaclText("tooltip", path);
     }
 
     private static Text group(String path) {
-        return Text.translatable("%s.yacl.group.%s", BetterTrims.MOD_ID, path);
+        return yaclText("group", path);
     }
 
     private static Text description(String path) {
-        return Text.translatable("%s.yacl.description.%s", BetterTrims.MOD_ID, path);
+        return yaclText("description", path);
     }
 
     private static Text option(String path) {
-        return Text.translatable("%s.yacl.option.%s", BetterTrims.MOD_ID, path);
+        return yaclText("option", path);
+    }
+
+    private static Text yaclText(String type, String path) {
+        return Text.translatable("%s.yacl.%s.%s", BetterTrims.MOD_ID, type, path);
     }
 }

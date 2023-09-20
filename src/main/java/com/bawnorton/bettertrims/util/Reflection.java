@@ -17,7 +17,7 @@ public abstract class Reflection {
         forEachAnnotatedField(instance.getClass(), fieldConsumer);
     }
 
-    private static Stream<Field> streamFields(Class<?> clazz) {
+    public static Stream<Field> streamFields(Class<?> clazz) {
         return Stream.of(clazz.getDeclaredFields());
     }
 
@@ -30,7 +30,7 @@ public abstract class Reflection {
     }
 
     private static void forEachAnnotatedField(Class<?> clazz, Consumer<Field> fieldConsumer) {
-        streamFields(clazz).forEach(fieldConsumer);
+        streamFields(clazz).filter(field -> field.getAnnotations().length > 0).forEach(fieldConsumer);
     }
 
     public static Object accessField(Field field, Object instance) {

@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.config;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.config.option.ConfigOptionReference;
+import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.annotation.BooleanOption;
 import com.bawnorton.bettertrims.config.option.annotation.FloatOption;
@@ -42,8 +42,8 @@ public class ConfigManager {
 
     private static void validateFloatFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, FloatOption.class, (field, annotation) -> {
-            validateFloatField(field, annotation.value());
-            ConfigOptionReference reference = ConfigOptionReference.of(field);
+            validateFloatField(instance, field, annotation.value());
+            ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
             if(reference.floatValue() < annotation.min()) reference.floatValue(annotation.min());
             if(reference.floatValue() > annotation.max()) reference.floatValue(annotation.max());
         });
@@ -51,49 +51,45 @@ public class ConfigManager {
 
     private static void validateIntFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, IntOption.class, (field, annotation) -> {
-            validateIntField(field, annotation.value());
-            ConfigOptionReference reference = ConfigOptionReference.of(field);
+            validateIntField(instance, field, annotation.value());
+            ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
             if(reference.intValue() < annotation.min()) reference.intValue(annotation.min());
             if(reference.intValue() > annotation.max()) reference.intValue(annotation.max());
         });
     }
 
     private static void validateBooleanFields(Object instance) {
-        Reflection.forEachFieldByAnnotation(instance, BooleanOption.class, (field, annotation) -> validateBooleanField(field, annotation.value()));
+        Reflection.forEachFieldByAnnotation(instance, BooleanOption.class, (field, annotation) -> validateBooleanField(instance, field, annotation.value()));
     }
 
     private static void validateNestedFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, NestedOption.class, (field, annotation) -> {
-            validateNestedField(field);
+            validateNestedField(instance, field);
 
             NestedConfigOption nestedOption = Reflection.accessField(field, instance, NestedConfigOption.class);
             validateFields(nestedOption);
         });
     }
 
-    private static void validateFloatField(Field field, Float fallback) {
-        Config instance = Config.getInstance();
+    private static void validateFloatField(Object instance, Field field, Float fallback) {
         if(Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
-    private static void validateIntField(Field field, Integer fallback) {
-        Config instance = Config.getInstance();
+    private static void validateIntField(Object instance, Field field, Integer fallback) {
         if(Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
-    private static void validateBooleanField(Field field, Boolean fallback) {
-        Config instance = Config.getInstance();
+    private static void validateBooleanField(Object instance, Field field, Boolean fallback) {
         if(Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
-    private static void validateNestedField(Field field) {
-        Config instance = Config.getInstance();
+    private static void validateNestedField(Object instance, Field field) {
         if(Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, Reflection.newInstance(field.getType()));
