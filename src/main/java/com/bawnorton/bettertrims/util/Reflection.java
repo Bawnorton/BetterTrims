@@ -36,10 +36,9 @@ public abstract class Reflection {
     public static Object accessField(Field field, Object instance) {
         Object value;
         try {
-            if(field.canAccess(instance)) {
+            if (field.canAccess(instance)) {
                 value = field.get(instance);
-            }
-            else {
+            } else {
                 BetterTrims.LOGGER.warn("Field " + field.getName() + " was inaccessible, forcing access. This is unexpected.");
                 field.setAccessible(true);
                 value = field.get(instance);
@@ -57,10 +56,9 @@ public abstract class Reflection {
 
     public static void setField(Field field, Object instance, Object value) {
         try {
-            if(field.canAccess(instance)) {
+            if (field.canAccess(instance)) {
                 field.set(instance, value);
-            }
-            else {
+            } else {
                 BetterTrims.LOGGER.warn("Field " + field.getName() + " was inaccessible, forcing access. This is unexpected.");
                 field.setAccessible(true);
                 field.set(instance, value);

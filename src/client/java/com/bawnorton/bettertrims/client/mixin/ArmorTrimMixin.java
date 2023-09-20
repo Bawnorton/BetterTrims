@@ -18,6 +18,12 @@ import java.util.List;
 public abstract class ArmorTrimMixin {
     @Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2, shift = At.Shift.AFTER))
     private static void addEffectTooltip(ItemStack stack, DynamicRegistryManager registryManager, List<Text> tooltip, CallbackInfo ci, @Local ArmorTrim trim) {
-        ArmorTrimEffects.forEachAppliedEffect(stack, effect -> tooltip.add(ScreenTexts.space().append(effect.getTooltip().copy().fillStyle(trim.getMaterial().value().description().getStyle()))));
+        ArmorTrimEffects.forEachAppliedEffect(stack, effect -> tooltip.add(ScreenTexts.space()
+                                                                                   .append(effect.getTooltip()
+                                                                                                   .copy()
+                                                                                                   .fillStyle(trim.getMaterial()
+                                                                                                                      .value()
+                                                                                                                      .description()
+                                                                                                                      .getStyle()))));
     }
 }

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 public abstract class EndermanEntityMixin extends MobEntityMixin {
     @Override
     protected boolean shouldHit(Entity instance, DamageSource source, float amount, Operation<Boolean> original) {
-        if(didDodgeAttack(instance)) return false;
+        if (didDodgeAttack(instance)) return false;
         return super.shouldHit(instance, source, amount, original);
     }
 }

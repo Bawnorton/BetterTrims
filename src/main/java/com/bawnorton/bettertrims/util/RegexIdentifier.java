@@ -12,6 +12,7 @@ public record RegexIdentifier(String namespace, String path) {
 
     public boolean matches(@Nullable Identifier other) {
         if (other == null) return false;
+
         return matches(other.getNamespace(), other.getPath());
     }
 
@@ -27,14 +28,12 @@ public record RegexIdentifier(String namespace, String path) {
     }
 
     private boolean matchesNamespace(String namespace) {
-        compiledPatterns.putIfAbsent(this.namespace(), Pattern.compile(this.namespace()));
-        Pattern pattern = compiledPatterns.get(this.namespace());
+        Pattern pattern = compiledPatterns.computeIfAbsent(this.namespace(), Pattern::compile);
         return pattern.matcher(namespace).matches();
     }
 
     private boolean matchesPath(String path) {
-        compiledPatterns.putIfAbsent(this.path(), Pattern.compile(this.path()));
-        Pattern pattern = compiledPatterns.get(this.path());
+        Pattern pattern = compiledPatterns.computeIfAbsent(this.path(), Pattern::compile);
         return pattern.matcher(path).matches();
     }
 }

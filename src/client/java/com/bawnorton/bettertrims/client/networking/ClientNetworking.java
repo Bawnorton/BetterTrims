@@ -4,16 +4,30 @@ import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.networking.Networking;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.toast.SystemToast;
+import net.minecraft.client.toast.ToastManager;
+import net.minecraft.text.Text;
 
 public abstract class ClientNetworking {
+    private static boolean isConnectedToDedicated = false;
+
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(Networking.CONFIG_SYNC, (client, handler, buf, responseSender) -> {
+            isConnectedToDedicated = buf.readBoolean();
             String serialized = buf.readString();
             ConfigManager.deserializeConfig(serialized);
         });
+
         ClientPlayNetworking.registerGlobalReceiver(Networking.CONFIG_OP_CHECK, (client, handler, buf, responseSender) -> {
             boolean canSendConfig = buf.readBoolean();
-            if (canSendConfig) sendConfigToServer();
+            if (canSendConfig) {
+                sendConfigToServer();
+                return;
+            }
+
+            ToastManager toastManager = client.getToastManager();
+            toastManager.add(SystemToast.create(client, SystemToast.Type.WORLD_ACCESS_FAILURE, Text.translatable("bettertrims.config_not_synced.title"), Text.translatable("bettertrims.config_not_synced.desc")));
+            requestConfigFromServer();
         });
     }
 
@@ -26,6 +40,15 @@ public abstract class ClientNetworking {
     }
 
     public static void sendConfigToServer() {
-        ClientPlayNetworking.send(Networking.CONFIG_SYNC, PacketByteBufs.create().writeString(ConfigManager.serializeConfig()));
+        ClientPlayNetworking.send(Networking.CONFIG_SYNC, PacketByteBufs.create()
+                .writeString(ConfigManager.serializeConfig()));
+    }
+
+    private static void requestConfigFromServer() {
+        sendHandshake();
+    }
+
+    public static boolean isConnectedToDedicated() {
+        return isConnectedToDedicated;
     }
 }

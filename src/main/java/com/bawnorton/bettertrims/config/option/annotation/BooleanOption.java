@@ -11,5 +11,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface BooleanOption {
     OptionType type() default OptionType.VANILLA;
+
     boolean value();
 }

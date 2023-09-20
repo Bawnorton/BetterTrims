@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConditionalMixin {
-    String modid();
-
-    boolean applyIfPresent() default true;
+public @interface MultiConditionMixin {
+    ConditionalMixin[] conditions();
 }

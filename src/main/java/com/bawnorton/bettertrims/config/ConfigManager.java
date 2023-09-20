@@ -1,12 +1,13 @@
 package com.bawnorton.bettertrims.config;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.annotation.BooleanOption;
 import com.bawnorton.bettertrims.config.option.annotation.FloatOption;
 import com.bawnorton.bettertrims.config.option.annotation.IntOption;
 import com.bawnorton.bettertrims.config.option.annotation.NestedOption;
+import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
+import com.bawnorton.bettertrims.networking.Networking;
 import com.bawnorton.bettertrims.util.Reflection;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -19,18 +20,41 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ConfigManager {
-    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create();
-    private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve(BetterTrims.MOD_ID + ".json");
+public abstract class ConfigManager {
+    private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setPrettyPrinting()
+            .create();
+    private static final Path localConfigPath = FabricLoader.getInstance()
+            .getConfigDir()
+            .resolve(BetterTrims.MOD_ID + ".json");
+    private static final Path serverConfigPath = FabricLoader.getInstance()
+            .getConfigDir()
+            .resolve(BetterTrims.MOD_ID + "-server.json");
 
-    public static void loadConfig() {
-        Config config = load();
+    public static Config getConfig() {
+        if (Networking.isDedicated()) return Config.getServerInstance();
+        return Config.getLocalInstance();
+    }
 
+    public static void loadConfigs() {
+        loadLocalConfig();
+        loadServerConfig();
+    }
+
+    private static void loadLocalConfig() {
+        Config config = loadLocal();
         validateFields(config);
+        Config.updateLocal(config);
+        saveLocalConfig();
+        BetterTrims.LOGGER.info("Loaded local config");
+    }
 
-        Config.update(config);
-        save();
-        BetterTrims.LOGGER.info("Loaded config");
+    private static void loadServerConfig() {
+        Config config = loadServer();
+        validateFields(config);
+        Config.updateServer(config);
+        saveServerConfig();
+        BetterTrims.LOGGER.info("Loaded server config");
     }
 
     private static void validateFields(Object instance) {
@@ -44,8 +68,8 @@ public class ConfigManager {
         Reflection.forEachFieldByAnnotation(instance, FloatOption.class, (field, annotation) -> {
             validateFloatField(instance, field, annotation.value());
             ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
-            if(reference.floatValue() < annotation.min()) reference.floatValue(annotation.min());
-            if(reference.floatValue() > annotation.max()) reference.floatValue(annotation.max());
+            if (reference.floatValue() < annotation.min()) reference.floatValue(annotation.min());
+            if (reference.floatValue() > annotation.max()) reference.floatValue(annotation.max());
         });
     }
 
@@ -53,8 +77,8 @@ public class ConfigManager {
         Reflection.forEachFieldByAnnotation(instance, IntOption.class, (field, annotation) -> {
             validateIntField(instance, field, annotation.value());
             ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
-            if(reference.intValue() < annotation.min()) reference.intValue(annotation.min());
-            if(reference.intValue() > annotation.max()) reference.intValue(annotation.max());
+            if (reference.intValue() < annotation.min()) reference.intValue(annotation.min());
+            if (reference.intValue() > annotation.max()) reference.intValue(annotation.max());
         });
     }
 
@@ -72,68 +96,84 @@ public class ConfigManager {
     }
 
     private static void validateFloatField(Object instance, Field field, Float fallback) {
-        if(Reflection.accessField(field, instance) != null) return;
+        if (Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
     private static void validateIntField(Object instance, Field field, Integer fallback) {
-        if(Reflection.accessField(field, instance) != null) return;
+        if (Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
     private static void validateBooleanField(Object instance, Field field, Boolean fallback) {
-        if(Reflection.accessField(field, instance) != null) return;
+        if (Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, fallback);
     }
 
     private static void validateNestedField(Object instance, Field field) {
-        if(Reflection.accessField(field, instance) != null) return;
+        if (Reflection.accessField(field, instance) != null) return;
 
         Reflection.setField(field, instance, Reflection.newInstance(field.getType()));
     }
 
     public static String serializeConfig() {
-        return GSON.toJson(Config.getInstance());
+        return GSON.toJson(Config.getServerInstance());
     }
 
     public static void deserializeConfig(String serialized) {
-        Config.update(GSON.fromJson(serialized, Config.class));
-        save();
+        Config.updateServer(GSON.fromJson(serialized, Config.class));
+        saveServerConfig();
     }
 
-    private static Config load() {
-        Config config = Config.getInstance();
+    private static Config loadLocal() {
+        Config loaded = load(Config.getLocalInstance(), localConfigPath);
+        if (loaded == null) return Config.getLocalInstance();
+
+        return loaded;
+    }
+
+    private static Config loadServer() {
+        Config loaded = load(Config.getServerInstance(), serverConfigPath);
+        if (loaded == null) return Config.getServerInstance();
+
+        return loaded;
+    }
+
+    private static Config load(Config config, Path path) {
         try {
-            if (!Files.exists(configPath)) {
-                Files.createDirectories(configPath.getParent());
-                Files.createFile(configPath);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
                 return config;
             }
             try {
-                config = GSON.fromJson(Files.newBufferedReader(configPath), Config.class);
+                config = GSON.fromJson(Files.newBufferedReader(path), Config.class);
             } catch (JsonSyntaxException e) {
                 BetterTrims.LOGGER.error("Failed to parse config file, using default config");
-                config = Config.getInstance();
+                return null;
             }
         } catch (IOException e) {
             BetterTrims.LOGGER.error("Failed to load config", e);
         }
-        return config == null ? Config.getInstance() : config;
+        return config;
     }
 
-    private static void save() {
+    public static void saveLocalConfig() {
+        save(Config.getLocalInstance(), localConfigPath);
+    }
+
+    public static void saveServerConfig() {
+        save(Config.getServerInstance(), serverConfigPath);
+    }
+
+    private static void save(Config config, Path path) {
         try {
-            Files.write(configPath, GSON.toJson(Config.getInstance()).getBytes());
+            Files.write(path, GSON.toJson(config).getBytes());
         } catch (IOException e) {
             BetterTrims.LOGGER.error("Failed to save config", e);
         }
-    }
-
-    public static void saveConfig() {
-        save();
-        BetterTrims.LOGGER.info("Saved config");
     }
 }

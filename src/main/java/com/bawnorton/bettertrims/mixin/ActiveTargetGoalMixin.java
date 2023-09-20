@@ -14,25 +14,23 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 @Mixin(ActiveTargetGoal.class)
 public abstract class ActiveTargetGoalMixin {
+    @Unique
+    private final Map<Class<? extends LivingEntity>, Function<Predicate<LivingEntity>, Predicate<LivingEntity>>> trimPredicates = Map.ofEntries(
+            Map.entry(IllagerEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PLATINUM)),
+            Map.entry(GuardianEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PRISMARINE_SHARD)),
+            Map.entry(BlazeEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK)),
+            Map.entry(WitherSkeletonEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK, 2))
+    );
+
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/TargetPredicate;setPredicate(Ljava/util/function/Predicate;)Lnet/minecraft/entity/ai/TargetPredicate;"))
     private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local MobEntity mob) {
-        if(mob instanceof IllagerEntity) {
-            return getTrimPredicate(predicate, ArmorTrimEffects.PLATINUM);
-        }
-        if(mob instanceof GuardianEntity) {
-            return getTrimPredicate(predicate, ArmorTrimEffects.PRISMARINE_SHARD);
-        }
-        if(mob instanceof BlazeEntity) {
-            return getTrimPredicate(predicate, ArmorTrimEffects.NETHER_BRICK);
-        }
-        if(mob instanceof WitherSkeletonEntity) {
-            return getTrimPredicate(predicate, ArmorTrimEffects.NETHER_BRICK, 2);
-        }
-        return predicate;
+        return trimPredicates.getOrDefault(mob.getClass(), Function.identity()).apply(predicate);
     }
 
     @Unique

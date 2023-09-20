@@ -16,30 +16,18 @@ import java.util.List;
 import java.util.Set;
 
 public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
-    @Override
-    public void onLoad(String mixinPackage) {
-    }
-
-    @Override
-    public String getRefMapperConfig() {
-        return null;
-    }
-
-    @Override
-    public boolean shouldApplyMixin(String targetName, String className) {
-        return testClass(className);
-    }
-
     public static boolean testClass(String className) {
         try {
-            List<AnnotationNode> annotationNodes = MixinService.getService().getBytecodeProvider().getClassNode(className).visibleAnnotations;
-            if(annotationNodes == null) return true;
+            List<AnnotationNode> annotationNodes = MixinService.getService()
+                    .getBytecodeProvider()
+                    .getClassNode(className).visibleAnnotations;
+            if (annotationNodes == null) return true;
 
-            for(AnnotationNode node: annotationNodes) {
-                if(node.desc.equals(Type.getDescriptor(ConditionalMixin.class))) {
+            for (AnnotationNode node : annotationNodes) {
+                if (node.desc.equals(Type.getDescriptor(ConditionalMixin.class))) {
                     String modid = Annotations.getValue(node, "modid");
                     boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
-                    if(isModLoaded(modid)) {
+                    if (isModLoaded(modid)) {
                         BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
                         return applyIfPresent;
                     } else {
@@ -50,22 +38,22 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
                     List<AnnotationNode> conditions = Annotations.getValue(node, "conditions");
                     boolean shouldApply = true;
                     BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is being tested for multiple conditions");
-                    for(AnnotationNode condition: conditions) {
+                    for (AnnotationNode condition : conditions) {
                         String modid = Annotations.getValue(condition, "modid");
                         boolean applyIfPresent = Annotations.getValue(condition, "applyIfPresent", Boolean.TRUE);
-                        if(isModLoaded(modid)) {
-                            if(!applyIfPresent) {
+                        if (isModLoaded(modid)) {
+                            if (!applyIfPresent) {
                                 BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is not being applied because " + modid + " is loaded");
                                 shouldApply = false;
                             }
                         } else {
-                            if(applyIfPresent) {
+                            if (applyIfPresent) {
                                 BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is not being applied because " + modid + " is not loaded");
                                 shouldApply = false;
                             }
                         }
                     }
-                    if(shouldApply) {
+                    if (shouldApply) {
                         BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is being applied because all conditions are met");
                         return true;
                     } else {
@@ -79,6 +67,24 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
             return false;
         }
         return true;
+    }
+
+    public static boolean isModLoaded(String modid) {
+        return FabricLoader.getInstance().isModLoaded(modid);
+    }
+
+    @Override
+    public void onLoad(String mixinPackage) {
+    }
+
+    @Override
+    public String getRefMapperConfig() {
+        return null;
+    }
+
+    @Override
+    public boolean shouldApplyMixin(String targetName, String className) {
+        return testClass(className);
     }
 
     @Override
@@ -99,9 +105,5 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 
-    }
-
-    public static boolean isModLoaded(String modid) {
-        return FabricLoader.getInstance().isModLoaded(modid);
     }
 }

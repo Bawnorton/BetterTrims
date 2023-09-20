@@ -12,13 +12,15 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EscapeDangerGoal.class)
 public abstract class EscapeDanagerGoalMixin {
-    @Shadow @Final protected PathAwareEntity mob;
+    @Shadow
+    @Final
+    protected PathAwareEntity mob;
 
     @SuppressWarnings("unused")
     @ModifyReturnValue(method = "isInDanger", at = @At("RETURN"))
     private boolean checkPlayerTrims(boolean original) {
         if (!original) return false;
-        if(!(mob.getAttacker() instanceof EntityExtender extender)) return true;
+        if (!(mob.getAttacker() instanceof EntityExtender extender)) return true;
 
         return !ArmorTrimEffects.RABBIT_HIDE.appliesTo(extender.betterTrims$getTrimmables());
     }

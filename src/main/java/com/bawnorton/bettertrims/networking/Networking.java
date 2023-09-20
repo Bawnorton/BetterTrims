@@ -13,6 +13,7 @@ public abstract class Networking {
     public static final Identifier CONFIG_OP_CHECK = BetterTrims.id("config_op_check");
     public static final Identifier CONFIG_SYNC = BetterTrims.id("config_sync");
     public static final Identifier HANDSHAKE = BetterTrims.id("handshake");
+    private static MinecraftServer server;
 
     public static void init() {
         ServerPlayNetworking.registerGlobalReceiver(HANDSHAKE, (server, player, handler, buf, responseSender) -> sendConfigToPlayer(player));
@@ -34,7 +35,17 @@ public abstract class Networking {
     private static void sendConfigToPlayer(ServerPlayerEntity player) {
         String serialized = ConfigManager.serializeConfig();
         PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeBoolean(Networking.isDedicated());
         buf.writeString(serialized);
         ServerPlayNetworking.send(player, CONFIG_SYNC, buf);
+    }
+
+    public static void setServer(MinecraftServer server) {
+        Networking.server = server;
+    }
+
+    public static boolean isDedicated() {
+        if (server == null) return false;
+        return server.isDedicated();
     }
 }

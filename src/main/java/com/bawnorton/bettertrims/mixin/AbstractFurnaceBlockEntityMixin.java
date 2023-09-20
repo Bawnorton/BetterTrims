@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.mixin.accessor.AbstractFurnaceBlockEntityAccessor;
@@ -23,18 +23,14 @@ import java.util.Collection;
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class AbstractFurnaceBlockEntityMixin {
     @SuppressWarnings("MixinAnnotationTarget") // shut up mcdev, you're clueless
-    @ModifyExpressionValue(method = "tick", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, ordinal = 0), slice =
-        @Slice(from = @At(value = "INVOKE", target = "net/minecraft/block/entity/AbstractFurnaceBlockEntity.canAcceptRecipeOutput(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/recipe/Recipe;Lnet/minecraft/util/collection/DefaultedList;I)Z", ordinal = 1))
-    )
+    @ModifyExpressionValue(method = "tick", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "net/minecraft/block/entity/AbstractFurnaceBlockEntity.canAcceptRecipeOutput(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/recipe/Recipe;Lnet/minecraft/util/collection/DefaultedList;I)Z", ordinal = 1)))
     private static int increaseCookTime(int original, World world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
-        if(Config.getInstance().coalEffects.disableEffectToReduceLag) return original;
+        if (ConfigManager.getConfig().coalEffects.disableEffectToReduceLag) return original;
 
-        boolean nearbyCoalTrim = world
-                .getEntitiesByClass(PlayerEntity.class, state
-                        .getCollisionShape(world, pos)
+        boolean nearbyCoalTrim = world.getEntitiesByClass(PlayerEntity.class, state.getCollisionShape(world, pos)
                         .getBoundingBox()
                         .offset(pos)
-                        .expand(Config.getInstance().coalEffects.playerDetectionRadius), player -> true)
+                        .expand(ConfigManager.getConfig().coalEffects.playerDetectionRadius), player -> true)
                 .stream()
                 .map(player -> ((EntityExtender) player).betterTrims$getTrimmables())
                 .flatMap(iterable -> {
@@ -48,7 +44,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
                 .isPresent();
 
         if (nearbyCoalTrim) {
-            return Math.min(original + Config.getInstance().coalEffects.furnaceSpeedMultiplier, ((AbstractFurnaceBlockEntityAccessor) blockEntity).getCookTimeTotal() - 1);
+            return Math.min(original + ConfigManager.getConfig().coalEffects.furnaceSpeedMultiplier, ((AbstractFurnaceBlockEntityAccessor) blockEntity).getCookTimeTotal() - 1);
         }
         return original;
     }

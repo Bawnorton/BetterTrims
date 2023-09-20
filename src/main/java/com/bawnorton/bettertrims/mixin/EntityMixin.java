@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
@@ -17,6 +17,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.event.GameEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,46 +31,65 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityExtender {
-    @Shadow public abstract Iterable<ItemStack> getArmorItems();
-    @Shadow public abstract Iterable<ItemStack> getHandItems();
-    @Shadow public abstract World getWorld();
-    @Shadow public abstract double getZ();
-    @Shadow public abstract double getY();
-    @Shadow public abstract double getX();
+    @Shadow
+    public abstract Iterable<ItemStack> getArmorItems();
+
+    @Shadow
+    public abstract Iterable<ItemStack> getHandItems();
+
+    @Shadow
+    public abstract World getWorld();
+
+    @Shadow
+    public abstract double getZ();
+
+    @Shadow
+    public abstract double getY();
+
+    @Shadow
+    public abstract double getX();
+
+    @Shadow
+    public abstract float distanceTo(Entity entity);
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {
         NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
         return original || netheriteCount.getFloat() >= 0.99f;
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private float reduceNetheriteTrimDamage(float original) {
         NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(Config.getInstance().netheriteFireResistance));
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
         return original * (1 - netheriteCount.getFloat());
     }
 
     @ModifyReturnValue(method = "getStepHeight", at = @At("RETURN"))
     private float applyTrimStepHeightIncrease(float original) {
         NumberWrapper increase = NumberWrapper.zero();
-        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().leatherStepHeightIncrease));
+        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().leatherStepHeightIncrease));
         return original + increase.getFloat();
     }
 
     @Unique
     public List<ItemStack> betterTrims$getTrimmables() {
         List<ItemStack> equipped = new ArrayList<>();
-        for(ItemStack stack: getHandItems()) equipped.add(stack);
+        for (ItemStack stack : getHandItems()) equipped.add(stack);
         equipped.removeIf(stack -> stack.getItem() instanceof ArmorItem);
-        for(ItemStack stack: getArmorItems()) equipped.add(stack);
+        for (ItemStack stack : getArmorItems()) equipped.add(stack);
         equipped.removeIf(ItemStack::isEmpty);
         return equipped;
     }
 
     @Unique
     public boolean betterTrims$shouldSilverApply() {
+        DimensionType dimension = getWorld().getDimension();
+        if (dimension.hasFixedTime()) {
+            return dimension.ambientLight() <= 7f;
+        }
+
         long time = getWorld().getTimeOfDay() % 24000;
         return time >= 13000 && time <= 23000;
     }
@@ -77,8 +97,8 @@ public abstract class EntityMixin implements EntityExtender {
     @Unique
     protected boolean didDodgeAttack(Entity entity) {
         NumberWrapper dodgeChance = NumberWrapper.zero();
-        ArmorTrimEffects.CHORUS_FRUIT.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> dodgeChance.increment(Config.getInstance().chorusFruitDodgeChance));
-        if(Math.random() > dodgeChance.getFloat()) {
+        ArmorTrimEffects.CHORUS_FRUIT.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> dodgeChance.increment(ConfigManager.getConfig().chorusFruitDodgeChance));
+        if (Math.random() > dodgeChance.getFloat()) {
             return false;
         } else if (entity instanceof LivingEntity livingEntity) {
             betterTrims$randomTpEntity(livingEntity);
@@ -98,9 +118,10 @@ public abstract class EntityMixin implements EntityExtender {
         double y = entity.getY();
         double z = entity.getZ();
 
-        for(int i = 0; i < 16; ++i) {
+        for (int i = 0; i < 16; ++i) {
             double newX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
-            double newY = MathHelper.clamp(entity.getY() + (double)(entity.getRandom().nextInt((int) (float) 16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld)world).getLogicalHeight() - 1);
+            double newY = MathHelper.clamp(entity.getY() + (double) (entity.getRandom()
+                    .nextInt((int) (float) 16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld) world).getLogicalHeight() - 1);
             double newZ = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
             if (entity.hasVehicle()) entity.stopRiding();
 

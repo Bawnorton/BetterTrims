@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ElderGuardianEntityMixin {
     @Inject(method = "method_7011", at = @At("HEAD"), cancellable = true)
     private void cancelElderGuardianEffectOnTrimmedPlayers(ServerPlayerEntity player, CallbackInfo ci) {
-        if(player instanceof EntityExtender extender) {
+        if (player instanceof EntityExtender extender) {
             NumberWrapper count = NumberWrapper.zero();
             ArmorTrimEffects.PRISMARINE_SHARD.apply(extender.betterTrims$getTrimmables(), () -> count.increment(1));
-            if(count.getInt() >= 4) {
+            if (count.getInt() >= 4) {
                 player.removeStatusEffect(StatusEffects.MINING_FATIGUE);
                 ci.cancel();
             }

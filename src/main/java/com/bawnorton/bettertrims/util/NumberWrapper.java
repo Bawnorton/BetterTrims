@@ -1,16 +1,16 @@
 package com.bawnorton.bettertrims.util;
 
 public class NumberWrapper extends Wrapper<Number> {
+    protected NumberWrapper(Number value) {
+        super(value);
+    }
+
     public static NumberWrapper zero() {
         return of(0);
     }
 
     public static NumberWrapper one() {
         return of(1);
-    }
-
-    protected NumberWrapper(Number value) {
-        super(value);
     }
 
     public static NumberWrapper of(Number value) {

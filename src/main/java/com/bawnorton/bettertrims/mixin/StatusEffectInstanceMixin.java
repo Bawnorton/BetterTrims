@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.extend.StatusEffectInstanceExtender;
@@ -23,12 +23,22 @@ import java.util.Optional;
 
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceExtender {
-    @Shadow @Final private StatusEffect type;
-    @Shadow private int duration;
-    @Shadow private int amplifier;
+    @Unique
+    private static final ThreadLocal<Boolean> firstUpdateThreadLocal = ThreadLocal.withInitial(() -> false);
+    @Shadow
+    @Final
+    private StatusEffect type;
+    @Shadow
+    private int duration;
+    @Shadow
+    private int amplifier;
+    @Unique
+    private boolean hadFirstUpdate;
 
-    @Unique private boolean hadFirstUpdate;
-    @Unique private static final ThreadLocal<Boolean> firstUpdateThreadLocal = ThreadLocal.withInitial(() -> false);
+    @Inject(method = "fromNbt(Lnet/minecraft/entity/effect/StatusEffect;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/effect/StatusEffectInstance;", at = @At("HEAD"))
+    private static void readAdditionalNbt(StatusEffect type, NbtCompound nbt, CallbackInfoReturnable<StatusEffectInstance> cir) {
+        firstUpdateThreadLocal.set(nbt.getBoolean("HadFirstUpdate"));
+    }
 
     @Inject(method = "<init>(Lnet/minecraft/entity/effect/StatusEffect;IIZZZLnet/minecraft/entity/effect/StatusEffectInstance;Ljava/util/Optional;)V", at = @At("RETURN"))
     private void init(StatusEffect type, int duration, int amplifier, boolean ambient, boolean showParticles, boolean showIcon, StatusEffectInstance hiddenEffect, Optional factorCalculationData, CallbackInfo ci) {
@@ -48,29 +58,24 @@ public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceE
 
     @Inject(method = "update", at = @At("HEAD"))
     private void applyGlowstoneUpgrade(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
-        if (!hadFirstUpdate) {
-            hadFirstUpdate = true;
-            NumberWrapper chance = NumberWrapper.zero();
-            ArmorTrimEffects.GLOWSTONE_DUST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> chance.increment(Config.getInstance().glowstonePotionAmplifierIncreaseChance));
-            if (RandomHelper.nextFloat() < chance.getFloat()) this.amplifier += type.isBeneficial() ? 1 : 0;
-        }
+        if (hadFirstUpdate) return;
+
+        hadFirstUpdate = true;
+        NumberWrapper chance = NumberWrapper.zero();
+        ArmorTrimEffects.GLOWSTONE_DUST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().glowstonePotionAmplifierIncreaseChance));
+        if (RandomHelper.nextFloat() < chance.getFloat()) this.amplifier += type.isBeneficial() ? 1 : 0;
     }
 
     @Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;updateDuration()I", shift = At.Shift.AFTER))
     private void applyTrimDurationBuff(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
         NumberWrapper chance = NumberWrapper.zero();
-        ArmorTrimEffects.AMETHYST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> chance.increment(Config.getInstance().amethystPotionDurationModifyChance));
+        ArmorTrimEffects.AMETHYST.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().amethystPotionDurationModifyChance));
         if (RandomHelper.nextFloat() < chance.getFloat()) duration += type.isBeneficial() ? 1 : -1;
     }
 
     @Inject(method = "writeTypelessNbt", at = @At("HEAD"))
     private void writeAdditionalNbt(NbtCompound nbt, CallbackInfo ci) {
         nbt.putBoolean("HadFirstUpdate", hadFirstUpdate);
-    }
-
-    @Inject(method = "fromNbt(Lnet/minecraft/entity/effect/StatusEffect;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/effect/StatusEffectInstance;", at = @At("HEAD"))
-    private static void readAdditionalNbt(StatusEffect type, NbtCompound nbt, CallbackInfoReturnable<StatusEffectInstance> cir) {
-        firstUpdateThreadLocal.set(nbt.getBoolean("HadFirstUpdate"));
     }
 
     @Override

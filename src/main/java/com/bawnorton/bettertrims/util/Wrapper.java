@@ -22,8 +22,7 @@ public class Wrapper<T> {
     @Override
     public String toString() {
         if (value == null) return "null";
-        return "Wrapper{" +
-                "type=" + value +
-                '}';
+
+        return "Wrapper{" + "type=" + value + '}';
     }
 }

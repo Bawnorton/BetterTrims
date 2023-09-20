@@ -2,7 +2,6 @@ package com.bawnorton.bettertrims.client.impl;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
-import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
@@ -26,33 +25,37 @@ public abstract class YACLImpl {
         return YetAnotherConfigLib.createBuilder()
                 .title(title("main"))
                 .category(ConfigCategory.createBuilder()
-                        .name(category("general"))
-                        .tooltip(tooltip("general"))
-                        .group(OptionGroup.createBuilder()
-                                .name(group("game"))
-                                .description(OptionDescription.of(description("game")))
-                                .options(generateOptionsForType(OptionType.GAME))
-                                .build())
-                        .group(OptionGroup.createBuilder()
-                                .name(group("vanilla"))
-                                .description(OptionDescription.of(description("vanilla")))
-                                .options(generateOptionsForType(OptionType.VANILLA))
-                                .build())
-                        .group(OptionGroup.createBuilder()
-                                .name(group("added.vanilla"))
-                                .description(OptionDescription.of(description("added.vanilla")))
-                                .options(generateOptionsForType(OptionType.ADDED_VANILLA))
-                                .build())
-                        .group(OptionGroup.createBuilder()
-                                .name(group("modded"))
-                                .description(OptionDescription.of(description("modded")))
-                                .options(generateOptionsForType(OptionType.MODDED))
-                                .build())
-                        .build())
+                                  .name(category("general"))
+                                  .tooltip(tooltip("general"))
+                                  .group(OptionGroup.createBuilder()
+                                                 .name(group("game"))
+                                                 .description(OptionDescription.of(description("game")))
+                                                 .options(generateOptionsForType(OptionType.GAME))
+                                                 .build())
+                                  .group(OptionGroup.createBuilder()
+                                                 .name(group("vanilla"))
+                                                 .description(OptionDescription.of(description("vanilla")))
+                                                 .options(generateOptionsForType(OptionType.VANILLA))
+                                                 .build())
+                                  .group(OptionGroup.createBuilder()
+                                                 .name(group("added.vanilla"))
+                                                 .description(OptionDescription.of(description("added.vanilla")))
+                                                 .options(generateOptionsForType(OptionType.ADDED_VANILLA))
+                                                 .build())
+                                  .group(OptionGroup.createBuilder()
+                                                 .name(group("modded"))
+                                                 .description(OptionDescription.of(description("modded")))
+                                                 .options(generateOptionsForType(OptionType.MODDED))
+                                                 .build())
+                                  .build())
                 .save(() -> {
-                    ConfigManager.saveConfig();
                     boolean inWorld = MinecraftClient.getInstance().world != null;
-                    if(inWorld) ClientNetworking.trySendConfigToServer();
+                    if (inWorld && ClientNetworking.isConnectedToDedicated()) {
+                        ClientNetworking.trySendConfigToServer();
+                        return;
+                    }
+
+                    ConfigManager.saveLocalConfig();
                 })
                 .build()
                 .generateScreen(parent);
@@ -60,11 +63,11 @@ public abstract class YACLImpl {
 
     private static Collection<? extends Option<?>> generateOptionsForType(OptionType type) {
         Collection<Option<?>> options = new HashSet<>();
-        Reflection.forEachAnnotatedField(Config.getInstance(), field -> {
-            ConfigOptionReference reference = ConfigOptionReference.of(Config.getInstance(), field);
-            if(reference.notOf(type)) return;
+        Reflection.forEachAnnotatedField(ConfigManager.getConfig(), field -> {
+            ConfigOptionReference reference = ConfigOptionReference.of(ConfigManager.getConfig(), field);
+            if (reference.notOf(type)) return;
 
-            if(reference.isNested()) {
+            if (reference.isNested()) {
                 options.addAll(createNestedOptions(reference, type));
             } else {
                 options.add(createOption(reference));
@@ -74,15 +77,16 @@ public abstract class YACLImpl {
     }
 
     private static Collection<? extends Option<?>> createNestedOptions(ConfigOptionReference reference, OptionType type) {
-        if(!reference.isNested()) throw new IllegalArgumentException("Reference \"%s\" is not nested".formatted(reference.getFormattedName()));
+        if (!reference.isNested())
+            throw new IllegalArgumentException("Reference \"%s\" is not nested".formatted(reference.getFormattedName()));
 
         Collection<Option<?>> options = new ArrayList<>();
         NestedConfigOption instance = reference.nestedValue();
         Reflection.forEachAnnotatedField(instance, nestedField -> {
             ParentedConfigOptionReference parentedReference = ParentedConfigOptionReference.of(reference, instance, nestedField);
-            if(parentedReference.notOf(type)) return;
+            if (parentedReference.notOf(type)) return;
 
-            if(parentedReference.isNested()) {
+            if (parentedReference.isNested()) {
                 options.addAll(createNestedOptions(parentedReference, type));
             } else {
                 options.add(createOption(parentedReference));
@@ -96,7 +100,8 @@ public abstract class YACLImpl {
             case BOOLEAN -> booleanOption(reference);
             case INTEGER -> integerOption(reference);
             case FLOAT -> floatOption(reference);
-            case NESTED -> throw new IllegalArgumentException("Attempted to of non-nested option for nested reference \"%s\"".formatted(reference.getFormattedName()));
+            case NESTED ->
+                    throw new IllegalArgumentException("Attempted to of non-nested option for nested reference \"%s\"".formatted(reference.getFormattedName()));
         };
     }
 
@@ -106,8 +111,7 @@ public abstract class YACLImpl {
                 .name(option(formattedName))
                 .description(OptionDescription.of(description(formattedName)))
                 .binding(Binding.generic(reference.floatValue(), reference::floatValue, reference::floatValue))
-                .controller(option -> FloatSliderControllerBuilder
-                        .create(option)
+                .controller(option -> FloatSliderControllerBuilder.create(option)
                         .range(reference.minFloatValue(), reference.maxFloatValue())
                         .step(reference.maxFloatValue() / 100f))
                 .listener((option, value) -> reference.floatValue(value))
@@ -131,8 +135,7 @@ public abstract class YACLImpl {
                 .name(option(formattedName))
                 .description(OptionDescription.of(description(formattedName)))
                 .binding(Binding.generic(reference.intValue(), reference::intValue, reference::intValue))
-                .controller(option -> IntegerSliderControllerBuilder
-                        .create(option)
+                .controller(option -> IntegerSliderControllerBuilder.create(option)
                         .range(reference.minIntValue(), reference.maxIntValue())
                         .step(Math.max(1, reference.maxIntValue() / 100)))
                 .listener((option, value) -> reference.intValue(value))

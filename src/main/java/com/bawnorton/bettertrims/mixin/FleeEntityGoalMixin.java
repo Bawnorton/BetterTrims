@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 public abstract class FleeEntityGoalMixin {
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/mob/PathAwareEntity;Ljava/lang/Class;Ljava/util/function/Predicate;FDDLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/TargetPredicate;setPredicate(Ljava/util/function/Predicate;)Lnet/minecraft/entity/ai/TargetPredicate;"))
     private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local Class<LivingEntity> classToFleeFrom, @Local PathAwareEntity mob) {
-        if(mob instanceof AnimalEntity && classToFleeFrom.isAssignableFrom(PlayerEntity.class)) {
+        if (mob instanceof AnimalEntity && classToFleeFrom.isAssignableFrom(PlayerEntity.class)) {
             return getTrimPredicate(predicate);
         }
         return predicate;

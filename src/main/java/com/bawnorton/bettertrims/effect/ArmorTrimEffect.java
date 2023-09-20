@@ -23,8 +23,10 @@ public class ArmorTrimEffect {
     private Identifier getTrimMaterial(ItemStack stack) {
         NbtCompound nbt = stack.getNbt();
         if (nbt == null) return null;
+
         NbtElement trimElement = nbt.get("Trim");
         if (!(trimElement instanceof NbtCompound nbtCompound)) return null;
+
         return new Identifier(nbtCompound.getString("material"));
     }
 
@@ -32,6 +34,7 @@ public class ArmorTrimEffect {
         if (Compat.isStackedTrimsLoaded()) {
             List<Identifier> materials = StackedTrimsCompat.getTrimMaterials(stack);
             if (materials == null) return false;
+
             return material.matchesAny(materials);
         }
         return material.matches(getTrimMaterial(stack));

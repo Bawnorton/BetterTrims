@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.client.mixin;
 
-import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.client.BetterTrimsClient;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
@@ -15,14 +15,11 @@ import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(BackgroundRenderer.class)
 public abstract class BackgroundRendererMixin {
-    @ModifyConstant(method = "render", constant = @Constant(floatValue = 0.0F, ordinal = 0), slice =
-    @Slice(
-            from = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getNightVisionStrength(Lnet/minecraft/entity/LivingEntity;F)F")
-    ))
-    private static float modifyLight(float original, @Local Entity entity) {
+    @ModifyConstant(method = "render", constant = @Constant(floatValue = 0.0F, ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/GameRenderer;getNightVisionStrength(Lnet/minecraft/entity/LivingEntity;F)F")))
+    private static float improveNightVisionWhenWearingSilver(float original, @Local Entity entity) {
         NumberWrapper increase = NumberWrapper.zero();
-        if(entity instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(Config.getInstance().silverNightBonus.improveVision));
+        if (entity instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
+            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(BetterTrimsClient.getConfig().silverNightBonus.improveVision));
         }
         return original + increase.getFloat();
     }

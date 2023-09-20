@@ -1,44 +1,44 @@
 {
-	"schemaVersion": 1,
-	"id": "bettertrims",
-	"version": "${version}",
-	"name": "bettertrims",
-	"description": "Gives each armour trim material a unique effect when worn.",
-	"authors": [
-		"Bawnorton"
-	],
-	"contact": {
-		"homepage": "https://bawnorton.com",
-		"sources": "https://github.com/Benjamin-Norton/BetterTrims"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/bettertrims/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.bawnorton.bettertrims.BetterTrims"
-		],
-		"client": [
-          "com.bawnorton.bettertrims.client.BetterTrimsClient"
-		],
-		"preLaunch": [
-			"com.bawnorton.bettertrims.BetterTrimsPreLaunch"
-		],
-		"modmenu": [
-			"com.bawnorton.bettertrims.client.impl.ModMenuApiImpl"
-		]
-	},
-	"mixins": [
-		"bettertrims.mixins.json",
-		{
-			"config": "bettertrims.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.14.21",
-		"minecraft": "~1.20",
-		"java": ">=17",
-		"fabric-api": ">=0.83.0"
-	}
+  "schemaVersion": 1,
+  "id": "bettertrims",
+  "version": "${version}",
+  "name": "bettertrims",
+  "description": "Gives each armour trim material a unique effect when worn.",
+  "authors": [
+    "Bawnorton"
+  ],
+  "contact": {
+    "homepage": "https://bawnorton.com",
+    "sources": "https://github.com/Benjamin-Norton/BetterTrims"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/bettertrims/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.bawnorton.bettertrims.BetterTrims"
+    ],
+    "client": [
+      "com.bawnorton.bettertrims.client.BetterTrimsClient"
+    ],
+    "preLaunch": [
+      "com.bawnorton.bettertrims.BetterTrimsPreLaunch"
+    ],
+    "modmenu": [
+      "com.bawnorton.bettertrims.client.impl.ModMenuApiImpl"
+    ]
+  },
+  "mixins": [
+    "bettertrims.mixins.json",
+    {
+      "config": "bettertrims.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "minecraft": "~1.20",
+    "java": ">=17",
+    "fabric-api": ">=0.83.0"
+  }
 }

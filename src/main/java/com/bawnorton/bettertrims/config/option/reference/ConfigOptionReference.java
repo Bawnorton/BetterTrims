@@ -21,7 +21,7 @@ public class ConfigOptionReference {
         this.instance = instance;
         this.field = field;
         this.value = Reflection.accessField(field, instance);
-        if(value == null) throw new IllegalStateException("Value for " + field.getName() + " field is null.");
+        if (value == null) throw new IllegalStateException("Value for " + field.getName() + " field is null.");
     }
 
     public static ConfigOptionReference of(Object instance, Field field) {
@@ -30,18 +30,19 @@ public class ConfigOptionReference {
 
     private void validateType(Class<?> clazz) {
         if (!clazz.isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException("Invalid type " + clazz.getName() + " for " + value.getClass().getName());
+            throw new IllegalArgumentException("Invalid type " + clazz.getName() + " for " + value.getClass()
+                    .getName());
         }
     }
 
-    private  <T> void setConfigValue(T value) {
+    private <T> void setConfigValue(T value) {
         if (value == null) throw new IllegalArgumentException("Value cannot be null.");
         validateType(value.getClass());
         Reflection.setField(field, instance, value);
         this.value = value;
     }
 
-    private  <T> T getValueAsType(Class<T> clazz) {
+    private <T> T getValueAsType(Class<T> clazz) {
         validateType(clazz);
         return clazz.cast(value);
     }
@@ -151,15 +152,11 @@ public class ConfigOptionReference {
 
     @Override
     public String toString() {
-        return "DirectConfigOptionReference[" +
-                "field=" + field + ']';
+        return "DirectConfigOptionReference[" + "field=" + field + ']';
     }
 
     public enum FieldType {
-        BOOLEAN,
-        INTEGER,
-        FLOAT,
-        NESTED;
+        BOOLEAN, INTEGER, FLOAT, NESTED;
 
         public static FieldType of(Class<?> clazz) {
             if (Boolean.class.isAssignableFrom(clazz)) return BOOLEAN;

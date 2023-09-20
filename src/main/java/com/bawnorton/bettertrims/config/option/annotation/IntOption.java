@@ -11,7 +11,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface IntOption {
     OptionType type() default OptionType.VANILLA;
+
     int value();
+
     int min() default 0;
+
     int max() default 100;
 }

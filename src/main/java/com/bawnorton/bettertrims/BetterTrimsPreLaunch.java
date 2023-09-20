@@ -8,6 +8,6 @@ public class BetterTrimsPreLaunch implements PreLaunchEntrypoint {
     @Override
     public void onPreLaunch() {
         BetterTrims.LOGGER.debug("PreLaunching Better Trims");
-        ConfigManager.loadConfig();
+        ConfigManager.loadConfigs();
     }
 }
