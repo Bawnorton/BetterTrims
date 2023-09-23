@@ -19,7 +19,7 @@ public abstract class Networking {
         ServerPlayNetworking.registerGlobalReceiver(HANDSHAKE, (server, player, handler, buf, responseSender) -> sendConfigToPlayer(player));
         ServerPlayNetworking.registerGlobalReceiver(CONFIG_SYNC, (server, player, handler, buf, responseSender) -> {
             ConfigManager.deserializeConfig(buf.readString());
-            sendConfigToAllPlayers(server);
+            sendConfigToAllOtherPlayers(server, player);
         });
         ServerPlayNetworking.registerGlobalReceiver(CONFIG_OP_CHECK, (server, player, handler, buf, responseSender) -> {
             PacketByteBuf response = PacketByteBufs.create();
@@ -28,8 +28,11 @@ public abstract class Networking {
         });
     }
 
-    private static void sendConfigToAllPlayers(MinecraftServer server) {
-        server.getPlayerManager().getPlayerList().forEach(Networking::sendConfigToPlayer);
+    private static void sendConfigToAllOtherPlayers(MinecraftServer server, ServerPlayerEntity player) {
+        server.getPlayerManager().getPlayerList().forEach(otherPlayer -> {
+            if (otherPlayer.equals(player)) return;
+            sendConfigToPlayer(otherPlayer);
+        });
     }
 
     private static void sendConfigToPlayer(ServerPlayerEntity player) {

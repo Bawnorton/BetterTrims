@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.client.impl;
 
+import com.bawnorton.bettertrims.client.BetterTrimsClient;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
@@ -23,9 +24,12 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 public abstract class YACLImpl {
+    private static boolean inScreen = false;
+    private static Screen screenParent = null;
+
     public static Screen getScreen(Screen parent) {
-        return YetAnotherConfigLib.createBuilder()
-                .title(title("main"))
+        YetAnotherConfigLib.Builder builder = YetAnotherConfigLib.createBuilder()
+                .title(yaclText("title", "main"))
                 .category(ConfigCategory.createBuilder()
                                   .name(category("general"))
                                   .tooltip(tooltip("general"))
@@ -61,24 +65,33 @@ public abstract class YACLImpl {
                                                      .description(OptionDescription.of(description("modded")))
                                                      .options(generateOptionsForType(OptionType.MODDED))
                                                      .build())
-                                    .build())
-                .save(() -> {
-                    boolean inWorld = MinecraftClient.getInstance().world != null;
-                    if (inWorld && ClientNetworking.isConnectedToDedicated()) {
-                        ClientNetworking.trySendConfigToServer();
-                        return;
-                    }
+                                    .build());
+        Runnable saveCallback = () -> {
+            boolean inWorld = MinecraftClient.getInstance().world != null;
+            if (inWorld && ClientNetworking.isConnectedToDedicated()) {
+                ClientNetworking.trySendConfigToServer();
+                return;
+            }
 
-                    ConfigManager.saveLocalConfig();
-                })
-                .build()
-                .generateScreen(parent);
+            inScreen = false;
+            ConfigManager.saveLocalConfig();
+        };
+        return builder.save(saveCallback).screenInit(yaclScreen -> {
+            inScreen = true;
+            screenParent = parent;
+        }).build().generateScreen(parent);
+    }
+
+    public static void refreshScreen() {
+        if (!inScreen) return;
+
+        MinecraftClient.getInstance().setScreen(getScreen(screenParent));
     }
 
     private static Collection<? extends Option<?>> generateOptionsForType(OptionType type) {
         Collection<Option<?>> options = new HashSet<>();
-        Reflection.forEachAnnotatedField(ConfigManager.getConfig(), field -> {
-            ConfigOptionReference reference = ConfigOptionReference.of(ConfigManager.getConfig(), field);
+        Reflection.forEachAnnotatedField(BetterTrimsClient.getConfig(), field -> {
+            ConfigOptionReference reference = ConfigOptionReference.of(BetterTrimsClient.getConfig(), field);
             if (!reference.isOf(type)) return;
 
             if (reference.isNested()) {
@@ -114,8 +127,7 @@ public abstract class YACLImpl {
             case BOOLEAN -> booleanOption(reference);
             case INTEGER -> integerOption(reference);
             case FLOAT -> floatOption(reference);
-            case NESTED ->
-                    throw new IllegalArgumentException("Attempted to of non-nested option for nested reference \"%s\"".formatted(reference.getFormattedName()));
+            case NESTED -> throw new IllegalArgumentException("Attempted to of non-nested option for nested reference \"%s\"".formatted(reference.getFormattedName()));
         };
     }
 
@@ -128,7 +140,6 @@ public abstract class YACLImpl {
                         .valueFormatter(value -> Text.literal(String.format("%,.2f", value).replaceAll("[\u00a0\u202F]", " ")))
                         .range(reference.minFloatValue(), reference.maxFloatValue())
                         .step(reference.maxFloatValue() / 100f))
-                .listener((option, value) -> reference.floatValue(value))
                 .build();
     }
 
@@ -138,7 +149,6 @@ public abstract class YACLImpl {
                 .description(imagedDescription(reference))
                 .binding(Binding.generic(reference.booleanValue(), reference::booleanValue, reference::booleanValue))
                 .controller(TickBoxControllerBuilder::create)
-                .listener((option, value) -> reference.booleanValue(value))
                 .build();
     }
 
@@ -150,7 +160,6 @@ public abstract class YACLImpl {
                 .controller(option -> IntegerSliderControllerBuilder.create(option)
                         .range(reference.minIntValue(), reference.maxIntValue())
                         .step(Math.max(1, reference.maxIntValue() / 100)))
-                .listener((option, value) -> reference.intValue(value))
                 .build();
     }
 
@@ -164,10 +173,6 @@ public abstract class YACLImpl {
                 .image(textureLocation, 16, 16)
                 .text(description(reference.getFormattedName()))
                 .build();
-    }
-
-    private static MutableText title(String key) {
-        return yaclText("title", key);
     }
 
     private static MutableText category(String key) {

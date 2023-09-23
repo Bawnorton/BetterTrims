@@ -9,9 +9,9 @@
   ],
   "contact": {
     "homepage": "https://bawnorton.com",
-    "sources": "https://github.com/Benjamin-Norton/BetterTrims"
+    "sources": "https://github.com/Bawnorton/BetterTrims"
   },
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/bettertrims/icon.png",
   "environment": "*",
   "entrypoints": {

@@ -30,7 +30,7 @@ public class Config {
     }
 
     @Expose
-    @IntOption(type = OptionType.GAME, value = 1)
+    @IntOption(type = OptionType.GAME, value = 1, min = 1)
     public Integer trimDurability;
     @Expose
     @FloatOption(value = 0.05f, max = 1)
@@ -115,7 +115,7 @@ public class Config {
     @NestedOption(type = OptionType.ADDED_VANILLA)
     public EnderPearl enderPearlEffects;
     @Expose
-    @NestedOption(type = OptionType.ADDED_VANILLA)
+    @NestedOption(type = OptionType.VANILLA)
     public Gold goldEffects;
     @Expose
     @NestedOption(type = OptionType.ADDED_VANILLA)
