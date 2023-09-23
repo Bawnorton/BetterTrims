@@ -19,7 +19,7 @@ public abstract class BackgroundRendererMixin {
     private static float improveNightVisionWhenWearingSilver(float original, @Local Entity entity) {
         NumberWrapper increase = NumberWrapper.zero();
         if (entity instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(BetterTrimsClient.getConfig().silverNightBonus.improveVision));
+            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(BetterTrimsClient.getConfig().silverEffects.improveVision));
         }
         return original + increase.getFloat();
     }

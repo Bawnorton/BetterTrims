@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims.client.impl;
 
-import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
@@ -14,10 +13,13 @@ import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.TickBoxControllerBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashSet;
 
 public abstract class YACLImpl {
@@ -32,22 +34,34 @@ public abstract class YACLImpl {
                                                  .description(OptionDescription.of(description("game")))
                                                  .options(generateOptionsForType(OptionType.GAME))
                                                  .build())
-                                  .group(OptionGroup.createBuilder()
-                                                 .name(group("vanilla"))
-                                                 .description(OptionDescription.of(description("vanilla")))
-                                                 .options(generateOptionsForType(OptionType.VANILLA))
-                                                 .build())
-                                  .group(OptionGroup.createBuilder()
-                                                 .name(group("added.vanilla"))
-                                                 .description(OptionDescription.of(description("added.vanilla")))
-                                                 .options(generateOptionsForType(OptionType.ADDED_VANILLA))
-                                                 .build())
-                                  .group(OptionGroup.createBuilder()
-                                                 .name(group("modded"))
-                                                 .description(OptionDescription.of(description("modded")))
-                                                 .options(generateOptionsForType(OptionType.MODDED))
-                                                 .build())
                                   .build())
+                .category(ConfigCategory.createBuilder()
+                                    .name(category("vanilla"))
+                                    .tooltip(tooltip("vanilla"))
+                                    .group(OptionGroup.createBuilder()
+                                                     .name(group("vanilla"))
+                                                     .description(OptionDescription.of(description("vanilla")))
+                                                     .options(generateOptionsForType(OptionType.VANILLA))
+                                                     .build())
+                                    .build())
+                .category(ConfigCategory.createBuilder()
+                                    .name(category("added_vanilla"))
+                                    .tooltip(tooltip("added_vanilla"))
+                                    .group(OptionGroup.createBuilder()
+                                                     .name(group("added_vanilla"))
+                                                     .description(OptionDescription.of(description("added_vanilla")))
+                                                     .options(generateOptionsForType(OptionType.ADDED_VANILLA))
+                                                     .build())
+                                    .build())
+                .category(ConfigCategory.createBuilder()
+                                    .name(category("modded"))
+                                    .tooltip(tooltip("modded"))
+                                    .group(OptionGroup.createBuilder()
+                                                     .name(group("modded"))
+                                                     .description(OptionDescription.of(description("modded")))
+                                                     .options(generateOptionsForType(OptionType.MODDED))
+                                                     .build())
+                                    .build())
                 .save(() -> {
                     boolean inWorld = MinecraftClient.getInstance().world != null;
                     if (inWorld && ClientNetworking.isConnectedToDedicated()) {
@@ -65,7 +79,7 @@ public abstract class YACLImpl {
         Collection<Option<?>> options = new HashSet<>();
         Reflection.forEachAnnotatedField(ConfigManager.getConfig(), field -> {
             ConfigOptionReference reference = ConfigOptionReference.of(ConfigManager.getConfig(), field);
-            if (reference.notOf(type)) return;
+            if (!reference.isOf(type)) return;
 
             if (reference.isNested()) {
                 options.addAll(createNestedOptions(reference, type));
@@ -73,7 +87,7 @@ public abstract class YACLImpl {
                 options.add(createOption(reference));
             }
         });
-        return options;
+        return options.stream().sorted(Comparator.comparing(option -> option.name().getString())).toList();
     }
 
     private static Collection<? extends Option<?>> createNestedOptions(ConfigOptionReference reference, OptionType type) {
@@ -84,7 +98,7 @@ public abstract class YACLImpl {
         NestedConfigOption instance = reference.nestedValue();
         Reflection.forEachAnnotatedField(instance, nestedField -> {
             ParentedConfigOptionReference parentedReference = ParentedConfigOptionReference.of(reference, instance, nestedField);
-            if (parentedReference.notOf(type)) return;
+            if (!parentedReference.isOf(type)) return;
 
             if (parentedReference.isNested()) {
                 options.addAll(createNestedOptions(parentedReference, type));
@@ -106,12 +120,12 @@ public abstract class YACLImpl {
     }
 
     private static Option<Float> floatOption(ConfigOptionReference reference) {
-        String formattedName = reference.getFormattedName();
         return Option.<Float>createBuilder()
-                .name(option(formattedName))
-                .description(OptionDescription.of(description(formattedName)))
+                .name(option(reference.getFormattedName()))
+                .description(imagedDescription(reference))
                 .binding(Binding.generic(reference.floatValue(), reference::floatValue, reference::floatValue))
                 .controller(option -> FloatSliderControllerBuilder.create(option)
+                        .valueFormatter(value -> Text.literal(String.format("%,.2f", value).replaceAll("[\u00a0\u202F]", " ")))
                         .range(reference.minFloatValue(), reference.maxFloatValue())
                         .step(reference.maxFloatValue() / 100f))
                 .listener((option, value) -> reference.floatValue(value))
@@ -119,10 +133,9 @@ public abstract class YACLImpl {
     }
 
     private static Option<Boolean> booleanOption(ConfigOptionReference reference) {
-        String formattedName = reference.getFormattedName();
         return Option.<Boolean>createBuilder()
-                .name(option(formattedName))
-                .description(OptionDescription.of(description(formattedName)))
+                .name(option(reference.getFormattedName()))
+                .description(imagedDescription(reference))
                 .binding(Binding.generic(reference.booleanValue(), reference::booleanValue, reference::booleanValue))
                 .controller(TickBoxControllerBuilder::create)
                 .listener((option, value) -> reference.booleanValue(value))
@@ -130,10 +143,9 @@ public abstract class YACLImpl {
     }
 
     private static Option<Integer> integerOption(ConfigOptionReference reference) {
-        String formattedName = reference.getFormattedName();
         return Option.<Integer>createBuilder()
-                .name(option(formattedName))
-                .description(OptionDescription.of(description(formattedName)))
+                .name(option(reference.getFormattedName()))
+                .description(imagedDescription(reference))
                 .binding(Binding.generic(reference.intValue(), reference::intValue, reference::intValue))
                 .controller(option -> IntegerSliderControllerBuilder.create(option)
                         .range(reference.minIntValue(), reference.maxIntValue())
@@ -142,31 +154,43 @@ public abstract class YACLImpl {
                 .build();
     }
 
-    private static Text title(String path) {
-        return yaclText("title", path);
+    private static OptionDescription imagedDescription(ConfigOptionReference reference) {
+        Identifier textureLocation = reference.findTexture();
+        if(textureLocation == null) {
+            return OptionDescription.of(description(reference.getFormattedName()));
+        }
+
+        return OptionDescription.createBuilder()
+                .image(textureLocation, 16, 16)
+                .text(description(reference.getFormattedName()))
+                .build();
     }
 
-    private static Text category(String path) {
-        return yaclText("category", path);
+    private static MutableText title(String key) {
+        return yaclText("title", key);
     }
 
-    private static Text tooltip(String path) {
-        return yaclText("tooltip", path);
+    private static MutableText category(String key) {
+        return yaclText("category", key);
     }
 
-    private static Text group(String path) {
-        return yaclText("group", path);
+    private static MutableText tooltip(String key) {
+        return yaclText("tooltip", key);
     }
 
-    private static Text description(String path) {
-        return yaclText("description", path);
+    private static MutableText group(String key) {
+        return yaclText("group", key);
     }
 
-    private static Text option(String path) {
-        return yaclText("option", path);
+    private static MutableText description(String key) {
+        return yaclText("description", key);
     }
 
-    private static Text yaclText(String type, String path) {
-        return Text.translatable("%s.yacl.%s.%s", BetterTrims.MOD_ID, type, path);
+    private static MutableText option(String key) {
+        return yaclText("option", key);
+    }
+
+    private static MutableText yaclText(String category, String key) {
+        return Text.translatable("bettertrims.yacl.%s.%s".formatted(category, key));
     }
 }

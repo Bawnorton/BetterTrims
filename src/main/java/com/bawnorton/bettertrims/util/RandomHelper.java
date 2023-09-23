@@ -1,18 +1,11 @@
 package com.bawnorton.bettertrims.util;
 
-import java.util.Random;
+import net.minecraft.util.math.random.Random;
 
 public abstract class RandomHelper {
-    private static final Random RANDOM = new Random(System.currentTimeMillis());
+    private static final Random RANDOM = Random.create(System.currentTimeMillis());
 
     public static float nextFloat() {
-        flush();
         return RANDOM.nextFloat();
-    }
-
-    private static void flush() {
-        for (int i = 0; i < 10; i++) {
-            RANDOM.nextFloat();
-        }
     }
 }

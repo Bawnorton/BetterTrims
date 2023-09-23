@@ -27,7 +27,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         NumberWrapper increase = NumberWrapper.one();
         ArmorTrimEffects.REDSTONE.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().redstoneMovementSpeedIncrease));
         if (betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverNightBonus.movementSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverEffects.movementSpeed));
         }
         return original * increase.getFloat();
     }
@@ -36,7 +36,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private float applyTrimDamageIncrease(float original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if (betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverNightBonus.attackDamage));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverEffects.attackDamage));
         }
         return increase.getFloat();
     }
@@ -45,7 +45,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
     private double applyTrimAttackSpeedIncrease(double original) {
         NumberWrapper increase = NumberWrapper.of(original);
         if (betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverNightBonus.attackSpeed));
+            ArmorTrimEffects.SILVER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverEffects.attackSpeed));
         }
         return increase.getFloat();
     }

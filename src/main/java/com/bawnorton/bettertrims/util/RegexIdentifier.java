@@ -36,4 +36,20 @@ public record RegexIdentifier(String namespace, String path) {
         Pattern pattern = compiledPatterns.computeIfAbsent(this.path(), Pattern::compile);
         return pattern.matcher(path).matches();
     }
+
+    public RegexIdentifier withSuffixedPath(String suffix) {
+        return new RegexIdentifier(namespace, path + suffix);
+    }
+
+    @Override
+    public String toString() {
+        return namespace + ":" + path;
+    }
+
+    public static RegexIdentifier fromString(String string) {
+        String[] split = string.split(":");
+        if (split.length != 2) throw new IllegalArgumentException("Invalid identifier string: " + string);
+
+        return new RegexIdentifier(split[0], split[1]);
+    }
 }

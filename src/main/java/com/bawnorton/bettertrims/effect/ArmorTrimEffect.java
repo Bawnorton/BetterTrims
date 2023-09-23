@@ -53,6 +53,10 @@ public class ArmorTrimEffect {
         }
     }
 
+    public String getMaterial() {
+        return material.toString();
+    }
+
     public Text getTooltip() {
         return tooltip;
     }

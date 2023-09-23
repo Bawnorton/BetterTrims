@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
+import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffect;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
@@ -15,31 +16,28 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 @Mixin(ActiveTargetGoal.class)
 public abstract class ActiveTargetGoalMixin {
     @Unique
-    private final Map<Class<? extends LivingEntity>, Function<Predicate<LivingEntity>, Predicate<LivingEntity>>> trimPredicates = Map.ofEntries(
-            Map.entry(IllagerEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PLATINUM)),
-            Map.entry(GuardianEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PRISMARINE_SHARD)),
-            Map.entry(BlazeEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK)),
-            Map.entry(WitherSkeletonEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK, 2))
+    // @formatter:off
+    private final Map<Class<? extends LivingEntity>, UnaryOperator<Predicate<LivingEntity>>> trimPredicates = Map.ofEntries(
+            Map.entry(IllagerEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PLATINUM.getEffect(), ConfigManager.getConfig().platinumEffects.piecesForIllagersIgnore, ConfigManager.getConfig().platinumEffects.illagersIgnore)),
+            Map.entry(GuardianEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PRISMARINE_SHARD.getEffect(), ConfigManager.getConfig().prismarineShardEffects.piecesForGuardiansIgnore, ConfigManager.getConfig().prismarineShardEffects.guardiansIgnore)),
+            Map.entry(BlazeEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK.getEffect(), ConfigManager.getConfig().netherBrickEffects.piecesForBlazesIgnore, ConfigManager.getConfig().netherBrickEffects.blazesIgnore)),
+            Map.entry(WitherSkeletonEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK.getEffect(), ConfigManager.getConfig().netherBrickEffects.piecesForWitherSkeletonsIgnore, ConfigManager.getConfig().netherBrickEffects.witherSkeletonsIgnore))
     );
 
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/TargetPredicate;setPredicate(Ljava/util/function/Predicate;)Lnet/minecraft/entity/ai/TargetPredicate;"))
     private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local MobEntity mob) {
-        return trimPredicates.getOrDefault(mob.getClass(), Function.identity()).apply(predicate);
+        return trimPredicates.getOrDefault(mob.getClass(), UnaryOperator.identity()).apply(predicate);
     }
 
     @Unique
-    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect) {
-        return getTrimPredicate(original, effect, 1);
-    }
-
-    @Unique
-    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect, int required) {
+    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect, int required, boolean enabled) {
+        if (!enabled) return original;
         return target -> {
             NumberWrapper trimCount = NumberWrapper.zero();
             effect.apply(((EntityExtender) target).betterTrims$getTrimmables(), () -> trimCount.increment(1));

@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
+import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.EntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
@@ -18,10 +19,11 @@ public abstract class ElderGuardianEntityMixin {
         if (player instanceof EntityExtender extender) {
             NumberWrapper count = NumberWrapper.zero();
             ArmorTrimEffects.PRISMARINE_SHARD.apply(extender.betterTrims$getTrimmables(), () -> count.increment(1));
-            if (count.getInt() >= 4) {
-                player.removeStatusEffect(StatusEffects.MINING_FATIGUE);
-                ci.cancel();
-            }
+            if (!ConfigManager.getConfig().prismarineShardEffects.miningFatigueImmunity) return;
+            if (count.getInt() < ConfigManager.getConfig().prismarineShardEffects.piecesForMiningFatigueImmunity) return;
+
+            player.removeStatusEffect(StatusEffects.MINING_FATIGUE);
+            ci.cancel();
         }
     }
 }

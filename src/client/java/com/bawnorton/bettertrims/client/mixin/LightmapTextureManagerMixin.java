@@ -24,7 +24,7 @@ public abstract class LightmapTextureManagerMixin {
     private float improveNightVisionWhenWearingSilver(float original) {
         NumberWrapper increase = NumberWrapper.zero();
         if (client.player instanceof EntityExtender extender && extender.betterTrims$shouldSilverApply()) {
-            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(BetterTrimsClient.getConfig().silverNightBonus.improveVision));
+            ArmorTrimEffects.SILVER.apply(extender.betterTrims$getTrimmables(), () -> increase.increment(BetterTrimsClient.getConfig().silverEffects.improveVision));
         }
         return original + increase.getFloat();
     }

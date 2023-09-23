@@ -44,7 +44,7 @@ public abstract class AbstractFurnaceBlockEntityMixin {
                 .isPresent();
 
         if (nearbyCoalTrim) {
-            return Math.min(original + ConfigManager.getConfig().coalEffects.furnaceSpeedMultiplier, ((AbstractFurnaceBlockEntityAccessor) blockEntity).getCookTimeTotal() - 1);
+            return Math.min(original + ConfigManager.getConfig().coalEffects.furnaceSpeedIncrease, ((AbstractFurnaceBlockEntityAccessor) blockEntity).getCookTimeTotal() - 1);
         }
         return original;
     }
