@@ -1,9 +1,9 @@
 package com.bawnorton.bettertrims.config.option.reference;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.config.annotation.*;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
-import com.bawnorton.bettertrims.config.option.annotation.*;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffect;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.util.Reflection;
@@ -186,14 +186,13 @@ public class ConfigOptionReference {
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (ConfigOptionReference) obj;
-        return Objects.equals(this.field, that.field);
+        if (!(obj instanceof ConfigOptionReference other)) return false;
+        return Objects.equals(field, other.field);
     }
 
     @Override
     public String toString() {
-        return "DirectConfigOptionReference[" + "field=" + field + ']';
+        return "ConfigOptionReference[" + "field=" + field + ']';
     }
 
     public enum FieldType {

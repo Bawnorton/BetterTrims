@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.config.option.annotation;
+package com.bawnorton.bettertrims.config.annotation;
 
 import com.bawnorton.bettertrims.config.option.OptionType;
 
@@ -9,12 +9,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface IntOption {
+public @interface NestedOption {
     OptionType type() default OptionType.VANILLA;
-
-    int value();
-
-    int min() default 0;
-
-    int max() default 100;
 }

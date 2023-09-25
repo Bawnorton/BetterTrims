@@ -2,10 +2,10 @@ package com.bawnorton.bettertrims.config;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
-import com.bawnorton.bettertrims.config.option.annotation.BooleanOption;
-import com.bawnorton.bettertrims.config.option.annotation.FloatOption;
-import com.bawnorton.bettertrims.config.option.annotation.IntOption;
-import com.bawnorton.bettertrims.config.option.annotation.NestedOption;
+import com.bawnorton.bettertrims.config.annotation.BooleanOption;
+import com.bawnorton.bettertrims.config.annotation.FloatOption;
+import com.bawnorton.bettertrims.config.annotation.IntOption;
+import com.bawnorton.bettertrims.config.annotation.NestedOption;
 import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
 import com.bawnorton.bettertrims.networking.Networking;
 import com.bawnorton.bettertrims.util.Reflection;
