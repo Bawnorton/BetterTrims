@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.client.impl;
 
-import com.bawnorton.bettertrims.client.BetterTrimsClient;
+import com.bawnorton.bettertrims.client.config.ClientConfigManager;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
@@ -90,8 +90,8 @@ public abstract class YACLImpl {
 
     private static Collection<? extends Option<?>> generateOptionsForType(OptionType type) {
         Collection<Option<?>> options = new HashSet<>();
-        Reflection.forEachAnnotatedField(BetterTrimsClient.getConfig(), field -> {
-            ConfigOptionReference reference = ConfigOptionReference.of(BetterTrimsClient.getConfig(), field);
+        Reflection.forEachAnnotatedField(ClientConfigManager.getConfig(), field -> {
+            ConfigOptionReference reference = ConfigOptionReference.of(ClientConfigManager.getConfig(), field);
             if (!reference.isOf(type)) return;
 
             if (reference.isNested()) {

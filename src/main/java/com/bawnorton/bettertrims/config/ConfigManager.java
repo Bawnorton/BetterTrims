@@ -31,7 +31,13 @@ public abstract class ConfigManager {
             .getConfigDir()
             .resolve(BetterTrims.MOD_ID + "-server.json");
 
+    private static boolean loaded = false;
+
     public static Config getConfig() {
+        if (!loaded) {
+            BetterTrims.LOGGER.warn("Attempted to access configs before they were loaded, loading configs now");
+            loadConfigs();
+        }
         if (Networking.isDedicated()) return Config.getServerInstance();
         return Config.getLocalInstance();
     }
@@ -39,6 +45,7 @@ public abstract class ConfigManager {
     public static void loadConfigs() {
         loadLocalConfig();
         loadServerConfig();
+        loaded = true;
     }
 
     private static void loadLocalConfig() {
@@ -159,6 +166,10 @@ public abstract class ConfigManager {
             BetterTrims.LOGGER.error("Failed to load config", e);
         }
         return config;
+    }
+
+    public static boolean loaded() {
+        return loaded;
     }
 
     public static void saveLocalConfig() {

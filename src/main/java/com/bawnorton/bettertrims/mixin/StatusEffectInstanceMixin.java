@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unused"})
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceExtender {
     @Unique

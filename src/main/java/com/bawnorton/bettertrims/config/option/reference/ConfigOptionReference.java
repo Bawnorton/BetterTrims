@@ -9,7 +9,6 @@ import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.util.Reflection;
 import com.bawnorton.bettertrims.util.RegexIdentifier;
 import net.minecraft.data.client.ModelIds;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;

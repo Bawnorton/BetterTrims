@@ -7,10 +7,6 @@ public class Wrapper<T> {
         this.value = value;
     }
 
-    public static <T> Wrapper<T> of(T value) {
-        return new Wrapper<>(value);
-    }
-
     public T get() {
         return value;
     }

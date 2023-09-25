@@ -121,6 +121,7 @@ public class Config {
     @NestedOption(type = OptionType.ADDED_VANILLA)
     public NetherBrick netherBrickEffects;
 
+    @SuppressWarnings("unused")
     public static class EnchantedGoldenApple implements NestedConfigOption {
         @Expose
         @FloatOption(type = OptionType.INHERIT, value = 1200, max = 12000, min = 1)
@@ -140,6 +141,7 @@ public class Config {
         public Integer maxAbsorption;
     }
 
+    @SuppressWarnings("unused")
     public static class Silver implements NestedConfigOption {
         @Expose
         @FloatOption(type = OptionType.INHERIT, value = 0.05f, max = 0.5f)
@@ -167,6 +169,7 @@ public class Config {
         public Float improveVision;
     }
 
+    @SuppressWarnings("unused")
     public static class SlimeBall implements NestedConfigOption {
         @Expose
         @FloatOption(type = OptionType.INHERIT, value = 0.25f, max = 1)
@@ -178,6 +181,7 @@ public class Config {
         public Float knockbackIncrease;
     }
 
+    @SuppressWarnings("unused")
     public static class Coal implements NestedConfigOption {
         @Expose
         @BooleanOption(type = OptionType.INHERIT, value = false)
@@ -193,6 +197,7 @@ public class Config {
         public Integer furnaceSpeedIncrease;
     }
 
+    @SuppressWarnings("unused")
     public static class EnderPearl implements NestedConfigOption {
         @Expose
         @FloatOption(type = OptionType.INHERIT, value = 0.25f, max = 1)
@@ -204,6 +209,7 @@ public class Config {
         public Boolean waterDamagesUser;
     }
 
+    @SuppressWarnings("unused")
     public static class Platinum implements NestedConfigOption {
         @Expose
         @BooleanOption(type = OptionType.INHERIT, value = true)
@@ -215,6 +221,7 @@ public class Config {
         public Integer piecesForIllagersIgnore;
     }
 
+    @SuppressWarnings("unused")
     public static class PrismarineShard implements NestedConfigOption {
         @Expose
         @BooleanOption(type = OptionType.INHERIT, value = true)
@@ -234,6 +241,7 @@ public class Config {
         public Integer piecesForMiningFatigueImmunity;
     }
 
+    @SuppressWarnings("unused")
     public static class Gold implements NestedConfigOption {
         @Expose
         @BooleanOption(type = OptionType.INHERIT, value = true)
@@ -245,6 +253,7 @@ public class Config {
         public Integer piecesForPiglinsIgnore;
     }
 
+    @SuppressWarnings("unused")
     public static class NetherBrick implements NestedConfigOption {
         @Expose
         @BooleanOption(type = OptionType.INHERIT, value = true)
