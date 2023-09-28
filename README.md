@@ -80,7 +80,8 @@ BetterTrims
 </details>
 
 ### Config
-Most numerical values can be changed in the config file. The config file is located in the `config` folder in your `.minecraft` folder.
+- Most effects can be configured
+- In game config editting gui provided by ModMenu and YACL
 
 ### Installation
 #### Requires Fabric
