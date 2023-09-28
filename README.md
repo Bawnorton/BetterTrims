@@ -10,8 +10,9 @@ BetterTrims
 ### Vanilla Material Effects
 <details>
   <summary>Expand Effects</summary>
+  
 - Quartz
-  - Increase bonus experience gained.
+    - Increase bonus experience gained.
 - Iron
   - Increase your mining speed. (full set + efficiency 5 netherite pick + haste 2 can instantly mine deepslate).
 - Netherite
@@ -35,6 +36,7 @@ BetterTrims
 ### Added Vanilla Material Effects
 <details>
   <summary>Expand Effects</summary>
+  
 - Coal
   - Players within 5 blocks will double the cooking speed of furnaces 
 - Dragons Breath
@@ -69,6 +71,7 @@ BetterTrims
 ### Modded Trim Material Effects
 <details>
   <summary>Expand Effects</summary>
+  
 - Platinum
   - Illagers ignore you.
 - Silver:
