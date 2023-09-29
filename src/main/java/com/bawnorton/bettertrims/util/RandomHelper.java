@@ -1,9 +1,9 @@
 package com.bawnorton.bettertrims.util;
 
-import net.minecraft.util.math.random.Random;
+import java.util.Random;
 
 public abstract class RandomHelper {
-    private static final Random RANDOM = Random.create(System.currentTimeMillis());
+    private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     public static float nextFloat() {
         return RANDOM.nextFloat();
