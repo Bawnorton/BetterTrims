@@ -17,7 +17,6 @@ import java.util.List;
 
 @Mixin(GameEventDispatchManager.class)
 public abstract class GameEventDispatchManagerMixin {
-    @SuppressWarnings("unused")
     @WrapWithCondition(method = "method_45492", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/event/listener/GameEventListener;listen(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/world/event/GameEvent;Lnet/minecraft/world/event/GameEvent$Emitter;Lnet/minecraft/util/math/Vec3d;)Z"))
     private boolean checkEchoTrimDistance(GameEventListener instance, ServerWorld world, GameEvent gameEvent, GameEvent.Emitter emitter, Vec3d emitterPos, List<GameEvent.Message> list, GameEvent gameEvent2, Vec3d emitterPos2, GameEvent.Emitter emitter2, GameEventListener listener, Vec3d listenerPos) {
         if (!(emitter.sourceEntity() instanceof EntityExtender extender)) return true;

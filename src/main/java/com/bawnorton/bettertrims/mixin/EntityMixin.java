@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
 @Mixin(Entity.class)
 public abstract class EntityMixin implements EntityExtender {
     @Shadow
@@ -48,9 +47,6 @@ public abstract class EntityMixin implements EntityExtender {
 
     @Shadow
     public abstract double getX();
-
-    @Shadow
-    public abstract float distanceTo(Entity entity);
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     private boolean checkIfNetheriteTrimmed(boolean original) {

@@ -16,7 +16,6 @@ public abstract class EscapeDanagerGoalMixin {
     @Final
     protected PathAwareEntity mob;
 
-    @SuppressWarnings("unused")
     @ModifyReturnValue(method = "isInDanger", at = @At("RETURN"))
     private boolean checkPlayerTrims(boolean original) {
         if (!original) return false;

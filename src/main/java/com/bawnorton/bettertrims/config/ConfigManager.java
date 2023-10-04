@@ -8,7 +8,7 @@ import com.bawnorton.bettertrims.config.annotation.NestedOption;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
 import com.bawnorton.bettertrims.networking.Networking;
-import com.bawnorton.bettertrims.util.Reflection;
+import com.bawnorton.bettertrims.reflection.Reflection;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

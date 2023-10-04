@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.util;
+package com.bawnorton.bettertrims.reflection;
 
 import com.bawnorton.bettertrims.BetterTrims;
 
@@ -36,14 +36,11 @@ public abstract class Reflection {
     public static Object accessField(Field field, Object instance) {
         Object value;
         try {
-            if (field.canAccess(instance)) {
-                value = field.get(instance);
-            } else {
+            if (!field.canAccess(instance)) {
                 BetterTrims.LOGGER.warn("Field " + field.getName() + " was inaccessible, forcing access. This is unexpected.");
                 field.setAccessible(true);
-                value = field.get(instance);
-                field.setAccessible(false);
             }
+            value = field.get(instance);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -56,14 +53,11 @@ public abstract class Reflection {
 
     public static void setField(Field field, Object instance, Object value) {
         try {
-            if (field.canAccess(instance)) {
-                field.set(instance, value);
-            } else {
+            if (!field.canAccess(instance)) {
                 BetterTrims.LOGGER.warn("Field " + field.getName() + " was inaccessible, forcing access. This is unexpected.");
                 field.setAccessible(true);
-                field.set(instance, value);
-                field.setAccessible(false);
             }
+            field.set(instance, value);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

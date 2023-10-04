@@ -13,11 +13,10 @@ import net.minecraft.entity.player.PlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@SuppressWarnings("unused")
 @Mixin(PlayerEntity.class)
 @ConditionalMixin(modid = "connectormod")
 public abstract class PlayerEntityMixin extends LivingEntityMixin {
-    @SuppressWarnings("MixinAnnotationTarget")
+    @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     @WrapOperation(method = "getDigSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;getBlockBreakingSpeed(Lnet/minecraft/block/BlockState;)F"))
     private float applyTrimMiningSpeedIncrease(PlayerInventory instance, BlockState block, Operation<Float> original) {
         NumberWrapper increase = NumberWrapper.of(original.call(instance, block));

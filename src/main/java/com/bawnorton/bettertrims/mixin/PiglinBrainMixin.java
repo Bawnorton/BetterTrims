@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PiglinBrain.class)
 public abstract class PiglinBrainMixin {
-    @SuppressWarnings("unused")
     @ModifyReturnValue(method = "wearsGoldArmor", at = @At("RETURN"))
     private static boolean checkPlayerTrims(boolean original, LivingEntity entity) {
         if(ConfigManager.getConfig().netherBrickEffects.piglinsEnrage) {

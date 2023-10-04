@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
-@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unused"})
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceExtender {
     @Unique
@@ -41,6 +40,7 @@ public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceE
         firstUpdateThreadLocal.set(nbt.getBoolean("HadFirstUpdate"));
     }
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @Inject(method = "<init>(Lnet/minecraft/entity/effect/StatusEffect;IIZZZLnet/minecraft/entity/effect/StatusEffectInstance;Ljava/util/Optional;)V", at = @At("RETURN"))
     private void init(StatusEffect type, int duration, int amplifier, boolean ambient, boolean showParticles, boolean showIcon, StatusEffectInstance hiddenEffect, Optional<?> factorCalculationData, CallbackInfo ci) {
         hadFirstUpdate = firstUpdateThreadLocal.get();

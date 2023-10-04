@@ -19,6 +19,6 @@ public class Wrapper<T> {
     public String toString() {
         if (value == null) return "null";
 
-        return "Wrapper{" + "type=" + value + '}';
+        return "Wrapper{" + "value=" + value + '}';
     }
 }

@@ -19,10 +19,9 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@SuppressWarnings("unused")
 @Mixin(AbstractFurnaceBlockEntity.class)
 public abstract class AbstractFurnaceBlockEntityMixin {
-    @SuppressWarnings("MixinAnnotationTarget") // shut up mcdev, you're clueless
+    @SuppressWarnings({"MixinAnnotationTarget", "InvalidInjectorMethodSignature"}) // shut up mcdev, you're clueless
     @ModifyExpressionValue(method = "tick", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "net/minecraft/block/entity/AbstractFurnaceBlockEntity.canAcceptRecipeOutput(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/recipe/Recipe;Lnet/minecraft/util/collection/DefaultedList;I)Z", ordinal = 1)))
     private static int increaseCookTime(int original, World world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
         if (ConfigManager.getConfig().coalEffects.disableEffectToReduceLag) return original;

@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.util.RegexIdentifier;
+import com.bawnorton.bettertrims.util.RegexPath;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -9,12 +9,15 @@ import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 public enum ArmorTrimEffects {
-    NONE(() -> new ArmorTrimEffect(new RegexIdentifier(".*", "none"), Text.of("none"))),
+    NONE(() -> new ArmorTrimEffect(new RegexPath("none"), Text.of("none"))),
     QUARTZ(() -> of(ArmorTrimMaterials.QUARTZ)),
     IRON(() -> of(ArmorTrimMaterials.IRON)),
     NETHERITE(() -> of(ArmorTrimMaterials.NETHERITE)),
@@ -38,8 +41,8 @@ public enum ArmorTrimEffects {
     RABBIT_HIDE(() -> of(Items.RABBIT_HIDE)),
     SLIME_BALL(() -> of(Items.SLIME_BALL)),
     ENCHANTED_GOLDEN_APPLE(() -> of(Items.ENCHANTED_GOLDEN_APPLE)),
-    PLATINUM(() -> of(new RegexIdentifier(".*", "platinum"))),
-    SILVER(() -> of(new RegexIdentifier(".*", "silver")));
+    PLATINUM(() -> of(new RegexPath("/platinum/"))),
+    SILVER(() -> of(new RegexPath("/silver/")));
 
     private final Supplier<ArmorTrimEffect> effect;
 
@@ -48,14 +51,14 @@ public enum ArmorTrimEffects {
     }
 
     private static ArmorTrimEffect of(Item item) {
-        return of(new RegexIdentifier(".*", Registries.ITEM.getId(item).getPath()));
+        return of(new RegexPath(StringUtils.wrap(Registries.ITEM.getId(item).getPath(), "/")));
     }
 
     private static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
-        return of(new RegexIdentifier(".*", material.getValue().getPath()));
+        return of(new RegexPath(StringUtils.wrap(material.getValue().getPath(), "/")));
     }
 
-    private static ArmorTrimEffect of(RegexIdentifier material) {
+    private static ArmorTrimEffect of(RegexPath material) {
         return new ArmorTrimEffect(material, getTooltip(material.path()));
     }
 

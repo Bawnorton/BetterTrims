@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EndermanEntity.class)
 public abstract class EndermanEntityMixin extends MobEntityMixin {
-    @SuppressWarnings("unused")
     @Override
     protected boolean shouldHit(Entity instance, DamageSource source, float amount, Operation<Boolean> original) {
         if (didDodgeAttack(instance)) return false;

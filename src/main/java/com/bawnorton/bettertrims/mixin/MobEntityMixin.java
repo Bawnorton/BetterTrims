@@ -19,7 +19,6 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
         return original.call(instance, source, amount); // overriden in EndermanEntityMixin
     }
 
-    @SuppressWarnings("unused")
     @ModifyExpressionValue(method = "tryAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/entity/LivingEntity;)I"))
     private int addFireFromTrim(int original) {
         if (!ArmorTrimEffects.FIRE_CHARGE.appliesTo(betterTrims$getTrimmables())) return original;

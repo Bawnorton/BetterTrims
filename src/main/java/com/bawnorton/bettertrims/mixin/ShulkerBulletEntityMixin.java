@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ShulkerBulletEntity.class)
 public abstract class ShulkerBulletEntityMixin extends EntityMixin {
-    @SuppressWarnings("unused")
     @WrapOperation(method = "onEntityHit", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     private boolean shouldHit(Entity instance, DamageSource source, float amount, Operation<Boolean> orginal) {
         if (didDodgeAttack(instance)) return false;

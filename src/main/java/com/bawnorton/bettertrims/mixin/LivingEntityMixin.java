@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@SuppressWarnings("unused")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow

@@ -6,8 +6,8 @@ import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffect;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.util.Reflection;
-import com.bawnorton.bettertrims.util.RegexIdentifier;
+import com.bawnorton.bettertrims.util.RegexPath;
+import com.bawnorton.bettertrims.reflection.Reflection;
 import net.minecraft.data.client.ModelIds;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ConfigOptionReference {
-    private static final Map<RegexIdentifier, Identifier> TEXTURE_CACHE = new HashMap<>();
+    private static final Map<RegexPath, Identifier> TEXTURE_CACHE = new HashMap<>();
 
     private final Object instance;
     private final Field field;
@@ -162,11 +162,11 @@ public class ConfigOptionReference {
         }
 
         ArmorTrimEffect effect = location.effectLookup().getEffect();
-        RegexIdentifier identifier = RegexIdentifier.fromString(effect.getMaterial());
+        RegexPath identifier = RegexPath.fromString(effect.getMaterial());
         return TEXTURE_CACHE.computeIfAbsent(identifier, id -> {
             Identifier itemId = Registries.ITEM.getIds().stream().filter(identifier::matches).findFirst().orElseGet(() -> {
                 BetterTrims.LOGGER.debug("Could not find item for identifier \"%s\", trying \"%s_ingot\"".formatted(identifier, identifier));
-                RegexIdentifier ingotIdentifier = identifier.withSuffixedPath("_ingot");
+                RegexPath ingotIdentifier = identifier.withSuffix("_ingot");
                 return Registries.ITEM.getIds().stream().filter(ingotIdentifier::matches).findFirst().orElseGet(() -> {
                     BetterTrims.LOGGER.debug("Could not find item for identifier \"%s_ingot\"".formatted(identifier));
                     return null;

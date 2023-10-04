@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@SuppressWarnings("unused")
 @Mixin(PlayerEntity.class)
 @ConditionalMixin(modid = "connectormod", applyIfPresent = false)
 public abstract class PlayerEntityMixin extends LivingEntityMixin {

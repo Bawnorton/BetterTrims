@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.compat.Compat;
 import com.bawnorton.bettertrims.compat.StackedTrimsCompat;
-import com.bawnorton.bettertrims.util.RegexIdentifier;
+import com.bawnorton.bettertrims.util.RegexPath;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,10 +12,10 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class ArmorTrimEffect {
-    private final RegexIdentifier material;
+    private final RegexPath material;
     private final Text tooltip;
 
-    public ArmorTrimEffect(RegexIdentifier matieral, Text tooltip) {
+    public ArmorTrimEffect(RegexPath matieral, Text tooltip) {
         this.material = matieral;
         this.tooltip = tooltip;
     }

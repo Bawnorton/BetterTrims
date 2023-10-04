@@ -7,7 +7,7 @@ import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
 import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
 import com.bawnorton.bettertrims.config.option.reference.ParentedConfigOptionReference;
-import com.bawnorton.bettertrims.util.Reflection;
+import com.bawnorton.bettertrims.reflection.Reflection;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.api.controller.FloatSliderControllerBuilder;
 import dev.isxander.yacl3.api.controller.IntegerSliderControllerBuilder;
