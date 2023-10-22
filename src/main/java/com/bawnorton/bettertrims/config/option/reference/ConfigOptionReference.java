@@ -4,13 +4,12 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.config.annotation.*;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
-import com.bawnorton.bettertrims.effect.ArmorTrimEffect;
-import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.util.RegexPath;
 import com.bawnorton.bettertrims.reflection.Reflection;
+import com.bawnorton.bettertrims.util.RegexPath;
 import net.minecraft.data.client.ModelIds;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -154,15 +153,15 @@ public class ConfigOptionReference {
         if(!field.isAnnotationPresent(TextureLocation.class)) return null;
 
         TextureLocation location = field.getAnnotation(TextureLocation.class);
-        if(location.effectLookup() == ArmorTrimEffects.NONE) {
+        if(!location.effectLookup()) {
             String locationString = location.value();
             if(locationString.equals("none")) return null;
 
             return new Identifier(locationString);
         }
 
-        ArmorTrimEffect effect = location.effectLookup().getEffect();
-        RegexPath identifier = RegexPath.fromString(effect.getMaterial());
+        String searchString = location.value();
+        RegexPath identifier = RegexPath.fromString(StringUtils.wrap(searchString, "/"));
         return TEXTURE_CACHE.computeIfAbsent(identifier, id -> {
             Identifier itemId = Registries.ITEM.getIds().stream().filter(identifier::matches).findFirst().orElseGet(() -> {
                 BetterTrims.LOGGER.debug("Could not find item for identifier \"%s\", trying \"%s_ingot\"".formatted(identifier, identifier));

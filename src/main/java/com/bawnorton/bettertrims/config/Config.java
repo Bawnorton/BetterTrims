@@ -3,7 +3,6 @@ package com.bawnorton.bettertrims.config;
 import com.bawnorton.bettertrims.config.annotation.*;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
-import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 
 public class Config {
     private static Config LOCAL_INSTANCE = new Config();
@@ -96,7 +95,6 @@ public class Config {
         SERVER_INSTANCE = config;
     }
 
-    @SuppressWarnings("unused")
     public static class EnchantedGoldenApple implements NestedConfigOption {
         @FloatOption(type = OptionType.INHERIT, value = 1200, max = 12000, min = 1)
         @TextureLocation("minecraft:textures/item/golden_apple.png")
@@ -112,29 +110,27 @@ public class Config {
         public Integer maxAbsorption;
     }
 
-    @SuppressWarnings("unused")
     public static class Silver implements NestedConfigOption {
         @FloatOption(type = OptionType.INHERIT, value = 0.05f, max = 0.5f)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float movementSpeed;
         @FloatOption(type = OptionType.INHERIT, value = 0.05f, max = 0.5f)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float jumpHeight;
         @FloatOption(type = OptionType.INHERIT, value = 0.5f, max = 5)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float attackDamage;
         @FloatOption(type = OptionType.INHERIT, value = 0.3f, max = 3)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float attackSpeed;
         @FloatOption(type = OptionType.INHERIT, value = 0.03f, max = 0.3f)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float damageReduction;
         @FloatOption(type = OptionType.INHERIT, value = 0.25f, max = 1)
-        @TextureLocation(effectLookup = ArmorTrimEffects.SILVER)
+        @TextureLocation(value = "silver", effectLookup = true)
         public Float improveVision;
     }
 
-    @SuppressWarnings("unused")
     public static class SlimeBall implements NestedConfigOption {
         @FloatOption(type = OptionType.INHERIT, value = 0.25f, max = 1)
         @TextureLocation("minecraft:textures/item/slime_ball.png")
@@ -144,7 +140,6 @@ public class Config {
         public Float knockbackIncrease;
     }
 
-    @SuppressWarnings("unused")
     public static class Coal implements NestedConfigOption {
         @BooleanOption(type = OptionType.INHERIT, value = false)
         @TextureLocation("minecraft:textures/item/coal.png")
@@ -157,7 +152,6 @@ public class Config {
         public Integer furnaceSpeedIncrease;
     }
 
-    @SuppressWarnings("unused")
     public static class EnderPearl implements NestedConfigOption {
         @FloatOption(type = OptionType.INHERIT, value = 0.25f, max = 1)
         @TextureLocation("minecraft:textures/item/ender_pearl.png")
@@ -167,17 +161,15 @@ public class Config {
         public Boolean waterDamagesUser;
     }
 
-    @SuppressWarnings("unused")
     public static class Platinum implements NestedConfigOption {
         @BooleanOption(type = OptionType.INHERIT, value = true)
-        @TextureLocation(effectLookup = ArmorTrimEffects.PLATINUM)
+        @TextureLocation(value = "platinum", effectLookup = true)
         public Boolean illagersIgnore;
         @IntOption(type = OptionType.INHERIT, value = 1, min = 1, max = 6)
-        @TextureLocation(effectLookup = ArmorTrimEffects.PLATINUM)
+        @TextureLocation(value = "platinum", effectLookup = true)
         public Integer piecesForIllagersIgnore;
     }
 
-    @SuppressWarnings("unused")
     public static class PrismarineShard implements NestedConfigOption {
         @BooleanOption(type = OptionType.INHERIT, value = true)
         @TextureLocation("minecraft:textures/item/prismarine_shard.png")
@@ -193,7 +185,6 @@ public class Config {
         public Integer piecesForMiningFatigueImmunity;
     }
 
-    @SuppressWarnings("unused")
     public static class Gold implements NestedConfigOption {
         @BooleanOption(type = OptionType.INHERIT, value = true)
         @TextureLocation("minecraft:textures/item/gold_ingot.png")
@@ -203,7 +194,6 @@ public class Config {
         public Integer piecesForPiglinsIgnore;
     }
 
-    @SuppressWarnings("unused")
     public static class NetherBrick implements NestedConfigOption {
         @BooleanOption(type = OptionType.INHERIT, value = true)
         @TextureLocation("minecraft:textures/item/nether_brick.png")
