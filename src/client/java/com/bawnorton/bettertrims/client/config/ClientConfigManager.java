@@ -34,7 +34,7 @@ public abstract class ClientConfigManager {
                     Util.getOperatingSystem().open(URI.create("https://modrinth.com/mod/yacl/versions"));
                 }
                 MinecraftClient.getInstance().setScreen(parent);
-            }, Text.translatable("bettertrims.yacl.not_installed"), Text.of("bettertrims.yacl.not_installed.desc"), ScreenTexts.YES, ScreenTexts.NO);
+            }, Text.translatable("bettertrims.yacl.not_installed"), Text.translatable("bettertrims.yacl.not_installed.desc"), ScreenTexts.YES, ScreenTexts.NO);
         }
     }
 }

@@ -1,7 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.4-SNAPSHOT'
 	id 'maven-publish'
-	
+	id "me.modmuss50.mod-publish-plugin" version "0.3.3"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -112,5 +112,42 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+publishMods {
+	file = remapJar.archiveFile
+	changelog = "[Changelog](https://github.com/Bawnorton/BetterTrims/releases/tag/%s)".formatted(project.version)
+	type = STABLE
+	modLoaders.add("fabric")
+
+	github {
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		repository = "Bawnorton/BetterTrims"
+		commitish = "main"
+		changelog = file("CHANGELOG.md").readLines().join("\n")
+		displayName = project.version
+	}
+
+	curseforge {
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		projectId = "821752"
+		minecraftVersions.addAll("1.20", "1.20.1")
+		displayName = "bettertrims-%s.jar".formatted(project.version)
+
+		requires {
+			slug = "fabric-api"
+		}
+	}
+
+	modrinth {
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		projectId = "98ytUvlc"
+		minecraftVersions.addAll("1.20", "1.20.1")
+		displayName = "Better Trims Trims %s".formatted(project.version)
+
+		requires {
+			slug = "fabric-api"
+		}
 	}
 }
