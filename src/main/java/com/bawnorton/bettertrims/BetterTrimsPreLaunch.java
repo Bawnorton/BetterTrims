@@ -1,7 +1,10 @@
 package com.bawnorton.bettertrims;
 
 import com.bawnorton.bettertrims.config.ConfigManager;
+import com.bawnorton.mixinsquared.api.MixinCanceller;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+
+import java.util.List;
 
 public class BetterTrimsPreLaunch implements PreLaunchEntrypoint {
 
@@ -10,4 +13,5 @@ public class BetterTrimsPreLaunch implements PreLaunchEntrypoint {
         BetterTrims.LOGGER.debug("PreLaunching Better Trims");
         ConfigManager.loadConfigs();
     }
+
 }

@@ -63,7 +63,7 @@ dependencies {
 
 	// mixinextras
 	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}")))
-
+	include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.1.1")))
 	// config
 	modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${project.yacl_version}")
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")

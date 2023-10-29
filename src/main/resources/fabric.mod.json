@@ -26,6 +26,9 @@
     ],
     "modmenu": [
       "com.bawnorton.bettertrims.client.impl.ModMenuApiImpl"
+    ],
+    "mixinsquared": [
+      "com.bawnorton.bettertrims.BetterTrimsMixinCanceller"
     ]
   },
   "mixins": [

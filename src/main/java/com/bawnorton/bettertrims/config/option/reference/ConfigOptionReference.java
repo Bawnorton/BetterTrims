@@ -5,7 +5,7 @@ import com.bawnorton.bettertrims.config.annotation.*;
 import com.bawnorton.bettertrims.config.option.NestedConfigOption;
 import com.bawnorton.bettertrims.config.option.OptionType;
 import com.bawnorton.bettertrims.reflection.Reflection;
-import com.bawnorton.bettertrims.util.RegexPath;
+import com.bawnorton.bettertrims.util.ContainsPath;
 import net.minecraft.data.client.ModelIds;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ConfigOptionReference {
-    private static final Map<RegexPath, Identifier> TEXTURE_CACHE = new HashMap<>();
+    private static final Map<ContainsPath, Identifier> TEXTURE_CACHE = new HashMap<>();
 
     private final Object instance;
     private final Field field;
@@ -161,12 +161,12 @@ public class ConfigOptionReference {
         }
 
         String searchString = location.value();
-        RegexPath identifier = RegexPath.fromString(StringUtils.wrap(searchString, "/"));
+        ContainsPath identifier = ContainsPath.fromString(StringUtils.wrap(searchString, "/"));
         return TEXTURE_CACHE.computeIfAbsent(identifier, id -> {
-            Identifier itemId = Registries.ITEM.getIds().stream().filter(identifier::matches).findFirst().orElseGet(() -> {
+            Identifier itemId = Registries.ITEM.getIds().stream().filter(identifier::isIn).findFirst().orElseGet(() -> {
                 BetterTrims.LOGGER.debug("Could not find item for identifier \"%s\", trying \"%s_ingot\"".formatted(identifier, identifier));
-                RegexPath ingotIdentifier = identifier.withSuffix("_ingot");
-                return Registries.ITEM.getIds().stream().filter(ingotIdentifier::matches).findFirst().orElseGet(() -> {
+                ContainsPath ingotIdentifier = identifier.withSuffix("_ingot");
+                return Registries.ITEM.getIds().stream().filter(ingotIdentifier::isIn).findFirst().orElseGet(() -> {
                     BetterTrims.LOGGER.debug("Could not find item for identifier \"%s_ingot\"".formatted(identifier));
                     return null;
                 });

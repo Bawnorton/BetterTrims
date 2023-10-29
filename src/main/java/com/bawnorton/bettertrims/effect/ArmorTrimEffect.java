@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.compat.Compat;
 import com.bawnorton.bettertrims.compat.StackedTrimsCompat;
-import com.bawnorton.bettertrims.util.RegexPath;
+import com.bawnorton.bettertrims.util.ContainsPath;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,10 +12,10 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 
 public class ArmorTrimEffect {
-    private final RegexPath material;
+    private final ContainsPath material;
     private final Text tooltip;
 
-    public ArmorTrimEffect(RegexPath matieral, Text tooltip) {
+    public ArmorTrimEffect(ContainsPath matieral, Text tooltip) {
         this.material = matieral;
         this.tooltip = tooltip;
     }
@@ -35,9 +35,9 @@ public class ArmorTrimEffect {
             List<Identifier> materials = StackedTrimsCompat.getTrimMaterials(stack);
             if (materials == null) return false;
 
-            return material.matchesAny(materials);
+            return material.isInAny(materials);
         }
-        return material.matches(getTrimMaterial(stack));
+        return material.isIn(getTrimMaterial(stack));
     }
 
     public boolean appliesTo(Iterable<ItemStack> stacks) {

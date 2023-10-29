@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.util.RegexPath;
+import com.bawnorton.bettertrims.util.ContainsPath;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -9,7 +9,6 @@ import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,18 +40,18 @@ public abstract class ArmorTrimEffects {
     public static final ArmorTrimEffect RABBIT_HIDE = of(Items.RABBIT_HIDE);
     public static final ArmorTrimEffect SLIME_BALL = of(Items.SLIME_BALL);
     public static final ArmorTrimEffect ENCHANTED_GOLDEN_APPLE = of(Items.ENCHANTED_GOLDEN_APPLE);
-    public static final ArmorTrimEffect PLATINUM = of(new RegexPath("/platinum/"));
-    public static final ArmorTrimEffect SILVER = of(new RegexPath("/silver/"));
+    public static final ArmorTrimEffect PLATINUM = of(new ContainsPath("platinum"));
+    public static final ArmorTrimEffect SILVER = of(new ContainsPath("silver"));
 
     public static ArmorTrimEffect of(Item item) {
-        return of(new RegexPath(StringUtils.wrap(Registries.ITEM.getId(item).getPath(), "/")));
+        return of(new ContainsPath(Registries.ITEM.getId(item).getPath()));
     }
 
     public static ArmorTrimEffect of(RegistryKey<ArmorTrimMaterial> material) {
-        return of(new RegexPath(StringUtils.wrap(material.getValue().getPath(), "/")));
+        return of(new ContainsPath(material.getValue().getPath()));
     }
 
-    public static ArmorTrimEffect of(RegexPath material) {
+    public static ArmorTrimEffect of(ContainsPath material) {
         ArmorTrimEffect effect = new ArmorTrimEffect(material, getTooltip(material.path()));
         EFFECTS.add(effect);
         return effect;
