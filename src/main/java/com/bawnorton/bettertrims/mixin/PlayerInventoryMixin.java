@@ -18,12 +18,9 @@ public abstract class PlayerInventoryMixin {
 
     @ModifyReturnValue(method = "getBlockBreakingSpeed", at = @At("RETURN"))
     private float improveMiningSpeed(float original) {
-        System.out.println("original: " + original);
         NumberWrapper trimCount = NumberWrapper.zero();
         ArmorTrimEffects.IRON.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> trimCount.increment(1));
         float percentageFaster = ConfigManager.getConfig().ironMiningSpeedIncrease * trimCount.getInt();
-        System.out.println("percentageFaster: " + percentageFaster);
-        System.out.println("returning: " + original * (1 + percentageFaster));
         return original * (1 + percentageFaster);
     }
 }
