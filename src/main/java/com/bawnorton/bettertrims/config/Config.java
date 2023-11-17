@@ -13,7 +13,7 @@ public class Config {
     @FloatOption(value = 0.05f, max = 1)
     @TextureLocation("minecraft:textures/item/quartz.png")
     public Float quartzExperienceBonus;
-    @FloatOption(value = 8f, max = 80)
+    @FloatOption(value = 0.5f, max = 5)
     @TextureLocation("minecraft:textures/item/iron_ingot.png")
     public Float ironMiningSpeedIncrease;
     @FloatOption(value = 0.25f, max = 1)

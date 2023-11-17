@@ -18,6 +18,7 @@
     "MobEntityMixin",
     "PiglinBrainMixin",
     "PlayerEntityMixin",
+    "PlayerInventoryMixin",
     "ShulkerBulletEntityMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTemplateItemMixin",
@@ -26,9 +27,7 @@
     "accessor.AbstractFurnaceBlockEntityAccessor",
     "compat.IllagerEntityMixin",
     "compat.connector.fabric.EnchantmentHelperMixin",
-    "compat.connector.fabric.PlayerEntityMixin",
-    "compat.connector.forge.EnchantmentHelperMixin",
-    "compat.connector.forge.PlayerEntityMixin"
+    "compat.connector.forge.EnchantmentHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1

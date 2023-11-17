@@ -61,7 +61,6 @@ public abstract class ArmorTrimEffects {
         return Text.translatable("bettertrims.effect.%s.tooltip".formatted(path));
     }
 
-
     public static void forEachAppliedEffect(ItemStack stack, Consumer<ArmorTrimEffect> effectConsumer) {
         for (ArmorTrimEffect effect : EFFECTS) {
             if (effect.appliesTo(stack)) {
