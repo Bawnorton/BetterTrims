@@ -92,4 +92,4 @@ BetterTrims
 5. Launch Minecraft
 
 ### Reporting Bugs
-If you find any bugs, please report them on the [issue tracker](https://github.com/Benjamin-Norton/BetterTrims/issues).
+If you find any bugs, please report them on the [issue tracker](https://github.com/Benjamin-Norton/BetterTrims/issues)
