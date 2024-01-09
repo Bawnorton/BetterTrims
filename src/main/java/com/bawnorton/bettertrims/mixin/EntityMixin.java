@@ -74,8 +74,10 @@ public abstract class EntityMixin implements EntityExtender {
         List<ItemStack> equipped = new ArrayList<>();
         for (ItemStack stack : getHandItems()) equipped.add(stack);
         equipped.removeIf(stack -> stack.getItem() instanceof ArmorItem);
-        for (ItemStack stack : getArmorItems()) equipped.add(stack);
-        equipped.removeIf(ItemStack::isEmpty);
+        if(getArmorItems()!=null) {
+            for (ItemStack stack : getArmorItems()) equipped.add(stack);
+            equipped.removeIf(ItemStack::isEmpty);
+        }
         return equipped;
     }
 
