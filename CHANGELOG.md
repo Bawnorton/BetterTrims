@@ -12,6 +12,7 @@
 - Dragon's Breath effect now doesn't re-apply the cloud effect to it's owner
 - Enderpearl will only be able to teleport you every 10 ticks to prevent constant teleporting on repeated damage
 - Couple changes to the default config for balance purposes
+- Added no_no.json (@Bloodaxe95)
 ### Bug Fixes
 - Fix Copper Swim Speed not applying correclty
 - Fix Iron Mining Speed applying to all tools on all blocks
@@ -20,6 +21,7 @@
 - Fix crash with Fire Charge effect
 - Fix Fire Charge not applying to attacked mobs
 - Fix trim effects from Trims Expanded not applying correctly
+- Fix crash with Immersive Portals (@Magicalbananapi)
 
 <details>
 <summary>Older Versions</summary>
