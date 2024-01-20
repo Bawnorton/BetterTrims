@@ -14,7 +14,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.AreaEffectCloudEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -52,14 +55,15 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
     @Shadow
     public abstract void setAbsorptionAmount(float amount);
 
-    @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+    @Shadow
+    public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
     @Unique
     public Iterable<EquippedStack> betterTrims$getTrimmables() {
         List<EquippedStack> equipped = new ArrayList<>();
-        for(EquipmentSlot slot: EquipmentSlot.values()) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
             ItemStack equippedStack = getEquippedStack(slot);
-            if(equippedStack.getItem() instanceof Equipment) {
+            if (equippedStack.getItem() instanceof Equipment) {
                 equipped.add(EquippedStack.of(equippedStack, slot));
             }
         }
@@ -90,7 +94,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
     private float applyTrimSwimSpeedIncrease(float original) {
-        if(!ArmorTrimEffects.COPPER.appliesTo(betterTrims$getTrimmables())) return original;
+        if (!ArmorTrimEffects.COPPER.appliesTo(betterTrims$getTrimmables())) return original;
 
         NumberWrapper increase = NumberWrapper.zero();
         ArmorTrimEffects.COPPER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().copperSwimSpeedIncrease));
@@ -169,7 +173,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
 
     @Override
     protected void onLand(Block instance, BlockView world, Entity entity, Operation<Void> original) {
-        if(ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET))) {
+        if (ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET))) {
             Vec3d vec3d = getVelocity();
             if (vec3d.y < 0.0) setVelocity(vec3d.x, -vec3d.y, vec3d.z);
         } else {
@@ -179,7 +183,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
 
     @ModifyReturnValue(method = "computeFallDamage", at = @At("RETURN"))
     private int applyTrimFallDamageReduction(int original) {
-        if(ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET))) return 0;
+        if (ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET)))
+            return 0;
 
         NumberWrapper decrease = NumberWrapper.one();
         ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> decrease.decrement(ConfigManager.getConfig().slimeBallEffects.fallDamageReduction));
@@ -254,7 +259,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
 
     @ModifyReturnValue(method = "hasStatusEffect", at = @At("RETURN"))
     private boolean checkForSilverTrim(boolean original, StatusEffect statusEffect) {
-        if(statusEffect != StatusEffects.NIGHT_VISION) return original;
+        if (statusEffect != StatusEffects.NIGHT_VISION) return original;
         if (original) return true;
 
         return betterTrims$shouldSilverApply() && ArmorTrimEffects.SILVER.appliesTo(betterTrims$getTrimmables());
@@ -264,7 +269,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
     private StatusEffectInstance addTrimAmplifierBuff(StatusEffectInstance original) {
         NumberWrapper chance = NumberWrapper.zero();
         ArmorTrimEffects.GLOWSTONE_DUST.apply(betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().glowstonePotionAmplifierIncreaseChance));
-        if(chance.getFloat() > RandomHelper.nextFloat()) {
+        if (chance.getFloat() > RandomHelper.nextFloat()) {
             original = new StatusEffectInstance(original.getEffectType(), original.getDuration(), original.getAmplifier() + 1, original.isAmbient(), original.shouldShowParticles(), original.shouldShowIcon());
         }
         return original;

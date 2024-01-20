@@ -19,14 +19,14 @@ public class ParentedConfigOptionReference extends ConfigOptionReference {
 
     @Override
     public boolean isOf(String type) {
-        if(getOptionType().equals("inherit")) return parent.isOf(type);
+        if (getOptionType().equals("inherit")) return parent.isOf(type);
         return super.isOf(type);
     }
 
     @Override
     public @Nullable Identifier findTexture() {
         Identifier texture = super.findTexture();
-        if(texture == null) return parent.findTexture();
+        if (texture == null) return parent.findTexture();
         return texture;
     }
 

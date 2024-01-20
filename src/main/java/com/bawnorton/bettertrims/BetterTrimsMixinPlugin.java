@@ -19,8 +19,8 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
     public static boolean testClass(String className) {
         try {
             List<AnnotationNode> annotationNodes = MixinService.getService()
-                    .getBytecodeProvider()
-                    .getClassNode(className).visibleAnnotations;
+                                                               .getBytecodeProvider()
+                                                               .getClassNode(className).visibleAnnotations;
             if (annotationNodes == null) return true;
 
             for (AnnotationNode node : annotationNodes) {

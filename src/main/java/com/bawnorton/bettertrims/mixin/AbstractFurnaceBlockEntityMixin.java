@@ -25,20 +25,20 @@ public abstract class AbstractFurnaceBlockEntityMixin {
     @ModifyExpressionValue(method = "tick", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "net/minecraft/block/entity/AbstractFurnaceBlockEntity.canAcceptRecipeOutput(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/recipe/Recipe;Lnet/minecraft/util/collection/DefaultedList;I)Z", ordinal = 1)))
     private static int increaseCookTime(int original, World world, BlockPos pos, BlockState state, AbstractFurnaceBlockEntity blockEntity) {
         boolean nearbyCoalTrim = world.getEntitiesByClass(PlayerEntity.class, state.getCollisionShape(world, pos)
-                        .getBoundingBox()
-                        .offset(pos)
-                        .expand(ConfigManager.getConfig().coalEffects.playerDetectionRadius), player -> true)
-                .stream()
-                .map(player -> ((LivingEntityExtender) player).betterTrims$getTrimmables())
-                .flatMap(iterable -> {
-                    Collection<EquippedStack> list = new ArrayList<>();
-                    for (EquippedStack stack : iterable) {
-                        if (ArmorTrimEffects.COAL.appliesTo(stack)) list.add(stack);
-                    }
-                    return list.stream();
-                })
-                .findAny()
-                .isPresent();
+                                                                                   .getBoundingBox()
+                                                                                   .offset(pos)
+                                                                                   .expand(ConfigManager.getConfig().coalEffects.playerDetectionRadius), player -> true)
+                                      .stream()
+                                      .map(player -> ((LivingEntityExtender) player).betterTrims$getTrimmables())
+                                      .flatMap(iterable -> {
+                                          Collection<EquippedStack> list = new ArrayList<>();
+                                          for (EquippedStack stack : iterable) {
+                                              if (ArmorTrimEffects.COAL.appliesTo(stack)) list.add(stack);
+                                          }
+                                          return list.stream();
+                                      })
+                                      .findAny()
+                                      .isPresent();
 
         if (nearbyCoalTrim) {
             return Math.min(original + ConfigManager.getConfig().coalEffects.furnaceSpeedIncrease, ((AbstractFurnaceBlockEntityAccessor) blockEntity).getCookTimeTotal() - 1);

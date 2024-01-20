@@ -55,11 +55,12 @@ public abstract class YACLImpl {
         Collection<ConfigCategory> categories = new ArrayList<>();
         Groups groups = Reflection.getAnnotation(ClientConfigManager.getConfig(), Groups.class);
         List<String> groupNames = new ArrayList<>(Arrays.asList(groups.value()));
-        Reflection.forEachAnnotatedField(ClientConfigManager.getConfig(), field -> ConfigOptionReference.readGroup(field).ifPresent(group -> {
-            if(!groupNames.contains(group)) {
-                throw new IllegalStateException("Group \"" + group + "\" does not exist. It is referenced by field \"" + field.getName() + "\".");
-            }
-        }));
+        Reflection.forEachAnnotatedField(ClientConfigManager.getConfig(), field -> ConfigOptionReference.readGroup(field)
+                                                                                                        .ifPresent(group -> {
+                                                                                                            if (!groupNames.contains(group)) {
+                                                                                                                throw new IllegalStateException("Group \"" + group + "\" does not exist. It is referenced by field \"" + field.getName() + "\".");
+                                                                                                            }
+                                                                                                        }));
         for (String group : groupNames) {
             categories.add(generateCategoryForGroup(group));
         }
@@ -157,7 +158,10 @@ public abstract class YACLImpl {
 
     private static OptionDescription imagedDescription(ConfigOptionReference reference) {
         Identifier textureLocation = reference.findTexture();
-        if (textureLocation == null || MinecraftClient.getInstance().getResourceManager().getResource(textureLocation).isEmpty()) {
+        if (textureLocation == null || MinecraftClient.getInstance()
+                                                      .getResourceManager()
+                                                      .getResource(textureLocation)
+                                                      .isEmpty()) {
             return OptionDescription.of(description(reference.getFormattedName()));
         }
 

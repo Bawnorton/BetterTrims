@@ -174,7 +174,7 @@
   "bettertrims.yacl.description.silver.effects.improve.vision": "The percent increase in vision that will be granted to the wearer at night.",
   "bettertrims.yacl.description.silver.effects.jump.height": "The percent increase in jump height that will be given to the wearer at night.",
   "bettertrims.yacl.description.silver.effects.movement.speed": "The percent increase in movement speed that will be given to the wearer at night.",
-    "bettertrims.yacl.description.silver.effects.apply.in.fixed.time": "Whether or not the silver effects will be applied in dimensions with a fixed time. If false, the effects will only be applied in dimensions with a day/night cycle.",
+  "bettertrims.yacl.description.silver.effects.apply.in.fixed.time": "Whether or not the silver effects will be applied in dimensions with a fixed time. If false, the effects will only be applied in dimensions with a day/night cycle.",
   "bettertrims.yacl.description.platinum.effects.illagers.ignore": "Whether or not illagers will ignore the player.",
   "bettertrims.yacl.description.platinum.effects.pieces.for.illagers.ignore": "The number of pieces of platinum trim that must be worn for illagers to ignore the player.",
   "bettertrims.yacl.description.enable.quartz": "Whether or not Quartz effects are enabled.",

@@ -2,7 +2,6 @@ package com.bawnorton.bettertrims.reflection;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.config.Config;
-import com.bawnorton.bettertrims.config.annotation.Groups;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

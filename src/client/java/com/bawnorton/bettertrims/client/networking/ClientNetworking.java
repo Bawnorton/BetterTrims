@@ -19,14 +19,14 @@ public abstract class ClientNetworking {
             isConnectedToDedicated = buf.readBoolean();
             String serialized = buf.readString();
             ConfigManager.deserializeConfig(serialized);
-            if(!isConnectedToDedicated) return;
+            if (!isConnectedToDedicated) return;
 
             if (displayNewConfigToast) {
                 ToastManager toastManager = client.getToastManager();
                 toastManager.add(SystemToast.create(client, SystemToast.Type.WORLD_ACCESS_FAILURE, Text.translatable("bettertrims.new_config.title"), Text.translatable("bettertrims.new_config.desc")));
             } else displayNewConfigToast = true;
 
-            if(refreshScreen) {
+            if (refreshScreen) {
                 client.execute(EventHandler::onRecievedConfig);
                 refreshScreen = false;
             }
@@ -58,7 +58,7 @@ public abstract class ClientNetworking {
 
     public static void sendConfigToServer() {
         ClientPlayNetworking.send(Networking.CONFIG_SYNC, PacketByteBufs.create()
-                .writeString(ConfigManager.serializeConfig()));
+                                                                        .writeString(ConfigManager.serializeConfig()));
     }
 
     private static void requestConfigFromServer() {

@@ -15,20 +15,19 @@ import com.google.gson.JsonSyntaxException;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public abstract class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .setPrettyPrinting()
-            .create();
+                                                      .setPrettyPrinting()
+                                                      .create();
     private static final Path localConfigPath = FabricLoader.getInstance()
-            .getConfigDir()
-            .resolve(BetterTrims.MOD_ID + ".json");
+                                                            .getConfigDir()
+                                                            .resolve(BetterTrims.MOD_ID + ".json");
     private static final Path serverConfigPath = FabricLoader.getInstance()
-            .getConfigDir()
-            .resolve(BetterTrims.MOD_ID + "-server.json");
+                                                             .getConfigDir()
+                                                             .resolve(BetterTrims.MOD_ID + "-server.json");
 
     private static boolean loaded = false;
 
@@ -106,7 +105,7 @@ public abstract class ConfigManager {
     }
 
     private static void setIfNull(ConfigOptionReference reference, Object value) {
-        if(reference.isValueNull()) {
+        if (reference.isValueNull()) {
             reference.setConfigValue(value);
         }
     }

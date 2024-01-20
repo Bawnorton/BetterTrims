@@ -20,7 +20,8 @@ public abstract class ElderGuardianEntityMixin {
             NumberWrapper count = NumberWrapper.zero();
             ArmorTrimEffects.PRISMARINE_SHARD.apply(extender.betterTrims$getTrimmables(), () -> count.increment(1));
             if (!ConfigManager.getConfig().prismarineShardEffects.miningFatigueImmunity) return;
-            if (count.getInt() < ConfigManager.getConfig().prismarineShardEffects.piecesForMiningFatigueImmunity) return;
+            if (count.getInt() < ConfigManager.getConfig().prismarineShardEffects.piecesForMiningFatigueImmunity)
+                return;
 
             player.removeStatusEffect(StatusEffects.MINING_FATIGUE);
             ci.cancel();

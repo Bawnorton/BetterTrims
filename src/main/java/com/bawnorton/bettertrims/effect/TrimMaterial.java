@@ -24,11 +24,17 @@ public final class TrimMaterial {
 
     @SafeVarargs
     public static TrimMaterial of(RegistryKey<ArmorTrimMaterial>... material) {
-        return new TrimMaterial(List.of(Arrays.stream(material).map(RegistryKey::getValue).map(Identifier::getPath).toArray(String[]::new)));
+        return new TrimMaterial(List.of(Arrays.stream(material)
+                                              .map(RegistryKey::getValue)
+                                              .map(Identifier::getPath)
+                                              .toArray(String[]::new)));
     }
 
     public static TrimMaterial of(Item... items) {
-        return new TrimMaterial(List.of(Arrays.stream(items).map(Registries.ITEM::getId).map(Identifier::getPath).toArray(String[]::new)));
+        return new TrimMaterial(List.of(Arrays.stream(items)
+                                              .map(Registries.ITEM::getId)
+                                              .map(Identifier::getPath)
+                                              .toArray(String[]::new)));
     }
 
     public TrimMaterial or(TrimMaterial other) {

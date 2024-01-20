@@ -17,7 +17,7 @@ import java.net.URI;
 
 public abstract class ClientConfigManager {
     public static Config getConfig() {
-        if(!ConfigManager.loaded()) {
+        if (!ConfigManager.loaded()) {
             BetterTrims.LOGGER.warn("Attempted to access configs before they were loaded, loading configs now");
             ConfigManager.loadConfigs();
         }

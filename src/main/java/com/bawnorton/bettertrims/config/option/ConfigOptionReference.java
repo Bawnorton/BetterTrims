@@ -45,11 +45,13 @@ public class ConfigOptionReference {
 
     private void validateAnnotations() {
         Annotation[] annotations = field.getAnnotations();
-        if (annotations.length == 0) throw new IllegalStateException("Field \"" + field.getName() + "\" has no annotations.");
+        if (annotations.length == 0)
+            throw new IllegalStateException("Field \"" + field.getName() + "\" has no annotations.");
         boolean hasType = false;
         for (Annotation annotation : annotations) {
             if (annotation instanceof BooleanOption || annotation instanceof IntOption || annotation instanceof FloatOption || annotation instanceof NestedOption) {
-                if (hasType) throw new IllegalStateException("Field \"" + field.getName() + "\" has multiple type annotations.");
+                if (hasType)
+                    throw new IllegalStateException("Field \"" + field.getName() + "\" has multiple type annotations.");
                 hasType = true;
             }
         }
@@ -61,7 +63,8 @@ public class ConfigOptionReference {
         FieldType fieldType = getType();
         Class<? extends Annotation> expectedAnnotation = fieldType.expectedAnnotation();
         Annotation annotation = field.getAnnotation(expectedAnnotation);
-        if (annotation == null) throw new IllegalStateException("Field \"" + field.getName() + "\" has invalid type annotation. Expected @" + expectedAnnotation.getSimpleName());
+        if (annotation == null)
+            throw new IllegalStateException("Field \"" + field.getName() + "\" has invalid type annotation. Expected @" + expectedAnnotation.getSimpleName());
     }
 
     private void validateValueType(Class<?> clazz) {
@@ -69,7 +72,7 @@ public class ConfigOptionReference {
         if (clazz == null) throw new IllegalArgumentException("Class cannot be null.");
         if (!clazz.isAssignableFrom(value.getClass())) {
             throw new IllegalArgumentException("Invalid type " + clazz.getName() + " for " + value.getClass()
-                    .getName());
+                                                                                                  .getName());
         }
     }
 
@@ -185,29 +188,40 @@ public class ConfigOptionReference {
     }
 
     public @Nullable Identifier findTexture() {
-        if(!field.isAnnotationPresent(TextureLocation.class)) return null;
+        if (!field.isAnnotationPresent(TextureLocation.class)) return null;
 
         TextureLocation location = field.getAnnotation(TextureLocation.class);
-        if(!location.effectLookup()) {
+        if (!location.effectLookup()) {
             String locationString = location.value();
-            if(locationString.equals("none")) return null;
+            if (locationString.equals("none")) return null;
 
             return new Identifier(locationString);
         }
 
         String searchString = location.value();
         return TEXTURE_CACHE.computeIfAbsent(searchString, id -> {
-            Identifier itemId = Registries.ITEM.getIds().stream().filter(identifier -> identifier.getPath().contains(searchString)).findFirst().orElseGet(() -> {
-                BetterTrims.LOGGER.debug("Could not find item for identifier \"%s\", trying \"%s_ingot\"".formatted(searchString, searchString));
-                String ingotSearchString = searchString + "_ingot";
-                return Registries.ITEM.getIds().stream().filter(identifier -> identifier.getPath().contains(ingotSearchString)).findFirst().orElseGet(() -> {
-                    BetterTrims.LOGGER.debug("Could not find item for identifier \"%s_ingot\"".formatted(ingotSearchString));
-                    return null;
-                });
-            });
-            if(itemId == null) return null;
+            Identifier itemId = Registries.ITEM.getIds()
+                                               .stream()
+                                               .filter(identifier -> identifier.getPath().contains(searchString))
+                                               .findFirst()
+                                               .orElseGet(() -> {
+                                                   BetterTrims.LOGGER.debug("Could not find item for identifier \"%s\", trying \"%s_ingot\"".formatted(searchString, searchString));
+                                                   String ingotSearchString = searchString + "_ingot";
+                                                   return Registries.ITEM.getIds()
+                                                                         .stream()
+                                                                         .filter(identifier -> identifier.getPath()
+                                                                                                         .contains(ingotSearchString))
+                                                                         .findFirst()
+                                                                         .orElseGet(() -> {
+                                                                             BetterTrims.LOGGER.debug("Could not find item for identifier \"%s_ingot\"".formatted(ingotSearchString));
+                                                                             return null;
+                                                                         });
+                                               });
+            if (itemId == null) return null;
 
-            return ModelIds.getItemModelId(Registries.ITEM.get(itemId)).withPrefixedPath("textures/").withSuffixedPath(".png");
+            return ModelIds.getItemModelId(Registries.ITEM.get(itemId))
+                           .withPrefixedPath("textures/")
+                           .withSuffixedPath(".png");
         });
     }
 
@@ -234,6 +248,14 @@ public class ConfigOptionReference {
         FLOAT,
         NESTED;
 
+        public static FieldType of(Class<?> clazz) {
+            if (Boolean.class.isAssignableFrom(clazz)) return BOOLEAN;
+            if (Integer.class.isAssignableFrom(clazz)) return INTEGER;
+            if (Float.class.isAssignableFrom(clazz)) return FLOAT;
+            if (Object.class.isAssignableFrom(clazz)) return NESTED;
+            throw new IllegalArgumentException("Unknown type " + clazz.getName());
+        }
+
         private Class<? extends Annotation> expectedAnnotation() {
             return switch (this) {
                 case BOOLEAN -> BooleanOption.class;
@@ -241,14 +263,6 @@ public class ConfigOptionReference {
                 case FLOAT -> FloatOption.class;
                 case NESTED -> NestedOption.class;
             };
-        }
-
-        public static FieldType of(Class<?> clazz) {
-            if (Boolean.class.isAssignableFrom(clazz)) return BOOLEAN;
-            if (Integer.class.isAssignableFrom(clazz)) return INTEGER;
-            if (Float.class.isAssignableFrom(clazz)) return FLOAT;
-            if (Object.class.isAssignableFrom(clazz)) return NESTED;
-            throw new IllegalArgumentException("Unknown type " + clazz.getName());
         }
     }
 }

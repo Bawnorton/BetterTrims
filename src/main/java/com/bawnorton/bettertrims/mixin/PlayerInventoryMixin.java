@@ -18,7 +18,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
-    @Shadow @Final public PlayerEntity player;
+    @Shadow
+    @Final
+    public PlayerEntity player;
 
     @WrapOperation(method = "getBlockBreakingSpeed", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getMiningSpeedMultiplier(Lnet/minecraft/block/BlockState;)F"))
     private float improveMiningSpeed(ItemStack instance, BlockState state, Operation<Float> original) {

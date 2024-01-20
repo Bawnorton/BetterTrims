@@ -22,7 +22,7 @@ public abstract class VillagerEntityMixin {
         if (discount.getFloat() > 0) {
             for (TradeOffer offer : ((VillagerEntity) (Object) this).getOffers()) {
                 offer.increaseSpecialPrice(-MathHelper.ceil(discount.getFloat() * offer.getOriginalFirstBuyItem()
-                        .getCount()));
+                                                                                       .getCount()));
             }
         }
     }

@@ -14,14 +14,15 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class PiglinBrainMixin {
     @ModifyReturnValue(method = "wearsGoldArmor", at = @At("RETURN"))
     private static boolean checkPlayerTrims(boolean original, LivingEntity entity) {
-        if(ConfigManager.getConfig().netherBrickEffects.piglinsEnrage) {
+        if (ConfigManager.getConfig().netherBrickEffects.piglinsEnrage) {
             NumberWrapper netherBrickTrimCount = NumberWrapper.zero();
             ArmorTrimEffects.NETHER_BRICK.apply(((LivingEntityExtender) entity).betterTrims$getTrimmables(), () -> netherBrickTrimCount.increment(1));
-            if(netherBrickTrimCount.getInt() >= ConfigManager.getConfig().netherBrickEffects.piecesForPiglinsEnrage) return false;
+            if (netherBrickTrimCount.getInt() >= ConfigManager.getConfig().netherBrickEffects.piecesForPiglinsEnrage)
+                return false;
         }
-        if(original) return true;
+        if (original) return true;
 
-        if(ConfigManager.getConfig().goldEffects.piglinsIgnore) {
+        if (ConfigManager.getConfig().goldEffects.piglinsIgnore) {
             NumberWrapper goldTrimCount = NumberWrapper.zero();
             ArmorTrimEffects.GOLD.apply(((LivingEntityExtender) entity).betterTrims$getTrimmables(), () -> goldTrimCount.increment(1));
             return goldTrimCount.getInt() >= ConfigManager.getConfig().goldEffects.piecesForPiglinsIgnore;

@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
@@ -11,7 +10,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -34,6 +32,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
+    @Unique
+    private int ticksSinceLastTeleport = 0;
+
     @Shadow
     public abstract World getWorld();
 
@@ -46,14 +47,14 @@ public abstract class EntityMixin {
     @Shadow
     public abstract double getX();
 
-    @Shadow public abstract Vec3d getVelocity();
+    @Shadow
+    public abstract Vec3d getVelocity();
 
-    @Shadow public abstract void setVelocity(double x, double y, double z);
+    @Shadow
+    public abstract void setVelocity(double x, double y, double z);
 
-    @Shadow public abstract void setOnFireFor(int seconds);
-
-    @Unique
-    private int ticksSinceLastTeleport = 0;
+    @Shadow
+    public abstract void setOnFireFor(int seconds);
 
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
     protected boolean checkIfNetheriteTrimmed(boolean original) {
@@ -120,7 +121,7 @@ public abstract class EntityMixin {
         for (int i = 0; i < 16; ++i) {
             double newX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
             double newY = MathHelper.clamp(entity.getY() + (double) (entity.getRandom()
-                    .nextInt((int) (float) 16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld) world).getLogicalHeight() - 1);
+                                                                           .nextInt((int) (float) 16) - 8), world.getBottomY(), world.getBottomY() + ((ServerWorld) world).getLogicalHeight() - 1);
             double newZ = entity.getZ() + (entity.getRandom().nextDouble() - 0.5) * (float) 16;
             if (entity.hasVehicle()) entity.stopRiding();
 
