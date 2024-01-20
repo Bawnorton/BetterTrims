@@ -1,21 +1,25 @@
 package com.bawnorton.bettertrims.mixin;
 
+import com.bawnorton.bettertrims.config.Config;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.extend.EntityExtender;
+import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.event.GameEvent;
@@ -23,18 +27,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements EntityExtender {
-    @Shadow
-    public abstract Iterable<ItemStack> getArmorItems();
-
-    @Shadow
-    public abstract Iterable<ItemStack> getHandItems();
+public abstract class EntityMixin {
 
     @Shadow
     public abstract World getWorld();
@@ -48,42 +46,45 @@ public abstract class EntityMixin implements EntityExtender {
     @Shadow
     public abstract double getX();
 
+    @Shadow public abstract Vec3d getVelocity();
+
+    @Shadow public abstract void setVelocity(double x, double y, double z);
+
+    @Shadow public abstract void setOnFireFor(int seconds);
+
+    @Unique
+    private int ticksSinceLastTeleport = 0;
+
     @ModifyReturnValue(method = "isFireImmune", at = @At("RETURN"))
-    private boolean checkIfNetheriteTrimmed(boolean original) {
-        NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
-        return original || netheriteCount.getFloat() >= 0.99f;
+    protected boolean checkIfNetheriteTrimmed(boolean original) {
+        return original;
     }
 
     @ModifyArg(method = "setOnFireFromLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
-    private float reduceNetheriteTrimDamage(float original) {
-        NumberWrapper netheriteCount = NumberWrapper.zero();
-        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
-        return original * (1 - netheriteCount.getFloat());
+    protected float reduceNetheriteTrimDamage(float original) {
+        return original;
     }
 
     @ModifyReturnValue(method = "getStepHeight", at = @At("RETURN"))
-    private float applyTrimStepHeightIncrease(float original) {
-        NumberWrapper increase = NumberWrapper.zero();
-        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().leatherStepHeightIncrease));
-        return original + increase.getFloat();
+    protected float applyTrimStepHeightIncrease(float original) {
+        return original;
     }
 
-    @Unique
-    public List<ItemStack> betterTrims$getTrimmables() {
-        List<ItemStack> equipped = new ArrayList<>();
-        for (ItemStack stack : getHandItems()) equipped.add(stack);
-        equipped.removeIf(stack -> stack.getItem() instanceof ArmorItem);
-        for (ItemStack stack : getArmorItems()) equipped.add(stack);
-        equipped.removeIf(ItemStack::isEmpty);
-        return equipped;
+    @WrapOperation(method = "move", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;onEntityLand(Lnet/minecraft/world/BlockView;Lnet/minecraft/entity/Entity;)V"))
+    protected void onLand(Block instance, BlockView world, Entity entity, Operation<Void> original) {
+        original.call(instance, world, entity);
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void betterTrims$teleportOnChorusFruitTeleportation(CallbackInfo ci) {
+        ticksSinceLastTeleport++;
     }
 
     @Unique
     public boolean betterTrims$shouldSilverApply() {
         DimensionType dimension = getWorld().getDimension();
         if (dimension.hasFixedTime()) {
-            return dimension.ambientLight() <= 7f;
+            return ConfigManager.getConfig().silverEffects.applyInFixedTime;
         }
 
         long time = getWorld().getTimeOfDay() % 24000;
@@ -91,13 +92,13 @@ public abstract class EntityMixin implements EntityExtender {
     }
 
     @Unique
-    protected boolean didDodgeAttack(Entity entity) {
+    protected boolean didDodgeAttack(LivingEntity entity) {
         NumberWrapper dodgeChance = NumberWrapper.zero();
-        ArmorTrimEffects.CHORUS_FRUIT.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> dodgeChance.increment(ConfigManager.getConfig().chorusFruitDodgeChance));
+        ArmorTrimEffects.CHORUS_FRUIT.apply(((LivingEntityExtender) entity).betterTrims$getTrimmables(), () -> dodgeChance.increment(ConfigManager.getConfig().chorusFruitDodgeChance));
         if (Math.random() > dodgeChance.getFloat()) {
             return false;
-        } else if (entity instanceof LivingEntity livingEntity) {
-            betterTrims$randomTpEntity(livingEntity);
+        } else {
+            betterTrims$randomTpEntity(entity);
         }
         return true;
     }
@@ -107,6 +108,8 @@ public abstract class EntityMixin implements EntityExtender {
      */
     @Unique
     protected void betterTrims$randomTpEntity(LivingEntity entity) {
+        if (ticksSinceLastTeleport < 10) return;
+
         World world = entity.getWorld();
         if (world.isClient) return;
 
@@ -124,6 +127,7 @@ public abstract class EntityMixin implements EntityExtender {
             Vec3d vec3d = entity.getPos();
             if (!entity.teleport(newX, newY, newZ, true)) continue;
 
+            ticksSinceLastTeleport = 0;
             world.emitGameEvent(GameEvent.TELEPORT, vec3d, GameEvent.Emitter.of(entity));
             SoundEvent soundEvent = entity instanceof FoxEntity ? SoundEvents.ENTITY_FOX_TELEPORT : SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT;
             world.playSound(null, x, y, z, soundEvent, SoundCategory.PLAYERS, 1.0F, 1.0F);

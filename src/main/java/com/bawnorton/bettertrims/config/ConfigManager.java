@@ -5,8 +5,7 @@ import com.bawnorton.bettertrims.config.annotation.BooleanOption;
 import com.bawnorton.bettertrims.config.annotation.FloatOption;
 import com.bawnorton.bettertrims.config.annotation.IntOption;
 import com.bawnorton.bettertrims.config.annotation.NestedOption;
-import com.bawnorton.bettertrims.config.option.NestedConfigOption;
-import com.bawnorton.bettertrims.config.option.reference.ConfigOptionReference;
+import com.bawnorton.bettertrims.config.option.ConfigOptionReference;
 import com.bawnorton.bettertrims.networking.Networking;
 import com.bawnorton.bettertrims.reflection.Reflection;
 import com.google.gson.FieldNamingPolicy;
@@ -73,8 +72,8 @@ public abstract class ConfigManager {
 
     private static void validateFloatFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, FloatOption.class, (field, annotation) -> {
-            setIfNull(instance, field, annotation.value());
             ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
+            setIfNull(reference, annotation.value());
             if (reference.floatValue() < annotation.min()) reference.floatValue(annotation.min());
             if (reference.floatValue() > annotation.max()) reference.floatValue(annotation.max());
         });
@@ -82,30 +81,34 @@ public abstract class ConfigManager {
 
     private static void validateIntFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, IntOption.class, (field, annotation) -> {
-            setIfNull(instance, field, annotation.value());
             ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
+            setIfNull(reference, annotation.value());
             if (reference.intValue() < annotation.min()) reference.intValue(annotation.min());
             if (reference.intValue() > annotation.max()) reference.intValue(annotation.max());
         });
     }
 
     private static void validateBooleanFields(Object instance) {
-        Reflection.forEachFieldByAnnotation(instance, BooleanOption.class, (field, annotation) -> setIfNull(instance, field, annotation.value()));
+        Reflection.forEachFieldByAnnotation(instance, BooleanOption.class, (field, annotation) -> {
+            ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
+            setIfNull(reference, annotation.value());
+        });
     }
 
     private static void validateNestedFields(Object instance) {
         Reflection.forEachFieldByAnnotation(instance, NestedOption.class, (field, annotation) -> {
-            setIfNull(instance, field, Reflection.newInstance(field.getType()));
+            ConfigOptionReference reference = ConfigOptionReference.of(instance, field);
+            setIfNull(reference, Reflection.newInstance(field.getType()));
 
-            NestedConfigOption nestedOption = Reflection.accessField(field, instance, NestedConfigOption.class);
+            Object nestedOption = Reflection.accessField(field, instance, Object.class);
             validateFields(nestedOption);
         });
     }
 
-    private static void setIfNull(Object instance, Field field, Object fallback) {
-        if (Reflection.accessField(field, instance) != null) return;
-
-        Reflection.setField(field, instance, fallback);
+    private static void setIfNull(ConfigOptionReference reference, Object value) {
+        if(reference.isValueNull()) {
+            reference.setConfigValue(value);
+        }
     }
 
     public static String serializeConfig() {
@@ -125,22 +128,22 @@ public abstract class ConfigManager {
         return load(Config.getServerInstance(), serverConfigPath);
     }
 
-    private static Config load(Config config, Path path) {
+    private static Config load(Config defaultConfig, Path path) {
         try {
             if (!Files.exists(path)) {
                 Files.createDirectories(path.getParent());
                 Files.createFile(path);
-                return config;
+                return defaultConfig;
             }
             try {
                 return GSON.fromJson(Files.newBufferedReader(path), Config.class);
             } catch (JsonSyntaxException e) {
-                BetterTrims.LOGGER.error("Failed to parse config file, using default config");
+                BetterTrims.LOGGER.error("Failed to parse defaultConfig file, using default config");
             }
         } catch (IOException e) {
             BetterTrims.LOGGER.error("Failed to load config", e);
         }
-        return config;
+        return defaultConfig;
     }
 
     public static boolean loaded() {

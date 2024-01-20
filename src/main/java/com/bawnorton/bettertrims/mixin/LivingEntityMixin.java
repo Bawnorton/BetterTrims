@@ -2,37 +2,44 @@ package com.bawnorton.bettertrims.mixin;
 
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.extend.EntityExtender;
+import com.bawnorton.bettertrims.extend.AreaEffectCloudEntityExtender;
+import com.bawnorton.bettertrims.extend.LivingEntityExtender;
+import com.bawnorton.bettertrims.mixin.accessor.AreaEffectCloudEntityAccessor;
+import com.bawnorton.bettertrims.util.EquippedStack;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.bawnorton.bettertrims.util.RandomHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.minecraft.entity.AreaEffectCloudEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Equipment;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends EntityMixin {
+public abstract class LivingEntityMixin extends EntityMixin implements LivingEntityExtender {
     @Shadow
     @Final
     private Map<StatusEffect, StatusEffectInstance> activeStatusEffects;
@@ -45,11 +52,51 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow
     public abstract void setAbsorptionAmount(float amount);
 
+    @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+
+    @Unique
+    public Iterable<EquippedStack> betterTrims$getTrimmables() {
+        List<EquippedStack> equipped = new ArrayList<>();
+        for(EquipmentSlot slot: EquipmentSlot.values()) {
+            ItemStack equippedStack = getEquippedStack(slot);
+            if(equippedStack.getItem() instanceof Equipment) {
+                equipped.add(EquippedStack.of(equippedStack, slot));
+            }
+        }
+
+        return equipped;
+    }
+
+    @Override
+    protected boolean checkIfNetheriteTrimmed(boolean original) {
+        NumberWrapper netheriteCount = NumberWrapper.zero();
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
+        return original || netheriteCount.getFloat() >= 0.99f;
+    }
+
+    @Override
+    protected float reduceNetheriteTrimDamage(float original) {
+        NumberWrapper netheriteCount = NumberWrapper.zero();
+        ArmorTrimEffects.NETHERITE.apply(betterTrims$getTrimmables(), () -> netheriteCount.increment(ConfigManager.getConfig().netheriteFireResistance));
+        return original * (1 - netheriteCount.getFloat());
+    }
+
+    @Override
+    protected float applyTrimStepHeightIncrease(float original) {
+        NumberWrapper increase = NumberWrapper.zero();
+        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().leatherStepHeightIncrease));
+        return original + increase.getFloat();
+    }
+
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;updateVelocity(FLnet/minecraft/util/math/Vec3d;)V", ordinal = 0))
-    private float applyTrimSwimSpeedIncrease(float speed) {
+    private float applyTrimSwimSpeedIncrease(float original) {
+        if(!ArmorTrimEffects.COPPER.appliesTo(betterTrims$getTrimmables())) return original;
+
         NumberWrapper increase = NumberWrapper.zero();
         ArmorTrimEffects.COPPER.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().copperSwimSpeedIncrease));
-        return speed + increase.getFloat();
+        int dsLevel = EnchantmentHelper.getDepthStrider((LivingEntity) (Object) this);
+        if (dsLevel > 0) original += dsLevel * ConfigManager.getConfig().copperSwimSpeedIncrease;
+        return original + increase.getFloat();
     }
 
     @ModifyReturnValue(method = "getMovementSpeed()F", at = @At("RETURN"))
@@ -57,9 +104,9 @@ public abstract class LivingEntityMixin extends EntityMixin {
         if (((LivingEntity) (Object) this) instanceof AbstractHorseEntity horseEntity) {
             if (horseEntity.getControllingPassenger() instanceof PlayerEntity player) {
                 NumberWrapper increase = NumberWrapper.one();
-                ArmorTrimEffects.REDSTONE.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().redstoneMovementSpeedIncrease));
+                ArmorTrimEffects.REDSTONE.apply(((LivingEntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().redstoneMovementSpeedIncrease));
                 if (betterTrims$shouldSilverApply()) {
-                    ArmorTrimEffects.SILVER.apply(((EntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverEffects.movementSpeed));
+                    ArmorTrimEffects.SILVER.apply(((LivingEntityExtender) player).betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().silverEffects.movementSpeed));
                 }
                 return original * increase.getFloat();
             }
@@ -103,43 +150,63 @@ public abstract class LivingEntityMixin extends EntityMixin {
         return original;
     }
 
-    @ModifyExpressionValue(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/damage/DamageSource;getAttacker()Lnet/minecraft/entity/Entity;"))
-    private Entity applyFireChargeTrim(Entity original) {
-        if (!ArmorTrimEffects.FIRE_CHARGE.appliesTo(betterTrims$getTrimmables())) return original;
+    @ModifyArg(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setAttacker(Lnet/minecraft/entity/LivingEntity;)V"))
+    private @Nullable LivingEntity applyFireChargeTrim(@Nullable LivingEntity original) {
+        if (original == null) return null;
 
         NumberWrapper duration = NumberWrapper.zero();
         ArmorTrimEffects.FIRE_CHARGE.apply(betterTrims$getTrimmables(), () -> duration.increment(ConfigManager.getConfig().fireChargeFireDuration));
         if (duration.getInt() > 0) {
             original.setOnFireFor(duration.getInt());
         }
+        duration.set(0);
+        ArmorTrimEffects.FIRE_CHARGE.apply(((LivingEntityExtender) original).betterTrims$getTrimmables(), () -> duration.increment(ConfigManager.getConfig().fireChargeFireDuration));
+        if (duration.getInt() > 0) {
+            setOnFireFor(duration.getInt());
+        }
         return original;
+    }
+
+    @Override
+    protected void onLand(Block instance, BlockView world, Entity entity, Operation<Void> original) {
+        if(ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET))) {
+            Vec3d vec3d = getVelocity();
+            if (vec3d.y < 0.0) setVelocity(vec3d.x, -vec3d.y, vec3d.z);
+        } else {
+            super.onLand(instance, world, entity, original);
+        }
     }
 
     @ModifyReturnValue(method = "computeFallDamage", at = @At("RETURN"))
     private int applyTrimFallDamageReduction(int original) {
+        if(ConfigManager.getConfig().slimeBallEffects.bounce && ArmorTrimEffects.SLIME_BALL.appliesTo(getEquippedStack(EquipmentSlot.FEET))) return 0;
+
         NumberWrapper decrease = NumberWrapper.one();
         ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> decrease.decrement(ConfigManager.getConfig().slimeBallEffects.fallDamageReduction));
         return (int) (original * decrease.getFloat());
     }
 
-    @ModifyExpressionValue(method = "takeKnockback", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D"))
+    @ModifyVariable(method = "takeKnockback", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private double applyTrimKnockbackDecrease(double original) {
-        NumberWrapper decrease = NumberWrapper.one();
-        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> decrease.decrement(ConfigManager.getConfig().slimeBallEffects.knockbackIncrease));
-        return original * decrease.getFloat();
+        NumberWrapper increase = NumberWrapper.one();
+        ArmorTrimEffects.SLIME_BALL.apply(betterTrims$getTrimmables(), () -> increase.increment(ConfigManager.getConfig().slimeBallEffects.knockbackIncrease));
+        return original * increase.getFloat();
     }
 
     @Inject(method = "tickStatusEffects", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;", remap = false))
     private void manageAreaEffectCloud(CallbackInfo ci) {
         if (!ArmorTrimEffects.DRAGONS_BREATH.appliesTo(betterTrims$getTrimmables())) return;
+
         NumberWrapper radius = NumberWrapper.zero();
         ArmorTrimEffects.DRAGONS_BREATH.apply(betterTrims$getTrimmables(), () -> radius.increment(ConfigManager.getConfig().dragonBreathRadius));
 
         AreaEffectCloudEntity areaEffectCloud = new AreaEffectCloudEntity(getWorld(), getX(), getY(), getZ());
+        ((AreaEffectCloudEntityExtender) areaEffectCloud).betterTrims$setTrimOwner((LivingEntity) (Object) this);
         areaEffectCloud.setOwner((LivingEntity) (Object) this);
         areaEffectCloud.setDuration(1);
         areaEffectCloud.setRadius(radius.getFloat());
         activeStatusEffects.values().forEach(areaEffectCloud::addEffect);
+        ((AreaEffectCloudEntityAccessor) areaEffectCloud).invokeUpdateColor();
         getWorld().spawnEntity(areaEffectCloud);
     }
 
@@ -173,7 +240,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
 
         NumberWrapper chance = NumberWrapper.zero();
         ArmorTrimEffects.ENDER_PEARL.apply(betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().enderPearlEffects.dodgeChance));
-        if (chance.getFloat() > RandomHelper.nextFloat() || source.isIn(DamageTypeTags.IS_DROWNING)) {
+        if (chance.getFloat() > RandomHelper.nextFloat() || source.isIn(DamageTypeTags.IS_DROWNING) && ConfigManager.getConfig().enderPearlEffects.waterDamagesUser) {
             betterTrims$randomTpEntity((LivingEntity) (Object) this);
         }
         return false;
@@ -183,5 +250,23 @@ public abstract class LivingEntityMixin extends EntityMixin {
     private boolean checkTrims(boolean original) {
         if (original) return true;
         return ConfigManager.getConfig().enderPearlEffects.waterDamagesUser && ArmorTrimEffects.ENDER_PEARL.appliesTo(betterTrims$getTrimmables());
+    }
+
+    @ModifyReturnValue(method = "hasStatusEffect", at = @At("RETURN"))
+    private boolean checkForSilverTrim(boolean original, StatusEffect statusEffect) {
+        if(statusEffect != StatusEffects.NIGHT_VISION) return original;
+        if (original) return true;
+
+        return betterTrims$shouldSilverApply() && ArmorTrimEffects.SILVER.appliesTo(betterTrims$getTrimmables());
+    }
+
+    @ModifyVariable(method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;)Z", at = @At("HEAD"), argsOnly = true)
+    private StatusEffectInstance addTrimAmplifierBuff(StatusEffectInstance original) {
+        NumberWrapper chance = NumberWrapper.zero();
+        ArmorTrimEffects.GLOWSTONE_DUST.apply(betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().glowstonePotionAmplifierIncreaseChance));
+        if(chance.getFloat() > RandomHelper.nextFloat()) {
+            original = new StatusEffectInstance(original.getEffectType(), original.getDuration(), original.getAmplifier() + 1, original.isAmbient(), original.shouldShowParticles(), original.shouldShowIcon());
+        }
+        return original;
     }
 }

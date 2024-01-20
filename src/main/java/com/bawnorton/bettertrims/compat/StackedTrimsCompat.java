@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StackedTrimsCompat {
-    public static List<Identifier> getTrimMaterials(ItemStack stack) {
+    public static List<String> getTrimMaterials(ItemStack stack) {
         if (!Compat.isStackedTrimsLoaded()) throw new IllegalStateException("Stacked Trims is not loaded");
         NbtCompound nbt = stack.getNbt();
         if (nbt == null) return null;
@@ -18,11 +18,11 @@ public class StackedTrimsCompat {
         NbtElement trimElement = nbt.get("Trim");
         if (!(trimElement instanceof NbtList list)) return null;
 
-        List<Identifier> materials = new ArrayList<>();
+        List<String> materials = new ArrayList<>();
         for (NbtElement element : list) {
             if (!(element instanceof NbtCompound nbtCompound)) continue;
 
-            materials.add(new Identifier(nbtCompound.getString("material")));
+            materials.add(nbtCompound.getString("material"));
         }
         return materials;
     }

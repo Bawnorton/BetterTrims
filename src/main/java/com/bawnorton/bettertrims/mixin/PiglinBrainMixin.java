@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.mixin;
 
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.extend.EntityExtender;
+import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.LivingEntity;
@@ -16,14 +16,14 @@ public abstract class PiglinBrainMixin {
     private static boolean checkPlayerTrims(boolean original, LivingEntity entity) {
         if(ConfigManager.getConfig().netherBrickEffects.piglinsEnrage) {
             NumberWrapper netherBrickTrimCount = NumberWrapper.zero();
-            ArmorTrimEffects.NETHER_BRICK.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> netherBrickTrimCount.increment(1));
+            ArmorTrimEffects.NETHER_BRICK.apply(((LivingEntityExtender) entity).betterTrims$getTrimmables(), () -> netherBrickTrimCount.increment(1));
             if(netherBrickTrimCount.getInt() >= ConfigManager.getConfig().netherBrickEffects.piecesForPiglinsEnrage) return false;
         }
         if(original) return true;
 
         if(ConfigManager.getConfig().goldEffects.piglinsIgnore) {
             NumberWrapper goldTrimCount = NumberWrapper.zero();
-            ArmorTrimEffects.GOLD.apply(((EntityExtender) entity).betterTrims$getTrimmables(), () -> goldTrimCount.increment(1));
+            ArmorTrimEffects.GOLD.apply(((LivingEntityExtender) entity).betterTrims$getTrimmables(), () -> goldTrimCount.increment(1));
             return goldTrimCount.getInt() >= ConfigManager.getConfig().goldEffects.piecesForPiglinsIgnore;
         }
         return false;

@@ -1,6 +1,7 @@
-package com.bawnorton.bettertrims.config.option.reference;
+package com.bawnorton.bettertrims.config.option;
 
-import com.bawnorton.bettertrims.config.option.OptionType;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -17,9 +18,16 @@ public class ParentedConfigOptionReference extends ConfigOptionReference {
     }
 
     @Override
-    public boolean isOf(OptionType type) {
-        if(getOptionType() == OptionType.INHERIT) return parent.isOf(type);
+    public boolean isOf(String type) {
+        if(getOptionType().equals("inherit")) return parent.isOf(type);
         return super.isOf(type);
+    }
+
+    @Override
+    public @Nullable Identifier findTexture() {
+        Identifier texture = super.findTexture();
+        if(texture == null) return parent.findTexture();
+        return texture;
     }
 
     @Override

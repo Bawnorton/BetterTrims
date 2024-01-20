@@ -3,7 +3,7 @@ package com.bawnorton.bettertrims.mixin;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffect;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
-import com.bawnorton.bettertrims.extend.EntityExtender;
+import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.LivingEntity;
@@ -40,7 +40,7 @@ public abstract class ActiveTargetGoalMixin {
         if (!enabled) return original;
         return target -> {
             NumberWrapper trimCount = NumberWrapper.zero();
-            effect.apply(((EntityExtender) target).betterTrims$getTrimmables(), () -> trimCount.increment(1));
+            effect.apply(((LivingEntityExtender) target).betterTrims$getTrimmables(), () -> trimCount.increment(1));
             return trimCount.getInt() < required && (original == null || original.test(target));
         };
     }

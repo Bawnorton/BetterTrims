@@ -48,4 +48,11 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         }
         return increase.getFloat();
     }
+
+    @ModifyExpressionValue(method = "method_30263", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getStepHeight()F"))
+    private float adjustStepHeightForSneaking(float original) {
+        NumberWrapper decrease = NumberWrapper.zero();
+        ArmorTrimEffects.LEATHER.apply(betterTrims$getTrimmables(), () -> decrease.increment(ConfigManager.getConfig().leatherStepHeightIncrease));
+        return original - decrease.getFloat();
+    }
 }

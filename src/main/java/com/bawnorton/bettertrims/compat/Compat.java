@@ -4,8 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public abstract class Compat {
     public static boolean isStackedTrimsLoaded() {
-        return FabricLoader.getInstance().isModLoaded("stacked_trims") || FabricLoader.getInstance()
-                .isModLoaded("stackable_trims");
+        return FabricLoader.getInstance().isModLoaded("stacked_trims") || FabricLoader.getInstance().isModLoaded("stackable_trims");
     }
 
     public static boolean isYaclLoaded() {

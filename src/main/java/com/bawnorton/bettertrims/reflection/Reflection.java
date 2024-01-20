@@ -1,6 +1,8 @@
 package com.bawnorton.bettertrims.reflection;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.config.Config;
+import com.bawnorton.bettertrims.config.annotation.Groups;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,6 +33,10 @@ public abstract class Reflection {
 
     private static void forEachAnnotatedField(Class<?> clazz, Consumer<Field> fieldConsumer) {
         streamFields(clazz).filter(field -> field.getAnnotations().length > 0).forEach(fieldConsumer);
+    }
+
+    public static <T extends Annotation> T getAnnotation(Config config, Class<T> annotation) {
+        return config.getClass().getAnnotation(annotation);
     }
 
     public static Object accessField(Field field, Object instance) {

@@ -21,12 +21,21 @@ public abstract class ArmorTrimMixin {
     private static void addEffectTooltip(ItemStack stack, DynamicRegistryManager registryManager, List<Text> tooltip, CallbackInfo ci, @Local ArmorTrim trim) {
         if (tooltip.isEmpty()) return; // Shouldn't happen, but just in case
 
-        ArmorTrimEffects.forEachAppliedEffect(stack, effect -> tooltip.add(ScreenTexts.space()
-                                                                                   .append(effect.getTooltip()
-                                                                                                   .copy()
-                                                                                                   .fillStyle(Style.EMPTY.withColor(tooltip.get(tooltip.size() - 1)
-                                                                                                                                            .getStyle()
-                                                                                                                                            .getColor())))));
+        ArmorTrimEffects.forEachAppliedEffect(stack, effect -> tooltip.add(
+                        ScreenTexts.space()
+                                   .append(
+                                           effect.getTooltip()
+                                                 .copy()
+                                                 .fillStyle(
+                                                         Style.EMPTY.withColor(
+                                                                 tooltip.get(tooltip.size() - 1)
+                                                                        .getStyle()
+                                                                        .getColor()
+                                                         )
+                                                 )
+                                   )
+                )
+        );
 
     }
 }

@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractFurnaceBlockEntityMixin",
     "ActiveTargetGoalMixin",
+    "AreaEffectCloudEntityMixin",
     "ArmorTrimMixin",
     "ElderGuardianEntityMixin",
     "EndermanEntityMixin",
@@ -25,6 +26,7 @@
     "StatusEffectInstanceMixin",
     "VillagerEntityMixin",
     "accessor.AbstractFurnaceBlockEntityAccessor",
+    "accessor.AreaEffectCloudEntityAccessor",
     "compat.IllagerEntityMixin",
     "compat.connector.fabric.EnchantmentHelperMixin",
     "compat.connector.forge.EnchantmentHelperMixin"
