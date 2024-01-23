@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims;
 
 import com.bawnorton.bettertrims.annotation.ConditionalMixin;
-import com.bawnorton.bettertrims.annotation.MultiConditionMixin;
 import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
@@ -33,32 +32,6 @@ public class BetterTrimsMixinPlugin implements IMixinConfigPlugin {
                     } else {
                         BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
                         return !applyIfPresent;
-                    }
-                } else if (node.desc.equals(Type.getDescriptor(MultiConditionMixin.class))) {
-                    List<AnnotationNode> conditions = Annotations.getValue(node, "conditions");
-                    boolean shouldApply = true;
-                    BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is being tested for multiple conditions");
-                    for (AnnotationNode condition : conditions) {
-                        String modid = Annotations.getValue(condition, "modid");
-                        boolean applyIfPresent = Annotations.getValue(condition, "applyIfPresent", Boolean.TRUE);
-                        if (isModLoaded(modid)) {
-                            if (!applyIfPresent) {
-                                BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is not being applied because " + modid + " is loaded");
-                                shouldApply = false;
-                            }
-                        } else {
-                            if (applyIfPresent) {
-                                BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is not being applied because " + modid + " is not loaded");
-                                shouldApply = false;
-                            }
-                        }
-                    }
-                    if (shouldApply) {
-                        BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is being applied because all conditions are met");
-                        return true;
-                    } else {
-                        BetterTrims.LOGGER.debug("BetterTrimsMixinPlugin: " + className + " is not being applied because not all conditions are met");
-                        return false;
                     }
                 }
             }
