@@ -231,7 +231,7 @@ public class Config {
     }
 
     public static class EnderPearl {
-        @FloatOption(group = "inherit", value = 0.25f, max = 1)
+        @FloatOption(group = "inherit", value = 0.05f, max = 1)
         public Float dodgeChance;
         @BooleanOption(group = "inherit", value = true)
         public Boolean waterDamagesUser;

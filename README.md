@@ -65,7 +65,7 @@ BetterTrims
 - Ender Pearl
   - Chance to dodge any damage from **Any Source** and tp a short distance
   - Take damage from water and rain
-  - 25% chance per trim
+  - 5% chance per trim
 - Fire Charge
   - Entities that hit you or you hit will be set ablaze
   - 1 second per trim

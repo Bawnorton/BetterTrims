@@ -3,6 +3,7 @@ package com.bawnorton.bettertrims.effect;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterials;
 
 import java.util.ArrayList;
@@ -61,5 +62,15 @@ public abstract class ArmorTrimEffects {
                 effectConsumer.accept(effect);
             }
         }
+    }
+
+    public static List<ArmorTrimEffect> getEffects(ArmorTrim armorTrim) {
+        List<ArmorTrimEffect> effects = new ArrayList<>();
+        for (ArmorTrimEffect effect : EFFECTS) {
+            if (effect.appliesTo(armorTrim)) {
+                effects.add(effect);
+            }
+        }
+        return effects;
     }
 }

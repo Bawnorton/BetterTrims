@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
+import com.bawnorton.bettertrims.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ArmorTrim.class)
+@ConditionalMixin(modid = "better-trim-tooltips", applyIfPresent = false)
 public abstract class ArmorTrimMixin {
     @Inject(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2, shift = At.Shift.AFTER))
     private static void addEffectTooltip(ItemStack stack, DynamicRegistryManager registryManager, List<Text> tooltip, CallbackInfo ci, @Local ArmorTrim trim) {
@@ -34,8 +36,6 @@ public abstract class ArmorTrimMixin {
                                                          )
                                                  )
                                    )
-                )
-        );
-
+        ));
     }
 }

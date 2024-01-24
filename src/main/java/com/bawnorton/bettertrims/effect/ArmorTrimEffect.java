@@ -4,8 +4,10 @@ import com.bawnorton.bettertrims.compat.Compat;
 import com.bawnorton.bettertrims.compat.StackedTrimsCompat;
 import com.bawnorton.bettertrims.util.EquippedStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -57,6 +59,11 @@ public class ArmorTrimEffect {
             if (appliesTo(stack)) return true;
         }
         return false;
+    }
+
+    public boolean appliesTo(ArmorTrim armorTrim) {
+        String material = Registries.ITEM.getId(armorTrim.getMaterial().value().ingredient().value()).getPath();
+        return this.material.appliesTo(material);
     }
 
     public void apply(Iterable<EquippedStack> armour, Effect effect) {

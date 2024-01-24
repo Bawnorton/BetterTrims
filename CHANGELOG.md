@@ -1,12 +1,16 @@
 ## Changelog
 
+# 2.2.0
+- Add Compat with Better Trim Tooltips (Press Shift to see the effects)
+- Fix default Ender Pearl dodge chance
+
+<details>
+<summary>Older Versions</summary>
+
 # 2.1.2
 - Updated Readme to include the changes
 - Added exact figures to the Readme, in-game tooltips will still remain deliberately vague
 - Re-balanced Netherbrick Trim
-
-<details>
-<summary>Older Versions</summary>
 
 # 2.1.1
 - Fix crash with incorrect application of compat mixins when another mod is not present

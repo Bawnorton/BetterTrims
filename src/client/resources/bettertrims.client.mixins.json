@@ -5,7 +5,8 @@
   "plugin": "com.bawnorton.bettertrims.BetterTrimsMixinPlugin",
   "client": [
     "GameRendererMixin",
-    "compat.iris.GameRendererMixinSquared"
+    "compat.iris.GameRendererMixinSquared",
+    "compat.bettertrimtooltips.ArmorTrimMixinSquared"
   ],
   "injectors": {
     "defaultRequire": 1

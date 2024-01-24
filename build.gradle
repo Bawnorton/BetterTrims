@@ -81,6 +81,7 @@ dependencies {
 	// mod compats
 	modCompileOnly("maven.modrinth:illager-invasion:${project.illager_invasion_version}")
 	modCompileOnly("maven.modrinth:friends-and-foes:${project.friends_and_foes_version}")
+	modImplementation("maven.modrinth:better-trim-tooltips:${project.better_trim_tooltips_version}")
 }
 
 processResources {
