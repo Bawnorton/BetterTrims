@@ -50,7 +50,7 @@ public final class TrimMaterial {
     public boolean appliesTo(Iterable<String> materials) {
         for (String match : matches) {
             for (String mat : materials) {
-                if (match.contains(mat)) return true;
+                if (mat.contains(match)) return true;
             }
         }
         return false;

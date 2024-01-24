@@ -1,11 +1,15 @@
 ## Changelog
 
-# 2.2.0
-- Add Compat with Better Trim Tooltips (Press Shift to see the effects)
-- Fix default Ender Pearl dodge chance
+# 2.2.1
+- Invert material checking to improve leniency with other mod's items when using All The Trims
+- Previously was "material contains item", now is "item contains material", so "block of iron" will now be considered iron
 
 <details>
 <summary>Older Versions</summary>
+
+# 2.2.0
+- Add Compat with Better Trim Tooltips (Press Shift to see the effects)
+- Fix default Ender Pearl dodge chance
 
 # 2.1.2
 - Updated Readme to include the changes
