@@ -273,7 +273,7 @@ public class Config {
         public Integer piecesForWitherSkeletonsIgnore;
         @BooleanOption(group = "inherit", value = true)
         public Boolean piglinsEnrage;
-        @IntOption(group = "inherit", value = 4, min = 1, max = 6)
+        @IntOption(group = "inherit", value = 2, min = 1, max = 6)
         public Integer piecesForPiglinsEnrage;
     }
 }
