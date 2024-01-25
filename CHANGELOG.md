@@ -1,11 +1,14 @@
 ## Changelog
 
-# 2.2.1
-- Invert material checking to improve leniency with other mod's items when using All The Trims
-- Previously was "material contains item", now is "item contains material", so "block of iron" will now be considered iron
+# 2.2.2
+- Fix crash with Beacon Overhaul when faking night vision with silver trim
 
 <details>
 <summary>Older Versions</summary>
+
+# 2.2.1
+- Invert material checking to improve leniency with other mod's items when using All The Trims
+- Previously was "material contains item", now is "item contains material", so "block of iron" will now be considered iron
 
 # 2.2.0
 - Add Compat with Better Trim Tooltips (Press Shift to see the effects)
