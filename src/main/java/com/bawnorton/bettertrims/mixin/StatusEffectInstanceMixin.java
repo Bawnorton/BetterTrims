@@ -3,7 +3,6 @@ package com.bawnorton.bettertrims.mixin;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
-import com.bawnorton.bettertrims.extend.StatusEffectInstanceExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.bawnorton.bettertrims.util.RandomHelper;
 import net.minecraft.entity.LivingEntity;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(StatusEffectInstance.class)
-public abstract class StatusEffectInstanceMixin implements StatusEffectInstanceExtender {
+public abstract class StatusEffectInstanceMixin {
     @Shadow
     private int duration;
 

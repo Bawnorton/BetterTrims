@@ -1,10 +1,15 @@
 ## Changelog
 
-# 2.2.2
-- Fix crash with Beacon Overhaul when faking night vision with silver trim
+# 2.2.3
+- Fix dragons breath trim applying to owner if the effect is provided by the armour
+- Effect cloud now only applies a 1 second copy of the effect so the effect is only shared while in the cloud
+- Increased default radius of the cloud to balance this out
 
 <details>
 <summary>Older Versions</summary>
+
+# 2.2.2
+- Fix crash with Beacon Overhaul when faking night vision with silver trim
 
 # 2.2.1
 - Invert material checking to improve leniency with other mod's items when using All The Trims

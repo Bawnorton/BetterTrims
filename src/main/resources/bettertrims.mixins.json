@@ -27,6 +27,7 @@
     "VillagerEntityMixin",
     "accessor.AbstractFurnaceBlockEntityAccessor",
     "accessor.AreaEffectCloudEntityAccessor",
+    "accessor.StatusEffectInstanceAccessor",
     "compat.IllagerEntityMixin",
     "compat.connector.fabric.EnchantmentHelperMixin",
     "compat.connector.forge.EnchantmentHelperMixin"

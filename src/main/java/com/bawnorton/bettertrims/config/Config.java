@@ -55,7 +55,7 @@ public class Config {
     @FloatOption(group = "added_vanilla", value = 0.4f, max = 4)
     @TextureLocation("minecraft:textures/item/leather.png")
     public Float leatherStepHeightIncrease;
-    @FloatOption(group = "added_vanilla", value = 1.25f, max = 5)
+    @FloatOption(group = "added_vanilla", value = 2f, max = 10)
     @TextureLocation("minecraft:textures/item/dragon_breath.png")
     public Float dragonBreathRadius;
     @FloatOption(group = "added_vanilla", value = 1.5f, max = 5)

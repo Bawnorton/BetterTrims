@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.AreaEffectCloudEntityExtender;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.mixin.accessor.AreaEffectCloudEntityAccessor;
+import com.bawnorton.bettertrims.mixin.accessor.StatusEffectInstanceAccessor;
 import com.bawnorton.bettertrims.util.EquippedStack;
 import com.bawnorton.bettertrims.util.NumberWrapper;
 import com.bawnorton.bettertrims.util.RandomHelper;
@@ -34,9 +35,12 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -206,11 +210,15 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
         ArmorTrimEffects.DRAGONS_BREATH.apply(betterTrims$getTrimmables(), () -> radius.increment(ConfigManager.getConfig().dragonBreathRadius));
 
         AreaEffectCloudEntity areaEffectCloud = new AreaEffectCloudEntity(getWorld(), getX(), getY(), getZ());
+        activeStatusEffects.values().forEach(effect -> {
+            StatusEffectInstance copy = new StatusEffectInstance(effect);
+            ((StatusEffectInstanceAccessor) copy).setDuration(2);
+            areaEffectCloud.addEffect(copy);
+        });
         ((AreaEffectCloudEntityExtender) areaEffectCloud).betterTrims$setTrimOwner((LivingEntity) (Object) this);
         areaEffectCloud.setOwner((LivingEntity) (Object) this);
-        areaEffectCloud.setDuration(1);
         areaEffectCloud.setRadius(radius.getFloat());
-        activeStatusEffects.values().forEach(areaEffectCloud::addEffect);
+        areaEffectCloud.setDuration(1);
         ((AreaEffectCloudEntityAccessor) areaEffectCloud).invokeUpdateColor();
         getWorld().spawnEntity(areaEffectCloud);
     }
