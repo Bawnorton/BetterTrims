@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Debug(export = true)
 @Mixin(value = GameRenderer.class, priority = 1500)
 @ConditionalMixin(modid = "iris")
 public abstract class GameRendererMixinSquared {
