@@ -1,12 +1,19 @@
 ## Changelog
 
+# 2.3.0
+- Removed the ability to increase the durability of trim templates (No one was using this anyway)
+- Made it so trims that cause entities to ignore you no longer also ignore attacks and will now attack back
+- Fixed ender pearl dogde occasionally damaging the player
+- Fixed pillager entity targeting not respecting the config
+- Changed default copper swim speed buf to 0.005 velocity/s per trim
+
+<details>
+<summary>Older Versions</summary>
+
 # 2.2.3
 - Fix dragons breath trim applying to owner if the effect is provided by the armour
 - Effect cloud now only applies a 1 second copy of the effect so the effect is only shared while in the cloud
 - Increased default radius of the cloud to balance this out
-
-<details>
-<summary>Older Versions</summary>
 
 # 2.2.2
 - Fix crash with Beacon Overhaul when faking night vision with silver trim
