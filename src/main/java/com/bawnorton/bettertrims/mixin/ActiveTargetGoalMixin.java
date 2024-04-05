@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.Map;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
@@ -23,25 +26,31 @@ import java.util.function.UnaryOperator;
 public abstract class ActiveTargetGoalMixin {
     @Unique
     // @formatter:off
-    private final Map<Class<? extends LivingEntity>, UnaryOperator<Predicate<LivingEntity>>> trimPredicates = Map.ofEntries(
-            Map.entry(IllagerEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PLATINUM, ConfigManager.getConfig().platinumEffects.piecesForIllagersIgnore, ConfigManager.getConfig().platinumEffects.illagersIgnore)),
-            Map.entry(GuardianEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.PRISMARINE_SHARD, ConfigManager.getConfig().prismarineShardEffects.piecesForGuardiansIgnore, ConfigManager.getConfig().prismarineShardEffects.guardiansIgnore)),
-            Map.entry(BlazeEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK, ConfigManager.getConfig().netherBrickEffects.piecesForBlazesIgnore, ConfigManager.getConfig().netherBrickEffects.blazesIgnore)),
-            Map.entry(WitherSkeletonEntity.class, original -> getTrimPredicate(original, ArmorTrimEffects.NETHER_BRICK, ConfigManager.getConfig().netherBrickEffects.piecesForWitherSkeletonsIgnore, ConfigManager.getConfig().netherBrickEffects.witherSkeletonsIgnore))
+    private final Map<Class<? extends LivingEntity>, BiFunction<Predicate<LivingEntity>, LivingEntity, Predicate<LivingEntity>>> trimPredicates = Map.ofEntries(
+            Map.entry(IllagerEntity.class, (original, mob) -> getTrimPredicate(original, mob, ArmorTrimEffects.PLATINUM, ConfigManager.getConfig().platinumEffects.piecesForIllagersIgnore, ConfigManager.getConfig().platinumEffects.illagersIgnore)),
+            Map.entry(GuardianEntity.class, (original, mob) -> getTrimPredicate(original, mob, ArmorTrimEffects.PRISMARINE_SHARD, ConfigManager.getConfig().prismarineShardEffects.piecesForGuardiansIgnore, ConfigManager.getConfig().prismarineShardEffects.guardiansIgnore)),
+            Map.entry(BlazeEntity.class, (original, mob) -> getTrimPredicate(original, mob, ArmorTrimEffects.NETHER_BRICK, ConfigManager.getConfig().netherBrickEffects.piecesForBlazesIgnore, ConfigManager.getConfig().netherBrickEffects.blazesIgnore)),
+            Map.entry(WitherSkeletonEntity.class, (original, mob) -> getTrimPredicate(original, mob, ArmorTrimEffects.NETHER_BRICK, ConfigManager.getConfig().netherBrickEffects.piecesForWitherSkeletonsIgnore, ConfigManager.getConfig().netherBrickEffects.witherSkeletonsIgnore))
     );
 
     @ModifyArg(method = "<init>(Lnet/minecraft/entity/mob/MobEntity;Ljava/lang/Class;IZZLjava/util/function/Predicate;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/TargetPredicate;setPredicate(Ljava/util/function/Predicate;)Lnet/minecraft/entity/ai/TargetPredicate;"))
-    private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local MobEntity mob) {
-        return trimPredicates.getOrDefault(mob.getClass(), UnaryOperator.identity()).apply(predicate);
+    private Predicate<LivingEntity> checkPlayerTrims(@Nullable Predicate<LivingEntity> predicate, @Local(argsOnly=true) MobEntity mob) {
+        return trimPredicates.getOrDefault(mob.getClass(), (a, b) -> a).apply(predicate, mob);
     }
 
     @Unique
-    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, ArmorTrimEffect effect, int required, boolean enabled) {
-        if (!enabled) return original;
+    private Predicate<LivingEntity> getTrimPredicate(Predicate<LivingEntity> original, LivingEntity mob, ArmorTrimEffect effect, int required, boolean enabled) {
         return target -> {
+            if (!enabled) return original == null || original.test(target);
+
             NumberWrapper trimCount = NumberWrapper.zero();
             effect.apply(((LivingEntityExtender) target).betterTrims$getTrimmables(), () -> trimCount.increment(1));
-            return trimCount.getInt() < required && (original == null || original.test(target));
+            if(target.equals(mob.getAttacker())) return true;
+
+            boolean satisfiesTrimCount = trimCount.getInt() >= required;
+            if(!satisfiesTrimCount) return original == null || original.test(target);
+
+            return false;
         };
     }
 }

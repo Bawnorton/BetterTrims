@@ -3,7 +3,6 @@ package com.bawnorton.bettertrims.config;
 import com.bawnorton.bettertrims.config.annotation.*;
 
 @Groups({
-        "game",
         "toggles",
         "vanilla",
         "added_vanilla",
@@ -13,8 +12,6 @@ public class Config {
     private static Config LOCAL_INSTANCE = new Config();
     private static Config SERVER_INSTANCE = new Config();
 
-    @IntOption(group = "game", value = 1, min = 1)
-    public Integer trimDurability;
     @FloatOption(group = "vanilla", value = 0.05f, max = 1)
     @TextureLocation("minecraft:textures/item/quartz.png")
     public Float quartzExperienceBonus;
@@ -27,7 +24,7 @@ public class Config {
     @FloatOption(group = "vanilla", value = 0.1f, max = 1)
     @TextureLocation("minecraft:textures/item/redstone.png")
     public Float redstoneMovementSpeedIncrease;
-    @FloatOption(group = "vanilla", value = 0.05f, max = 0.5f)
+    @FloatOption(group = "vanilla", value = 0.005f, max = 0.05f)
     @TextureLocation("minecraft:textures/item/copper_ingot.png")
     public Float copperSwimSpeedIncrease;
     @FloatOption(group = "vanilla", value = 0.125f, max = 1)

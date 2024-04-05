@@ -21,8 +21,6 @@
     "PlayerEntityMixin",
     "PlayerInventoryMixin",
     "ShulkerBulletEntityMixin",
-    "SmithingScreenHandlerMixin",
-    "SmithingTemplateItemMixin",
     "StatusEffectInstanceMixin",
     "VillagerEntityMixin",
     "accessor.AbstractFurnaceBlockEntityAccessor",

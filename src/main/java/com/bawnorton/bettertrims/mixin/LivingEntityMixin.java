@@ -62,6 +62,8 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
     @Shadow
     public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
+    @Shadow public abstract @Nullable LivingEntity getAttacker();
+
     @Unique
     public Iterable<EquippedStack> betterTrims$getTrimmables() {
         List<EquippedStack> equipped = new ArrayList<>();
@@ -256,7 +258,7 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
         if (chance.getFloat() > RandomHelper.nextFloat() || source.isIn(DamageTypeTags.IS_DROWNING) && ConfigManager.getConfig().enderPearlEffects.waterDamagesUser) {
             betterTrims$randomTpEntity((LivingEntity) (Object) this);
         }
-        return false;
+        return true;
     }
 
     @ModifyReturnValue(method = "hurtByWater", at = @At("RETURN"))

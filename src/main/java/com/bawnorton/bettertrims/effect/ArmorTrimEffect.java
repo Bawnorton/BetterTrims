@@ -63,6 +63,8 @@ public class ArmorTrimEffect {
 
     public boolean appliesTo(ArmorTrim armorTrim) {
         String material = Registries.ITEM.getId(armorTrim.getMaterial().value().ingredient().value()).getPath();
+        if (!enabled.getAsBoolean()) return false;
+
         return this.material.appliesTo(material);
     }
 
