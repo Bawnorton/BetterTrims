@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.client.mixin.compat.beaconoverhaul;
 
-import com.bawnorton.bettertrims.annotation.ConditionalMixin;
+import com.bawnorton.bettertrims.util.mixin.annotation.ConditionalMixin;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.GameRenderer;
@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = GameRenderer.class, priority = 1500)
 @ConditionalMixin(modid = "beaconoverhaul")
 public abstract class GameRendererMixinSquared {
-    @SuppressWarnings({"InvalidMemberReference", "MixinAnnotationTarget"})
     @TargetHandler(
             mixin = "dev.sapphic.beacons.client.mixin.GameRendererMixin",
             name = "noNightVisionFlickerWhenAmbient"

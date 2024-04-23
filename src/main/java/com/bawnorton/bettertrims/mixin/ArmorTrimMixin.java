@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.annotation.ConditionalMixin;
+import com.bawnorton.bettertrims.util.mixin.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.item.ItemStack;

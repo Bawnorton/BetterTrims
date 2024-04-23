@@ -7,7 +7,8 @@
     "GameRendererMixin",
     "compat.beaconoverhaul.GameRendererMixinSquared",
     "compat.bettertrimtooltips.ArmorTrimMixinSquared",
-    "compat.iris.GameRendererMixinSquared"
+    "compat.iris.Iris1617MinusGameRendererMixinSquared",
+    "compat.iris.Iris17PlusGameRendererMixinSquared"
   ],
   "injectors": {
     "defaultRequire": 1

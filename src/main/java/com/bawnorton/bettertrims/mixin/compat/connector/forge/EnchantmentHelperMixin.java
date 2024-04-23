@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin.compat.connector.forge;
 
-import com.bawnorton.bettertrims.annotation.ConditionalMixin;
+import com.bawnorton.bettertrims.util.mixin.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.config.ConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

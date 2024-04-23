@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.annotation;
+package com.bawnorton.bettertrims.util.mixin.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

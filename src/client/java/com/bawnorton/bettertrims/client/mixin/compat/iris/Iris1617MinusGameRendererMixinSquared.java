@@ -1,22 +1,23 @@
 package com.bawnorton.bettertrims.client.mixin.compat.iris;
 
-import com.bawnorton.bettertrims.annotation.ConditionalMixin;
+import com.bawnorton.bettertrims.util.mixin.IrisConditionChecker;
+import com.bawnorton.bettertrims.util.mixin.annotation.AdvancedConditionalMixin;
 import com.bawnorton.bettertrims.client.config.ClientConfigManager;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.util.NumberWrapper;
+import com.bawnorton.bettertrims.util.mixin.annotation.VersionPredicate;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.LivingEntity;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(value = GameRenderer.class, priority = 1500)
-@ConditionalMixin(modid = "iris")
-public abstract class GameRendererMixinSquared {
+@AdvancedConditionalMixin(checker = IrisConditionChecker.class, version = @VersionPredicate(max = "1.6.17"))
+public abstract class Iris1617MinusGameRendererMixinSquared {
     @TargetHandler(
             mixin = "net.coderbot.iris.mixin.MixinGameRenderer_NightVisionCompat",
             name = "iris$safecheckNightvisionStrength"

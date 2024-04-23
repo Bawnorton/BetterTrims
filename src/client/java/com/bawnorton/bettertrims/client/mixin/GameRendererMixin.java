@@ -13,7 +13,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(GameRenderer.class)
+@Mixin(targets = "net.minecraft.client.render.GameRenderer")
 public abstract class GameRendererMixin {
     @WrapOperation(method = "getNightVisionStrength", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/StatusEffectInstance;isDurationBelow(I)Z"))
     private static boolean letsNotCrashThanks(StatusEffectInstance instance, int duration, Operation<Boolean> original) {

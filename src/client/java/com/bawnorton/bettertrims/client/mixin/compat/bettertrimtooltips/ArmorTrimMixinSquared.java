@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.client.mixin.compat.bettertrimtooltips;
 
-import com.bawnorton.bettertrims.annotation.ConditionalMixin;
+import com.bawnorton.bettertrims.util.mixin.annotation.ConditionalMixin;
 import com.bawnorton.bettertrims.effect.ArmorTrimEffects;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -18,7 +18,6 @@ import java.util.List;
 
 @Mixin(value = ArmorTrim.class, priority = 1500)
 @ConditionalMixin(modid = "better-trim-tooltips")
-@SuppressWarnings({"MixinAnnotationTarget", "InvalidMemberReference", "UnresolvedMixinReference"})
 public abstract class ArmorTrimMixinSquared {
     @TargetHandler(
             mixin = "io.github.andrew6rant.bettertrimtooltips.mixin.client.ArmorTrimMixin",
