@@ -1,7 +1,7 @@
 ## Changelog
 
 # 2.3.1
-- Fix crash with iris 1.7+
+- Fix crash with iris 1.7+ (#47)
 
 <details>
 <summary>Older Versions</summary>
