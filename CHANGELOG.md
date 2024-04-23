@@ -1,7 +1,7 @@
 ## Changelog
 
 # 2.3.1
-- Fix crash with iris 1.7+ (#47)
+- Fix crash with iris 1.7+ ([#47](https://github.com/Bawnorton/BetterTrims/issues/47))
 
 <details>
 <summary>Older Versions</summary>
