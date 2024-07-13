@@ -17,10 +17,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.bawnorton.modid.platform.ModIdWrapper"
+      "com.bawnorton.bettertrims.platform.BetterTrimsWrapper"
     ],
     "client": [
-      "com.bawnorton.modid.client.platform.ModIdClientWrapper"
+      "com.bawnorton.bettertrims.client.platform.BetterTrimsClientWrapper"
+    ],
+    "fabric-datagen": [
+      "com.bawnorton.bettertrims.data.BetterTrimsDataGen"
     ]
   },
   "mixins": [

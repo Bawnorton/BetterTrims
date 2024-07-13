@@ -133,9 +133,17 @@ if (stonecutter.current.isActive) {
 }
 
 if(loader.isFabric) {
+    fabricApi {
+        configureDataGeneration() {
+            outputDirectory = getRootDir().resolve("src/main/generated")
+        }
+    }
+
     dependencies {
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
+
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
     }
 
     tasks {
