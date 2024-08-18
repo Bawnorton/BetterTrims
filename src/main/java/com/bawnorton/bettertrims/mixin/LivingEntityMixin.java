@@ -257,8 +257,9 @@ public abstract class LivingEntityMixin extends EntityMixin implements LivingEnt
         ArmorTrimEffects.ENDER_PEARL.apply(betterTrims$getTrimmables(), () -> chance.increment(ConfigManager.getConfig().enderPearlEffects.dodgeChance));
         if (chance.getFloat() > RandomHelper.nextFloat() || source.isIn(DamageTypeTags.IS_DROWNING) && ConfigManager.getConfig().enderPearlEffects.waterDamagesUser) {
             betterTrims$randomTpEntity((LivingEntity) (Object) this);
+            return true;
         }
-        return true;
+        return false;
     }
 
     @ModifyReturnValue(method = "hurtByWater", at = @At("RETURN"))
