@@ -1,8 +1,23 @@
 {
   "required": true,
-  "package": "com.bawnorton.${mod_id}.mixin",
+  "package": "com.bawnorton.bettertrims.mixin",
   "minVersion": "0.8",
   "mixins": [
+    "LivingEntityMixin",
+    "PlayerEntityMixin",
+    "SmithingTrimRecipeMixin",
+    "accessor.AttributeModifiersComponentAccessor",
+    "accessor.StatusEffectAccessor",
+    "trim.amethyst.StatusEffectInstanceMixin",
+    "trim.copper.LivingEntityMixin",
+    "trim.copper.ServerWorldMixin",
+    "trim.diamond.ApplyBonusLootFunctionMixin",
+    "trim.diamond.BlockMixin",
+    "trim.emerald.VillagerEntityMixin",
+    "trim.gold.AttackGoalMixin",
+    "trim.gold.LivingEntityMixin",
+    "trim.gold.MobEntityMixin",
+    "trim.gold.PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

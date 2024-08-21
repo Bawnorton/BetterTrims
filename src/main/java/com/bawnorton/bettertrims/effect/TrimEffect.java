@@ -1,53 +1,81 @@
 package com.bawnorton.bettertrims.effect;
 
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.DataComponentTypes;
+import com.bawnorton.bettertrims.effect.applicator.TrimEffectApplicator;
+import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-public final class TrimEffect {
+public abstract class TrimEffect<T> {
     private final TagKey<Item> materials;
+    private final List<RegistryEntry<EntityAttribute>> entityAttributes;
 
-    private TrimEffect(TagKey<Item> materials) {
+    protected TrimEffect(TagKey<Item> materials) {
         this.materials = materials;
+        entityAttributes = new ArrayList<>();
+        addAttributes(entityAttributes::add);
     }
 
-    public static TrimEffect of(TagKey<Item> materials) {
-        return new TrimEffect(materials);
+    protected void addAttributes(Consumer<RegistryEntry<EntityAttribute>> adder) {
     }
 
-    public boolean matches(ItemStack stack) {
-        ComponentMap map = stack.getComponents();
-        ArmorTrim trim = map.get(DataComponentTypes.TRIM);
-        if(trim == null) return false;
-
-        ArmorTrimMaterial material = trim.getMaterial().value();
-        return material.ingredient().isIn(materials);
+    public TrimEffectApplicator<T> getApplicator() {
+        return TrimEffectApplicator.none();
     }
 
-    public boolean matches(Iterable<ItemStack> stacks) {
-        return matchCount(stacks) > 0;
+    public Set<Identifier> getEffectIds(AttributeModifierSlot slot) {
+        return entityAttributes.stream()
+                .map(RegistryEntry::getIdAsString)
+                .map(id -> getSlotId(id, slot.asString()))
+                .collect(Collectors.toSet());
     }
 
-    public boolean matches(LivingEntity entity) {
-        return matchCount(entity) > 0;
+    public void forEachAttribute(AttributeModifierSlot slot, BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> biConsumer) {
+        entityAttributes.forEach(attributeEntry -> biConsumer.accept(attributeEntry, getAttributeModifier(attributeEntry, slot)));
     }
 
-    public int matchCount(Iterable<ItemStack> stacks) {
-        int matches = 0;
-        for(ItemStack stack : stacks) {
-            if (matches(stack)) {
-                matches++;
-            }
+    protected @NotNull EntityAttributeModifier getAttributeModifier(RegistryEntry<EntityAttribute> entry, AttributeModifierSlot slot) {
+        return new EntityAttributeModifier(getSlotId(entry.getIdAsString(), slot.asString()), 1, EntityAttributeModifier.Operation.ADD_VALUE);
+    }
+
+    @NotNull
+    protected Identifier getSlotId(String id, String slot) {
+        return Identifier.of("%s_trimmed_%s".formatted(id, slot));
+    }
+
+    public boolean matchesMaterial(RegistryEntry<ArmorTrimMaterial> material) {
+        return material.value().ingredient().isIn(materials);
+    }
+
+    public boolean matches(Object obj) {
+        if(!(obj instanceof LivingEntity livingEntity)) return false;
+
+        AttributeContainer container = livingEntity.getAttributes();
+        for(RegistryEntry<EntityAttribute> entry : entityAttributes) {
+            if (!container.hasAttribute(entry)) return false;
+
+            double value = container.getValue(entry);
+            double defaultValue = entry.value().getDefaultValue();
+            if(MathHelper.approximatelyEquals(value, defaultValue)) return false;
         }
-        return matches;
+        return true;
     }
 
-    public int matchCount(LivingEntity entity) {
-        return matchCount(entity.getAllArmorItems());
+    public interface Factory<T extends TrimEffect<?>> {
+        T create(TagKey<Item> materials);
     }
 }

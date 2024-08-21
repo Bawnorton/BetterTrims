@@ -24,6 +24,9 @@
     ],
     "fabric-datagen": [
       "com.bawnorton.bettertrims.data.BetterTrimsDataGen"
+    ],
+    "mm:early_risers": [
+      "com.bawnorton.bettertrims.BetterTrimsEarlyRiser"
     ]
   },
   "mixins": [

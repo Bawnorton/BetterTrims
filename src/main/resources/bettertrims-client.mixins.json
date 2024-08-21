@@ -1,10 +1,14 @@
 {
   "required": true,
-  "package": "com.bawnorton.${mod_id}.client.mixin",
+  "package": "com.bawnorton.bettertrims.client.mixin",
   "minVersion": "0.8",
   "mixins": [
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "trim.copper.ClientWorldMixin",
+    "trim.gold.ClientWorldMixin"
+  ]
 }

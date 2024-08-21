@@ -72,6 +72,7 @@ repositories {
     mavenCentral()
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.shedaniel.me")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -98,16 +99,9 @@ tasks {
     }
 
     processResources {
-        val mixinMetadata = mapOf("mod_id" to mod.id)
-        inputs.properties(mixinMetadata)
-
-        filesMatching("${mod.id}.mixins.json") { expand(mixinMetadata) }
-        filesMatching("${mod.id}-client.mixins.json") { expand(mixinMetadata) }
-
         val compatMixins = CompatMixins().getMixins()
         inputs.properties(compatMixins)
-
-        filesMatching("${mod.id}-compat.mixins.json") { expand(compatMixins + mixinMetadata) }
+        filesMatching("${mod.id}-compat.mixins.json") { expand(compatMixins) }
     }
 }
 
@@ -144,6 +138,7 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
+        implementation("com.github.Chocohead:Fabric-ASM:v2.3")
     }
 
     tasks {

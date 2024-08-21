@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.bawnorton.${mod_id}.mixin.compat",
+  "package": "com.bawnorton.bettertrims.mixin.compat",
   "minVersion": "0.8",
   "mixins": ${compat_mixins},
   "injectors": {
