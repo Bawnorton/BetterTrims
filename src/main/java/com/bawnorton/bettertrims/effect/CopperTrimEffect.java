@@ -1,8 +1,8 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.effect.applicator.TrimEffectApplicator;
+import com.bawnorton.bettertrims.effect.applicator.ConsumingTrimEffectApplicator;
+import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
-import com.bawnorton.bettertrims.effect.context.TrimContextParameters;
 import com.bawnorton.bettertrims.util.FloodFill;
 import com.bawnorton.bettertrims.util.Plane;
 import it.unimi.dsi.fastutil.Pair;
@@ -12,11 +12,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.state.property.Properties;
@@ -43,19 +41,19 @@ public final class CopperTrimEffect extends TrimEffect<Void> {
     }
 
     @Override
-    protected void addAttributes(Consumer<RegistryEntry<EntityAttribute>> adder) {
-        adder.accept(TrimEntityAttributes.ELECTRIFYING);
+    protected void addAttributes(Consumer<TrimAttribute> adder) {
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ELECTRIFYING));
     }
 
     @Override
-    public TrimEffectApplicator<Void> getApplicator() {
-        return (context) -> {
-            LivingEntity entity = context.getEntity();
+    public ConsumingTrimEffectApplicator getApplicator() {
+        return (context, entity) -> {
             World world = entity.getWorld();
 
             Vec3d pos = entity.getPos();
             BlockPos blockPos = BlockPos.ofFloored(pos);
-            if(!world.isWater(blockPos)) return null;
+            if (!world.isWater(blockPos))
+                return;
 
             double electrifying = entity.getAttributeValue(TrimEntityAttributes.ELECTRIFYING);
             double maxDist = electrifying * 2;
@@ -67,7 +65,7 @@ public final class CopperTrimEffect extends TrimEffect<Void> {
                 FluidState fluidState = state.getFluidState();
                 boolean water = fluidState.isIn(FluidTags.WATER);
                 boolean waterlogged = water && state.getOrEmpty(Properties.WATERLOGGED).orElse(false);
-                if(waterlogged) {
+                if (waterlogged) {
                     return !wallPos.equals(BlockPos.ofFloored(pos));
                 }
 
@@ -101,7 +99,7 @@ public final class CopperTrimEffect extends TrimEffect<Void> {
                     VoxelShape collisionShape = state.getOutlineShape(world, wallPos)
                             .offset(wallPos.getX(), wallPos.getY(), wallPos.getZ());
                     List<Box> boundingBoxes = collisionShape.getBoundingBoxes();
-                    if(boundingBoxes.isEmpty()) {
+                    if (boundingBoxes.isEmpty()) {
                         BlockPos underWall = wallPos.down();
                         Plane plane = Plane.fromBlockPos(underWall, direction.getOpposite());
                         Vector3d randPoint = plane.getRandPointOnPlane();
@@ -118,7 +116,6 @@ public final class CopperTrimEffect extends TrimEffect<Void> {
                     }
                 });
             }
-            return null;
         };
     }
 

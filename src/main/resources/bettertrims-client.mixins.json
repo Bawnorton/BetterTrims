@@ -8,7 +8,10 @@
     "defaultRequire": 1
   },
   "client": [
+    "AbstractInventoryScreenMixin",
+    "trim.amethyst.AbstractInventoryScreenMixin",
     "trim.copper.ClientWorldMixin",
-    "trim.gold.ClientWorldMixin"
+    "trim.gold.ClientWorldMixin",
+    "trim.lapis.EnchantmentScreenMixin"
   ]
 }

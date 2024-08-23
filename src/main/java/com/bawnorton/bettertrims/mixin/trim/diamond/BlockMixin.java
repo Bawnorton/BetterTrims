@@ -27,7 +27,7 @@ public abstract class BlockMixin {
         if(!TrimEffects.DIAMOND.matches(player)) return;
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
-                .add(TrimContextParameters.MINED_BLOCK, state);
-        TrimEffects.DIAMOND.getApplicator().apply(new TrimContext(player, builder));
+                .add(TrimContextParameters.BLOCK_STATE, state);
+        TrimEffects.DIAMOND.getApplicator().apply(new TrimContext(builder), player);
     }
 }

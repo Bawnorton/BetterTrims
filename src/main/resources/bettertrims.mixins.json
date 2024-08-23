@@ -3,12 +3,15 @@
   "package": "com.bawnorton.bettertrims.mixin",
   "minVersion": "0.8",
   "mixins": [
+    "ItemStackMixin",
     "LivingEntityMixin",
     "PlayerEntityMixin",
     "SmithingTrimRecipeMixin",
     "accessor.AttributeModifiersComponentAccessor",
+    "accessor.PlayerEntityAccessor",
     "accessor.StatusEffectAccessor",
-    "trim.amethyst.StatusEffectInstanceMixin",
+    "trim.amethyst.StatusEffectInstanceInstanceMixin",
+    "trim.amethyst.StatusEffectInstanceInstanceMixin$ParametersMixin",
     "trim.copper.LivingEntityMixin",
     "trim.copper.ServerWorldMixin",
     "trim.diamond.ApplyBonusLootFunctionMixin",
@@ -17,7 +20,12 @@
     "trim.gold.AttackGoalMixin",
     "trim.gold.LivingEntityMixin",
     "trim.gold.MobEntityMixin",
-    "trim.gold.PlayerEntityMixin"
+    "trim.gold.PlayerEntityMixin",
+    "trim.iron.LivingEntityMixin",
+    "trim.lapis.EnchantmentScreenHandlerMixin",
+    "trim.netherite.ItemEntityMixin",
+    "trim.netherite.LivingEntityMixin",
+    "trim.quartz.PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

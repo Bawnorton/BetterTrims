@@ -28,7 +28,7 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
         for (TradeOffer offer : getOffers()) {
             TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                     .add(TrimContextParameters.COUNT, offer.getOriginalFirstBuyItem().getCount());
-            int discount = TrimEffects.EMERALD.getApplicator().apply(new TrimContext(player, builder));
+            int discount = TrimEffects.EMERALD.getApplicator().apply(new TrimContext(builder), player);
             offer.increaseSpecialPrice(-discount);
         }
     }

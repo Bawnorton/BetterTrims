@@ -29,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.MOVEMENT_SPEED, original);
-        return TrimEffects.GOLD.getApplicator().apply(new TrimContext((LivingEntity) (Object) this, builder));
+        return TrimEffects.GOLD.getApplicator().apply(new TrimContext(builder), (LivingEntity) (Object) this);
     }
 
     @ModifyReturnValue(
@@ -41,7 +41,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.DAMAGE_AMOUNT, original);
-        return TrimEffects.GOLD.getApplicator().apply(new TrimContext((LivingEntity) (Object) this, builder));
+        return TrimEffects.GOLD.getApplicator().apply(new TrimContext(builder), (LivingEntity) (Object) this);
     }
 
     @Unique
@@ -50,7 +50,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.ATTACK_DAMAGE, original);
-        return TrimEffects.GOLD.getApplicator().apply(new TrimContext((LivingEntity) (Object) this, builder));
+        return TrimEffects.GOLD.getApplicator().apply(new TrimContext(builder), (LivingEntity) (Object) this);
     }
 
     @Unique
@@ -59,7 +59,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.ATTACK_SPEED, original);
-        return TrimEffects.GOLD.getApplicator().apply(new TrimContext((LivingEntity) (Object) this, builder));
+        return TrimEffects.GOLD.getApplicator().apply(new TrimContext(builder), (LivingEntity) (Object) this);
     }
 
     @Unique
@@ -68,6 +68,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.ATTACK_COOLDOWN, original);
-        return TrimEffects.GOLD.getApplicator().apply(new TrimContext((LivingEntity) (Object) this, builder)).intValue();
+        return TrimEffects.GOLD.getApplicator().apply(new TrimContext(builder), (LivingEntity) (Object) this).intValue();
     }
 }

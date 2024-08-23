@@ -3,12 +3,15 @@ package com.bawnorton.bettertrims.effect;
 import com.bawnorton.bettertrims.data.TrimMaterialTags;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public final class TrimEffects {
-    private static final Set<TrimEffect<?>> TRIM_EFFECTS = new HashSet<>();
+    private static final Map<TagKey<Item>, TrimEffect<?>> TRIM_EFFECTS = new HashMap<>();
 
     public static final AmethystTrimEffect AMETHYST = of(TrimMaterialTags.AMETHYST, AmethystTrimEffect::new);
     public static final CopperTrimEffect COPPER = of(TrimMaterialTags.COPPER, CopperTrimEffect::new);
@@ -23,11 +26,11 @@ public final class TrimEffects {
 
     private static <T extends TrimEffect<?>> T of(TagKey<Item> tag, TrimEffect.Factory<T> factory) {
         T effect = factory.create(tag);
-        TRIM_EFFECTS.add(effect);
+        TRIM_EFFECTS.put(tag, effect);
         return effect;
     }
 
-    public static void forEachTrimEffect(Consumer<? super TrimEffect<?>> consumer) {
-        TRIM_EFFECTS.forEach(consumer);
+    public static void forEachTrimEffect(BiConsumer<TagKey<Item>, ? super TrimEffect<?>> biConsumer) {
+        TRIM_EFFECTS.forEach(biConsumer);
     }
 }

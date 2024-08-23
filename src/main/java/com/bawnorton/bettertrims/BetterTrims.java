@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims;
 
 import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
+import com.bawnorton.bettertrims.effect.component.TrimComponentTypes;
 import com.bawnorton.bettertrims.effect.potion.TrimStatusEffects;
 import com.bawnorton.bettertrims.networking.Networking;
 import com.bawnorton.bettertrims.util.Probabilities;
@@ -11,13 +12,15 @@ import org.slf4j.LoggerFactory;
 public final class BetterTrims {
     public static final String MOD_ID = "bettertrims";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static final Probabilities PROBABILITIES = new Probabilities();
+    public static final Probabilities PROBABILITIES = new Probabilities(42L);
 
     public static void init() {
         LOGGER.debug("{} Initialized", MOD_ID);
+
         Networking.init();
         TrimEntityAttributes.init();
         TrimStatusEffects.init();
+        TrimComponentTypes.init();
     }
 
     public static Identifier id(String path) {

@@ -1,13 +1,9 @@
 package com.bawnorton.bettertrims.util;
 
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import org.joml.Vector3d;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class Plane {
@@ -30,14 +26,6 @@ public class Plane {
 
         this.point3 = new Vector3d(m).add(new Vector3d(u).mul(length / 2));
         this.point4 = new Vector3d(m).sub(new Vector3d(u).mul(length / 2));
-    }
-
-    public static List<Plane> fromBox(Box box) {
-        List<Plane> planes = new ArrayList<>();
-        for (Direction direction : Direction.values()) {
-            planes.add(fromSideOfBox(box, direction));
-        }
-        return planes;
     }
 
     public static Plane fromSideOfBox(Box box, Direction direction) {
@@ -69,17 +57,6 @@ public class Plane {
         double y = point1.y + r1 * v1.y + r2 * v2.y;
         double z = point1.z + r1 * v1.z + r2 * v2.z;
         return new Vector3d(x, y, z);
-    }
-
-    public void debug(World world) {
-        spawnDebugParticle(world, point1);
-        spawnDebugParticle(world, point2);
-        spawnDebugParticle(world, point3);
-        spawnDebugParticle(world, point4);
-    }
-
-    private static void spawnDebugParticle(World world, Vector3d point) {
-        world.addParticle(ParticleTypes.FLAME, point.x, point.y, point.z, 0, 0, 0);
     }
 
     @Override

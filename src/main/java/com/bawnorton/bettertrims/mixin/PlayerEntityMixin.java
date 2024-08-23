@@ -17,6 +17,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         original.add(TrimEntityAttributes.TRADE_DISCOUNT);
         original.add(TrimEntityAttributes.MINERS_RUSH);
         original.add(TrimEntityAttributes.FORTUNE);
+        original.add(TrimEntityAttributes.ENCHANTERS_BLESSING);
+        original.add(TrimEntityAttributes.BONUS_XP);
         return original;
     }
 }

@@ -1,22 +1,14 @@
 package com.bawnorton.bettertrims.effect.context;
 
-import net.minecraft.entity.LivingEntity;
-
 public class TrimContext {
-    private final LivingEntity entity;
     private final TrimContextParameterSet parameterSet;
 
-    public TrimContext(LivingEntity entity, TrimContextParameterSet.Builder parameterSetBuilder) {
-        this.entity = entity;
+    public TrimContext(TrimContextParameterSet.Builder parameterSetBuilder) {
         this.parameterSet = parameterSetBuilder.build();
     }
 
-    public TrimContext(LivingEntity entity) {
-        this(entity, TrimContextParameterSet.builder());
-    }
-
-    public LivingEntity getEntity() {
-        return entity;
+    public static TrimContext empty() {
+        return new TrimContext(TrimContextParameterSet.builder());
     }
 
     public boolean has(TrimContextParameter<?> parameter) {

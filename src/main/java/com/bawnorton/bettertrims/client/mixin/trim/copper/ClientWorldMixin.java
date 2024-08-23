@@ -30,7 +30,7 @@ public abstract class ClientWorldMixin {
                 return;
             }
 
-            TrimEffects.COPPER.getApplicator().apply(new TrimContext(livingEntity));
+            TrimEffects.COPPER.getApplicator().apply(TrimContext.empty(), livingEntity);
         });
         original.call(instance, entityConsumer);
     }

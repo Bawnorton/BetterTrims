@@ -32,6 +32,6 @@ public abstract class ApplyBonusLootFunctionMixin {
 
         TrimContextParameterSet.Builder builder = TrimContextParameterSet.builder()
                 .add(TrimContextParameters.ENCHANTMENT_LEVEL, original);
-        return TrimEffects.DIAMOND.getApplicator().apply(new TrimContext(livingEntity, builder)).intValue();
+        return TrimEffects.DIAMOND.getApplicator().apply(new TrimContext(builder), livingEntity).intValue();
     }
 }

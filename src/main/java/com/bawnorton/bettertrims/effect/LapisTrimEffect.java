@@ -1,20 +1,38 @@
 package com.bawnorton.bettertrims.effect;
 
+import com.bawnorton.bettertrims.effect.applicator.TrimEffectApplicator;
+import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
-import net.minecraft.entity.attribute.EntityAttribute;
+import com.bawnorton.bettertrims.effect.component.TrimComponentTypes;
+import com.bawnorton.bettertrims.effect.context.TrimContextParameters;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
 import java.util.function.Consumer;
 
-public final class LapisTrimEffect extends TrimEffect<Void> {
+public final class LapisTrimEffect extends TrimEffect<ItemStack> {
     public LapisTrimEffect(TagKey<Item> materials) {
         super(materials);
     }
 
     @Override
-    protected void addAttributes(Consumer<RegistryEntry<EntityAttribute>> adder) {
-        adder.accept(TrimEntityAttributes.ENCHANTERS_BLESSING);
+    protected void addAttributes(Consumer<TrimAttribute> adder) {
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ENCHANTERS_BLESSING));
+    }
+
+    @Override
+    public TrimEffectApplicator<ItemStack> getApplicator() {
+        return (context, entity) -> {
+            ItemStack itemStack = context.get(TrimContextParameters.ITEM_STACK);
+            int usedBlessings = itemStack.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
+            usedBlessings++;
+            if (usedBlessings > entity.getAttributeValue(TrimEntityAttributes.ENCHANTERS_BLESSING)) {
+                return null;
+            }
+
+            itemStack.set(TrimComponentTypes.USED_BLESSINGS, usedBlessings);
+            return itemStack;
+        };
     }
 }
