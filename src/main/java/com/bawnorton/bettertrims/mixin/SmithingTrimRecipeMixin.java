@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.effect.attribute.TrimEnityAttributeApplicator;
+import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributeApplicator;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.component.ComponentType;
@@ -23,7 +23,7 @@ public abstract class SmithingTrimRecipeMixin {
     private <T> T addAttributeModifiers(ItemStack instance, ComponentType<? super T> type, T value, Operation<T> original) {
         T result = original.call(instance, type, value);
         if(type == DataComponentTypes.TRIM) {
-            TrimEnityAttributeApplicator.apply(instance);
+            TrimEntityAttributeApplicator.apply(instance);
         }
         return result;
     }

@@ -12,7 +12,7 @@ import net.minecraft.item.trim.ArmorTrim;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrimEnityAttributeApplicator {
+public class TrimEntityAttributeApplicator {
     public static void apply(ItemStack itemStack) {
         ArmorTrim trim = itemStack.get(DataComponentTypes.TRIM);
         if(trim == null) return;

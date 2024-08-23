@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.effect.attribute.TrimEnityAttributeApplicator;
+import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributeApplicator;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +16,7 @@ public abstract class ItemStackMixin {
             at = @At("RETURN")
     )
     private static Optional<ItemStack> addAttributesToTrims(Optional<ItemStack> original) {
-        original.ifPresent(TrimEnityAttributeApplicator::apply);
+        original.ifPresent(TrimEntityAttributeApplicator::apply);
         return original;
     }
 
@@ -29,6 +29,6 @@ public abstract class ItemStackMixin {
             at = @At("TAIL")
     )
     private void addAttributesToTrims(CallbackInfo ci) {
-        TrimEnityAttributeApplicator.apply((ItemStack) (Object) this);
+        TrimEntityAttributeApplicator.apply((ItemStack) (Object) this);
     }
 }
