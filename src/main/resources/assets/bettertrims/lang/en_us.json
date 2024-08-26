@@ -10,16 +10,32 @@
   "bettertrims.attribute.name.fire_resistance": "Fire Resistance",
   "bettertrims.attribute.name.resistance": "Resistance",
   "bettertrims.attribute.name.bonus_xp": "Bonus XP",
+  "bettertrims.attribute.name.walking_furnace": "Walking Furnace",
+  "bettertrims.attribute.name.share_effect_radius": "Share Effect Radius",
+  "bettertrims.attribute.name.echoing": "Echoing",
+  "bettertrims.attribute.name.dodge_chance": "Dodge Chance",
+
   "bettertrims.item_magnet.toggle_magnet": "Toggle Magnet",
   "bettertrims.item_magnet.notification.magnet": "Magnet: ",
   "bettertrims.item_magnet.notification.magnet.true": "ON",
   "bettertrims.item_magnet.notification.magnet.false": "OFF",
+
   "bettertrims.enchanters_blessing.rerolls": "Rerolls Left: %s/%s",
   "bettertrims.enchanters_blessing.no_rerolls": "No Rerolls Left",
+
   "bettertrims.brewers_dream.added": "Added",
   "bettertrims.brewers_dream.removed": "Removed",
+
   "effect.bettertrims.feel_the_rush": "Feel The Rush",
+  "effect.bettertrims.dampened": "Dampened",
+
   "key.categories.bettertrims": "Better Trims",
+
+  "advancements.bettertrims.root.title": "Better Trims",
+  "advancements.bettertrims.root.description": "More than just cosmetic",
+  "advancements.bettertrims.getting_hot_in_here.title": "Getting Hot in Here",
+  "advancements.bettertrims.getting_hot_in_here.description": "Set yourself ablaze while wearing coal trimmed armour to smelt ores",
+
   "enchantment.level.11": "11",
   "enchantment.level.12": "12",
   "enchantment.level.13": "13",

@@ -1,10 +1,8 @@
 package com.bawnorton.bettertrims.client.mixin.trim.lapis;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.effect.TrimEffects;
-import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
-import com.bawnorton.bettertrims.effect.component.TrimComponentTypes;
-import com.bawnorton.bettertrims.mixin.accessor.PlayerEntityAccessor;
+import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.gui.DrawContext;
@@ -15,7 +13,6 @@ import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.EnchantmentScreenHandler;
@@ -64,7 +61,7 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
             at = @At("HEAD")
     )
     private void renderReroll(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
-        rerollButton.visible = TrimEffects.LAPIS.matches(client.player);
+        rerollButton.visible = client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_BLESSING) > 0;
         if(!rerollButton.visible) return;
 
         if(rerollButton.getTooltip() == null) {

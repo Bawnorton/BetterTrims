@@ -1,10 +1,9 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.effect.applicator.TrimEffectApplicator;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
+import com.bawnorton.bettertrims.registry.TrimRegistries;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
@@ -13,7 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +20,11 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public abstract class TrimEffect<T> {
+public abstract class TrimEffect {
+    {
+        TrimRegistries.TRIM_EFFECTS.createEntry(this);
+    }
+
     private final TagKey<Item> materials;
     private final List<TrimAttribute> entityAttributes;
 
@@ -34,8 +36,8 @@ public abstract class TrimEffect<T> {
 
     protected abstract void addAttributes(Consumer<TrimAttribute> adder);
 
-    public TrimEffectApplicator<T> getApplicator() {
-        return TrimEffectApplicator.none();
+    public TagKey<Item> getMaterials() {
+        return materials;
     }
 
     public Set<Identifier> getEffectIds(AttributeModifierSlot slot) {
@@ -56,21 +58,6 @@ public abstract class TrimEffect<T> {
         return material.value().ingredient().isIn(materials);
     }
 
-    public boolean matches(Object obj) {
-        if(!(obj instanceof LivingEntity livingEntity)) return false;
-
-        AttributeContainer container = livingEntity.getAttributes();
-        for(TrimAttribute attribute : entityAttributes) {
-            RegistryEntry<EntityAttribute> entry = attribute.entry();
-            if (!container.hasAttribute(entry)) return false;
-
-            double value = container.getValue(entry);
-            double defaultValue = entry.value().getDefaultValue();
-            if(MathHelper.approximatelyEquals(value, defaultValue)) return false;
-        }
-        return true;
-    }
-
     public void readNbt(LivingEntity entity, NbtCompound nbt) {
     }
 
@@ -78,7 +65,7 @@ public abstract class TrimEffect<T> {
         return nbt;
     }
 
-    public interface Factory<T extends TrimEffect<?>> {
+    public interface Factory<T extends TrimEffect> {
         T create(TagKey<Item> materials);
     }
 }

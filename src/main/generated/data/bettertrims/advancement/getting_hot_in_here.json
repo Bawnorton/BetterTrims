@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "walking_furnace_smelted": {
+      "trigger": "bettertrims:walking_furnace_smelted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.getting_hot_in_here.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:coal"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.getting_hot_in_here.title"
+    }
+  },
+  "requirements": [
+    [
+      "walking_furnace_smelted"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:advancement_reward",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_name",
+          "name": "The Guidebook"
+        },
+        {
+          "function": "minecraft:set_lore",
+          "lore": [
+            "Coming Soon™"
+          ],
+          "mode": "append"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

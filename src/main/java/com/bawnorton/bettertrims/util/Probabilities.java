@@ -12,4 +12,12 @@ public class Probabilities {
     public boolean passes(float percentageChance) {
         return rand.nextFloat() < percentageChance;
     }
+
+    public <T extends Enum<?>> T pickRandom(Class<T> enumClass) {
+        return enumClass.getEnumConstants()[rand.nextInt(enumClass.getEnumConstants().length)];
+    }
+
+    public boolean passes(double chance) {
+        return rand.nextDouble() < chance;
+    }
 }

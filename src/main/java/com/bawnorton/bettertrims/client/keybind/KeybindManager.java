@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.client.keybind;
 
-import com.bawnorton.bettertrims.effect.TrimEffect;
-import com.bawnorton.bettertrims.effect.TrimEffects;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.networking.packet.c2s.MagnetToggleC2SPacket;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;

@@ -71,12 +71,16 @@ base.archivesName.set(mod.name)
 repositories {
     mavenCentral()
     maven("https://maven.neoforged.net/releases/")
+    maven("https://maven.bawnorton.com/releases/")
     maven("https://maven.shedaniel.me")
+    maven("https://maven.su5ed.dev/releases")
     maven("https://jitpack.io")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
+
+    modImplementation("com.bawnorton.allthetrims:allthetrims-$loader:${property("allthetrims")}") { isTransitive = false }
 }
 
 loom {
@@ -128,8 +132,8 @@ if (stonecutter.current.isActive) {
 
 if(loader.isFabric) {
     fabricApi {
-        configureDataGeneration() {
-            outputDirectory = getRootDir().resolve("src/main/generated")
+        configureDataGeneration {
+            outputDirectory = rootProject.rootDir.resolve("src/main/generated")
         }
     }
 
@@ -137,8 +141,7 @@ if(loader.isFabric) {
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
-        implementation("com.github.Chocohead:Fabric-ASM:v2.3")
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
     }
 
     tasks {
@@ -158,12 +161,20 @@ if(loader.isFabric) {
 }
 
 if (loader.isNeoForge) {
+    sourceSets {
+        main {
+            resources.srcDir(rootProject.rootDir.resolve("src/main/generated"))
+        }
+    }
+
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
+        modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
 
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
             mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
+            mappings(file("mappings/fix.tiny"))
         })
     }
 
@@ -236,6 +247,9 @@ publishMods {
     curseforge {
         accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
         projectId = mod.curseforgeProjId
+        changelog = """
+            <markdown>
+        """
         minecraftVersions.addAll(mod.supportedVersions)
     }
 }

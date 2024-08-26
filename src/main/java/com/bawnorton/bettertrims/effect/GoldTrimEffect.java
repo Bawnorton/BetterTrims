@@ -1,24 +1,18 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
-import net.minecraft.entity.attribute.EntityAttribute;
+import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.item.Item;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.World;
+import java.util.function.Consumer;
 
-public final class GoldTrimEffect extends CelestialTrimEffect {
+public final class GoldTrimEffect extends TrimEffect {
     public GoldTrimEffect(TagKey<Item> materials) {
         super(materials);
     }
 
     @Override
-    protected RegistryEntry<EntityAttribute> getCelestialAttribute() {
-        return TrimEntityAttributes.SUNS_BLESSING;
-    }
-
-    @Override
-    protected boolean canApply(World world) {
-        return world.isDay();
+    protected void addAttributes(Consumer<TrimAttribute> adder) {
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.SUNS_BLESSING));
     }
 }

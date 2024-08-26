@@ -35,7 +35,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
                     remap = false
             )
     )
-    private List<Text> appendAmethystTimeModification(List<Text> original, @Local StatusEffectInstance statusEffectInstance) {
+    private List<Text> appendAmethystTimeModification(List<Text> original, @Local(ordinal = 0) StatusEffectInstance statusEffectInstance) {
         int ticks = ((ModifiedTimeHolder) statusEffectInstance).bettertrims$getModifiedTime();
         if(ticks <= 0) return original;
 

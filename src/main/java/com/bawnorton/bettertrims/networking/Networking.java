@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.networking;
 
-import com.bawnorton.bettertrims.effect.TrimEffects;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.networking.packet.c2s.MagnetToggleC2SPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

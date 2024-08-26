@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.effect.attribute;
 
-import com.bawnorton.bettertrims.effect.TrimEffects;
+import com.bawnorton.bettertrims.registry.TrimRegistries;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.mixin.accessor.AttributeModifiersComponentAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -25,7 +26,7 @@ public class TrimEntityAttributeApplicator {
         for (AttributeModifiersComponent.Entry entry : item.getAttributeModifiers().modifiers()) {
             component[0] = component[0].with(entry.attribute(), entry.modifier(), entry.slot());
         }
-        TrimEffects.forEachTrimEffect((tag, trimEffect) -> {
+        TrimRegistries.TRIM_EFFECTS.forEach(trimEffect -> {
             if (trimEffect.matchesMaterial(trim.getMaterial())) {
                 trimEffect.forEachAttribute(slot, (attribute, modifier) -> component[0] = component[0].with(attribute, modifier, slot));
             } else {

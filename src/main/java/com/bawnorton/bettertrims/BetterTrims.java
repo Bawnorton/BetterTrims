@@ -1,9 +1,7 @@
 package com.bawnorton.bettertrims;
 
-import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributes;
-import com.bawnorton.bettertrims.effect.component.TrimComponentTypes;
-import com.bawnorton.bettertrims.effect.potion.TrimStatusEffects;
 import com.bawnorton.bettertrims.networking.Networking;
+import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import com.bawnorton.bettertrims.util.Probabilities;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -18,12 +16,14 @@ public final class BetterTrims {
         LOGGER.debug("{} Initialized", MOD_ID);
 
         Networking.init();
-        TrimEntityAttributes.init();
-        TrimStatusEffects.init();
-        TrimComponentTypes.init();
+        TrimLootTables.init();
     }
 
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
+    }
+
+    public static String sid(String path) {
+        return id(path).toString();
     }
 }

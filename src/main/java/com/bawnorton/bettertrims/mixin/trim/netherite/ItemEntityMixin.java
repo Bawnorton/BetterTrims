@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin.trim.netherite;
 
-import com.bawnorton.bettertrims.effect.TrimEffects;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.ItemEntity;

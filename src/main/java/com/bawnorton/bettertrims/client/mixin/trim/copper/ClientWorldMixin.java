@@ -1,7 +1,8 @@
 package com.bawnorton.bettertrims.client.mixin.trim.copper;
 
-import com.bawnorton.bettertrims.effect.TrimEffects;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.effect.context.TrimContext;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.world.ClientWorld;
@@ -25,7 +26,7 @@ public abstract class ClientWorldMixin {
         instance.forEach(entity -> {
             if (!(entity instanceof LivingEntity livingEntity)) return;
 
-            if(!TrimEffects.COPPER.matches(livingEntity)) {
+            if(livingEntity.getAttributeValue(TrimEntityAttributes.ELECTRIFYING) <= 0) {
                 TrimEffects.COPPER.clearElectrified(livingEntity);
                 return;
             }

@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
-public final class RedstoneTrimEffect extends TrimEffect<Void> {
+public final class RedstoneTrimEffect extends TrimEffect {
     public RedstoneTrimEffect(TagKey<Item> materials) {
         super(materials);
     }
