@@ -31,7 +31,7 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.SHARE_EFFECT_RADIUS = bettertrims$registerLeveledAttribute("share_effect_radius");
         TrimEntityAttributes.ECHOING = bettertrims$registerLeveledAttribute("echoing");
         TrimEntityAttributes.DODGE_CHANCE = bettertrims$registerPercentage("dodge_chance");
-        TrimEntityAttributes.REGENERATION = bettertrims$registerPercentage("regeneration");
+        TrimEntityAttributes.REGENERATION = bettertrims$registerAttribute("regeneration", 0, 0, 50, true);
 
         TrimEffects.init();
     }

@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.client.mixin.trim.gold;
+package com.bawnorton.bettertrims.client.mixin.attributes.celestial;
 
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.registry.DynamicRegistryManager;

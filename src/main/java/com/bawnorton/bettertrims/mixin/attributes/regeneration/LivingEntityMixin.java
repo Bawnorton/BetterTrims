@@ -19,6 +19,10 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow public abstract void heal(float amount);
 
+    @Shadow public abstract float getHealth();
+
+    @Shadow public abstract float getMaxHealth();
+
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -32,8 +36,10 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void applyRegeneration(CallbackInfo ci) {
         double regen = getAttributeValue(TrimEntityAttributes.REGENERATION);
+        if(regen <= 0) return;
+
         int delay = (int) (50 / Math.pow(2, regen));
-        if(getWorld().getTimeOfDay() % delay == 0) {
+        if (getWorld().getTimeOfDay() % delay == 0 && getHealth() < getMaxHealth()) {
             heal(1);
         }
     }

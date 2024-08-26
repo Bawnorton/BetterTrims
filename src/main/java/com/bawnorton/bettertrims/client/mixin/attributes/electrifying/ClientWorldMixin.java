@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.client.mixin.trim.copper;
+package com.bawnorton.bettertrims.client.mixin.attributes.electrifying;
 
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.effect.context.TrimContext;
@@ -22,7 +22,7 @@ public abstract class ClientWorldMixin {
                     target = "Lnet/minecraft/world/EntityList;forEach(Ljava/util/function/Consumer;)V"
             )
     )
-    private void applyCopperTrim(EntityList instance, Consumer<Entity> entityConsumer, Operation<Void> original) {
+    private void applyElectrifying(EntityList instance, Consumer<Entity> entityConsumer, Operation<Void> original) {
         instance.forEach(entity -> {
             if (!(entity instanceof LivingEntity livingEntity)) return;
 

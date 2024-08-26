@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.extend.ModifiedTimeHolder;
 import com.bawnorton.bettertrims.networking.packet.s2c.EchoTriggeredS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EntityEchoedS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;
+import com.bawnorton.bettertrims.registry.content.TrimSoundEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -12,8 +13,12 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public final class ClientNetworking {
     public static void init() {
@@ -40,6 +45,11 @@ public final class ClientNetworking {
         ClientPlayerEntity player = context.player();
         Vec3d pos = echo.pos();
         player.updatePositionAndAngles(pos.x, pos.y, pos.z, echo.yaw(), echo.pitch());
+        ClientWorld world = context.client().world;
+        for(int i = 5; i > 0; i--) {
+            float pitch = i * 0.1f;
+            CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> context.client().execute(() -> world.playSound(player, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch)));
+        }
     }
 
     private static void handleEntityEchoed(EntityEchoedS2CPacket packet, ClientPlayNetworking.Context context) {

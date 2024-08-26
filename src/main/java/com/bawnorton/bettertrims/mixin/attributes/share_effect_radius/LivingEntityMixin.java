@@ -42,6 +42,8 @@ public abstract class LivingEntityMixin extends Entity {
 
         World world = getWorld();
         double shareEffectRadius = getAttributeValue(TrimEntityAttributes.SHARE_EFFECT_RADIUS);
+        if(shareEffectRadius <= 0) return;
+
         AreaEffectCloudEntity areaEffectCloud = new AreaEffectCloudEntity(world, getX(), getY(), getZ());
         getActiveStatusEffects()
                 .values()

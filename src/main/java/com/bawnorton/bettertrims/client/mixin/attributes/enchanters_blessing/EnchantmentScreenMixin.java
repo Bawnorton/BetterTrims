@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.client.mixin.trim.lapis;
+package com.bawnorton.bettertrims.client.mixin.attributes.enchanters_blessing;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;

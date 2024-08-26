@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.client.mixin.trim.amethyst;
+package com.bawnorton.bettertrims.client.mixin.attributes.brewers_dream;
 
 import com.bawnorton.bettertrims.extend.ModifiedTimeHolder;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -35,7 +35,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
                     remap = false
             )
     )
-    private List<Text> appendAmethystTimeModification(List<Text> original, @Local(ordinal = 0) StatusEffectInstance statusEffectInstance) {
+    private List<Text> appendBrewersDreamTimeModification(List<Text> original, @Local(ordinal = 0) StatusEffectInstance statusEffectInstance) {
         int ticks = ((ModifiedTimeHolder) statusEffectInstance).bettertrims$getModifiedTime();
         if(ticks <= 0) return original;
 
@@ -61,7 +61,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
                     ordinal = 1
             )
     )
-    private void drawAmethystTimeModification(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects, CallbackInfo ci,
+    private void drawBrewersDreamTimeModification(DrawContext context, int x, int height, Iterable<StatusEffectInstance> statusEffects, CallbackInfo ci,
             @Local StatusEffectInstance statusEffectInstance,
             @Local(ordinal = 2) int adjustedY) {
         int ticks = ((ModifiedTimeHolder) statusEffectInstance).bettertrims$getModifiedTime();

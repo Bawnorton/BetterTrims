@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.networking.packet.s2c.EchoTriggeredS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EntityEchoedS2CPacket;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.bawnorton.bettertrims.registry.content.TrimSoundEvents;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
 import com.google.common.collect.EvictingQueue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -20,6 +21,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +32,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -71,7 +77,7 @@ public abstract class LivingEntityMixin extends Entity {
         setHealth(oldest.health());
         clearStatusEffects();
 
-        World world = getWorld();
+        ServerWorld world = (ServerWorld) getWorld();
         List<? extends PlayerEntity> players = world.getPlayers();
         players.forEach(player -> {
             if(player instanceof ServerPlayerEntity serverPlayer) {
@@ -81,6 +87,13 @@ public abstract class LivingEntityMixin extends Entity {
 
         int echoingLevel = (int) getAttributeValue(TrimEntityAttributes.ECHOING);
         addStatusEffect(new StatusEffectInstance(TrimStatusEffects.DAMPENED, 20 * 300 / echoingLevel, 0));
+        for(int i = 5; i > 0; i--) {
+            float pitch = i * 0.1f;
+            CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> world.getServer().execute(() -> {
+                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch);
+                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(oldPos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch);
+            }));
+        }
         if(instance instanceof ServerPlayerEntity player) {
             ServerPlayNetworking.send(player, new EchoTriggeredS2CPacket(oldest));
         }

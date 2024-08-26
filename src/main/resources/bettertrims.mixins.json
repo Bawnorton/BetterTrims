@@ -3,14 +3,14 @@
   "package": "com.bawnorton.bettertrims.mixin",
   "minVersion": "0.8",
   "mixins": [
-    "attributes.PlayerEntityMixin",
-    "attributes.SmithingTrimRecipeMixin",
     "accessor.AttributeModifiersComponentAccessor",
     "accessor.PlayerEntityAccessor",
     "accessor.StatusEffectAccessor",
     "accessor.StatusEffectInstanceAccessor",
     "attributes.ItemStackMixin",
     "attributes.LivingEntityMixin",
+    "attributes.PlayerEntityMixin",
+    "attributes.SmithingTrimRecipeMixin",
     "attributes.bonus_xp.PlayerEntityMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
@@ -38,7 +38,9 @@
     "registry.EntityAttributesMixin",
     "registry.RegistriesMixin",
     "registry.RegistryKeysMixin",
+    "registry.SoundEventsMixin",
     "registry.StatusEffectsMixin",
+    "trim.gold.PiglinBrainMixin",
     "trim.netherite.ItemEntityMixin"
   ],
   "injectors": {

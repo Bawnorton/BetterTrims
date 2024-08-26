@@ -38,6 +38,8 @@ public abstract class LivingEntityMixin extends Entity {
         if (!TrimEffects.IRON.isEnabledFor((LivingEntity) (Object) this)) return;
 
         int itemMagnetLevel = (int) getAttributeValue(TrimEntityAttributes.ITEM_MAGNET);
+        if(itemMagnetLevel <= 0) return;
+
         World world = getWorld();
         Box area = new Box(getBlockPos());
         area = area.expand(itemMagnetLevel * 1.5);

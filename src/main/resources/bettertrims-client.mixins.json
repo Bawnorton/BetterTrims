@@ -9,9 +9,10 @@
   },
   "client": [
     "AbstractInventoryScreenMixin",
-    "trim.amethyst.AbstractInventoryScreenMixin",
-    "trim.copper.ClientWorldMixin",
-    "trim.gold.ClientWorldMixin",
-    "trim.lapis.EnchantmentScreenMixin"
+    "attributes.brewers_dream.AbstractInventoryScreenMixin",
+    "attributes.celestial.ClientWorldMixin",
+    "attributes.electrifying.ClientWorldMixin",
+    "attributes.enchanters_blessing.EnchantmentScreenMixin",
+    "attributes.regeneration.InGameHudMixin"
   ]
 }
