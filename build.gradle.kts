@@ -8,42 +8,6 @@ plugins {
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
 }
 
-class ModData {
-    val id = property("mod_id").toString()
-    val name = property("mod_name").toString()
-    val description = property("mod_description").toString()
-    val version = property("mod_version").toString()
-    val group = property("mod_group").toString()
-    val minecraftDependency = property("minecraft_dependency").toString()
-    val supportedVersions = property("supported_versions").toString()
-    val modrinthProjId = property("modrinth_project_id").toString()
-    val curseforgeProjId = property("curseforge_project_id").toString()
-}
-
-class LoaderData {
-    private val name = loom.platform.get().name.lowercase()
-    val isFabric = name == "fabric"
-    val isNeoForge = name == "neoforge"
-
-    fun getVersion() : String = if (isNeoForge) {
-        property("neoforge_loader").toString()
-    } else {
-        property("fabric_loader").toString()
-    }
-
-    override fun toString(): String = name
-}
-
-class MinecraftVersionData {
-    private val name = stonecutter.current.version.substringBeforeLast("-")
-
-    fun equalTo(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) == 0
-    fun greaterThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) > 0
-    fun lessThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) < 0
-
-    override fun toString(): String = name
-}
-
 class CompatMixins {
     private var common : List<String> = listOf()
     private var fabric : List<String> = listOf()
@@ -57,11 +21,9 @@ class CompatMixins {
     }
 }
 
-fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
-
-val mod = ModData()
-val loader = LoaderData()
-val minecraftVersion = MinecraftVersionData()
+val mod = ModData(project)
+val loader = LoaderData(project, loom.platform.get().name.lowercase())
+val minecraftVersion = MinecraftVersionData(stonecutter)
 val awName = "${mod.id}.accesswidener"
 
 version = "${mod.version}-$loader+$minecraftVersion"
@@ -142,6 +104,12 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
+
+        include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.0-beta.2")!!)!!)
+
+        modCompileOnly(fileTree("libs") {
+            include("*.jar")
+        }).stripAw(project)
     }
 
     tasks {
@@ -168,14 +136,17 @@ if (loader.isNeoForge) {
     }
 
     dependencies {
-        neoForge("net.neoforged:neoforge:${loader.getVersion()}")
-        modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
-
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
             mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
             mappings(file("mappings/fix.tiny"))
         })
+        neoForge("net.neoforged:neoforge:${loader.getVersion()}")
+        modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
+
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.2")!!)
+        implementation(include("io.github.llamalad7:mixinextras-neoforge:0.5.0-beta.2")!!)
+
     }
 
     tasks {

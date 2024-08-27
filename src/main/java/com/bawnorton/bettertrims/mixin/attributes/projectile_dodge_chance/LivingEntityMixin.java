@@ -1,24 +1,20 @@
-package com.bawnorton.bettertrims.mixin.attributes.dodge_chance;
+package com.bawnorton.bettertrims.mixin.attributes.projectile_dodge_chance;
 
-import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ChorusFruitItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
@@ -28,24 +24,15 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
     @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
-    @ModifyReturnValue(
+    @ModifyVariable(
             method = "applyArmorToDamage",
-            at = @At("RETURN")
+            at = @At("HEAD"),
+            argsOnly = true
     )
     protected float applyDodgeChance(float original, DamageSource source, float amount) {
-        double chance = getAttributeValue(TrimEntityAttributes.DODGE_CHANCE) - 1;
-        if(BetterTrims.PROBABILITIES.passes(chance)) {
-            ChorusFruitItem chorusFruit = (ChorusFruitItem) Items.CHORUS_FRUIT;
-            ItemStack chorusStack = chorusFruit.getDefaultStack();
-            chorusStack.remove(DataComponentTypes.FOOD);
-            chorusFruit.finishUsing(chorusStack, getWorld(), (LivingEntity) (Object) this);
-            if((Object) this instanceof PlayerEntity player) {
-                player.getItemCooldownManager().remove(chorusFruit);
-            }
-            bettertrims$setAvoidedDamage(true);
-        } else {
-            bettertrims$setAvoidedDamage(false);
-        }
-        return bettertrims$didAvoidDamage() ? 0 : original;
+        if (!source.isIn(DamageTypeTags.IS_PROJECTILE)) return original;
+
+        double chance = getAttributeValue(TrimEntityAttributes.PROJECTILE_DODGE_CHANCE) - 1;
+        return dodge(chance) ? 0 : original;
     }
 }

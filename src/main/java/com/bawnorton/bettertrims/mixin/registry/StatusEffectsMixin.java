@@ -18,6 +18,10 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(StatusEffects.class)
 public abstract class StatusEffectsMixin {
     static {
+        TrimStatusEffects.DAMPENED = bettertrims$register(
+                "dampened",
+                StatusEffectAccessor.createStatusEffect(StatusEffectCategory.HARMFUL, 0xFF0B5365)
+        );
         TrimStatusEffects.FEEL_THE_RUSH = bettertrims$register(
                 "feel_the_rush",
                 StatusEffectAccessor.createStatusEffect(StatusEffectCategory.BENEFICIAL, Colors.BLUE)
@@ -27,10 +31,6 @@ public abstract class StatusEffectsMixin {
                                 0.25f,
                                 EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                         )
-        );
-        TrimStatusEffects.DAMPENED = bettertrims$register(
-                "dampened",
-                StatusEffectAccessor.createStatusEffect(StatusEffectCategory.HARMFUL, 0xFF0B5365)
         );
     }
 

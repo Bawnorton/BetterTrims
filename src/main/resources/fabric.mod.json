@@ -24,6 +24,9 @@
     ],
     "fabric-datagen": [
       "com.bawnorton.bettertrims.data.BetterTrimsDataGen"
+    ],
+    "dynamiclights": [
+      "com.bawnorton.bettertrims.client.compat.lambdynlights.LambDynLightsCompat"
     ]
   },
   "mixins": [

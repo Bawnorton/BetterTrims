@@ -48,7 +48,7 @@ public final class ClientNetworking {
         ClientWorld world = context.client().world;
         for(int i = 5; i > 0; i--) {
             float pitch = i * 0.1f;
-            CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> context.client().execute(() -> world.playSound(player, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch)));
+            CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> context.client().execute(() -> world.playSound(player, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 2f, pitch)));
         }
     }
 

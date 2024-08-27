@@ -5,13 +5,15 @@ import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.trim.ArmorTrim;
+import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,10 +21,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements LivingEntityExtender {
     @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+
+    @Shadow public abstract Iterable<ItemStack> getArmorItems();
 
     @Unique
     private boolean bettertrims$avoidedDamage;
@@ -42,17 +48,30 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
             at = @At("RETURN")
     )
     private static DefaultAttributeContainer.Builder addTrimAttributes(DefaultAttributeContainer.Builder original) {
+        original.add(TrimEntityAttributes.BOUNCY);
         original.add(TrimEntityAttributes.BREWERS_DREAM);
-        original.add(TrimEntityAttributes.ELECTRIFYING);
-        original.add(TrimEntityAttributes.SUNS_BLESSING);
-        original.add(TrimEntityAttributes.ITEM_MAGNET);
-        original.add(TrimEntityAttributes.FIRE_RESISTANCE);
-        original.add(TrimEntityAttributes.RESISTANCE);
-        original.add(TrimEntityAttributes.WALKING_FURNACE);
-        original.add(TrimEntityAttributes.SHARE_EFFECT_RADIUS);
-        original.add(TrimEntityAttributes.ECHOING);
+        original.add(TrimEntityAttributes.CLEAVING);
         original.add(TrimEntityAttributes.DODGE_CHANCE);
+        original.add(TrimEntityAttributes.ECHOING);
+        original.add(TrimEntityAttributes.ELECTRIFYING);
+        original.add(TrimEntityAttributes.ENDS_BLESSING);
+        original.add(TrimEntityAttributes.FIREY_THORNS);
+        original.add(TrimEntityAttributes.FIRE_ASPECT);
+        original.add(TrimEntityAttributes.FIRE_RESISTANCE);
+        original.add(TrimEntityAttributes.GLOWING);
+        original.add(TrimEntityAttributes.HELLS_BLESSING);
+        original.add(TrimEntityAttributes.HYDROPHOBIC);
+        original.add(TrimEntityAttributes.ITEM_MAGNET);
+        original.add(TrimEntityAttributes.LIGHT_FOOTED);
+        original.add(TrimEntityAttributes.MOONS_BLESSING);
+        original.add(TrimEntityAttributes.PROJECTILE_DODGE_CHANCE);
         original.add(TrimEntityAttributes.REGENERATION);
+        original.add(TrimEntityAttributes.RESISTANCE);
+        original.add(TrimEntityAttributes.SHARE_EFFECT_RADIUS);
+        original.add(TrimEntityAttributes.SUNS_BLESSING);
+        original.add(TrimEntityAttributes.SWIM_SPEED);
+        original.add(TrimEntityAttributes.THORNS);
+        original.add(TrimEntityAttributes.WALKING_FURNACE);
         return original;
     }
  
@@ -63,7 +82,12 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
     private void writeEffectData(NbtCompound nbt, CallbackInfo ci) {
         NbtCompound betterTrimsContainer = new NbtCompound();
         nbt.put(BetterTrims.MOD_ID, betterTrimsContainer);
-        TrimRegistries.TRIM_EFFECTS.forEach(trimEffect -> betterTrimsContainer.put(trimEffect.getMaterials().id().toString(), trimEffect.writeNbt((LivingEntity) (Object) this, new NbtCompound())));
+        TrimRegistries.TRIM_EFFECTS.forEach(trimEffect -> {
+            NbtCompound compound = trimEffect.writeNbt((LivingEntity) (Object) this, new NbtCompound());
+            if(!compound.isEmpty()) {
+                betterTrimsContainer.put(trimEffect.getId().toString(), compound);
+            }
+        });
     }
     
     @Inject(
@@ -75,8 +99,7 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
         
         NbtCompound betterTrimsContainer = nbt.getCompound(BetterTrims.MOD_ID);
         TrimRegistries.TRIM_EFFECTS.forEach(trimEffect -> {
-            TagKey<Item> materials = trimEffect.getMaterials();
-            String id = materials.id().toString();
+            String id = trimEffect.getId().toString();
             if (betterTrimsContainer.contains(id)) {
                 NbtCompound effectNbt = betterTrimsContainer.getCompound(id);
                 trimEffect.readNbt((LivingEntity) (Object) this, effectNbt);
@@ -94,5 +117,25 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
     )
     private boolean updateDamageAvoidance(boolean original) {
         return original && !bettertrims$didAvoidDamage();
+    }
+
+    @ModifyReturnValue(
+            method = "damage",
+            at = @At("RETURN")
+    )
+    private boolean updateSuccess(boolean original) {
+        return original && !bettertrims$didAvoidDamage();
+    }
+
+    @Override
+    public List<RegistryEntry<ArmorTrimMaterial>> bettertrims$getWornMaterials() {
+        List<RegistryEntry<ArmorTrimMaterial>> wornMaterials = new ArrayList<>();
+        getArmorItems().forEach(itemStack -> {
+            ArmorTrim trim = itemStack.get(DataComponentTypes.TRIM);
+            if(trim == null) return;
+
+            wornMaterials.add(trim.getMaterial());
+        });
+        return wornMaterials;
     }
 }

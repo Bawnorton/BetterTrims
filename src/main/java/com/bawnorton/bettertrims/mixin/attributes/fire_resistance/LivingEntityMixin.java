@@ -10,14 +10,16 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
-    @ModifyReturnValue(
+    @ModifyVariable(
             method = "applyArmorToDamage",
-            at = @At("RETURN")
+            at = @At("HEAD"),
+            argsOnly = true
     )
     private float applyFireResistanceToDamage(float original, DamageSource source, float amount) {
         if (!source.isIn(DamageTypeTags.IS_FIRE)) {

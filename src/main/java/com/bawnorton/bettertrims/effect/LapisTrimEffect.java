@@ -13,7 +13,7 @@ public final class LapisTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ENCHANTERS_BLESSING));
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ENCHANTERS_FAVOUR));
     }
 
 }

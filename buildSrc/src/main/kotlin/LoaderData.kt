@@ -5,7 +5,7 @@ class LoaderData(private val project: Project, private val name: String) {
     val isNeoForge = name == "neoforge"
 
     fun getVersion() : String = if (isNeoForge) {
-        project.property("loader_neoforge").toString()
+        project.property("neoforge_loader").toString()
     } else {
         project.property("fabric_loader").toString()
     }

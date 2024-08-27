@@ -90,8 +90,8 @@ public abstract class LivingEntityMixin extends Entity {
         for(int i = 5; i > 0; i--) {
             float pitch = i * 0.1f;
             CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> world.getServer().execute(() -> {
-                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch);
-                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(oldPos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 1, pitch);
+                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(pos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 2f, pitch);
+                world.playSound((LivingEntity) (Object) this, BlockPos.ofFloored(oldPos), TrimSoundEvents.ECHO_REWIND, SoundCategory.PLAYERS, 2f, pitch);
             }));
         }
         if(instance instanceof ServerPlayerEntity player) {

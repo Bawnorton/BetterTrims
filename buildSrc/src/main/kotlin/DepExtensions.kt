@@ -14,7 +14,7 @@ fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
 fun DependencyHandler.forge(dep: Any) = add("forge", dep)
 fun DependencyHandler.forgeRuntimeLibrary(dep: Any) = add("forgeRuntimeLibrary", dep)
 
-fun Dependency?.stripAw(project: Project) {
+fun Dependency?.stripAw(project: Project): Dependency? {
     val configuration = project.configurations.detachedConfiguration(this)
     configuration.resolve().forEach { file ->
         val tempFile = File(file.parent, file.name + ".tmp")
@@ -39,6 +39,7 @@ fun Dependency?.stripAw(project: Project) {
         }
         Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING)
     }
+    return this
 }
 
 fun removeAccessWidenerEntry(jsonContent: String): String {

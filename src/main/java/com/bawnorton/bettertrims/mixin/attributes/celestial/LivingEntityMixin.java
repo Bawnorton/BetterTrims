@@ -59,6 +59,10 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             return (int) getAttributeValue(TrimEntityAttributes.SUNS_BLESSING);
         } else if (getWorld().isNight()) {
             return (int) getAttributeValue(TrimEntityAttributes.MOONS_BLESSING);
+        } else if (getWorld().getRegistryKey().equals(World.NETHER)) {
+            return (int) getAttributeValue(TrimEntityAttributes.HELLS_BLESSING);
+        } else if (getWorld().getRegistryKey().equals(World.END)) {
+            return (int) getAttributeValue(TrimEntityAttributes.ENDS_BLESSING);
         }
         return 0;
     }

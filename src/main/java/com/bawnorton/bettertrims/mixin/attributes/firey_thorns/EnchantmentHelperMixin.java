@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.mixin.attributes.fire_aspect;
+package com.bawnorton.bettertrims.mixin.attributes.firey_thorns;
 
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -19,12 +19,13 @@ public abstract class EnchantmentHelperMixin {
             method = "onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/item/ItemStack;)V",
             at = @At("HEAD")
     )
-    private static void applyFireAspect(ServerWorld world, Entity target, DamageSource damageSource, ItemStack weapon, CallbackInfo ci) {
-        if(damageSource.getAttacker() instanceof LivingEntity attacker) {
-            int fireAspectLevel = (int) attacker.getAttributeValue(TrimEntityAttributes.FIRE_ASPECT);
-            if(fireAspectLevel > 0) {
-                target.setOnFireFor(EnchantmentLevelBasedValue.linear(4, 4).getValue(fireAspectLevel));
-            }
-        }
+    private static void applyFireyThorns(ServerWorld world, Entity target, DamageSource damageSource, ItemStack weapon, CallbackInfo ci) {
+        if (!(target instanceof LivingEntity livingTarget)) return;
+
+        int fireyThornsLevel = (int) livingTarget.getAttributeValue(TrimEntityAttributes.FIREY_THORNS);
+        if (fireyThornsLevel <= 0) return;
+        if (!(damageSource.getAttacker() instanceof LivingEntity attacker)) return;
+
+        attacker.setOnFireFor(EnchantmentLevelBasedValue.linear(4, 4).getValue(fireyThornsLevel));
     }
 }

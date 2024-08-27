@@ -55,7 +55,7 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
             ItemStack enchanting = inventory.getStack(0);
             int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
             usedBlessings++;
-            if (usedBlessings > player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_BLESSING)) {
+            if (usedBlessings > player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR)) {
                 cir.setReturnValue(false);
                 return;
             }

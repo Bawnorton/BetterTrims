@@ -61,7 +61,7 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
             at = @At("HEAD")
     )
     private void renderReroll(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
-        rerollButton.visible = client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_BLESSING) > 0;
+        rerollButton.visible = client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR) > 0;
         if(!rerollButton.visible) return;
 
         if(rerollButton.getTooltip() == null) {
@@ -104,7 +104,7 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
         if(stack.isEmpty() || EnchantmentHelper.hasEnchantments(stack)) {
             message = ScreenTexts.EMPTY;
         } else {
-            int enchantersBlessingLevel = (int) client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_BLESSING);
+            int enchantersBlessingLevel = (int) client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR);
             int usedBlessings = stack.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
             int rerollsLeft = enchantersBlessingLevel - usedBlessings;
             if(rerollsLeft > 0) {

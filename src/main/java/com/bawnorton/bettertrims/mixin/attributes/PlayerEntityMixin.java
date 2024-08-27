@@ -14,11 +14,11 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             at = @At("RETURN")
     )
     private static DefaultAttributeContainer.Builder addTrimAttributes(DefaultAttributeContainer.Builder original) {
-        original.add(TrimEntityAttributes.TRADE_DISCOUNT);
-        original.add(TrimEntityAttributes.MINERS_RUSH);
-        original.add(TrimEntityAttributes.FORTUNE);
-        original.add(TrimEntityAttributes.ENCHANTERS_BLESSING);
         original.add(TrimEntityAttributes.BONUS_XP);
+        original.add(TrimEntityAttributes.ENCHANTERS_FAVOUR);
+        original.add(TrimEntityAttributes.FORTUNE);
+        original.add(TrimEntityAttributes.MINERS_RUSH);
+        original.add(TrimEntityAttributes.TRADE_DISCOUNT);
         return original;
     }
 }

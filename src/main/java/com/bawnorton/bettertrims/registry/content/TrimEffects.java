@@ -19,10 +19,11 @@ public final class TrimEffects {
     public static final QuartzTrimEffect QUARTZ = register("quartz", TrimMaterialTags.QUARTZ, QuartzTrimEffect::new);
     public static final RedstoneTrimEffect REDSTONE = register("redstone", TrimMaterialTags.REDSTONE, RedstoneTrimEffect::new);
 
+    public static final ChorusFruitTrimEffect CHORUS_FRUIT = register("chorus_fruit", TrimMaterialTags.CHORUS_FRUIT, ChorusFruitTrimEffect::new);
     public static final CoalTrimEffect COAL = register("coal", TrimMaterialTags.COAL, CoalTrimEffect::new);
     public static final DragonsBreathTrimEffect DRAGONS_BREATH = register("dragons_breath", TrimMaterialTags.DRAGONS_BREATH, DragonsBreathTrimEffect::new);
-    public static final ChorusFruitTrimEffect CHORUS_FRUIT = register("chorus_fruit", TrimMaterialTags.CHORUS_FRUIT, ChorusFruitTrimEffect::new);
     public static final EchoShardTrimEffect ECHO_SHARD = register("echo_shard", TrimMaterialTags.ECHO_SHARD, EchoShardTrimEffect::new);
+    public static final EnchantedGoldenAppleTrimEffect ENCHANTED_GOLDEN_APPLE = register("enchanted_golden_apple", TrimMaterialTags.ENCHANTED_GOLDEN_APPLE, EnchantedGoldenAppleTrimEffect::new);
     public static final EnderPearlTrimEffect ENDER_PEARL = register("ender_pearl", TrimMaterialTags.ENDER_PEARL, EnderPearlTrimEffect::new);
     public static final FireChargeTrimEffect FIRE_CHARGE = register("fire_charge", TrimMaterialTags.FIRE_CHARGE, FireChargeTrimEffect::new);
     public static final GlowstoneTrimEffect GLOWSTONE = register("glowstone", TrimMaterialTags.GLOWSTONE, GlowstoneTrimEffect::new);
@@ -31,7 +32,6 @@ public final class TrimEffects {
     public static final PrismarineTrimEffect PRISMARINE = register("prismarine", TrimMaterialTags.PRISMARINE, PrismarineTrimEffect::new);
     public static final RabbitTrimEffect RABBIT = register("rabbit", TrimMaterialTags.RABBIT, RabbitTrimEffect::new);
     public static final SlimeTrimEffect SLIME = register("slime", TrimMaterialTags.SLIME, SlimeTrimEffect::new);
-    public static final EnchantedGoldenAppleTrimEffect ENCHANTED_GOLDEN_APPLE = register("enchanted_golden_apple", TrimMaterialTags.ENCHANTED_GOLDEN_APPLE, EnchantedGoldenAppleTrimEffect::new);
 
     private static <T extends TrimEffect> T register(String id, TagKey<Item> materials, TrimEffect.Factory<T> factory) {
         return Registry.register(

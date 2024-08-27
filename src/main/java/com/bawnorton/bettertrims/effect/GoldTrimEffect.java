@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
-public final class GoldTrimEffect extends TrimEffect {
+public final class GoldTrimEffect extends CelestialEffect {
     public GoldTrimEffect(TagKey<Item> materials) {
         super(materials);
     }
