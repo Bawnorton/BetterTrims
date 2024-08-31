@@ -18,7 +18,7 @@ public final class Networking {
 
     private static void handleMagnetToggle(MagnetToggleC2SPacket packet, ServerPlayNetworking.Context context) {
         boolean enabled = packet.enabled();
-        TrimEffects.IRON.setEnabled(context.player(), enabled);
+        TrimEffects.IRON.setMagnetEnabled(context.player(), enabled);
         Text message = Text.translatable("bettertrims.item_magnet.notification.magnet");
         Text toggle = Text.translatable("bettertrims.item_magnet.notification.magnet.%s".formatted(enabled)).withColor(enabled ? Colors.GREEN : Colors.LIGHT_RED);
         message.getSiblings().add(toggle);

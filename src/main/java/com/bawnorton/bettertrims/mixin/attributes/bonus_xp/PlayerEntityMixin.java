@@ -15,7 +15,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         super(entityType, world);
     }
 
-    @ModifyVariable(method = "addExperience", at = @At("HEAD"), argsOnly = true)
+    @ModifyVariable(
+            method = "addExperience",
+            at = @At("HEAD"),
+            argsOnly = true
+    )
     private int applyBonusXp(int original) {
         double bonusXpPercentage = getAttributeValue(TrimEntityAttributes.BONUS_XP) - 1;
         return (int) (original + original * bonusXpPercentage);

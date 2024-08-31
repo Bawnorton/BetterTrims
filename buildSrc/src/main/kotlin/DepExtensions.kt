@@ -10,9 +10,9 @@ import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
-fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
-fun DependencyHandler.forge(dep: Any) = add("forge", dep)
-fun DependencyHandler.forgeRuntimeLibrary(dep: Any) = add("forgeRuntimeLibrary", dep)
+fun DependencyHandler.neoForge(dep: Any): Dependency? = add("neoForge", dep)
+fun DependencyHandler.forge(dep: Any): Dependency? = add("forge", dep)
+fun DependencyHandler.forgeRuntimeLibrary(dep: Any): Dependency? = add("forgeRuntimeLibrary", dep)
 
 fun Dependency?.stripAw(project: Project): Dependency? {
     val configuration = project.configurations.detachedConfiguration(this)

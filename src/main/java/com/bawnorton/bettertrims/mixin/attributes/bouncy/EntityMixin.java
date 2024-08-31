@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.bouncy;
 
+import com.bawnorton.bettertrims.effect.SlimeTrimEffect;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -28,6 +29,7 @@ public abstract class EntityMixin {
             original.call(instance, world, state, pos, entity, fallDistance);
             return;
         }
+        if(!SlimeTrimEffect.bouncyBoots) return;
 
         int bouncy = (int) livingEntity.getAttributeValue(TrimEntityAttributes.BOUNCY);
         if (bouncy < 1) {
@@ -50,6 +52,7 @@ public abstract class EntityMixin {
             original.call(instance, world, entity);
             return;
         }
+        if(!SlimeTrimEffect.bouncyBoots) return;
 
         int bouncy = (int) livingEntity.getAttributeValue(TrimEntityAttributes.BOUNCY);
         if(bouncy < 1) {

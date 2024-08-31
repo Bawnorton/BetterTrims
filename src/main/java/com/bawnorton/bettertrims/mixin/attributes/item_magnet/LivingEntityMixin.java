@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.item_magnet;
 
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.google.common.base.Predicates;
@@ -35,14 +36,14 @@ public abstract class LivingEntityMixin extends Entity {
             )
     )
     private void applyItemMagnet(CallbackInfo ci) {
-        if (!TrimEffects.IRON.isEnabledFor((LivingEntity) (Object) this)) return;
+        if (!TrimEffects.IRON.isMagnetEnabledFor((LivingEntity) (Object) this)) return;
 
         int itemMagnetLevel = (int) getAttributeValue(TrimEntityAttributes.ITEM_MAGNET);
         if(itemMagnetLevel <= 0) return;
 
         World world = getWorld();
         Box area = new Box(getBlockPos());
-        area = area.expand(itemMagnetLevel * 1.5);
+        area = area.expand(itemMagnetLevel * AttributeSettings.ItemMagnet.radius);
         List<ItemEntity> nearbyItems = world.getEntitiesByClass(ItemEntity.class, area, Predicates.alwaysTrue());
         Vec3d entityPos = getPos();
         for (ItemEntity itemEntity : nearbyItems) {

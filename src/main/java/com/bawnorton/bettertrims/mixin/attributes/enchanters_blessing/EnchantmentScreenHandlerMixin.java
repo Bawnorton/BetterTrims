@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.enchanters_blessing;
 
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.mixin.accessor.PlayerEntityAccessor;
 import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
@@ -55,7 +56,7 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
             ItemStack enchanting = inventory.getStack(0);
             int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
             usedBlessings++;
-            if (usedBlessings > player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR)) {
+            if (usedBlessings > player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR) * AttributeSettings.EnchantersFavour.rerolls) {
                 cir.setReturnValue(false);
                 return;
             }

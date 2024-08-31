@@ -1,11 +1,12 @@
 package com.bawnorton.bettertrims.client.compat.lambdynlights;
 
+//? if fabric {
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.registry.Registries;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import dev.lambdaurora.lambdynlights.api.DynamicLightsInitializer;
 import dev.lambdaurora.lambdynlights.api.item.ItemLightSourceManager;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.registry.Registries;
 
 public final class LambDynLightsCompat implements DynamicLightsInitializer {
     @Override
@@ -21,3 +22,7 @@ public final class LambDynLightsCompat implements DynamicLightsInitializer {
                 }));
     }
 }
+//?} else {
+/*public final class LambDynLightsCompat {
+}
+*///?}

@@ -1,6 +1,8 @@
 package com.bawnorton.bettertrims.mixin.attributes.brewers_dream;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.effect.AmethystTrimEffect;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.extend.ModifiedTimeHolder;
 import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
@@ -60,7 +62,7 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
         LivingEntity entity = bettertrims$ENTITY_CAPTURE.get();
         StatusEffect effect = bettertrims$STATUS_EFFECT_CAPTURE.get();
         int level = (int) entity.getAttributeValue(TrimEntityAttributes.BREWERS_DREAM);
-        float chance = level * 0.075f;
+        float chance = level * AttributeSettings.BrewersDream.modificationChance;
         int modified;
         if (effect != null && BetterTrims.PROBABILITIES.passes(chance)) {
             modified = effect.isBeneficial() ? 0 : 2;

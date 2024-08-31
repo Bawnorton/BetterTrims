@@ -1,7 +1,8 @@
 package com.bawnorton.bettertrims.mixin.attributes.celestial;
 
+import com.bawnorton.bettertrims.effect.CelestialEffect;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
-import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import java.util.Optional;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
@@ -27,7 +29,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             at = @At("RETURN")
     )
     protected float applyCelestialToMovementSpeed(float original) {
-        return original + 0.05f * bettertrims$getCelestialLevel();
+        return original + bettertrims$getCelestialLevel() * bettertrims$getCelestial().map(CelestialEffect::getMovementSpeed).orElse(0f);
     }
 
     @ModifyReturnValue(
@@ -35,35 +37,41 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             at = @At("RETURN")
     )
     protected float applyCelestialToDamage(float original) {
-        return original * (1 - bettertrims$getCelestialLevel() * 0.03f);
+        return original * (1 - bettertrims$getCelestialLevel() * bettertrims$getCelestial().map(CelestialEffect::getDamageResistance).orElse(0f));
     }
 
     @Unique
     protected float bettertrims$applyCelestialToAttackDamage(float original) {
-        return original + 0.5f * bettertrims$getCelestialLevel();
+        return original + bettertrims$getCelestialLevel() * bettertrims$getCelestial().map(CelestialEffect::getAttackDamage).orElse(0f);
     }
 
     @Unique
     protected float bettertrims$applyCelestialToAttackSpeed(float original) {
-        return original + 0.3f * bettertrims$getCelestialLevel();
+        return original + bettertrims$getCelestialLevel() * bettertrims$getCelestial().map(CelestialEffect::getAttackSpeed).orElse(0f);
     }
 
     @Unique
     public int bettertrims$applyCelestialToAttackCooldown(int original) {
-        return (int) (original - bettertrims$getCelestialLevel() / 0.3f);
+        return (int) (original - bettertrims$getCelestialLevel() / bettertrims$getCelestial().map(CelestialEffect::getAttackSpeed).orElse(1f));
     }
 
     @Unique
     protected int bettertrims$getCelestialLevel() {
+        Optional<CelestialEffect> effectOptional = bettertrims$getCelestial();
+        return effectOptional.map(effect -> (int) getAttributeValue(effect.getEntityAttribute())).orElse(0);
+    }
+
+    @Unique
+    protected Optional<CelestialEffect> bettertrims$getCelestial() {
         if(getWorld().isDay()) {
-            return (int) getAttributeValue(TrimEntityAttributes.SUNS_BLESSING);
+            return Optional.of(TrimEffects.GOLD);
         } else if (getWorld().isNight()) {
-            return (int) getAttributeValue(TrimEntityAttributes.MOONS_BLESSING);
+            return Optional.empty();
         } else if (getWorld().getRegistryKey().equals(World.NETHER)) {
-            return (int) getAttributeValue(TrimEntityAttributes.HELLS_BLESSING);
+            return Optional.of(TrimEffects.GLOWSTONE);
         } else if (getWorld().getRegistryKey().equals(World.END)) {
-            return (int) getAttributeValue(TrimEntityAttributes.ENDS_BLESSING);
+            return Optional.empty();
         }
-        return 0;
+        return Optional.empty();
     }
 }

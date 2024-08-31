@@ -1,8 +1,8 @@
-// 1.21	2024-08-24T21:57:00.31203	BetterTrims/Tags for minecraft:item
+// 1.21.1	2024-08-29T14:01:12.178656	BetterTrims/Tags for minecraft:item
 5022adad8e582b5a44eb427f8f3517178c29fa74 data/bettertrims/tags/item/trim_materials/coal.json
-7c84f6aad1e03941b0167daf5d2ce9d5072ff591 data/bettertrims/tags/item/trim_materials/copper.json
 24e174c21c07ff8f8087a9d8be081a6d28547d93 data/bettertrims/tags/item/trim_materials/quartz.json
 b4cc0642cc95aece33ec9cce364d245dd186c647 data/bettertrims/tags/item/trim_materials/chorus_fruit.json
+7c84f6aad1e03941b0167daf5d2ce9d5072ff591 data/bettertrims/tags/item/trim_materials/copper.json
 582d4d57943300bddf4bfb9fbb8288c7b4e9bfa1 data/bettertrims/tags/item/trim_materials/nether_brick.json
 caa12dd48836412e30130754183a3700e3e0439a data/bettertrims/tags/item/trim_materials/diamond.json
 2768b0d3ac944ff50b0932d71437296236a18fc1 data/bettertrims/tags/item/trim_materials/redstone.json

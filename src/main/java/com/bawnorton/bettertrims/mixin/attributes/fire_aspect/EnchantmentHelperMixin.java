@@ -1,5 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.fire_aspect;
 
+import com.bawnorton.bettertrims.effect.FireChargeTrimEffect;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
@@ -23,7 +25,7 @@ public abstract class EnchantmentHelperMixin {
         if(damageSource.getAttacker() instanceof LivingEntity attacker) {
             int fireAspectLevel = (int) attacker.getAttributeValue(TrimEntityAttributes.FIRE_ASPECT);
             if(fireAspectLevel > 0) {
-                target.setOnFireFor(EnchantmentLevelBasedValue.linear(4, 4).getValue(fireAspectLevel));
+                target.setOnFireFor(EnchantmentLevelBasedValue.linear(AttributeSettings.FireAspect.base, AttributeSettings.FireAspect.seconds).getValue(fireAspectLevel));
             }
         }
     }

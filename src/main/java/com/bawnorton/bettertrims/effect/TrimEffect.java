@@ -34,6 +34,8 @@ public abstract class TrimEffect {
 
     protected abstract void addAttributes(Consumer<TrimAttribute> adder);
 
+    protected abstract boolean getEnabled();
+
     public TagKey<Item> getMaterials() {
         return materials;
     }
@@ -61,6 +63,8 @@ public abstract class TrimEffect {
     }
 
     public boolean matchesMaterial(RegistryEntry<ArmorTrimMaterial> material) {
+        if(!getEnabled()) return false;
+
         return material.value().ingredient().isIn(materials);
     }
 

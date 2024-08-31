@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.echoing;
 
 import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.networking.packet.s2c.EchoTriggeredS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EntityEchoedS2CPacket;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
@@ -86,7 +87,11 @@ public abstract class LivingEntityMixin extends Entity {
         });
 
         int echoingLevel = (int) getAttributeValue(TrimEntityAttributes.ECHOING);
-        addStatusEffect(new StatusEffectInstance(TrimStatusEffects.DAMPENED, 20 * 300 / echoingLevel, 0));
+        addStatusEffect(new StatusEffectInstance(
+                TrimStatusEffects.DAMPENED,
+                20 * (AttributeSettings.Echoing.baseDampeningDuration - AttributeSettings.Echoing.dampeningReduction * echoingLevel),
+                0
+        ));
         for(int i = 5; i > 0; i--) {
             float pitch = i * 0.1f;
             CompletableFuture.delayedExecutor(50L * i, TimeUnit.MILLISECONDS).execute(() -> world.getServer().execute(() -> {

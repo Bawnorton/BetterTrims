@@ -2,7 +2,6 @@ package com.bawnorton.bettertrims.mixin.attributes.dodge_chance;
 
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

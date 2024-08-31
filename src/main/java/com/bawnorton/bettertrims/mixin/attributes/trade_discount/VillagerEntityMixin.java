@@ -18,7 +18,10 @@ public abstract class VillagerEntityMixin extends MerchantEntity {
         super(entityType, world);
     }
 
-    @Inject(method = "prepareOffersFor", at = @At("TAIL"))
+    @Inject(
+            method = "prepareOffersFor",
+            at = @At("TAIL")
+    )
     private void applyTradeDiscount(PlayerEntity player, CallbackInfo ci) {
         for (TradeOffer offer : getOffers()) {
             int tradeCount = offer.getOriginalFirstBuyItem().getCount();

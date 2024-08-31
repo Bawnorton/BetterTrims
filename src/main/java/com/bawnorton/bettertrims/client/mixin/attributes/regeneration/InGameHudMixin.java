@@ -2,7 +2,6 @@ package com.bawnorton.bettertrims.client.mixin.attributes.regeneration;
 
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import org.spongepowered.asm.mixin.Final;
@@ -15,7 +14,11 @@ public abstract class InGameHudMixin {
     @Shadow @Final private MinecraftClient client;
 
     @ModifyExpressionValue(
+            //? if fabric {
             method = "renderStatusBars",
+            //?} elif neoforge {
+            /*method = "renderHealthLevel",
+            *///?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"

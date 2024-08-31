@@ -1,9 +1,11 @@
 package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
+import com.bawnorton.configurable.Configurable;
 import com.google.common.collect.EvictingQueue;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -24,8 +26,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+@Configurable("echo_shard")
 public final class EchoShardTrimEffect extends TrimEffect {
     private final Map<UUID, EvictingQueue<Echo>> entityEchoes;
+    @Configurable
+    public static boolean enabled = true;
 
     public EchoShardTrimEffect(TagKey<Item> materials) {
         super(materials);
@@ -37,6 +42,11 @@ public final class EchoShardTrimEffect extends TrimEffect {
         adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ECHOING));
     }
 
+    @Override
+    protected boolean getEnabled() {
+        return enabled;
+    }
+
     public void createEcho(LivingEntity entity, Vec3d pos, float pitch, float yaw, float health) {
         if(entity.hasStatusEffect(TrimStatusEffects.DAMPENED)) return;
 
@@ -44,7 +54,7 @@ public final class EchoShardTrimEffect extends TrimEffect {
         int echoingLevel = (int) entity.getAttributeValue(TrimEntityAttributes.ECHOING);
         if(echoingLevel <= 0) return;
 
-        int echoCount = echoingLevel * 100;
+        int echoCount = echoingLevel * AttributeSettings.Echoing.echoDuration * 20;
         EvictingQueue<Echo> queue = entityEchoes.computeIfAbsent(entity.getUuid(), uuid -> EvictingQueue.create(echoCount));
         int maxSize = queue.remainingCapacity() + queue.size();
         if(maxSize != echoCount) {
@@ -85,6 +95,7 @@ public final class EchoShardTrimEffect extends TrimEffect {
     public EvictingQueue<Echo> getEchoes(LivingEntity instance) {
         return entityEchoes.get(instance.getUuid());
     }
+
 
     public record Echo(Vec3d pos, float pitch, float yaw, float health) {
         public static final Codec<Echo> CODEC = RecordCodecBuilder.create(

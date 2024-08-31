@@ -1,28 +1,28 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version}"
-issueTrackerURL = "https://github.com/Bawnorton/${mod_name}/issues"
+issueTrackerURL = "https://github.com/Bawnorton/BetterTrims/issues"
 license = "MIT"
 
 [[mods]]
-modId = "${mod_id}"
+modId = "bettertrims"
 version = "${version}"
-displayName = "${mod_name}"
+displayName = "BetterTrims"
 authors = "Bawnorton"
 description = '''
 ${description}
 '''
-logoFile = "assets/${mod_id}/icon.png"
+logoFile = "assets/bettertrims/icon.png"
 
 [[mixins]]
-config = "${mod_id}.mixins.json"
+config = "bettertrims.mixins.json"
 
 [[mixins]]
-config = "${mod_id}-client.mixins.json"
+config = "bettertrims-client.mixins.json"
 
 [[mixins]]
-config = "${mod_id}-compat.mixins.json"
+config = "bettertrims-compat.mixins.json"
 
-[[dependencies.${mod_id}]]
+[[dependencies.bettertrims]]
 modId = "minecraft"
 type = "required"
 versionRange = "${minecraft_dependency}"

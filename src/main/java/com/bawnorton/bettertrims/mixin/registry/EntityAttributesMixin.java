@@ -41,7 +41,6 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.PROJECTILE_DODGE_CHANCE = bettertrims$registerPercentage("projectile_dodge_chance");
         TrimEntityAttributes.REGENERATION = bettertrims$registerAttribute("regeneration", 0, 0, 50, true);
         TrimEntityAttributes.RESISTANCE = bettertrims$registerPercentage("resistance");
-        TrimEntityAttributes.RESISTANCE = bettertrims$registerPercentage("resistance");
         TrimEntityAttributes.SHARE_EFFECT_RADIUS = bettertrims$registerLeveledAttribute("share_effect_radius");
         TrimEntityAttributes.SUNS_BLESSING = bettertrims$registerTrackedLeveledAttribute("suns_blessing");
         TrimEntityAttributes.SWIM_SPEED = bettertrims$registerTrackedPercentage("swim_speed");

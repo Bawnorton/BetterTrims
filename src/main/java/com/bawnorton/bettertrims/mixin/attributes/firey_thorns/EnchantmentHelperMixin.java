@@ -1,5 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.firey_thorns;
 
+import com.bawnorton.bettertrims.effect.FireChargeTrimEffect;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelBasedValue;
@@ -26,6 +28,6 @@ public abstract class EnchantmentHelperMixin {
         if (fireyThornsLevel <= 0) return;
         if (!(damageSource.getAttacker() instanceof LivingEntity attacker)) return;
 
-        attacker.setOnFireFor(EnchantmentLevelBasedValue.linear(4, 4).getValue(fireyThornsLevel));
+        attacker.setOnFireFor(EnchantmentLevelBasedValue.linear(AttributeSettings.FireyThorns.base, AttributeSettings.FireyThorns.seconds).getValue(fireyThornsLevel));
     }
 }

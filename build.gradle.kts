@@ -2,6 +2,7 @@
 
 plugins {
     `maven-publish`
+    java
     kotlin("jvm") version "1.9.22"
     id("dev.architectury.loom") version "1.7-SNAPSHOT"
     id("architectury-plugin") version "3.4-SNAPSHOT"
@@ -32,6 +33,7 @@ base.archivesName.set(mod.name)
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.bawnorton.com/releases/")
     maven("https://maven.shedaniel.me")
@@ -43,6 +45,7 @@ dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
 
     modImplementation("com.bawnorton.allthetrims:allthetrims-$loader:${property("allthetrims")}") { isTransitive = false }
+    annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader:1.0.86+$minecraftVersion")!!)
 }
 
 loom {
@@ -105,8 +108,6 @@ if(loader.isFabric) {
 
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
 
-        include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.5.0-beta.2")!!)!!)
-
         modCompileOnly(fileTree("libs") {
             include("*.jar")
         }).stripAw(project)
@@ -115,8 +116,6 @@ if(loader.isFabric) {
     tasks {
         processResources {
             val modMetadata = mapOf(
-                "mod_id" to mod.id,
-                "mod_name" to mod.name,
                 "description" to mod.description,
                 "version" to mod.version,
                 "minecraft_dependency" to mod.minecraftDependency
@@ -129,12 +128,6 @@ if(loader.isFabric) {
 }
 
 if (loader.isNeoForge) {
-    sourceSets {
-        main {
-            resources.srcDir(rootProject.rootDir.resolve("src/main/generated"))
-        }
-    }
-
     dependencies {
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
@@ -143,17 +136,11 @@ if (loader.isNeoForge) {
         })
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
         modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
-
-        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0-beta.2")!!)
-        implementation(include("io.github.llamalad7:mixinextras-neoforge:0.5.0-beta.2")!!)
-
     }
 
     tasks {
         processResources {
             val modMetadata = mapOf(
-                "mod_id" to mod.id,
-                "mod_name" to mod.name,
                 "description" to mod.description,
                 "version" to mod.version,
                 "minecraft_dependency" to mod.minecraftDependency,
@@ -205,7 +192,6 @@ publishMods {
         accessToken = providers.gradleProperty("GITHUB_TOKEN")
         repository = "Bawnorton/${mod.name}"
         commitish = branch
-        changelog = getRootProject().file("CHANGELOG.md").readLines().joinToString("\n")
         tagName = tag
     }
 
@@ -218,9 +204,6 @@ publishMods {
     curseforge {
         accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
         projectId = mod.curseforgeProjId
-        changelog = """
-            <markdown>
-        """
         minecraftVersions.addAll(mod.supportedVersions)
     }
 }

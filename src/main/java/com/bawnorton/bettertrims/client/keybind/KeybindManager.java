@@ -19,9 +19,9 @@ public class KeybindManager {
         ClientPlayerEntity player = client.player;
         if(player == null) return;
 
-        boolean enabled = TrimEffects.IRON.isEnabledFor(player);
-        TrimEffects.IRON.setEnabled(player, !enabled);
-        ClientPlayNetworking.send(new MagnetToggleC2SPacket(TrimEffects.IRON.isEnabledFor(player)));
+        boolean enabled = TrimEffects.IRON.isMagnetEnabledFor(player);
+        TrimEffects.IRON.setMagnetEnabled(player, !enabled);
+        ClientPlayNetworking.send(new MagnetToggleC2SPacket(TrimEffects.IRON.isMagnetEnabledFor(player)));
     });
 
     private static ActionedKeybind registerKeybind(String key, int code, KeybindCallback callback) {

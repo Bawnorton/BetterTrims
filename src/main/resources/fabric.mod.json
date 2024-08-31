@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "bettertrims",
   "version": "${version}",
-  "name": "${mod_name}",
+  "name": "BetterTrims",
   "description": "${description}",
   "authors": [
     "Bawnorton"
   ],
   "contact": {
     "homepage": "https://github.com/Bawnorton",
-    "sources": "https://github.com/Bawnorton/${mod_name}",
-    "issues": "https://github.com/Bawnorton/${mod_name}/issues"
+    "sources": "https://github.com/Bawnorton/BetterTrims",
+    "issues": "https://github.com/Bawnorton/BetterTrims/issues"
   },
   "license": "MIT",
-  "icon": "assets/${mod_id}/icon.png",
+  "icon": "assets/bettertrims/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -30,10 +30,10 @@
     ]
   },
   "mixins": [
-    "${mod_id}.mixins.json",
-    "${mod_id}-compat.mixins.json",
+    "bettertrims.mixins.json",
+    "bettertrims-compat.mixins.json",
     {
-      "config": "${mod_id}-client.mixins.json",
+      "config": "bettertrims-client.mixins.json",
       "environment": "client"
     }
   ],
@@ -47,7 +47,7 @@
   "custom": {
     "modmenu": {
       "links": {
-        "${mod_id}.website": "https://github.com/Bawnorton/${mod_name}"
+        "bettertrims.website": "https://github.com/Bawnorton/BetterTrims"
       }
     }
   }

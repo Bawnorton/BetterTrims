@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.light_footed;
 
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +22,7 @@ public abstract class LivingEntityMixin {
         int lightFootedLevel = (int) getAttributeValue(TrimEntityAttributes.LIGHT_FOOTED);
         if (lightFootedLevel <= 0) return original;
 
-        return original * 1 / (lightFootedLevel + 1);
+        lightFootedLevel++;
+        return original / (lightFootedLevel * AttributeSettings.LightFooted.noiseDampening);
     }
 }

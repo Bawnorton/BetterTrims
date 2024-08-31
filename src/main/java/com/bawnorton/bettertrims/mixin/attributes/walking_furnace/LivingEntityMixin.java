@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.walking_furnace;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
@@ -56,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity {
         int walkingFurnaceLevel = (int) getAttributeValue(TrimEntityAttributes.WALKING_FURNACE);
         World world = getWorld();
 
-        for(int i = 0; i < walkingFurnaceLevel * 2; i++) {
+        for(int i = 0; i < walkingFurnaceLevel * AttributeSettings.WalkingFurnace.items; i++) {
             if((Object) this instanceof PlayerEntity player) {
                 PlayerInventory inventory = player.getInventory();
                 for(int j = 0; j < inventory.main.size(); j++) {

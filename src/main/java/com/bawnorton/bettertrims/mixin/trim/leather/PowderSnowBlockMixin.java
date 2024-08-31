@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.PowderSnowBlock;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PowderSnowBlock.class)
 public abstract class PowderSnowBlockMixin {
+    //? if fabric {
     @WrapOperation(
             method = "canWalkOnPowderSnow",
             at = @At(
@@ -28,4 +30,21 @@ public abstract class PowderSnowBlockMixin {
 
         return TrimEffects.LEATHER.matchesMaterial(trim.getMaterial());
     }
+    //?} elif neoforge {
+    /*@WrapOperation(
+            method = "canWalkOnPowderSnow",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/item/ItemStack;canWalkOnPowderedSnow(Lnet/minecraft/entity/LivingEntity;)Z"
+            )
+    )
+    private static boolean orIsTrimmed(ItemStack instance, LivingEntity livingEntity, Operation<Boolean> original) {
+        if(original.call(instance, livingEntity)) return true;
+
+        ArmorTrim trim = instance.get(DataComponentTypes.TRIM);
+        if(trim == null) return false;
+
+        return TrimEffects.LEATHER.matchesMaterial(trim.getMaterial());
+    }
+    *///?}
 }

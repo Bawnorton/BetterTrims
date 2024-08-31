@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.registry;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.mixin.accessor.StatusEffectAccessor;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -28,7 +29,7 @@ public abstract class StatusEffectsMixin {
                         .addAttributeModifier(
                                 EntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
                                 BetterTrims.id("effect.feel_the_rush"),
-                                0.25f,
+                                AttributeSettings.MinersRush.bonusMineSpeed,
                                 EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                         )
         );
