@@ -3,6 +3,8 @@ package com.bawnorton.bettertrims.effect;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.Yacl;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
@@ -12,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-@Configurable("iron")
+@Configurable(value = "iron", yacl = @Yacl(image = @Image("minecraft:textures/item/iron_ingot.png"), collapsed = true))
 public final class IronTrimEffect extends TrimEffect {
     public Map<UUID, Boolean> magnetEnabled;
     @Configurable

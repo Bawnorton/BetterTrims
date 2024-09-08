@@ -2,12 +2,14 @@ package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.Yacl;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
-@Configurable("redstone")
+@Configurable(value = "redstone", yacl = @Yacl(image = @Image("minecraft:textures/item/redstone.png"), collapsed = true))
 public final class RedstoneTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;

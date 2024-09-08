@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.client.compat;
 
-import com.bawnorton.allthetrims.platform.Platform;
 import com.bawnorton.bettertrims.client.compat.lambdynlights.LambDynLightsCompat;
+import com.bawnorton.bettertrims.platform.Platform;
 import java.util.Optional;
 
 public final class Compat {

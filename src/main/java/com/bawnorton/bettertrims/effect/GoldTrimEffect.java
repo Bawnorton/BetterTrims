@@ -3,12 +3,14 @@ package com.bawnorton.bettertrims.effect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.Yacl;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.item.Item;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 
-@Configurable("gold")
+@Configurable(value = "gold", yacl = @Yacl(image = @Image("minecraft:textures/item/gold_ingot.png"), collapsed = true))
 public final class GoldTrimEffect extends CelestialEffect {
     @Configurable
     public static boolean enabled = true;
@@ -29,7 +31,7 @@ public final class GoldTrimEffect extends CelestialEffect {
 
     @Override
     public float getDamageResistance() {
-        return AttributeSettings.SunsBlessing.damageResistance;
+        return AttributeSettings.SunsBlessing.resistance;
     }
 
     @Override

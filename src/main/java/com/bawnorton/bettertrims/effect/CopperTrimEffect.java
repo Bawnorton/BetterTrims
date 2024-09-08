@@ -4,6 +4,8 @@ import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.Yacl;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.block.BlockState;
@@ -23,7 +25,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-@Configurable("copper")
+@Configurable(value = "copper", yacl = @Yacl(image = @Image("minecraft:textures/item/copper_ingot.png"), collapsed = true))
 public final class CopperTrimEffect extends TrimEffect {
     private final Object2ObjectMap<LivingEntity, Set<BlockPos>> electrified = new Object2ObjectOpenHashMap<>();
     @Configurable

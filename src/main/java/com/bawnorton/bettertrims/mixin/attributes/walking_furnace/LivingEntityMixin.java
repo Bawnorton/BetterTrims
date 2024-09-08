@@ -57,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity {
         int walkingFurnaceLevel = (int) getAttributeValue(TrimEntityAttributes.WALKING_FURNACE);
         World world = getWorld();
 
-        for(int i = 0; i < walkingFurnaceLevel * AttributeSettings.WalkingFurnace.items; i++) {
+        for(int i = 0; i < walkingFurnaceLevel * AttributeSettings.WalkingFurnace.itemsToSmelt; i++) {
             if((Object) this instanceof PlayerEntity player) {
                 PlayerInventory inventory = player.getInventory();
                 for(int j = 0; j < inventory.main.size(); j++) {

@@ -33,7 +33,6 @@ base.archivesName.set(mod.name)
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.bawnorton.com/releases/")
     maven("https://maven.shedaniel.me")
@@ -44,8 +43,8 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
 
-    modImplementation("com.bawnorton.allthetrims:allthetrims-$loader:${property("allthetrims")}") { isTransitive = false }
-    annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader:1.0.86+$minecraftVersion")!!)
+    modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}-$loader")
+    annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader-yarn:${property("configurable")}+$minecraftVersion") { isTransitive = false })
 }
 
 loom {
@@ -136,6 +135,9 @@ if (loader.isNeoForge) {
         })
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
         modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
+
+        forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${property("quilt_parsers")}")!!)
+        forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${property("quilt_parsers")}")!!)
     }
 
     tasks {

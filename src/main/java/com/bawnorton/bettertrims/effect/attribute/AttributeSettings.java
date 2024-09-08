@@ -38,7 +38,7 @@ public final class AttributeSettings {
     public static class FireyThorns {
         @Configurable(value = "base", min = 0, max = 16)
         public static int base = 4;
-        @Configurable(value = "seconds", min = 0, max = 16)
+        @Configurable(value = "seconds_per_level", min = 0, max = 16)
         public static int seconds = 4;
     }
 
@@ -46,8 +46,8 @@ public final class AttributeSettings {
     public static class SunsBlessing {
         @Configurable(value = "movement_speed", min = 0, max = 1)
         public static float movementSpeed = 0.05f;
-        @Configurable(value = "damage_resistance", min = 0, max = 1)
-        public static float damageResistance = 0.03f;
+        @Configurable(min = 0, max = 1)
+        public static float resistance = 0.03f;
         @Configurable(value = "attack_damage", min = 0, max = 10)
         public static float attackDamage = 0.5f;
         @Configurable(value = "attack_speed", min = 0, max = 5)
@@ -58,8 +58,8 @@ public final class AttributeSettings {
     public static class MoonsBlessing {
         @Configurable(value = "movement_speed", min = 0, max = 1)
         public static float movementSpeed = 0.05f;
-        @Configurable(value = "damage_resistance", min = 0, max = 1)
-        public static float damageResistance = 0.03f;
+        @Configurable(min = 0, max = 1)
+        public static float resistance = 0.03f;
         @Configurable(value = "attack_damage", min = 0, max = 10)
         public static float attackDamage = 0.5f;
         @Configurable(value = "attack_speed", min = 0, max = 5)
@@ -70,8 +70,8 @@ public final class AttributeSettings {
     public static class HellsBlessing {
         @Configurable(value = "movement_speed", min = 0, max = 1)
         public static float movementSpeed = 0.05f;
-        @Configurable(value = "damage_resistance", min = 0, max = 1)
-        public static float damageResistance = 0.03f;
+        @Configurable(min = 0, max = 1)
+        public static float resistance = 0.03f;
         @Configurable(value = "attack_damage", min = 0, max = 10)
         public static float attackDamage = 0.5f;
         @Configurable(value = "attack_speed", min = 0, max = 5)
@@ -82,8 +82,8 @@ public final class AttributeSettings {
     public static class EndsBlessing {
         @Configurable(value = "movement_speed", min = 0, max = 1)
         public static float movementSpeed = 0.05f;
-        @Configurable(value = "damage_resistance", min = 0, max = 1)
-        public static float damageResistance = 0.03f;
+        @Configurable(min = 0, max = 1)
+        public static float resistance = 0.03f;
         @Configurable(value = "attack_damage", min = 0, max = 10)
         public static float attackDamage = 0.5f;
         @Configurable(value = "attack_speed", min = 0, max = 5)
@@ -99,7 +99,7 @@ public final class AttributeSettings {
     @Configurable("item_magnet")
     public static class ItemMagnet {
         @Configurable(min = 0, max = 4)
-        public static float radius;
+        public static float radius = 1;
     }
 
     @Configurable("light_footed")
@@ -118,7 +118,7 @@ public final class AttributeSettings {
 
     @Configurable("walking_furnace")
     public static class WalkingFurnace {
-        @Configurable(min = 0, max = 64)
-        public static int items = 2;
+        @Configurable(value = "items_to_smelt", min = 0, max = 64)
+        public static int itemsToSmelt = 2;
     }
 }

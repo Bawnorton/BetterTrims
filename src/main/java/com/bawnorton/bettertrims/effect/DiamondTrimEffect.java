@@ -3,13 +3,15 @@ package com.bawnorton.bettertrims.effect;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.Yacl;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
-@Configurable("diamond")
+@Configurable(value = "diamond", yacl = @Yacl(image = @Image("minecraft:textures/item/diamond.png"), collapsed = true))
 public final class DiamondTrimEffect extends TrimEffect {
-    @Configurable
+    @Configurable(yacl = @Yacl(image = @Image))
     public static boolean enabled = true;
 
     public DiamondTrimEffect(TagKey<Item> materials) {
