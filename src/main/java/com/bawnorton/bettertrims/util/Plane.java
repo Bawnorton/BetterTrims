@@ -1,8 +1,5 @@
 package com.bawnorton.bettertrims.util;
 
-import com.bawnorton.configurable.Configurable;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;

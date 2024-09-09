@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.effect.attribute;
 
 import com.bawnorton.bettertrims.registry.TrimRegistries;
-import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.mixin.accessor.AttributeModifiersComponentAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;

@@ -28,3 +28,10 @@ type = "required"
 versionRange = "${minecraft_dependency}"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.bettertrims]]
+modId = "configurable"
+type = "required"
+versionRange = ">=1.0.1"
+ordering = "NONE"
+side = "BOTH"

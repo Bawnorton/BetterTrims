@@ -2,11 +2,9 @@ package com.bawnorton.bettertrims.mixin.attributes.thorns;
 
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageSources;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;

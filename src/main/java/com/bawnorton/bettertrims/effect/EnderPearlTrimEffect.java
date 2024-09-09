@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
-import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
 import com.bawnorton.configurable.Image;

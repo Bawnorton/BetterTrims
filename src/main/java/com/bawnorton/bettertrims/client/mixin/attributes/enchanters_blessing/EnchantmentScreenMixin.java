@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.client.mixin.attributes.enchanters_blessing;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.effect.LapisTrimEffect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;

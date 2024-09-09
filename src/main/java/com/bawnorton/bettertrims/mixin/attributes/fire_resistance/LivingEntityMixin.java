@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.fire_resistance;
 
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;

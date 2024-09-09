@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.brewers_dream;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.effect.AmethystTrimEffect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.extend.ModifiedTimeHolder;
 import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;

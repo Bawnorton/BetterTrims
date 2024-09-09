@@ -2,41 +2,23 @@ package com.bawnorton.bettertrims.mixin.attributes.electrifying;
 
 import com.bawnorton.bettertrims.effect.CopperTrimEffect;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
-import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.util.FloodFill;
-import com.bawnorton.bettertrims.util.Plane;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import it.unimi.dsi.fastutil.Pair;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.EntityList;
-import net.minecraft.world.World;
-import org.joml.Vector3d;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {

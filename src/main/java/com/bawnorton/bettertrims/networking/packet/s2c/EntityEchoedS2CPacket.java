@@ -3,15 +3,10 @@ package com.bawnorton.bettertrims.networking.packet.s2c;
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
-import java.util.UUID;
 
 public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo echo) implements CustomPayload {
     public static final Id<EntityEchoedS2CPacket> PACKET_ID = new Id<>(BetterTrims.id(EntityEchoedS2CPacket.class.getSimpleName().toLowerCase()));

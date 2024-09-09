@@ -6,14 +6,12 @@ import com.bawnorton.bettertrims.client.networking.ClientNetworking;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
-import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.Util;
-import java.net.URI;
 
 public final class BetterTrimsClient {
     public static void init() {

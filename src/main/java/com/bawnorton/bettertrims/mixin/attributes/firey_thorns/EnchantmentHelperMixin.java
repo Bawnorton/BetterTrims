@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims.mixin.attributes.firey_thorns;
 
-import com.bawnorton.bettertrims.effect.FireChargeTrimEffect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.enchantment.EnchantmentHelper;
