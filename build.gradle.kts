@@ -105,6 +105,7 @@ if(loader.isFabric) {
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
+        modRuntimeOnly("com.bawnorton.allthetrims:allthetrims-fabric:${property("allthetrims")}")
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
 
         modCompileOnly(fileTree("libs") {

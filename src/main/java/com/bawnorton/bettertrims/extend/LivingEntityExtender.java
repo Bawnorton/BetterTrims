@@ -2,6 +2,7 @@ package com.bawnorton.bettertrims.extend;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.TrimEffect;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.List;
 
 public interface LivingEntityExtender {
@@ -29,6 +31,9 @@ public interface LivingEntityExtender {
             chorusFruit.finishUsing(chorusStack, self.getWorld(), self);
             if((Object) this instanceof PlayerEntity player) {
                 player.getItemCooldownManager().remove(chorusFruit);
+                if(player instanceof ServerPlayerEntity serverPlayer) {
+                    TrimCriteria.DODGED.trigger(serverPlayer);
+                }
             }
             bettertrims$setAvoidedDamage(true);
         } else {

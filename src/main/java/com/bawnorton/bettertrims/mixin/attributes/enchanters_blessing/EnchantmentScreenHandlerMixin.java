@@ -3,6 +3,7 @@ package com.bawnorton.bettertrims.mixin.attributes.enchanters_blessing;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.mixin.accessor.PlayerEntityAccessor;
 import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -15,6 +16,7 @@ import net.minecraft.screen.Property;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +58,9 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
             ItemStack enchanting = inventory.getStack(0);
             int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
             usedBlessings++;
+            if(usedBlessings >= 4 && player instanceof ServerPlayerEntity serverPlayer) {
+                TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS.trigger(serverPlayer);
+            }
             if (usedBlessings > player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR) * AttributeSettings.EnchantersFavour.rerolls) {
                 cir.setReturnValue(false);
                 return;

@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "an_even_better_deal": {
+      "trigger": "bettertrims:discounted_trade"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.an_even_better_deal.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:emerald"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.an_even_better_deal.title"
+    }
+  },
+  "requirements": [
+    [
+      "an_even_better_deal"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

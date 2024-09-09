@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.cleaving;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -19,6 +20,7 @@ import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -71,7 +73,12 @@ public abstract class LivingEntityMixin extends Entity {
             case WitherSkeletonEntity ignored -> Items.WITHER_SKELETON_SKULL.getDefaultStack();
             case SkeletonEntity ignored -> Items.SKELETON_SKULL.getDefaultStack();
             case ZombieEntity ignored -> Items.ZOMBIE_HEAD.getDefaultStack();
-            case PiglinEntity ignored -> Items.PIGLIN_HEAD.getDefaultStack();
+            case PiglinEntity ignored -> {
+                if(attacker instanceof ServerPlayerEntity serverPlayer) {
+                    TrimCriteria.DECAPITATED_PIGLIN.trigger(serverPlayer);
+                }
+                yield Items.PIGLIN_HEAD.getDefaultStack();
+            }
             case CreeperEntity ignored -> Items.CREEPER_HEAD.getDefaultStack();
             case EnderDragonEntity ignored -> Items.DRAGON_HEAD.getDefaultStack();
             case PlayerEntity player -> {

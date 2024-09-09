@@ -1,0 +1,30 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "where_was_i": {
+      "trigger": "bettertrims:echoing_triggered"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.where_was_i.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:echo_shard"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.where_was_i.title"
+    }
+  },
+  "requirements": [
+    [
+      "where_was_i"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

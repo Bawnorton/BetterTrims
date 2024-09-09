@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "stay_out_of_my_head": {
+      "trigger": "bettertrims:magnetic_helmet_worn"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.stay_out_of_my_head.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:iron_helmet"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.stay_out_of_my_head.title"
+    }
+  },
+  "requirements": [
+    [
+      "stay_out_of_my_head"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.attributes.electrifying;
 
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -11,6 +12,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,6 +26,8 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
     @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+
+    @Shadow public abstract boolean isDead();
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -54,6 +58,9 @@ public abstract class LivingEntityMixin extends Entity {
                 .ifPresent(electrifier -> {
             DamageSource lightningDamage = getWorld().getDamageSources().create(DamageTypes.LIGHTNING_BOLT, electrifier);
             damage(lightningDamage, 2);
+            if(isDead() && electrifier instanceof ServerPlayerEntity player) {
+                TrimCriteria.KILLED_WITH_ELECTRICITY.trigger(player);
+            }
         });
     }
 }

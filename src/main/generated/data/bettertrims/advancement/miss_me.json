@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "miss_me": {
+      "trigger": "bettertrims:dodged"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.miss_me.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:chorus_fruit"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.miss_me.title"
+    }
+  },
+  "requirements": [
+    [
+      "miss_me"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

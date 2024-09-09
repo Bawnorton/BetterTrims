@@ -1,15 +1,22 @@
 package com.bawnorton.bettertrims.mixin.attributes.item_magnet;
 
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.google.common.base.Predicates;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -40,6 +47,20 @@ public abstract class LivingEntityMixin extends Entity {
 
         int itemMagnetLevel = (int) getAttributeValue(TrimEntityAttributes.ITEM_MAGNET);
         if(itemMagnetLevel <= 0) return;
+
+        if((Object) this instanceof ServerPlayerEntity player) {
+            ItemStack helm = player.getEquippedStack(EquipmentSlot.HEAD);
+            if(helm.getItem() == Items.IRON_HELMET) {
+                AttributeModifiersComponent component = helm.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+                if(component != null) {
+                    component.modifiers()
+                            .stream()
+                            .filter(entry -> entry.attribute() == TrimEntityAttributes.ITEM_MAGNET)
+                            .findFirst()
+                            .ifPresent(entry -> TrimCriteria.MAGNETIC_HELMET_WORN.trigger(player));
+                }
+            }
+        }
 
         World world = getWorld();
         Box area = new Box(getBlockPos());

@@ -1,0 +1,30 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "boing": {
+      "trigger": "bettertrims:bouncy_boots_worn"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.boing.description"
+    },
+    "frame": "challenge",
+    "icon": {
+      "count": 1,
+      "id": "minecraft:slime_ball"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.boing.title"
+    }
+  },
+  "requirements": [
+    [
+      "boing"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

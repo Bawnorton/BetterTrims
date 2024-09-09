@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.effect.AmethystTrimEffect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.extend.ModifiedTimeHolder;
 import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -77,6 +78,9 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
             RegistryEntry<StatusEffect> entry = Registries.STATUS_EFFECT.getEntry(effect);
             int modifiedTime = ((ModifiedTimeHolder) instance).bettertrims$getModifiedTime();
             ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(entry, modifiedTime));
+            if(modifiedTime / player.getWorld().getTickManager().getTickRate() > 60) {
+                TrimCriteria.BREWERS_DREAM_EXTENDED.trigger(player);
+            }
         }
         return modified;
     }

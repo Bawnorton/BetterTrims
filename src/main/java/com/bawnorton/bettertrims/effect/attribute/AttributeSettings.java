@@ -1,12 +1,13 @@
 package com.bawnorton.bettertrims.effect.attribute;
 
 import com.bawnorton.configurable.Configurable;
+import com.bawnorton.configurable.Yacl;
 
 @Configurable("attributes")
 public final class AttributeSettings {
     @Configurable("brewers_dream")
     public static class BrewersDream {
-        @Configurable(value = "modification_chance", min = 0, max = 1)
+        @Configurable(value = "modification_chance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float modificationChance = 0.075f;
     }
 
@@ -44,49 +45,49 @@ public final class AttributeSettings {
 
     @Configurable("suns_blessing")
     public static class SunsBlessing {
-        @Configurable(value = "movement_speed", min = 0, max = 1)
-        public static float movementSpeed = 0.05f;
-        @Configurable(min = 0, max = 1)
+        @Configurable(value = "movement_speed", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+        public static float movementSpeed = 0.03f;
+        @Configurable(min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float resistance = 0.03f;
-        @Configurable(value = "attack_damage", min = 0, max = 10)
+        @Configurable(value = "attack_damage", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackDamage = 0.5f;
-        @Configurable(value = "attack_speed", min = 0, max = 5)
+        @Configurable(value = "attack_speed", min = 0, max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackSpeed = 0.3f;
     }
 
     @Configurable("moons_blessing")
     public static class MoonsBlessing {
-        @Configurable(value = "movement_speed", min = 0, max = 1)
-        public static float movementSpeed = 0.05f;
-        @Configurable(min = 0, max = 1)
+        @Configurable(value = "movement_speed", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+        public static float movementSpeed = 0.03f;
+        @Configurable(min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float resistance = 0.03f;
-        @Configurable(value = "attack_damage", min = 0, max = 10)
+        @Configurable(value = "attack_damage", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackDamage = 0.5f;
-        @Configurable(value = "attack_speed", min = 0, max = 5)
+        @Configurable(value = "attack_speed", min = 0, max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackSpeed = 0.3f;
     }
 
     @Configurable("hells_blessing")
     public static class HellsBlessing {
-        @Configurable(value = "movement_speed", min = 0, max = 1)
-        public static float movementSpeed = 0.05f;
-        @Configurable(min = 0, max = 1)
+        @Configurable(value = "movement_speed", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+        public static float movementSpeed = 0.03f;
+        @Configurable(min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float resistance = 0.03f;
-        @Configurable(value = "attack_damage", min = 0, max = 10)
+        @Configurable(value = "attack_damage", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackDamage = 0.5f;
-        @Configurable(value = "attack_speed", min = 0, max = 5)
+        @Configurable(value = "attack_speed", min = 0, max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackSpeed = 0.3f;
     }
 
     @Configurable("ends_blessing")
     public static class EndsBlessing {
-        @Configurable(value = "movement_speed", min = 0, max = 1)
-        public static float movementSpeed = 0.05f;
-        @Configurable(min = 0, max = 1)
+        @Configurable(value = "movement_speed", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+        public static float movementSpeed = 0.03f;
+        @Configurable(min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float resistance = 0.03f;
-        @Configurable(value = "attack_damage", min = 0, max = 10)
+        @Configurable(value = "attack_damage", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackDamage = 0.5f;
-        @Configurable(value = "attack_speed", min = 0, max = 5)
+        @Configurable(value = "attack_speed", min = 0, max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
         public static float attackSpeed = 0.3f;
     }
 
@@ -110,8 +111,8 @@ public final class AttributeSettings {
 
     @Configurable("miners_rush")
     public static class MinersRush {
-        @Configurable(min = 0, max = 30)
-        public static float seconds = 2.5f;
+        @Configurable(value = "seconds_per_level", min = 0, max = 30)
+        public static float secondsPerLevel = 2.5f;
         @Configurable(value = "bonus_mine_speed", min = 0, max = 10)
         public static double bonusMineSpeed = 0.25f;
     }

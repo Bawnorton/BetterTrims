@@ -4,6 +4,7 @@ import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.networking.packet.s2c.EchoTriggeredS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EntityEchoedS2CPacket;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimSoundEvents;
@@ -101,6 +102,7 @@ public abstract class LivingEntityMixin extends Entity {
         }
         if(instance instanceof ServerPlayerEntity player) {
             ServerPlayNetworking.send(player, new EchoTriggeredS2CPacket(oldest));
+            TrimCriteria.ECHOING_TRIGGERED.trigger(player);
         }
         return true;
     }

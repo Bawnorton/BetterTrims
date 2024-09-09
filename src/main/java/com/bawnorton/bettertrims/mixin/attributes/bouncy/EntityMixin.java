@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.bouncy;
 
 import com.bawnorton.bettertrims.effect.SlimeTrimEffect;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -9,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -37,6 +39,9 @@ public abstract class EntityMixin {
             return;
         }
 
+        if(livingEntity instanceof ServerPlayerEntity serverPlayer) {
+            TrimCriteria.BOUNCY_BOOTS_WORN.trigger(serverPlayer);
+        }
         Blocks.SLIME_BLOCK.onLandedUpon(world, state, pos, entity, fallDistance);
     }
 

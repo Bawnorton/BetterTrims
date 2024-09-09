@@ -7,6 +7,7 @@ import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
 import com.bawnorton.configurable.Configurable;
 import com.bawnorton.configurable.Image;
+import com.bawnorton.configurable.OptionType;
 import com.bawnorton.configurable.Yacl;
 import com.google.common.collect.EvictingQueue;
 import com.mojang.serialization.Codec;
@@ -28,7 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-@Configurable(value = "echo_shard", yacl = @Yacl(image = @Image("minecraft:textures/item/echo_shard.png"), collapsed = true))
+@Configurable(value = "echo_shard", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/echo_shard.png"), collapsed = true))
 public final class EchoShardTrimEffect extends TrimEffect {
     private final Map<UUID, EvictingQueue<Echo>> entityEchoes;
     @Configurable

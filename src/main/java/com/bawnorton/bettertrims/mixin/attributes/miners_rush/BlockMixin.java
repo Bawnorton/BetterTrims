@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.miners_rush;
 
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
+import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
@@ -10,6 +11,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -29,12 +31,15 @@ public abstract class BlockMixin {
         int minersRushLevel = (int) player.getAttributeValue(TrimEntityAttributes.MINERS_RUSH);
         if (state.isIn(ConventionalBlockTags.ORES)) {
             StatusEffectInstance existing = player.getStatusEffect(TrimStatusEffects.FEEL_THE_RUSH);
-            int duration = (int) (20 * AttributeSettings.MinersRush.seconds * minersRushLevel);
+            int duration = (int) (20 * AttributeSettings.MinersRush.secondsPerLevel * minersRushLevel);
             int maxAmplifier = (int) Math.pow(2, minersRushLevel) - 1;
             if (existing == null) {
                 existing = new StatusEffectInstance(TrimStatusEffects.FEEL_THE_RUSH, duration, 0);
             } else {
                 existing = new StatusEffectInstance(TrimStatusEffects.FEEL_THE_RUSH, duration, Math.min(maxAmplifier, existing.getAmplifier() + 1));
+                if(existing.getAmplifier() == 15 && player instanceof ServerPlayerEntity serverPlayer) {
+                    TrimCriteria.MINERS_RUSH_MAX_LEVEL.trigger(serverPlayer);
+                }
             }
             player.addStatusEffect(existing);
         }
