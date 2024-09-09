@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.advancement.criterion;
+package com.bawnorton.bettertrims.data.advancement.criterion;
 
 import com.google.common.base.Predicates;
 import com.mojang.serialization.Codec;

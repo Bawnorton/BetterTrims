@@ -3,7 +3,7 @@ package com.bawnorton.bettertrims.mixin.attributes.fortune;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
@@ -24,8 +24,8 @@ public abstract class ApplyBonusLootFunctionMixin {
         if (!context.hasParameter(LootContextParameters.THIS_ENTITY)) return original;
 
         Entity entity = context.get(LootContextParameters.THIS_ENTITY);
-        if(!(entity instanceof LivingEntity livingEntity)) return original;
+        if(!(entity instanceof PlayerEntity player)) return original;
 
-        return (int) (original + livingEntity.getAttributeValue(TrimEntityAttributes.FORTUNE));
+        return (int) (original + player.getAttributeValue(TrimEntityAttributes.FORTUNE));
     }
 }

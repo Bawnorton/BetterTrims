@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.advancement.criterion;
+package com.bawnorton.bettertrims.data.advancement.criterion;
 
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import net.minecraft.advancement.AdvancementCriterion;
@@ -6,7 +6,7 @@ import net.minecraft.advancement.criterion.AbstractCriterion;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import java.util.Optional;
 
-public final class EnchantersFavourRerolledMaxCriterion extends AttributeCriterion<EnchantersFavourRerolledMaxCriterion.Conditions> {
+public final class BouncyBootsWornCriterion extends AttributeCriterion<BouncyBootsWornCriterion.Conditions> {
     @Override
     protected ConditionFactory<Conditions> factory() {
         return Conditions::new;
@@ -14,7 +14,7 @@ public final class EnchantersFavourRerolledMaxCriterion extends AttributeCriteri
 
     public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
         public static AdvancementCriterion<Conditions> create() {
-            return TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS.create(new Conditions(Optional.empty()));
+            return TrimCriteria.BOUNCY_BOOTS_WORN.create(new Conditions(Optional.empty()));
         }
     }
 }

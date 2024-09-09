@@ -30,11 +30,12 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
                         .rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(Items.BOOK))
                         .apply(SetNameLootFunction.builder(
-                                Text.literal("The Guidebook"),
+                                Text.literal("BetterTrims Guidebook"),
                                 SetNameLootFunction.Target.CUSTOM_NAME
                         ))
                         .apply(SetLoreLootFunction.builder()
-                                .lore(Text.literal("Coming Soon™"))
+                                .lore(Text.literal("In-Game Coming Soon™"))
+                                .lore(Text.literal("Right click to open info page"))
                                 .build()
                         )
                 )

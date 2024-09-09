@@ -9,7 +9,6 @@
     "description": {
       "translate": "advancements.bettertrims.boing.description"
     },
-    "frame": "challenge",
     "icon": {
       "count": 1,
       "id": "minecraft:slime_ball"
@@ -23,8 +22,5 @@
       "boing"
     ]
   ],
-  "rewards": {
-    "experience": 100
-  },
   "sends_telemetry_event": true
 }

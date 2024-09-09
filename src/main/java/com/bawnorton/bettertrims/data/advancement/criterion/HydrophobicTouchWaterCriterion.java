@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.advancement.criterion;
+package com.bawnorton.bettertrims.data.advancement.criterion;
 
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import net.minecraft.advancement.AdvancementCriterion;

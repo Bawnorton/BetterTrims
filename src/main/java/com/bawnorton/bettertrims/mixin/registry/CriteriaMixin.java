@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.registry;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.advancement.criterion.*;
+import com.bawnorton.bettertrims.data.advancement.criterion.*;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;

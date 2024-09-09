@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.registry.content;
 
-import com.bawnorton.bettertrims.advancement.criterion.*;
+import com.bawnorton.bettertrims.data.advancement.criterion.*;
 
 public final class TrimCriteria {
     public static BrewersDreamExtendedCriteron BREWERS_DREAM_EXTENDED;

@@ -5,127 +5,191 @@ BetterTrims
 [![Modrinth](https://img.shields.io/modrinth/dt/bettertrims?color=00AF5C&label=downloads&logo=modrinth)](https://modrinth.com/mod/bettertrims)
 [![CurseForge](https://cf.way2muchnoise.eu/full_821752_downloads.svg)](https://curseforge.com/minecraft/mc-mods/better-trims)
 
-#### Most trim effects grow more potent the more of that trim material you wear.
+#### <b>[Old README for 1.20.1](https://github.com/Bawnorton/BetterTrims/blob/main/README.md)</b>
 
-## Effects (Default Config Assumed)
-### Vanilla Material Effects
+### Materials
+
+Trim materials that give the worn armour additional attributes
+
+#### Note
+Not all the below materials can be trimmed in vanilla, to apply these materails to your armour, you'll need to use a 
+datapack or mod, like my [AllTheTrims](https://github.com/Bawnorton/AllTheTrims) 
+
 <details>
-  <summary>Expand Effects</summary>
-  
-- Quartz
-    - Increase bonus experience gained.
-    - 5% per trim.
-- Iron
-  - Increase your mining speed when using the correct tool.
-  - 50% per trim.
-- Netherite
-  - Can't be destroyed by lava or fire, grants damage reduction to fire/lava.
-  - 25% damage reduction per trim.
-    - Note: If resistance exceeds 100%, you will be immune to fire/lava damage.
-- Redstone
-  - Increase your movement speed.
-  - 10% per trim.
-- Copper
-  - Swim faster, stacks with Depth Strider and Dolphin's Grace.
-  - 5% per trim.
-    - Note: 5% may not seem like much, but a side effect is it also increases your max velocity in water
-- Gold
-  - Piglins ignore you.
-  - Does not stack.
-- Emerald
-  - Provides a discount on trades with villagers.
-  - 12.5% per trim.
-- Diamond
-  - Grants extra flat damage reduction. (like resistance)
-  - 5% per trim.
-- Lapis
-  - Increases enchantability of the trimmed piece by 30.
+<summary>Expand Materials</summary>
+
 - Amethyst
-  - Chance per piece per second to reduce the duration of a negative potion effect by 1 second, or increase the duration of a positive potion effect by 1 second.
-  - 6.25% per trim.
-    - Note: With a full set, positive effects will last twice as long and negative effects will last 2/3 as long.
-</details>
-
-### Added Vanilla Material Effects
-<details>
-  <summary>Expand Effects</summary>
-  
-- Coal
-  - Players within 5 blocks will multiply the cooking speed of furnaces
-    - Note: With 1 trim the cooking speed is doubled, with 2 it is tripled, etc.
-- Dragons Breath
-  - Share your active potion effects with nearby entities
-  - 1.25 block radius per trim
+  - +1 Brewers Dream
 - Chorus Fruit
-  - Chance to dodge attacks from **End Creatures** and tp a short distance
-  - 25% chance per trim
+  - +7% Dodge Chance
+- Coal
+  - +1 Walking Furnace
+- Copper
+  - +1 Electrifying
+- Diamond
+  - +1 Miner's Rush
+  - +1 Fortune
+- Dragon's Breath
+  - +1 Share Effect Radius
 - Echo Shard
-  - Reduce the range of detection from skulk sensors 
-  - 1.5 blocks per trim
-- Ender Pearl
-  - Chance to dodge any damage from **Any Source** and tp a short distance
-  - Take damage from water and rain
-  - 5% chance per trim
-- Fire Charge
-  - Entities that hit you or you hit will be set ablaze
-  - 1 second per trim
-- Glowstone Dust
-  - Chance on application to amplify positive potions by 1 level
-  - 25% chance per trim
-- Leather
-  - Increase the step height of the wearer
-  - 0.4 blocks per trim
-    - Note: By default the player can step up 0.6 blocks, so with 1 trim they can step up 1 block
-- Nether Brick
-  - 1 Trim make Blazes ignore you
-  - 2 Trims make Wither Skeletons ignore you but Piglins become enraged
-- Prismarine Shard
-  - 2 Trims make Guardians ignore you
-  - 4 Trims make you immune to the Mining Fatigue effect from **Elder Guardians** 
-- Rabbit Hide
-  - Passive animals don't flee from you, even when struck
-  - Does not stack
-- Slime Ball
-  - You take less fall damage but take more knockback
-  - If you have trims on your boots you will bounce when you land and take no fall damage
-  - 25% less fall damage per trim
-  - 100% more knockback per trim
+  - +1 Echoing
+- Emerald
+  - +10% Trade Discount
 - Enchanted Golden Apple
-  - Over time you are granted absorption hearts up to a max
-  - Initial Delay: 1 minute - 12.5 seconds per trim
-  - Max Absorption Hearts: 1 per trim up to 3
-    - Note: With 4 trims you will gain 3 absorption hearts every 20 seconds
+  - +3 Max Health
+  - +4% Resistance
+  - +40% Regen Speed
+- Ender Pearl
+  - +25% Projectile Dodge Chance
+- Fire Charge
+  - +1 Fire Aspect
+  - +1 Firey Thorns
+- Glowstone
+  - +1 Glowing
+  - +1 Hell's Blessing
+- Gold
+  - +1 Sun's Blessing
+  - Piglins Ignore You
+- Iron
+  - +1 Item Magnet
+- Lapis
+  - +1 Enchanter's Favour
+- Leather
+  - +1 Light Footed
+  - When on Boots: Can walk on powdered snow
+- Nether Brick
+  - +12% Fire Resisitance
+  - +3% Cleaving
+- Netherite
+  - +20% Fire Resistance
+  - +8% Resistance
+  - Trimmed items cannot burn
+- Prismarine
+  - +50% Swim Speed
+  - +1 Thorns
+  - +1 Oxygen Bonus (Respiration)
+- Quartz
+  - +10% Bonus XP
+- Rabbit
+  - Unimplemented
+- Redstone
+  - +10% Movement Speed
+  - +0.5 Step Height
+- Slime
+  - -10 Knockback Resistance
+  - +1 Knockback
+  - When on Boots: +1 Bouncy
+
 </details>
 
-### Modded Trim Material Effects
+### Attributes
+
+BetterTrims adds many new attributes to control how the trimmed armour interacts with the game
 <details>
-  <summary>Expand Effects</summary>
-  
-- Platinum
-  - Illagers ignore you.
-  - Does not stack.
-- Silver:
-  - Only applies at night or in dimensions that have a fixed time
-  - Minor buffs to movement speed, jump height, attack damage, attack speed, damage reduction and improved vision.
-    - 5% movement speed per trim
-    - 5% jump height per trim
-    - +0.5 attack damage per trim
-    - +0.3 attack speed per trim
-    - 3% flat damage reduction per trim
-    - 25% improved vision per trim
+<summary>Expand Attributes</summary>
+
+- Bonus XP
+  - When picking up XP gain that much more XP (from any source)
+- Bouncy
+  - Landing on the ground causes you to bounce and avoid fall damage
+- Brewer's Dream
+  - Extends the duration of positive effects and shortens the duration of negative effects
+- Celestial Blessings
+  - Sun's Blessing/Moon's Blessing/End's Blessing/Hell's Blessing
+  - Only applies when in the correct dimension or its the correct time of day
+  - Provides minor increase to movement speed, resistance, attack damage and attack speed
+- Cleaving
+  - Chance to drop the head of the slain entity (includes players)
+- Dodge Chance
+  - Chance to avoid damage and teleport a short distance away
+- Echoing
+  - When slain instead teleport back 5 * level seconds
+    - Resets your health, hunger and saturation to the values at that time
+    - Removes all potion effects
+    - Gives you the dampened effect (duration depends on level) that prevents you from echoing again
+- Electrifying
+  - Become immune to lightning damage
+  - In water create an electric field that deals 1heart/tick of lightning damage to all entities within it
+- Enchanter's Favour
+  - Provides a re-roll button in the Enchanting Table UI that re-rolls the provided enchantments
+- Firey Thorns
+  - Attackers are set ablaze
+- Fire Aspect
+  - Attacked entities are set ablaze
+- Fortune
+  - Acts the same as the Fortune enchantment
+- Glowing
+  - Requires a Dynamic Light mod
+  - Makes the entity emit light
+- Hydrophobic
+  - Water damages the entity
+- Item Magnet
+  - Items are drawn towards you
+- Light Footed
+  - Decreases the range at which entities can detect you
+  - You can get within 5 blocks of some hostile mobs at the max level
+- Miner's Rush
+  - Mining an ore grants you one level of "Feel The Rush" up to a cap which increases your mining speed
+- Projectile Dodge Chance
+  - Same as Dodge Chance but only for projectiles
+- Regeneration
+  - Same as the Regeneration effect
+- Resistance
+  - Grants a percentage of flat damage reduction
+- Share Effect Radius
+  - The radius at which your applied effects are shared
+  - The shared effect only has a duration of 1 second, so the other entity must remain within the radius for the effect to be perpetual
+- Swim Speed
+  - Swim faster
+  - Stacks with Dolphin's Grace and Depth Strider
+- Thorns
+  - Acts the same as the Thorns enchantment except without the durability cost
+- Trade Discount 
+  - Discounts villager trades
+- Walking Furnace
+  - Ores/Raw Materials within the player's inventory (not hotbar) are smelted when they take fire damage
+</details>
+
+### Advancements
+
+BetterTrims provides various advancements to encourage use of the various trim materials
+<details>
+<summary>Expand Advancements</summary>
+
+- Better Trims
+  - More than just a cosmetic
+- Miss Me
+  - Dodge an incoming attack
+- Pig on a Spike
+  - Get a Piglin by cleaving it
+- Stay Out of my Head
+  - Wear an iron trimmed iron helmet. Read my mind now Charles
+- It Burns?
+  - Take damage from water
+- Boing!
+  - Bounce off the ground to avoid fall damage
+- Getting Hot in Here
+  - Set yourself ablaze while wearing to smelt ores
+- Who's the Creeper Now
+  - Sneak up close to a creeper
+- It Must be a Dream
+  - Extend or reduce the duration of a potion effect by a minute
+- Shocking
+  - Kill a mob with an electric field
+- Still Nothing Good
+  - Use up 4 enchantment re-rolls
+- Where Was I?
+  - Get sent back to evade death
+- I am a Generous Player
+  - Share your potion effects with 5 other entities
+- An Even Better Deal
+  - Discount a trade by more than 25%
+- Rock and Stone
+  - Reach the max level of \"Feel The Rush\"
+
 </details>
 
 ### Config
-- Most effects can be configured
-- In game config editting gui provided by ModMenu and YACL
-
-### Installation
-#### Requires Fabric
-1. Download the latest version of the mod from the [releases page](https://modrinth.com/mod/bettertrims/versions)
-2. Download the latest version of [Fabric](https://fabricmc.net/use/)
-3. Download the latest version of [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-4. Place the downloaded mod files in your mods folder
-5. Launch Minecraft
-
-### Reporting Bugs
-If you find any bugs, please report them on the [issue tracker](https://github.com/Benjamin-Norton/BetterTrims/issues).
+- Config provided by [Configurable](https://github.com/Bawnorton/Configurable)
+- Most effects and attributes can be configured
+- In game config editting gui provided by YACL

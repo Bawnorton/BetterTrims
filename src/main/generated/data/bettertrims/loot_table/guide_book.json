@@ -12,12 +12,13 @@
       "functions": [
         {
           "function": "minecraft:set_name",
-          "name": "The Guidebook"
+          "name": "BetterTrims Guidebook"
         },
         {
           "function": "minecraft:set_lore",
           "lore": [
-            "Coming Soon™"
+            "In-Game Coming Soon™",
+            "Right click to open info page"
           ],
           "mode": "append"
         }

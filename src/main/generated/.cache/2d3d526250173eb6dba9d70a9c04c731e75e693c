@@ -1,23 +1,23 @@
-// 1.21.1	2024-09-08T11:55:10.704172	BetterTrims/Tags for minecraft:item
+// 1.21.1	2024-09-09T16:27:09.557253	BetterTrims/Tags for minecraft:item
 5022adad8e582b5a44eb427f8f3517178c29fa74 data/bettertrims/tags/item/trim_materials/coal.json
-7c84f6aad1e03941b0167daf5d2ce9d5072ff591 data/bettertrims/tags/item/trim_materials/copper.json
 24e174c21c07ff8f8087a9d8be081a6d28547d93 data/bettertrims/tags/item/trim_materials/quartz.json
 b4cc0642cc95aece33ec9cce364d245dd186c647 data/bettertrims/tags/item/trim_materials/chorus_fruit.json
 582d4d57943300bddf4bfb9fbb8288c7b4e9bfa1 data/bettertrims/tags/item/trim_materials/nether_brick.json
+7c84f6aad1e03941b0167daf5d2ce9d5072ff591 data/bettertrims/tags/item/trim_materials/copper.json
 caa12dd48836412e30130754183a3700e3e0439a data/bettertrims/tags/item/trim_materials/diamond.json
 2768b0d3ac944ff50b0932d71437296236a18fc1 data/bettertrims/tags/item/trim_materials/redstone.json
 3c136ad71b9cc1a962b06ab779e09369ea8e25a9 data/bettertrims/tags/item/trim_materials/echo_shard.json
 70d5da333c3317aebd1d7cd9b94de92c61cedc94 data/bettertrims/tags/item/trim_materials/rabbit.json
 a1643e1233196112e39c775c3243c6cd2149f3e7 data/bettertrims/tags/item/trim_materials/netherite.json
 56b4a544d73640d96a671356852ca835567213e3 data/bettertrims/tags/item/trim_materials/dragons_breath.json
-193b269670ecf607580d014eb7dc897011bb9d07 data/bettertrims/tags/item/trim_materials/enchanted_golden_apple.json
 adc5f1b7de48a243873c73e62b36b7f4995f9e76 data/bettertrims/tags/item/trim_materials/prismarine.json
+193b269670ecf607580d014eb7dc897011bb9d07 data/bettertrims/tags/item/trim_materials/enchanted_golden_apple.json
 18a364e6b87cc9c5cf4c7e140084a7bac41fe4c0 data/bettertrims/tags/item/trim_materials/iron.json
 e11ed0b6a7871924f38af8fc5dd6c9cb70d4e018 data/bettertrims/tags/item/trim_materials/fire_charge.json
 b2be77b6aaa2c8ccf130abd43809aaca4fe112f5 data/bettertrims/tags/item/trim_materials/slime.json
 68c33d7c2aa4010f0c167c55715648b67fc2fe9f data/bettertrims/tags/item/trim_materials/leather.json
-f49728bf595bea984366429ac92f573b5e218e36 data/bettertrims/tags/item/trim_materials/lapis.json
 79c86b7629e2a26714ed5d5558bac597397dfcb6 data/bettertrims/tags/item/trim_materials/ender_pearl.json
+f49728bf595bea984366429ac92f573b5e218e36 data/bettertrims/tags/item/trim_materials/lapis.json
 f6dbd0c75ec438a738e2c26bd680e7e7f5e5323c data/bettertrims/tags/item/trim_materials/amethyst.json
 80531fd8f48ea8452a358c4bf4bcb59ff7722868 data/bettertrims/tags/item/trim_materials/emerald.json
 977dbab1ffce9943f79a13299275867c638582b3 data/bettertrims/tags/item/trim_materials/glowstone.json
