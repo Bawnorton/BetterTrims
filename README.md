@@ -41,6 +41,7 @@ datapack or mod, like my [AllTheTrims](https://github.com/Bawnorton/AllTheTrims)
   - +40% Regen Speed
 - Ender Pearl
   - +25% Projectile Dodge Chance
+  - +1 Hydrophobic
 - Fire Charge
   - +1 Fire Aspect
   - +1 Firey Thorns
