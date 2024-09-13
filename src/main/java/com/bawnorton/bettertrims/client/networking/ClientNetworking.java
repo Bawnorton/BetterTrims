@@ -22,11 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 public final class ClientNetworking {
     public static void init() {
-        PayloadTypeRegistry<RegistryByteBuf> playS2C = PayloadTypeRegistry.playS2C();
-        playS2C.register(StatusEffectDurationModifiedS2CPacket.PACKET_ID, StatusEffectDurationModifiedS2CPacket.PACKET_CODEC);
-        playS2C.register(EchoTriggeredS2CPacket.PACKET_ID, EchoTriggeredS2CPacket.PACKET_CODEC);
-        playS2C.register(EntityEchoedS2CPacket.PACKET_ID, EntityEchoedS2CPacket.PACKET_CODEC);
-
         ClientPlayNetworking.registerGlobalReceiver(StatusEffectDurationModifiedS2CPacket.PACKET_ID, ClientNetworking::handleStatusEffectDurationModified);
         ClientPlayNetworking.registerGlobalReceiver(EchoTriggeredS2CPacket.PACKET_ID, ClientNetworking::handleEchoTriggered);
         ClientPlayNetworking.registerGlobalReceiver(EntityEchoedS2CPacket.PACKET_ID, ClientNetworking::handleEntityEchoed);

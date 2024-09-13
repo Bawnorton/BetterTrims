@@ -35,3 +35,17 @@ type = "required"
 versionRange = ">=1.0.1"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.bettertrims]]
+modId = "fabric_api"
+type = "required"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.bettertrims]]
+modId = "yet_another_config_lib_v3"
+type = "required"
+versionRange = ">=3.5.0"
+ordering = "NONE"
+side = "BOTH"

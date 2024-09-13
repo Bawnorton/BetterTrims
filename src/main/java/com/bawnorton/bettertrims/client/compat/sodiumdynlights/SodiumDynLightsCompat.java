@@ -1,15 +1,13 @@
-package com.bawnorton.bettertrims.client.compat.lambdynlights;
-
-//? if fabric {
+package com.bawnorton.bettertrims.client.compat.sodiumdynlights;
 
 import com.bawnorton.bettertrims.client.compat.DynLightsCompat;
-import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import toni.sodiumdynamiclights.api.DynamicLightHandlers;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public final class LambDynLightsCompat extends DynLightsCompat {
+public final class SodiumDynLightsCompat extends DynLightsCompat {
     @Override
     protected BiConsumer<EntityType<? extends Entity>, Function<Entity, Integer>> getRegistrar() {
         return (type, lightGetter) -> DynamicLightHandlers.registerDynamicLightHandler(type, lightGetter::apply);
@@ -20,9 +18,3 @@ public final class LambDynLightsCompat extends DynLightsCompat {
         return DynamicLightHandlers.getDynamicLightHandler(type) != null;
     }
 }
-//?} else {
-/*public final class LambDynLightsCompat {
-    public void init() {
-    }
-}
-*///?}

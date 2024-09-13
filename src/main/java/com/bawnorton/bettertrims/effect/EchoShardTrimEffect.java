@@ -110,10 +110,14 @@ public final class EchoShardTrimEffect extends TrimEffect {
                 ).apply(instance, Echo::new)
         );
         public static final PacketCodec<ByteBuf, Echo> PACKET_CODEC = PacketCodec.tuple(
-                PacketCodecs.VECTOR3F.xmap(Vec3d::new, Vec3d::toVector3f), Echo::pos,
-                PacketCodecs.FLOAT, Echo::pitch,
-                PacketCodecs.FLOAT, Echo::yaw,
-                PacketCodecs.FLOAT, Echo::health,
+                PacketCodecs.VECTOR3F.xmap(Vec3d::new, Vec3d::toVector3f),
+                Echo::pos,
+                PacketCodecs.FLOAT,
+                Echo::pitch,
+                PacketCodecs.FLOAT,
+                Echo::yaw,
+                PacketCodecs.FLOAT,
+                Echo::health,
                 Echo::new
         );
     }

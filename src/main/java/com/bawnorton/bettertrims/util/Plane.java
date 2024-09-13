@@ -48,7 +48,7 @@ public class Plane {
 
     public Vector3d getRandPointOnPlane() {
         Vector3d v1 = new Vector3d(point3).sub(point1);
-        Vector3d v2 = new Vector3d(point4).sub(point1);
+        Vector3d v2 = new Vector3d(point4).sub(point2);
 
         double r1 = rand.nextDouble();
         double r2 = rand.nextDouble();

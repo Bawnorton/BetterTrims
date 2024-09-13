@@ -38,11 +38,13 @@ repositories {
     maven("https://maven.shedaniel.me")
     maven("https://maven.su5ed.dev/releases")
     maven("https://jitpack.io")
+    maven("https://api.modrinth.com/maven")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
 
+    modCompileOnly("maven.modrinth:sodium-dynamic-lights:${property("sodium_dynamic_lights")}").stripAw(project)
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}-$loader")
     annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader-yarn:${property("configurable")}+$minecraftVersion") { isTransitive = false })
 }
@@ -201,12 +203,12 @@ publishMods {
     modrinth {
         accessToken = providers.gradleProperty("MODRINTH_TOKEN")
         projectId = mod.modrinthProjId
-        minecraftVersions.addAll(mod.supportedVersions)
+        minecraftVersions.addAll(mod.supportedVersions.split(", "))
     }
 
     curseforge {
         accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
         projectId = mod.curseforgeProjId
-        minecraftVersions.addAll(mod.supportedVersions)
+        minecraftVersions.addAll(mod.supportedVersions.split(", "))
     }
 }

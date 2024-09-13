@@ -24,9 +24,6 @@
     ],
     "fabric-datagen": [
       "com.bawnorton.bettertrims.data.BetterTrimsDataGen"
-    ],
-    "dynamiclights": [
-      "com.bawnorton.bettertrims.client.compat.lambdynlights.LambDynLightsCompat"
     ]
   },
   "mixins": [
@@ -43,7 +40,8 @@
     "minecraft": "${minecraft_dependency}",
     "configurable": ">=1.0.1",
     "java": ">=21",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "yet_another_config_lib_v3": ">=3.5.0"
   },
   "custom": {
     "modmenu": {

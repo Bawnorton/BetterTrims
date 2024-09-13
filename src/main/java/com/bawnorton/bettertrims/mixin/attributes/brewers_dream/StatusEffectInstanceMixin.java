@@ -10,13 +10,10 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.datafixers.kinds.App;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,7 +29,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
@@ -161,26 +157,6 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
                 ((ModifiedTimeHolder) (Object) parameters).bettertrims$setModifiedTime(modifiedTime);
                 return parameters;
             });
-        }
-
-        @ModifyArg(
-                method = "<clinit>",
-                at = @At(
-                        value = "INVOKE",
-                        target = "Lnet/minecraft/network/codec/PacketCodec;recursive(Ljava/util/function/UnaryOperator;)Lnet/minecraft/network/codec/PacketCodec;"
-                )
-        )
-        private static UnaryOperator<PacketCodec<ByteBuf, StatusEffectInstance.Parameters>> attachModifiedTime(UnaryOperator<PacketCodec<ByteBuf, StatusEffectInstance.Parameters>> codecGetter) {
-            return packetCodec -> PacketCodec.tuple(
-                    packetCodec,
-                    Function.identity(),
-                    PacketCodecs.VAR_INT,
-                    parameters -> ((ModifiedTimeHolder) (Object) parameters).bettertrims$getModifiedTime(),
-                    (parameters, modifiedTime) -> {
-                        ((ModifiedTimeHolder) (Object) parameters).bettertrims$setModifiedTime(modifiedTime);
-                        return parameters;
-                    }
-            );
         }
 
         @Override
