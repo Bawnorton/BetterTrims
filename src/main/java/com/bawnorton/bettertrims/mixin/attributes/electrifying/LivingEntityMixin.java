@@ -40,8 +40,8 @@ public abstract class LivingEntityMixin extends Entity {
                     target = "Lnet/minecraft/entity/Entity;isInvulnerableTo(Lnet/minecraft/entity/damage/DamageSource;)Z"
             )
     )
-    private boolean applyElectrifyingToInvulnerability(boolean isInvulnerable, DamageSource source) {
-        return source.isIn(DamageTypeTags.IS_LIGHTNING) && getAttributeValue(TrimEntityAttributes.ELECTRIFYING) > 0;
+    private boolean applyElectrifyingToInvulnerability(boolean original, DamageSource source) {
+        return original || source.isIn(DamageTypeTags.IS_LIGHTNING) && getAttributeValue(TrimEntityAttributes.ELECTRIFYING) > 0;
     }
 
     @Inject(

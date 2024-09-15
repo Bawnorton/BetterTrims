@@ -53,6 +53,11 @@ public final class CopperTrimEffect extends TrimEffect {
     public Optional<LivingEntity> whoElectrified(BlockPos pos) {
         for (Object2ObjectMap.Entry<LivingEntity, Set<BlockPos>> entry : electrified.object2ObjectEntrySet()) {
             LivingEntity entity = entry.getKey();
+            if(entity.isRemoved()) {
+                electrified.remove(entity);
+                return Optional.empty();
+            }
+
             Set<BlockPos> electrified = entry.getValue();
             if(electrified.contains(pos)) {
                 return Optional.of(entity);

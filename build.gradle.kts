@@ -137,6 +137,7 @@ if (loader.isNeoForge) {
             mappings(file("mappings/fix.tiny"))
         })
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
+
         modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
 
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${property("quilt_parsers")}")!!)
