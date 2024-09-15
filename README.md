@@ -12,7 +12,7 @@ BetterTrims
 Trim materials that give the worn armour additional attributes
 
 #### Note
-Not all the below materials can be trimmed in vanilla, to apply these materails to your armour, you'll need to use a 
+Not all the below materials can be trimmed in vanilla, to apply these materials to your armour, you'll need to use a 
 datapack or mod, like my [AllTheTrims](https://github.com/Bawnorton/AllTheTrims) 
 
 <details>
