@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.mixin.registry;
 
-import com.bawnorton.bettertrims.BetterTrims;
+//? if >=1.21 {
+/*import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
@@ -29,3 +30,4 @@ public abstract class DataComponentTypesMixin {
         );
     }
 }
+*///?}

@@ -18,7 +18,8 @@ import java.util.Optional;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);

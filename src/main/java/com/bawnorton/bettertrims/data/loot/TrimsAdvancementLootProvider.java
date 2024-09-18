@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.data.loot;
 
-import com.bawnorton.bettertrims.registry.content.TrimLootTables;
+//? if >=1.21 {
+/*import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.item.Items;
@@ -14,6 +15,7 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
@@ -43,3 +45,4 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
         //?}
     }
 }
+*///?}

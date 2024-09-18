@@ -20,8 +20,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.Vec3d;
 import java.util.HashMap;
@@ -29,6 +28,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+//? if >=1.21 {
+/*import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+*///?}
+
+@SuppressWarnings("UnstableApiUsage")
 @Configurable(value = "echo_shard", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/echo_shard.png"), collapsed = true))
 public final class EchoShardTrimEffect extends TrimEffect {
     private final Map<UUID, EvictingQueue<Echo>> entityEchoes;
@@ -77,7 +82,11 @@ public final class EchoShardTrimEffect extends TrimEffect {
         NbtList echoes = new NbtList();
         for(Echo echo : queue) {
             DataResult<NbtElement> encoded = Echo.CODEC.encodeStart(NbtOps.INSTANCE, echo);
-            encoded.ifSuccess(echoes::add).ifError(error -> BetterTrims.LOGGER.error("Failed to encode echo: {}", error));
+            //? if <1.21 {
+            encoded.get().ifLeft(echoes::add).ifRight(partial -> BetterTrims.LOGGER.error("Failed to encode echo: {}", partial));
+            //?} else {
+            /*encoded.ifSuccess(echoes::add).ifError(error -> BetterTrims.LOGGER.error("Failed to encode echo: {}", error));
+            *///?}
         }
         nbt.put("echoes", echoes);
         return nbt;
@@ -90,8 +99,14 @@ public final class EchoShardTrimEffect extends TrimEffect {
         NbtList echoes = nbt.getList("echoes", NbtElement.COMPOUND_TYPE);
         for (NbtElement echoElement : echoes) {
             DataResult<Echo> decoded = Echo.CODEC.parse(NbtOps.INSTANCE, echoElement);
-            decoded.ifSuccess(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
+            //? if <1.21 {
+            decoded.get()
+                    .ifLeft(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
+                    .ifRight(partial -> BetterTrims.LOGGER.error("Failed to decode echo: {}", partial));
+            //?} else {
+            /*decoded.ifSuccess(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
                     .ifError(error -> BetterTrims.LOGGER.error("Failed to decode echo: {}", error));
+            *///?}
         }
     }
 
@@ -109,7 +124,8 @@ public final class EchoShardTrimEffect extends TrimEffect {
                         Codec.FLOAT.fieldOf("health").forGetter(Echo::health)
                 ).apply(instance, Echo::new)
         );
-        public static final PacketCodec<ByteBuf, Echo> PACKET_CODEC = PacketCodec.tuple(
+        //? if >=1.21 {
+        /*public static final PacketCodec<ByteBuf, Echo> PACKET_CODEC = PacketCodec.tuple(
                 PacketCodecs.VECTOR3F.xmap(Vec3d::new, Vec3d::toVector3f),
                 Echo::pos,
                 PacketCodecs.FLOAT,
@@ -120,5 +136,26 @@ public final class EchoShardTrimEffect extends TrimEffect {
                 Echo::health,
                 Echo::new
         );
+        *///?} else {
+        public void writeBuf(PacketByteBuf buf) {
+            buf.writeDouble(pos.x);
+            buf.writeDouble(pos.y);
+            buf.writeDouble(pos.z);
+            buf.writeFloat(pitch);
+            buf.writeFloat(yaw);
+            buf.writeFloat(health);
+        }
+
+        public static Echo fromBuf(PacketByteBuf buf) {
+            return new Echo(
+                    new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()),
+                    buf.readFloat(),
+                    buf.readFloat(),
+                    buf.readFloat()
+            );
+        }
+
+        //?}
+
     }
 }

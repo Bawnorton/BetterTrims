@@ -1,8 +1,10 @@
 package com.bawnorton.bettertrims;
 
+import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributeApplicator;
 import com.bawnorton.bettertrims.networking.Networking;
 import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import com.bawnorton.bettertrims.util.Probabilities;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,10 @@ public final class BetterTrims {
 
         Networking.init();
         TrimLootTables.init();
+
+        //? if <1.21 {
+        ServerWorldEvents.LOAD.register((server, world) -> TrimEntityAttributeApplicator.registryManager = world.getRegistryManager());
+        //?}
     }
 
     public static Identifier id(String path) {

@@ -20,10 +20,17 @@ public final class GoldTrimEffect extends CelestialEffect {
         super(materials);
     }
 
-    @Override
+    //? if >=1.21 {
+    /*@Override
     public RegistryEntry<EntityAttribute> getEntityAttribute() {
         return TrimEntityAttributes.SUNS_BLESSING;
     }
+    *///?} else {
+    @Override
+    public EntityAttribute getEntityAttribute() {
+        return TrimEntityAttributes.SUNS_BLESSING;
+    }
+    //?}
 
     @Override
     public float getMovementSpeed() {

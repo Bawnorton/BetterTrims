@@ -21,7 +21,8 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract Map<RegistryEntry<StatusEffect>, StatusEffectInstance> getActiveStatusEffects();
 

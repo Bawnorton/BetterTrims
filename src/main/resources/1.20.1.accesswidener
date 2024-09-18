@@ -1,0 +1,3 @@
+accessWidener v2 named
+accessible class net/minecraft/registry/Registries$Initializer
+extendable method net/minecraft/registry/RegistryKey <init> (Lnet/minecraft/util/Identifier;Lnet/minecraft/util/Identifier;)V

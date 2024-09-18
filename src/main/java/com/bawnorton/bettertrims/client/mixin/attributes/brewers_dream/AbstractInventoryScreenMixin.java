@@ -39,12 +39,21 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
         int ticks = ((ModifiedTimeHolder) statusEffectInstance).bettertrims$getModifiedTime();
         if(ticks <= 0) return original;
 
-        MutableText modifiedTime = Text.literal(StringHelper.formatTicks(ticks, client.world.getTickManager().getTickRate()))
+        //? if >=1.21 {
+        /*MutableText modifiedTime = Text.literal(StringHelper.formatTicks(ticks, client.world.getTickManager().getTickRate()))
                 .withColor(0xFF9A5CC6)
                 .append(ScreenTexts.SPACE)
                 .append(Text.translatable("bettertrims.brewers_dream.%s".formatted(
                         statusEffectInstance.getEffectType().value().isBeneficial() ? "added" : "removed"
                 )));
+        *///?} else {
+        MutableText modifiedTime = Text.literal(StringHelper.formatTicks(ticks))
+                .styled(style -> style.withColor(0xFF9A5CC6))
+                .append(ScreenTexts.SPACE)
+                .append(Text.translatable("bettertrims.brewers_dream.%s".formatted(
+                        statusEffectInstance.getEffectType().isBeneficial() ? "added" : "removed"
+                )));
+        //?}
 
         return ImmutableList.<Text>builder()
                 .addAll(original)
@@ -67,10 +76,17 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
         int ticks = ((ModifiedTimeHolder) statusEffectInstance).bettertrims$getModifiedTime();
         if(ticks <= 0) return;
 
-        Text modifiedTime = Text.literal("%s%s".formatted(
+        //? if >=1.21 {
+        /*Text modifiedTime = Text.literal("%s%s".formatted(
                 statusEffectInstance.getEffectType().value().isBeneficial() ? "+" : "-",
                 StringHelper.formatTicks(ticks, client.world.getTickManager().getTickRate())
         ));
+        *///?} else {
+        Text modifiedTime = Text.literal("%s%s".formatted(
+                statusEffectInstance.getEffectType().isBeneficial() ? "+" : "-",
+                StringHelper.formatTicks(ticks)
+        ));
+        //?}
         int xPos = x + 120 - textRenderer.getWidth(modifiedTime) - 8;
         int yPos = adjustedY + 16;
         context.drawTextWithShadow(textRenderer, modifiedTime, xPos, yPos, 0xFF9A5CC6);

@@ -5,14 +5,14 @@ import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.google.common.base.Predicates;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.AttributeModifiersComponent;
+import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -27,9 +27,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
+//? if >=1.21 {
+/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.AttributeModifiersComponent;
+*///?}
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -51,7 +57,8 @@ public abstract class LivingEntityMixin extends Entity {
         if((Object) this instanceof ServerPlayerEntity player) {
             ItemStack helm = player.getEquippedStack(EquipmentSlot.HEAD);
             if(helm.getItem() == Items.IRON_HELMET) {
-                AttributeModifiersComponent component = helm.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+                //? if >=1.21 {
+                /*AttributeModifiersComponent component = helm.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
                 if(component != null) {
                     component.modifiers()
                             .stream()
@@ -59,6 +66,12 @@ public abstract class LivingEntityMixin extends Entity {
                             .findFirst()
                             .ifPresent(entry -> TrimCriteria.MAGNETIC_HELMET_WORN.trigger(player));
                 }
+                *///?} else {
+                Multimap<EntityAttribute, EntityAttributeModifier> modifiers = helm.getAttributeModifiers(EquipmentSlot.HEAD);
+                if(!modifiers.get(TrimEntityAttributes.ITEM_MAGNET).isEmpty()) {
+                    TrimCriteria.MAGNETIC_HELMET_WORN.trigger(player);
+                };
+                //?}
             }
         }
 

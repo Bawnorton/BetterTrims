@@ -4,7 +4,6 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -13,12 +12,12 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeManager;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmeltingRecipe;
-import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
@@ -32,16 +31,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
+//? if >=1.21 {
+/*import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.input.SingleStackRecipeInput;
+*///?} else {
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+//?}
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    @Unique
+    //? if >=1.21 {
+    /*@Unique
     private RecipeManager.MatchGetter<SingleStackRecipeInput, SmeltingRecipe> bettertrims$matchGetter;
+    *///?} else {
+    @Unique
+    private RecipeManager.MatchGetter<Inventory, SmeltingRecipe> bettertrims$matchGetter;
+    //?}
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
@@ -102,11 +115,20 @@ public abstract class LivingEntityMixin extends Entity {
             bettertrims$matchGetter = RecipeManager.createCachedMatchGetter(RecipeType.SMELTING);
         }
         boolean oreBlock = stack.isIn(ConventionalItemTags.ORES);
-        boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_MATERIALS);
+        //? if >=1.21 {
+        /*boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_MATERIALS);
+        *///?} else {
+        boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_ORES);
+        //?}
         if(!(oreBlock || oreMaterial)) return Optional.empty();
 
-        RegistryWrapper.WrapperLookup lookup = world.getRegistryManager().toImmutable();
+        //? if >=1.21 {
+        /*RegistryWrapper.WrapperLookup lookup = world.getRegistryManager().toImmutable();
         Optional<RecipeEntry<SmeltingRecipe>> recipe = bettertrims$matchGetter.getFirstMatch(new SingleStackRecipeInput(stack), world);
         return recipe.map(recipeEntry -> recipeEntry.value().getResult(lookup).copy());
+        *///?} else {
+        Optional<SmeltingRecipe> recipe = bettertrims$matchGetter.getFirstMatch(new SimpleInventory(stack), world);
+        return recipe.map(recipeEntry -> recipeEntry.getOutput(world.getRegistryManager()).copy());
+        //?}
     }
 }

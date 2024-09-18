@@ -3,6 +3,7 @@ package com.bawnorton.bettertrims.mixin.registry;
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.mixin.accessor.StatusEffectAccessor;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -25,18 +26,32 @@ public abstract class StatusEffectsMixin {
         );
         TrimStatusEffects.FEEL_THE_RUSH = bettertrims$register(
                 "feel_the_rush",
-                StatusEffectAccessor.createStatusEffect(StatusEffectCategory.BENEFICIAL, Colors.BLUE)
+                StatusEffectAccessor.createStatusEffect(StatusEffectCategory.BENEFICIAL, 0xFF0000FF)
                         .addAttributeModifier(
-                                EntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
+                                //? if >=1.21 {
+                                /*EntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
                                 BetterTrims.id("effect.feel_the_rush"),
                                 AttributeSettings.MinersRush.bonusMineSpeed,
                                 EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                                *///?} else {
+                                TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
+                                BetterTrims.sid("effect.feel_the_rush"),
+                                AttributeSettings.MinersRush.bonusMineSpeed,
+                                EntityAttributeModifier.Operation.MULTIPLY_TOTAL
+                                //?}
                         )
         );
     }
 
-    @Unique
+    //? if >=1.21 {
+    /*@Unique
     private static RegistryEntry<StatusEffect> bettertrims$register(String id, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, BetterTrims.id(id), statusEffect);
     }
+    *///?} else {
+    @Unique
+    private static StatusEffect bettertrims$register(String id, StatusEffect statusEffect) {
+        return Registry.register(Registries.STATUS_EFFECT, BetterTrims.id(id), statusEffect);
+    }
+    //?}
 }

@@ -2,9 +2,14 @@
   "required": true,
   "package": "com.bawnorton.bettertrims.mixin",
   "minVersion": "0.8",
-  "minMixinExtrasVersion": "0.5.0-beta.2",
   "mixins": [
-    "accessor.AttributeModifiersComponentAccessor",
+    //? if <1.21 {
+    "accessor.ItemAccessor",
+    //?} else {
+    /*"accessor.AttributeModifiersComponentAccessor",
+    "registry.DataComponentTypesMixin",
+    "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
+    *///?}
     "accessor.PlayerEntityAccessor",
     "accessor.StatusEffectAccessor",
     "accessor.StatusEffectInstanceAccessor",
@@ -15,7 +20,6 @@
     "attributes.bonus_xp.PlayerEntityMixin",
     "attributes.bouncy.EntityMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin",
-    "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
     "attributes.celestial.AttackGoalMixin",
     "attributes.celestial.LivingEntityMixin",
     "attributes.celestial.MobEntityMixin",
@@ -23,6 +27,7 @@
     "attributes.cleaving.LivingEntityMixin",
     "attributes.dodge_chance.LivingEntityMixin",
     "attributes.echoing.LivingEntityMixin",
+    "attributes.electrifying.EntityMixin",
     "attributes.electrifying.LivingEntityMixin",
     "attributes.electrifying.ServerWorldMixin",
     "attributes.enchanters_blessing.EnchantmentScreenHandlerMixin",
@@ -47,7 +52,6 @@
     "attributes.trade_discount.VillagerEntityMixin",
     "attributes.walking_furnace.LivingEntityMixin",
     "registry.CriteriaMixin",
-    "registry.DataComponentTypesMixin",
     "registry.EntityAttributesMixin",
     "registry.RegistriesMixin",
     "registry.RegistryKeysMixin",
@@ -60,5 +64,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "${refmap}"
 }

@@ -3,9 +3,6 @@ package com.bawnorton.bettertrims.mixin.attributes.electrifying;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
@@ -14,7 +11,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,25 +18,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
+public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract boolean isDead();
 
-    public LivingEntityMixin(EntityType<?> type, World world) {
-        super(type, world);
-    }
-
-    @ModifyExpressionValue(
-            method = "isInvulnerableTo",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/Entity;isInvulnerableTo(Lnet/minecraft/entity/damage/DamageSource;)Z"
-            )
-    )
-    private boolean applyElectrifyingToInvulnerability(boolean original, DamageSource source) {
+    protected boolean applyElectrifyingToInvulnerability(boolean original, DamageSource source) {
         return original || source.isIn(DamageTypeTags.IS_LIGHTNING) && getAttributeValue(TrimEntityAttributes.ELECTRIFYING) > 0;
     }
 

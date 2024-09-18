@@ -5,8 +5,6 @@ import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.ProfileComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -20,6 +18,7 @@ import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,6 +30,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+//? if >=1.21 {
+/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ProfileComponent;
+*///?}
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -69,25 +73,35 @@ public abstract class LivingEntityMixin extends Entity {
         if (cleavingChance <= 0) return;
         if (!BetterTrims.PROBABILITIES.passes(cleavingChance)) return;
 
-        ItemStack skull = switch((Object) this) {
-            case WitherSkeletonEntity ignored -> Items.WITHER_SKELETON_SKULL.getDefaultStack();
-            case SkeletonEntity ignored -> Items.SKELETON_SKULL.getDefaultStack();
-            case ZombieEntity ignored -> Items.ZOMBIE_HEAD.getDefaultStack();
-            case PiglinEntity ignored -> {
-                if(attacker instanceof ServerPlayerEntity serverPlayer) {
-                    TrimCriteria.DECAPITATED_PIGLIN.trigger(serverPlayer);
-                }
-                yield Items.PIGLIN_HEAD.getDefaultStack();
+        ItemStack skull;
+        Object self = this;
+        if (self instanceof WitherSkeletonEntity) {
+            skull = Items.WITHER_SKELETON_SKULL.getDefaultStack();
+        } else if (self instanceof SkeletonEntity) {
+            skull = Items.SKELETON_SKULL.getDefaultStack();
+        } else if (self instanceof ZombieEntity) {
+            skull = Items.ZOMBIE_HEAD.getDefaultStack();
+        } else if (self instanceof PiglinEntity) {
+            if (attacker instanceof ServerPlayerEntity serverPlayer) {
+                TrimCriteria.DECAPITATED_PIGLIN.trigger(serverPlayer);
             }
-            case CreeperEntity ignored -> Items.CREEPER_HEAD.getDefaultStack();
-            case EnderDragonEntity ignored -> Items.DRAGON_HEAD.getDefaultStack();
-            case PlayerEntity player -> {
-                ItemStack playerHead = Items.PLAYER_HEAD.getDefaultStack();
-                playerHead.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
-                yield playerHead;
-            }
-            default -> Items.AIR.getDefaultStack();
-        };
+            skull = Items.PIGLIN_HEAD.getDefaultStack();
+        } else if (self instanceof CreeperEntity) {
+            skull = Items.CREEPER_HEAD.getDefaultStack();
+        } else if (self instanceof EnderDragonEntity) {
+            skull = Items.DRAGON_HEAD.getDefaultStack();
+        } else if (self instanceof PlayerEntity player) {
+            ItemStack playerHead = Items.PLAYER_HEAD.getDefaultStack();
+            //? if >=1.21 {
+            /*playerHead.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
+             *///?} else {
+            NbtCompound nbt = playerHead.getOrCreateNbt();
+            nbt.putUuid("SkullOwner", player.getUuid());
+            //?}
+            skull = playerHead;
+        } else {
+            skull = Items.AIR.getDefaultStack();
+        }
         if(skull.isEmpty()) return;
 
         boolean skullExists = tracked.get()

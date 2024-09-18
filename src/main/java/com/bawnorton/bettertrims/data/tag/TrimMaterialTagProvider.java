@@ -1,13 +1,15 @@
 package com.bawnorton.bettertrims.data.tag;
 
-import com.bawnorton.bettertrims.registry.content.TrimMaterialTags;
+//? if >=1.21 {
+
+/*import com.bawnorton.bettertrims.registry.content.TrimMaterialTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
 import java.util.concurrent.CompletableFuture;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 
 public final class TrimMaterialTagProvider extends FabricTagProvider.ItemTagProvider {
     public TrimMaterialTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -79,3 +81,4 @@ public final class TrimMaterialTagProvider extends FabricTagProvider.ItemTagProv
         //?}
     }
 }
+*///?}

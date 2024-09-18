@@ -2,11 +2,41 @@ package com.bawnorton.bettertrims.networking.packet.s2c;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
-import io.netty.buffer.ByteBuf;
+import net.minecraft.util.math.Vec3d;
+
+//? if <1.21 {
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.minecraft.network.PacketByteBuf;
+
+public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo echo) implements FabricPacket {
+    public static final PacketType<EntityEchoedS2CPacket> TYPE = PacketType.create(
+            BetterTrims.id(EntityEchoedS2CPacket.class.getSimpleName().toLowerCase()),
+            EntityEchoedS2CPacket::new
+    );
+
+    private EntityEchoedS2CPacket(PacketByteBuf buf) {
+        this(new Vec3d(buf.readDouble(), buf.readDouble(), buf.readDouble()), EchoShardTrimEffect.Echo.fromBuf(buf));
+    }
+
+    @Override
+    public void write(PacketByteBuf buf) {
+        buf.writeDouble(priorPos.x);
+        buf.writeDouble(priorPos.y);
+        buf.writeDouble(priorPos.z);
+        echo.writeBuf(buf);
+    }
+
+    @Override
+    public PacketType<EntityEchoedS2CPacket> getType() {
+        return TYPE;
+    }
+}
+//?} else {
+/*import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.Vec3d;
 
 public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo echo) implements CustomPayload {
     public static final Id<EntityEchoedS2CPacket> PACKET_ID = new Id<>(BetterTrims.id(EntityEchoedS2CPacket.class.getSimpleName().toLowerCase()));
@@ -23,3 +53,4 @@ public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo ech
         return PACKET_ID;
     }
 }
+*///?}

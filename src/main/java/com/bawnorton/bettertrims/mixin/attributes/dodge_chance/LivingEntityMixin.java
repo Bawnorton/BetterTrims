@@ -20,7 +20,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         super(type, world);
     }
 
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",

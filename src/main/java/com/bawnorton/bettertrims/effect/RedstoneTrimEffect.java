@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.effect;
 
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
 import com.bawnorton.configurable.Image;
 import com.bawnorton.configurable.OptionType;
@@ -26,7 +27,11 @@ public final class RedstoneTrimEffect extends TrimEffect {
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
         adder.accept(TrimAttribute.multiplyBase(EntityAttributes.GENERIC_MOVEMENT_SPEED, movementSpeed));
-        adder.accept(TrimAttribute.adding(EntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
+        //? if >=1.21 {
+        /*adder.accept(TrimAttribute.adding(EntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
+        *///?} else {
+        adder.accept(TrimAttribute.adding(TrimEntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
+        //?}
     }
 
     @Override

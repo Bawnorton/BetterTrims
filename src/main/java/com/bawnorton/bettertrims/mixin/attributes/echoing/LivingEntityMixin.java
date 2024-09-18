@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("UnstableApiUsage")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     @Shadow public abstract float getHealth();
@@ -47,7 +48,8 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow public abstract boolean clearStatusEffects();
 
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
 

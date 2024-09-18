@@ -4,7 +4,6 @@ import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.registry.content.TrimStatusEffects;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -18,6 +17,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+//? if >=1.21 {
+/*import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+*///?} else {
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+//?}
 
 @Mixin(Block.class)
 public abstract class BlockMixin {

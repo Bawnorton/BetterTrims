@@ -2,7 +2,6 @@ package com.bawnorton.bettertrims.mixin.attributes.enchanters_blessing;
 
 import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.mixin.accessor.PlayerEntityAccessor;
-import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 import com.bawnorton.bettertrims.registry.content.TrimCriteria;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -11,6 +10,7 @@ import com.llamalad7.mixinextras.sugar.Cancellable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.EnchantmentScreenHandler;
 import net.minecraft.screen.Property;
 import net.minecraft.screen.ScreenHandler;
@@ -25,6 +25,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+//? if >=1.21
+/*import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;*/
 
 @Mixin(EnchantmentScreenHandler.class)
 public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
@@ -56,7 +59,15 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
         cir.setReturnValue(true);
         this.context.run((world, pos) -> {
             ItemStack enchanting = inventory.getStack(0);
-            int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
+            //? if >=1.21 {
+            /*int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
+            *///?} else {
+            int usedBlessings = 0;
+            NbtCompound nbt = enchanting.getNbt();
+            if(nbt != null) {
+                usedBlessings = nbt.getInt("bettertrims$used_blessings");
+            }
+            //?}
             usedBlessings++;
             if(usedBlessings >= 4 && player instanceof ServerPlayerEntity serverPlayer) {
                 TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS.trigger(serverPlayer);
@@ -66,7 +77,15 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
                 return;
             }
 
-            enchanting.set(TrimComponentTypes.USED_BLESSINGS, usedBlessings);
+            //? if >=1.21 {
+            /*enchanting.set(TrimComponentTypes.USED_BLESSINGS, usedBlessings);
+            *///?} else {
+            if(nbt == null) {
+                nbt = new NbtCompound();
+            }
+            nbt.putInt("bettertrims$used_blessings", usedBlessings);
+            enchanting.setNbt(nbt);
+            //?}
             inventory.setStack(0, enchanting);
             ((PlayerEntityAccessor) player).setEnchantmentTableSeed(player.getRandom().nextInt());
             seed.set(player.getEnchantmentTableSeed());

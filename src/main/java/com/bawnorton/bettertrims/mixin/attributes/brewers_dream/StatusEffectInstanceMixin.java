@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -70,12 +71,19 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
 
         if (modified != 1 && entity instanceof ServerPlayerEntity player) {
             ((ModifiedTimeHolder) instance).bettertrims$incrementModifiedTime();
-            RegistryEntry<StatusEffect> entry = Registries.STATUS_EFFECT.getEntry(effect);
             int modifiedTime = ((ModifiedTimeHolder) instance).bettertrims$getModifiedTime();
+            //? if >=1.21 {
+            /*RegistryEntry<StatusEffect> entry = Registries.STATUS_EFFECT.getEntry(effect);
             ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(entry, modifiedTime));
             if(modifiedTime / player.getWorld().getTickManager().getTickRate() > 60) {
                 TrimCriteria.BREWERS_DREAM_EXTENDED.trigger(player);
             }
+            *///?} else {
+            ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(effect, modifiedTime));
+            if(modifiedTime / 20 > 60) {
+                TrimCriteria.BREWERS_DREAM_EXTENDED.trigger(player);
+            }
+            //?}
         }
         return modified;
     }
@@ -108,7 +116,8 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
         return bettertrims$modifiedTime;
     }
 
-    @Inject(
+    //? if >=1.21 {
+    /*@Inject(
             method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/entity/effect/StatusEffectInstance$Parameters;)V",
             at = @At("TAIL")
     )
@@ -169,4 +178,23 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
             return bettertrims$modifiedTime;
         }
     }
+    *///?} else {
+    @Inject(
+            method = "writeTypelessNbt",
+            at = @At("TAIL")
+    )
+    private void writeModifiedTime(NbtCompound nbt, CallbackInfo ci) {
+        nbt.putInt("bettertrims$modifiedTime", bettertrims$modifiedTime);
+    }
+
+    @ModifyReturnValue(
+            method = "fromNbt(Lnet/minecraft/entity/effect/StatusEffect;Lnet/minecraft/nbt/NbtCompound;)Lnet/minecraft/entity/effect/StatusEffectInstance;",
+            at = @At("RETURN")
+    )
+    private static StatusEffectInstance readModifiedTime(StatusEffectInstance original, StatusEffect statusEffect, NbtCompound nbt) {
+        int modifedTime = nbt.getInt("bettertrims$modifiedTime");
+        ((ModifiedTimeHolder) original).bettertrims$setModifiedTime(modifedTime);
+        return original;
+    }
+    //?}
 }

@@ -7,31 +7,28 @@ plugins {
     id("dev.architectury.loom") version "1.7-SNAPSHOT"
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
-}
-
-class CompatMixins {
-    private var common : List<String> = listOf()
-    private var fabric : List<String> = listOf()
-    private var neoforge : List<String> = listOf()
-
-    fun getMixins() : Map<String, String> {
-        val mixins = common + if(loader.isFabric) fabric else neoforge
-        return mapOf(
-            "compat_mixins" to "[\n${mixins.joinToString(",\n") { "\"$it\"" }}\n]"
-        )
-    }
+    id("dev.kikugie.j52j") version "1.0.2"
 }
 
 val mod = ModData(project)
 val loader = LoaderData(project, loom.platform.get().name.lowercase())
-val minecraftVersion = MinecraftVersionData(stonecutter)
-val awName = "${mod.id}.accesswidener"
+val mcVersion = MinecraftVersionData(stonecutter)
 
-version = "${mod.version}-$loader+$minecraftVersion"
+version = "${mod.version}-$loader+$mcVersion"
 group = mod.group
 base.archivesName.set(mod.name)
 
+StonecutterSwapper(stonecutter)
+    .register("trim_getter", "1.21",
+        "ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);",
+        "stack.get(DataComponentTypes.TRIM);")
+    .register("attribute_shadow", "1.21",
+        "@Shadow public abstract double getAttributeValue(EntityAttribute attribute);",
+        "@Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);")
+    .apply(mcVersion.toString())
+
 repositories {
+    mavenLocal()
     mavenCentral()
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.bawnorton.com/releases/")
@@ -42,15 +39,15 @@ repositories {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:$minecraftVersion")
+    minecraft("com.mojang:minecraft:$mcVersion")
 
-    modCompileOnly("maven.modrinth:sodium-dynamic-lights:${property("sodium_dynamic_lights")}").stripAw(project)
+    modCompileOnly("maven.modrinth:sodium-dynamic-lights:${property("sodium_dynamic_lights")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}-$loader")
-    annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader-yarn:${property("configurable")}+$minecraftVersion") { isTransitive = false })
+    annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader-yarn:${property("configurable")}+$mcVersion") { isTransitive = false })
 }
 
 loom {
-    accessWidenerPath.set(rootProject.file("src/main/resources/$awName"))
+    accessWidenerPath.set(rootProject.file("src/main/resources/$mcVersion.accesswidener"))
 
     runConfigs.all {
         ideConfigGenerated(true)
@@ -65,21 +62,41 @@ loom {
 
 tasks {
     withType<JavaCompile> {
-        options.release = 21
+        options.release = mcVersion.javaVersion()
     }
 
     processResources {
-        val compatMixins = CompatMixins().getMixins()
-        inputs.properties(compatMixins)
-        filesMatching("${mod.id}-compat.mixins.json") { expand(compatMixins) }
+        val modMetadata = mapOf(
+            "description" to mod.description,
+            "version" to mod.version,
+            "minecraft_dependency" to mod.minecraftDependency,
+            "minecraft_version" to mcVersion.toString(),
+            "loader_version" to loader.getVersion()
+        )
+
+        inputs.properties(modMetadata)
+        filesMatching("fabric.mod.json") { expand(modMetadata) }
+        filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
+    }
+
+    processResources {
+        val refmap = mapOf(
+            "refmap" to "${mod.name}-$mcVersion-$loader-refmap.json",
+            "ParametersMixin" to "$\\{ParametersMixin\\}" // I have no idea why this is needed. It'll crash otherwise
+        )
+
+        inputs.properties(refmap)
+        filesMatching("bettertrims.mixins.json5") {
+            expand(refmap)
+        }
     }
 }
 
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.toVersion(mcVersion.javaVersion())
+    targetCompatibility = JavaVersion.toVersion(mcVersion.javaVersion())
 }
 
 val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
@@ -104,27 +121,21 @@ if(loader.isFabric) {
     }
 
     dependencies {
-        mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
+        mappings("net.fabricmc:yarn:$mcVersion+build.${property("yarn_build")}:v2")
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
-        modRuntimeOnly("com.bawnorton.allthetrims:allthetrims-fabric:${property("allthetrims")}")
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$mcVersion")
 
-        modCompileOnly(fileTree("libs") {
-            include("*.jar")
-        }).stripAw(project)
-    }
+        if (mcVersion.lessThan("1.21")) {
+            modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")
 
-    tasks {
-        processResources {
-            val modMetadata = mapOf(
-                "description" to mod.description,
-                "version" to mod.version,
-                "minecraft_dependency" to mod.minecraftDependency
-            )
+            modCompileOnly("maven.modrinth:lambdynamiclights:2.3.2+1.20.1")
+        } else {
+            modRuntimeOnly("com.bawnorton.allthetrims:allthetrims-fabric:${property("allthetrims")}")
 
-            inputs.properties(modMetadata)
-            filesMatching("fabric.mod.json") { expand(modMetadata) }
+            modCompileOnly(fileTree("libs") {
+                include("*.jar")
+            })
         }
     }
 }
@@ -132,33 +143,21 @@ if(loader.isFabric) {
 if (loader.isNeoForge) {
     dependencies {
         mappings(loom.layered {
-            mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
+            mappings("net.fabricmc:yarn:$mcVersion+build.${property("yarn_build")}:v2")
             mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
             mappings(file("mappings/fix.tiny"))
         })
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$minecraftVersion")
+        modImplementation("org.sinytra.forgified-fabric-api:forgified-fabric-api:${property("fabric_api")}+${property("forgified_fabric_api")}+$mcVersion")
 
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${property("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${property("quilt_parsers")}")!!)
     }
 
     tasks {
-        processResources {
-            val modMetadata = mapOf(
-                "description" to mod.description,
-                "version" to mod.version,
-                "minecraft_dependency" to mod.minecraftDependency,
-                "loader_version" to loader.getVersion()
-            )
-
-            inputs.properties(modMetadata)
-            filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-        }
-
         remapJar {
-            atAccessWideners.add(awName)
+            atAccessWideners.add("$mcVersion.accesswidener")
         }
     }
 }
@@ -178,7 +177,7 @@ extensions.configure<PublishingExtension> {
         create<MavenPublication>("maven") {
             groupId = "${mod.group}.${mod.id}"
             artifactId = "${mod.id}-$loader"
-            version = "${mod.version}+$minecraftVersion"
+            version = "${mod.version}+$mcVersion"
 
             from(components["java"])
         }
@@ -187,10 +186,10 @@ extensions.configure<PublishingExtension> {
 
 publishMods {
     file = tasks.remapJar.get().archiveFile
-    val tag = "$loader-${mod.version}+$minecraftVersion"
+    val tag = "$loader-${mod.version}+$mcVersion"
     val branch = "main"
     changelog = "[Changelog](https://github.com/Bawnorton/${mod.name}/blob/$branch/CHANGELOG.md)"
-    displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $minecraftVersion"
+    displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $mcVersion"
     type = STABLE
     modLoaders.add(loader.toString())
 

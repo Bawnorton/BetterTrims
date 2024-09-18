@@ -4,8 +4,10 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.minecraft.component.DataComponentTypes;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -14,6 +16,7 @@ import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,11 +27,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+//? if >=1.21
+/*import net.minecraft.component.DataComponentTypes;*/
+
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements LivingEntityExtender {
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
+    public LivingEntityMixin(EntityType<?> type, World world) {
+        super(type, world);
+    }
 
     @Shadow public abstract Iterable<ItemStack> getArmorItems();
+
+    @Shadow public abstract double getAttributeValue(EntityAttribute par1);
+
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @Unique
     private boolean bettertrims$avoidedDamage;
@@ -72,6 +84,10 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
         original.add(TrimEntityAttributes.SWIM_SPEED);
         original.add(TrimEntityAttributes.THORNS);
         original.add(TrimEntityAttributes.WALKING_FURNACE);
+        //? if <1.21 {
+        original.add(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
+        original.add(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
+        //?}
         return original;
     }
  
@@ -130,12 +146,37 @@ public abstract class LivingEntityMixin implements LivingEntityExtender {
     @Override
     public List<RegistryEntry<ArmorTrimMaterial>> bettertrims$getWornMaterials() {
         List<RegistryEntry<ArmorTrimMaterial>> wornMaterials = new ArrayList<>();
-        getArmorItems().forEach(itemStack -> {
-            ArmorTrim trim = itemStack.get(DataComponentTypes.TRIM);
+        World world = getWorld();
+        getArmorItems().forEach(stack -> {
+            ArmorTrim trim = /*$ trim_getter >>*/ ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);
             if(trim == null) return;
 
             wornMaterials.add(trim.getMaterial());
         });
         return wornMaterials;
     }
+
+    //? if <1.21 {
+    @ModifyExpressionValue(
+            method = "getStepHeight",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/Entity;getStepHeight()F"
+            )
+    )
+    private float applyStepHeight(float original) {
+        return original + (float) getAttributeValue(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
+    }
+
+    @ModifyExpressionValue(
+            method = "getNextAirUnderwater",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getRespiration(Lnet/minecraft/entity/LivingEntity;)I"
+            )
+    )
+    private int applyOxygenBonus(int original) {
+        return original + (int) getAttributeValue(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
+    }
+    //?}
 }

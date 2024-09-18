@@ -17,7 +17,11 @@ public abstract class ApplyBonusLootFunctionMixin {
             method = "process",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/item/ItemStack;)I"
+                    //? if >=1.21 {
+                    /*target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/item/ItemStack;)I"
+                    *///?} else {
+                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I"
+                    //?}
             )
     )
     private int applyFortune(int original, ItemStack stack, LootContext context) {
@@ -28,4 +32,5 @@ public abstract class ApplyBonusLootFunctionMixin {
 
         return (int) (original + player.getAttributeValue(TrimEntityAttributes.FORTUNE));
     }
+
 }

@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.data.advancement;
 
-import com.bawnorton.bettertrims.BetterTrims;
+//? if >=1.21 {
+/*import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.data.advancement.criterion.*;
 import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -183,3 +184,4 @@ public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementPr
                 .build(exporter, BetterTrims.sid(name));
     }
 }
+*///?}

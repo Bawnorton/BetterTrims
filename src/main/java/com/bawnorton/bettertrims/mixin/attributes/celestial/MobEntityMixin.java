@@ -19,13 +19,21 @@ public abstract class MobEntityMixin extends LivingEntityMixin {
             method = "tryAttack",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/mob/MobEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D",
+                    //? if >=1.21 {
+                    /*target = "Lnet/minecraft/entity/mob/MobEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D",
+                    *///?} else {
+                    target = "Lnet/minecraft/entity/mob/MobEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D",
+                    //?}
                     ordinal = 0
             ),
             slice = @Slice(
                     from = @At(
                             value = "FIELD",
-                            target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/registry/entry/RegistryEntry;",
+                            //? if >=1.21 {
+                            /*target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/registry/entry/RegistryEntry;",
+                            *///?} else {
+                            target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;",
+                            //?}
                             opcode = Opcodes.GETSTATIC
                     )
             )

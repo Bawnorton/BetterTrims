@@ -28,13 +28,21 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             method = "attack",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D",
+                    //? if >=1.21 {
+                    /*target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D",
+                    *///?} else {
+                    target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D",
+                    //?}
                     ordinal = 0
             ),
             slice = @Slice(
                     from = @At(
                             value = "FIELD",
-                            target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/registry/entry/RegistryEntry;",
+                            //? if >=1.21 {
+                            /*target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/registry/entry/RegistryEntry;",
+                            *///?} else {
+                            target = "Lnet/minecraft/entity/attribute/EntityAttributes;GENERIC_ATTACK_DAMAGE:Lnet/minecraft/entity/attribute/EntityAttribute;",
+                            //?}
                             opcode = Opcodes.GETSTATIC
                     )
             )
@@ -47,7 +55,11 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
             method = "getAttackCooldownProgressPerTick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"
+                    //? if >=1.21 {
+                    /*target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D"
+                    *///?} else {
+                    target = "Lnet/minecraft/entity/player/PlayerEntity;getAttributeValue(Lnet/minecraft/entity/attribute/EntityAttribute;)D"
+                    //?}
             )
     )
     private double applyCelestialToAttackSpeed(double original) {

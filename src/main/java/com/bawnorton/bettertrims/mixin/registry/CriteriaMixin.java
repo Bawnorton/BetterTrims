@@ -8,11 +8,13 @@ import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(Criteria.class)
 public abstract class CriteriaMixin {
-    static {
+    //? if >=1.21 {
+    /*static {
         TrimCriteria.BREWERS_DREAM_EXTENDED = bettertrims$register("brewers_dream_extended", new BrewersDreamExtendedCriteron());
         TrimCriteria.DODGED = bettertrims$register("dodged", new DodgeCriterion());
         TrimCriteria.WALKING_FURNACE_SMELTED = bettertrims$register("walking_furnace_smelted", new WalkingFurnaceSmeltedCriteron());
@@ -33,4 +35,27 @@ public abstract class CriteriaMixin {
     private static <T extends Criterion<?>> T bettertrims$register(String id, T criterion) {
         return Registry.register(Registries.CRITERION, BetterTrims.id(id), criterion);
     }
+    *///?} else {
+    @Shadow
+    public static <T extends Criterion<?>> T register(T object) {
+        throw new AssertionError();
+    }
+
+    static {
+        TrimCriteria.BREWERS_DREAM_EXTENDED = register(new BrewersDreamExtendedCriteron());
+        TrimCriteria.DODGED = register(new DodgeCriterion());
+        TrimCriteria.WALKING_FURNACE_SMELTED = register(new WalkingFurnaceSmeltedCriteron());
+        TrimCriteria.KILLED_WITH_ELECTRICITY = register(new ElectrifyingKilledCriterion());
+        TrimCriteria.MINERS_RUSH_MAX_LEVEL = register(new MinersRushMaxLevelCriterion());
+        TrimCriteria.SHARED_EFFECT = register(new SharedEffectCriterion());
+        TrimCriteria.ECHOING_TRIGGERED = register(new EchoingTriggeredCriterion());
+        TrimCriteria.DISCOUNTED_TRADE = register(new DiscountedTradeCriterion());
+        TrimCriteria.HYDROPHOBIC_TOUCH_WATER = register(new HydrophobicTouchWaterCriterion());
+        TrimCriteria.MAGNETIC_HELMET_WORN = register(new MagneticHelmetWornCriterion());
+        TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS = register(new EnchantersFavourRerolledMaxCriterion());
+        TrimCriteria.SNUCK_BY_CREEPER = register(new LightFootedSneakByCreeperCriterion());
+        TrimCriteria.DECAPITATED_PIGLIN = register(new CleavingDecapitatePiglinCriterion());
+        TrimCriteria.BOUNCY_BOOTS_WORN = register(new BouncyBootsWornCriterion());
+    }
+    //?}
 }

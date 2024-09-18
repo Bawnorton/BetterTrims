@@ -27,10 +27,17 @@ public final class GlowstoneTrimEffect extends CelestialEffect {
         adder.accept(TrimAttribute.leveled(TrimEntityAttributes.GLOWING));
     }
 
-    @Override
+    //? if >=1.21 {
+    /*@Override
     public RegistryEntry<EntityAttribute> getEntityAttribute() {
         return TrimEntityAttributes.HELLS_BLESSING;
     }
+    *///?} else {
+    @Override
+    public EntityAttribute getEntityAttribute() {
+        return TrimEntityAttributes.HELLS_BLESSING;
+    }
+    //?}
 
     @Override
     public float getMovementSpeed() {

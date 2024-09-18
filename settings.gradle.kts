@@ -7,13 +7,14 @@ pluginManagement {
 		maven("https://maven.minecraftforge.net/")
 		maven("https://maven.neoforged.net/releases/")
 		maven("https://maven.kikugie.dev/releases/")
+		maven("https://maven.kikugie.dev/snapshots/")
 		mavenCentral()
 		gradlePluginPortal()
 	}
 }
 
 plugins {
-	id("dev.kikugie.stonecutter") version "0.4"
+	id("dev.kikugie.stonecutter") version "0.5-alpha.4"
 }
 
 fun getProperty(key: String): String? {

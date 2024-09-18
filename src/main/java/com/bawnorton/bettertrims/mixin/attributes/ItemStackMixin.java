@@ -11,7 +11,8 @@ import java.util.Optional;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @ModifyReturnValue(
+    //? if >=1.21 {
+    /*@ModifyReturnValue(
             method = "fromNbt",
             at = @At("RETURN")
     )
@@ -31,4 +32,16 @@ public abstract class ItemStackMixin {
     private void addAttributesToTrims(CallbackInfo ci) {
         TrimEntityAttributeApplicator.apply((ItemStack) (Object) this);
     }
+    *///?} else {
+    @ModifyReturnValue(
+            method = "fromNbt",
+            at = @At("RETURN")
+    )
+    private static ItemStack addAttributesToTrims(ItemStack original) {
+        if(!original.isEmpty()) {
+            TrimEntityAttributeApplicator.apply(original);
+        }
+        return original;
+    }
+    //?}
 }
