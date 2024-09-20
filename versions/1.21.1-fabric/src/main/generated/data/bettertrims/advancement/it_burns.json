@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "it_burns": {
+      "trigger": "bettertrims:hydrophobic_touch_water"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.it_burns.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:water_bucket"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.it_burns.title"
+    }
+  },
+  "requirements": [
+    [
+      "it_burns"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

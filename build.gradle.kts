@@ -80,14 +80,10 @@ tasks {
     }
 
     processResources {
-        val refmap = mapOf(
-            "refmap" to "${mod.name}-$mcVersion-$loader-refmap.json",
-            "ParametersMixin" to "$\\{ParametersMixin\\}" // I have no idea why this is needed. It'll crash otherwise
-        )
-
-        inputs.properties(refmap)
         filesMatching("bettertrims.mixins.json5") {
-            expand(refmap)
+            filter {
+                it.replace("\${refmap}", "${mod.name}-$mcVersion-$loader-refmap.json")
+            }
         }
     }
 }
@@ -116,7 +112,31 @@ if (stonecutter.current.isActive) {
 if(loader.isFabric) {
     fabricApi {
         configureDataGeneration {
-            outputDirectory = rootProject.rootDir.resolve("src/main/generated")
+            createRunConfiguration = false
+        }
+    }
+
+    tasks {
+        register<Copy>("copyDatagen") {
+            from("src/main/generated")
+            into("${layout.buildDirectory.get()}/resources/main")
+            dependsOn("runDatagen")
+        }
+
+        jar {
+            dependsOn("copyDatagen")
+        }
+
+        withType<AbstractCopyTask> {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        }
+    }
+
+    sourceSets {
+        main {
+            resources {
+                srcDir("src/main/generated")
+            }
         }
     }
 
@@ -126,8 +146,10 @@ if(loader.isFabric) {
 
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$mcVersion")
 
+        include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1")!!)!!)
+
         if (mcVersion.lessThan("1.21")) {
-            modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")
+//            modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")
 
             modCompileOnly("maven.modrinth:lambdynamiclights:2.3.2+1.20.1")
         } else {
@@ -153,11 +175,27 @@ if (loader.isNeoForge) {
 
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${property("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${property("quilt_parsers")}")!!)
+
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")!!)
+        implementation(include("io.github.llamalad7:mixinextras-neoforge:0.4.1")!!)
     }
 
     tasks {
         remapJar {
             atAccessWideners.add("$mcVersion.accesswidener")
+        }
+
+        register<Copy>("copyDatagen") {
+            from(rootProject.file("versions/${mcVersion}-fabric/src/main/generated"))
+            into("${layout.buildDirectory.get()}/resources/main")
+        }
+
+        jar {
+            dependsOn("copyDatagen")
+        }
+
+        withType<AbstractCopyTask> {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
     }
 }

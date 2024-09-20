@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.mixin.registry;
 
+import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.TrimEffect;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
 import com.bawnorton.bettertrims.registry.TrimRegistryKeys;
@@ -30,7 +31,7 @@ public abstract class RegistriesMixin {
     }
 
     static {
-        TrimRegistries.TRIM_EFFECTS = createIntrusive(TrimRegistryKeys.TRIM_EFFECTS, "redstone", registry -> TrimEffects.REDSTONE);
+        TrimRegistries.TRIM_EFFECTS = createIntrusive(TrimRegistryKeys.TRIM_EFFECTS, BetterTrims.sid("redstone"), registry -> TrimEffects.REDSTONE);
     }
     //?}
 

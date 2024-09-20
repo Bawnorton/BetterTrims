@@ -5,6 +5,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -50,7 +51,9 @@ public record TrimAttribute(EntityAttribute entry, double value, EntityAttribute
     }
 
     public UUID getSlotId(EquipmentSlot slot) {
-        return UUID.fromString("%s_trimmed_%s".formatted(Registries.ATTRIBUTE.getId(entry).toString(), slot.getName()));
+        String seed = "%s_trimmed_%s".formatted(Registries.ATTRIBUTE.getId(entry).toString(), slot.getName());
+        Random rand = new Random(seed.hashCode());
+        return new UUID(rand.nextLong(), rand.nextLong());
     }
 
     public TrimAttribute forSlot(EquipmentSlot slot) {

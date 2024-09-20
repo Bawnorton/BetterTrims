@@ -38,9 +38,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
 
     @Shadow public abstract Iterable<ItemStack> getArmorItems();
 
-    @Shadow public abstract double getAttributeValue(EntityAttribute par1);
-
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    //$ attribute_shadow
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Unique
     private boolean bettertrims$avoidedDamage;

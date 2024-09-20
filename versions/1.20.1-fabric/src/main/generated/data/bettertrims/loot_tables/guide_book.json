@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:advancement_reward",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_name",
+          "name": {
+            "text": "BetterTrims Guidebook"
+          }
+        },
+        {
+          "function": "minecraft:set_lore",
+          "lore": [
+            {
+              "text": "In-Game Coming Soon™"
+            },
+            {
+              "text": "Right click to open info page"
+            }
+          ],
+          "replace": false
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

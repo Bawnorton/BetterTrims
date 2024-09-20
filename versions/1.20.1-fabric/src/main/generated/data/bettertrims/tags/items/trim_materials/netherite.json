@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:netherite_ingots",
+    "minecraft:netherite_block"
+  ]
+}

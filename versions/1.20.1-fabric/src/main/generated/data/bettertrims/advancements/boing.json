@@ -1,0 +1,31 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "boing": {
+      "conditions": {},
+      "trigger": "bettertrims:bouncy_boots_worn"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.boing.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:slime_ball"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.boing.title"
+    }
+  },
+  "requirements": [
+    [
+      "boing"
+    ]
+  ],
+  "rewards": {},
+  "sends_telemetry_event": true
+}

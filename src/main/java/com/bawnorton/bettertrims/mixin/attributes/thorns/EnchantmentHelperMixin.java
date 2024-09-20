@@ -55,6 +55,8 @@ public abstract class EnchantmentHelperMixin {
     )
     private static int addThornsAttributes(int original) {
         LivingEntity livingEntity = bettertrims$entityCapture.get();
+        if(livingEntity == null) return original;
+
         int thornsLevel = (int) livingEntity.getAttributeValue(TrimEntityAttributes.THORNS);
         return original + thornsLevel;
     }

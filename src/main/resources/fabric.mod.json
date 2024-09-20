@@ -27,7 +27,7 @@
     ]
   },
   "mixins": [
-    "bettertrims.mixins.json5",
+    "bettertrims.mixins.json",
     {
       "config": "bettertrims-client.mixins.json",
       "environment": "client"

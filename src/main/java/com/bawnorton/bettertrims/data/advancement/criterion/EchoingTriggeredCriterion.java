@@ -26,10 +26,12 @@ public final class EchoingTriggeredCriterion extends AttributeCriterion<EchoingT
     }
     *///?} else {
     public static final class Conditions extends AbstractCriterionConditions {
-        public static LootContextPredicate player;
+        public Conditions() {
+            super(ID, LootContextPredicate.EMPTY);
+        }
 
-        public Conditions(Optional<LootContextPredicate> entity) {
-            super(ID, entity.orElse(null));
+        public static Conditions create() {
+            return new Conditions();
         }
     }
 

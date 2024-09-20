@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:redstone_dusts",
+    "minecraft:redstone_block"
+  ]
+}

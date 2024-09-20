@@ -1,0 +1,31 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "an_even_better_deal": {
+      "conditions": {},
+      "trigger": "bettertrims:discounted_trade"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.an_even_better_deal.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.an_even_better_deal.title"
+    }
+  },
+  "requirements": [
+    [
+      "an_even_better_deal"
+    ]
+  ],
+  "rewards": {},
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "still_nothing_good": {
+      "trigger": "bettertrims:enchanters_favour_max_rerolls"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.still_nothing_good.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:lapis_lazuli"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.still_nothing_good.title"
+    }
+  },
+  "requirements": [
+    [
+      "still_nothing_good"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

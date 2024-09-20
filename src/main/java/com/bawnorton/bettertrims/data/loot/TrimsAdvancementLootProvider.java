@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.data.loot;
 
-//? if >=1.21 {
-/*import com.bawnorton.bettertrims.registry.content.TrimLootTables;
+import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.item.Items;
@@ -20,14 +19,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 public final class TrimsAdvancementLootProvider extends SimpleFabricLootTableProvider {
-    public TrimsAdvancementLootProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
+    //? if >=1.21 {
+    /*public TrimsAdvancementLootProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
         super(output, lookup, LootContextTypes.ADVANCEMENT_REWARD);
     }
 
     @Override
-    public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> biConsumer) {
+    public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> exporter) {
         //? if fabric {
-        biConsumer.accept(TrimLootTables.GUIDE_BOOK, LootTable.builder()
+        /^exporter.accept(TrimLootTables.GUIDE_BOOK, LootTable.builder()
                 .pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(Items.BOOK))
@@ -42,7 +42,29 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
                         )
                 )
         );
+        ^///?}
+    }
+    *///?} else {
+    public TrimsAdvancementLootProvider(FabricDataOutput output) {
+        super(output, LootContextTypes.ADVANCEMENT_REWARD);
+    }
+
+    @Override
+    public void accept(BiConsumer<Identifier, LootTable.Builder> exporter) {
+        //? if fabric {
+        exporter.accept(TrimLootTables.GUIDE_BOOK, LootTable.builder()
+                .pool(LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1))
+                        .with(ItemEntry.builder(Items.BOOK))
+                        .apply(SetNameLootFunction.builder(Text.literal("BetterTrims Guidebook")))
+                        .apply(SetLoreLootFunction.builder()
+                                .lore(Text.literal("In-Game Coming Soon™"))
+                                .lore(Text.literal("Right click to open info page"))
+                                .build()
+                        )
+                )
+        );
         //?}
     }
+    //?}
 }
-*///?}

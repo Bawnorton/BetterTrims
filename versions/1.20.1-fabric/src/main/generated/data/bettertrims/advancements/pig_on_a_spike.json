@@ -1,0 +1,33 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "pig_on_a_spike": {
+      "conditions": {},
+      "trigger": "bettertrims:cleaving_decapitate_piglin"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.pig_on_a_spike.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:piglin_head"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.pig_on_a_spike.title"
+    }
+  },
+  "requirements": [
+    [
+      "pig_on_a_spike"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

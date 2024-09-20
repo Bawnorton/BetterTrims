@@ -1,0 +1,31 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "miss_me": {
+      "conditions": {},
+      "trigger": "bettertrims:dodge"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.miss_me.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.miss_me.title"
+    }
+  },
+  "requirements": [
+    [
+      "miss_me"
+    ]
+  ],
+  "rewards": {},
+  "sends_telemetry_event": true
+}

@@ -33,7 +33,11 @@ import java.util.function.Function;
 
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
-    @Shadow @Final private RegistryEntry<StatusEffect> type;
+    //? if >=1.21 {
+    /*@Shadow @Final private RegistryEntry<StatusEffect> type;
+    *///?} else {
+    @Shadow @Final private StatusEffect type;
+    //?}
 
     @Unique
     private static final ThreadLocal<LivingEntity> bettertrims$ENTITY_CAPTURE = new ThreadLocal<>();
@@ -97,7 +101,11 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
     )
     private void captureData(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
         bettertrims$ENTITY_CAPTURE.set(entity);
-        bettertrims$STATUS_EFFECT_CAPTURE.set(type.value());
+        //? if >=1.21 {
+        /*bettertrims$STATUS_EFFECT_CAPTURE.set(type.value());
+        *///?} else {
+        bettertrims$STATUS_EFFECT_CAPTURE.set(type);
+        //?}
         bettertrims$INSTANCE_CAPTURE.set((StatusEffectInstance) (Object) this);
     }
 

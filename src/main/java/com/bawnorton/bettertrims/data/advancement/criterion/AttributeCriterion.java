@@ -10,13 +10,10 @@ import net.minecraft.predicate.entity.EntityPredicate;
 import net.minecraft.predicate.entity.LootContextPredicate;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.Uuids;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.function.Function;
 
 //? if >=1.21 {
-
 /*public abstract class AttributeCriterion<C extends AbstractCriterion.Conditions> extends AbstractCriterion<C> {
     private final Function<AttributeCriterion<C>, Codec<C>> CONDITION_CODEC_GETTER = Util.memoize(criterion -> RecordCodecBuilder.create(
             instance -> instance.group(
@@ -51,14 +48,13 @@ public abstract class AttributeCriterion<C extends AbstractCriterionConditions> 
 
     @Override
     protected C conditionsFromJson(JsonObject obj, LootContextPredicate playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
-        return factory().create(Optional.of(playerPredicate));
+        return factory().create();
     }
 
     protected abstract ConditionFactory<C> factory();
 
     public interface ConditionFactory<C> {
-        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-        C create(Optional<LootContextPredicate> player);
+        C create();
     }
 }
 //?}

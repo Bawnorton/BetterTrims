@@ -1,0 +1,33 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "where_was_i": {
+      "conditions": {},
+      "trigger": "bettertrims:echoing_triggered"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.where_was_i.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:echo_shard"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.where_was_i.title"
+    }
+  },
+  "requirements": [
+    [
+      "where_was_i"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

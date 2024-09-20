@@ -1,0 +1,31 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "i_am_a_generous_player": {
+      "conditions": {},
+      "trigger": "bettertrims:shared_effect"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.i_am_a_generous_player.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:dragon_breath"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.i_am_a_generous_player.title"
+    }
+  },
+  "requirements": [
+    [
+      "i_am_a_generous_player"
+    ]
+  ],
+  "rewards": {},
+  "sends_telemetry_event": true
+}

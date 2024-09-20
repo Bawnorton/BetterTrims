@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:copper_ingots",
+    "minecraft:copper_block"
+  ]
+}

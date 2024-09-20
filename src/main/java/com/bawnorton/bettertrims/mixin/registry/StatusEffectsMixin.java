@@ -16,6 +16,8 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Colors;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
+import java.util.Random;
+import java.util.UUID;
 
 @Mixin(StatusEffects.class)
 public abstract class StatusEffectsMixin {
@@ -35,7 +37,7 @@ public abstract class StatusEffectsMixin {
                                 EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
                                 *///?} else {
                                 TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
-                                BetterTrims.sid("effect.feel_the_rush"),
+                                bettertrims$randomUuid(BetterTrims.sid("effect.feel_the_rush")),
                                 AttributeSettings.MinersRush.bonusMineSpeed,
                                 EntityAttributeModifier.Operation.MULTIPLY_TOTAL
                                 //?}
@@ -52,6 +54,13 @@ public abstract class StatusEffectsMixin {
     @Unique
     private static StatusEffect bettertrims$register(String id, StatusEffect statusEffect) {
         return Registry.register(Registries.STATUS_EFFECT, BetterTrims.id(id), statusEffect);
+    }
+
+    @Unique
+    private static String bettertrims$randomUuid(String seed) {
+        Random random = new Random(seed.hashCode());
+        UUID uuid = new UUID(random.nextLong(), random.nextLong());
+        return uuid.toString();
     }
     //?}
 }

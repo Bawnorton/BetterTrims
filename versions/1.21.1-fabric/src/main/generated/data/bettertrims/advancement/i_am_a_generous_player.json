@@ -1,0 +1,26 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "i_am_a_generous_player": {
+      "trigger": "bettertrims:shared_effect"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.bettertrims.i_am_a_generous_player.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:dragon_breath"
+    },
+    "title": {
+      "translate": "advancements.bettertrims.i_am_a_generous_player.title"
+    }
+  },
+  "requirements": [
+    [
+      "i_am_a_generous_player"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

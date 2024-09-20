@@ -1,0 +1,31 @@
+{
+  "parent": "bettertrims:root",
+  "criteria": {
+    "it_burns": {
+      "conditions": {},
+      "trigger": "bettertrims:hydrophobic_touch_water"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.bettertrims.it_burns.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:water_bucket"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.bettertrims.it_burns.title"
+    }
+  },
+  "requirements": [
+    [
+      "it_burns"
+    ]
+  ],
+  "rewards": {},
+  "sends_telemetry_event": true
+}
