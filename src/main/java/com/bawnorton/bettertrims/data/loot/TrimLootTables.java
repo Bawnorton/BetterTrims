@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.registry.content;
+package com.bawnorton.bettertrims.data.loot;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import net.minecraft.loot.LootTable;

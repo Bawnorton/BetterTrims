@@ -58,6 +58,14 @@ loom {
         vmArgs("-Dmixin.debug.export=true")
         programArgs("--username=Bawnorton")
     }
+
+    sourceSets {
+        main {
+            resources {
+                srcDir(project.file("src/main/generated"))
+            }
+        }
+    }
 }
 
 tasks {
@@ -77,14 +85,24 @@ tasks {
         inputs.properties(modMetadata)
         filesMatching("fabric.mod.json") { expand(modMetadata) }
         filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-    }
 
-    processResources {
         filesMatching("bettertrims.mixins.json5") {
             filter {
                 it.replace("\${refmap}", "${mod.name}-$mcVersion-$loader-refmap.json")
             }
         }
+    }
+
+    jar {
+        dependsOn("copyDatagen")
+    }
+
+    withType<AbstractCopyTask> {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    clean {
+        delete(file(rootProject.file("build")))
     }
 }
 
@@ -111,9 +129,7 @@ if (stonecutter.current.isActive) {
 
 if(loader.isFabric) {
     fabricApi {
-        configureDataGeneration {
-            createRunConfiguration = false
-        }
+        configureDataGeneration()
     }
 
     tasks {
@@ -121,22 +137,6 @@ if(loader.isFabric) {
             from("src/main/generated")
             into("${layout.buildDirectory.get()}/resources/main")
             dependsOn("runDatagen")
-        }
-
-        jar {
-            dependsOn("copyDatagen")
-        }
-
-        withType<AbstractCopyTask> {
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-        }
-    }
-
-    sourceSets {
-        main {
-            resources {
-                srcDir("src/main/generated")
-            }
         }
     }
 
@@ -147,9 +147,11 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$mcVersion")
 
         include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1")!!)!!)
+        runtimeOnly("com.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
 
         if (mcVersion.lessThan("1.21")) {
-//            modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")
+            modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")
+            modRuntimeOnly("maven.modrinth:architectury-api:${property("architectury")}")
 
             modCompileOnly("maven.modrinth:lambdynamiclights:2.3.2+1.20.1")
         } else {
@@ -188,14 +190,6 @@ if (loader.isNeoForge) {
         register<Copy>("copyDatagen") {
             from(rootProject.file("versions/${mcVersion}-fabric/src/main/generated"))
             into("${layout.buildDirectory.get()}/resources/main")
-        }
-
-        jar {
-            dependsOn("copyDatagen")
-        }
-
-        withType<AbstractCopyTask> {
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
     }
 }

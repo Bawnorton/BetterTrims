@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims.data.loot;
 
-import com.bawnorton.bettertrims.registry.content.TrimLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.item.Items;
@@ -27,7 +26,7 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
     @Override
     public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> exporter) {
         //? if fabric {
-        /^exporter.accept(TrimLootTables.GUIDE_BOOK, LootTable.builder()
+        exporter.accept(TrimLootTables.GUIDE_BOOK, LootTable.builder()
                 .pool(LootPool.builder()
                         .rolls(ConstantLootNumberProvider.create(1))
                         .with(ItemEntry.builder(Items.BOOK))
@@ -42,7 +41,7 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
                         )
                 )
         );
-        ^///?}
+        //?}
     }
     *///?} else {
     public TrimsAdvancementLootProvider(FabricDataOutput output) {

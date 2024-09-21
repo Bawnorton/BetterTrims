@@ -60,8 +60,7 @@
     "trim.gold.PiglinBrainMixin",
     "trim.leather.LivingEntityMixin",
     "trim.leather.PowderSnowBlockMixin",
-    "trim.netherite.ItemEntityMixin",
-    "EntityDataObjectMixin"
+    "trim.netherite.ItemEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

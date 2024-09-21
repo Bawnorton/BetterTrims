@@ -34,6 +34,8 @@ public abstract class BlockMixin {
         if(world.isClient()) return;
 
         int minersRushLevel = (int) player.getAttributeValue(TrimEntityAttributes.MINERS_RUSH);
+        if(minersRushLevel <= 0) return;
+
         if (state.isIn(ConventionalBlockTags.ORES)) {
             StatusEffectInstance existing = player.getStatusEffect(TrimStatusEffects.FEEL_THE_RUSH);
             int duration = (int) (20 * AttributeSettings.MinersRush.secondsPerLevel * minersRushLevel);

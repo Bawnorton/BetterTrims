@@ -20,6 +20,7 @@ import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -34,6 +35,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -77,11 +79,10 @@ public abstract class LivingEntityMixin extends Entity {
         echoes.clear();
         Vec3d pos = oldest.pos();
         Vec3d oldPos = getPos();
-        updatePositionAndAngles(pos.x, pos.y, pos.z, oldest.yaw(), oldest.pitch());
-        setHealth(oldest.health());
-        clearStatusEffects();
-
         ServerWorld world = (ServerWorld) getWorld();
+        teleport(world, pos.x, pos.y, pos.z, PositionFlag.VALUES, oldest.yaw(), oldest.pitch());
+        setHealth(oldest.health());
+
         List<? extends PlayerEntity> players = world.getPlayers();
         players.forEach(player -> {
             if(player instanceof ServerPlayerEntity serverPlayer) {

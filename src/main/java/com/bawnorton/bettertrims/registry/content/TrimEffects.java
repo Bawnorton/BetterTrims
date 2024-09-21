@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.registry.content;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.data.tag.TrimMaterialTags;
 import com.bawnorton.bettertrims.effect.*;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
 import net.minecraft.item.Item;

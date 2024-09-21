@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.data.advancement;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.data.advancement.criterion.*;
-import com.bawnorton.bettertrims.registry.content.TrimLootTables;
+import com.bawnorton.bettertrims.data.loot.TrimLootTables;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;

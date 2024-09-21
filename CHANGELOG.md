@@ -1,3 +1,9 @@
+# 3.1.0
+
+- Fix Feel the Rush applying with 0 duration (#61)
+- Backport to 1.20.1 (this was pain)
+- Update Configurable to 1.2.0
+
 # 3.0.2
 
 - Update fmj deps to specify min version of floader to be 0.16.0

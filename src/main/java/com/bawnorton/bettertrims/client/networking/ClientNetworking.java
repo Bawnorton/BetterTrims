@@ -38,7 +38,6 @@ public final class ClientNetworking {
     private static void handleEchoTriggered(EchoTriggeredS2CPacket packet, ClientPlayerEntity player, PacketSender responseSender) {
         EchoShardTrimEffect.Echo echo = packet.echo();
         Vec3d pos = echo.pos();
-        player.updatePositionAndAngles(pos.x, pos.y, pos.z, echo.yaw(), echo.pitch());
         ClientWorld world = player.clientWorld;
         for(int i = 5; i > 0; i--) {
             float pitch = i * 0.1f;
@@ -88,7 +87,6 @@ public final class ClientNetworking {
         EchoShardTrimEffect.Echo echo = packet.echo();
         ClientPlayerEntity player = context.player();
         Vec3d pos = echo.pos();
-        player.updatePositionAndAngles(pos.x, pos.y, pos.z, echo.yaw(), echo.pitch());
         ClientWorld world = context.client().world;
         for(int i = 5; i > 0; i--) {
             float pitch = i * 0.1f;

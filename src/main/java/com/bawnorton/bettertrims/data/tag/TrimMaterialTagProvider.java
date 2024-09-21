@@ -1,6 +1,5 @@
 package com.bawnorton.bettertrims.data.tag;
 
-import com.bawnorton.bettertrims.registry.content.TrimMaterialTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.item.Items;

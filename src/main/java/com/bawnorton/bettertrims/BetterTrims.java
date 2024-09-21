@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims;
 
 import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributeApplicator;
 import com.bawnorton.bettertrims.networking.Networking;
-import com.bawnorton.bettertrims.registry.content.TrimLootTables;
+import com.bawnorton.bettertrims.data.loot.TrimLootTables;
 import com.bawnorton.bettertrims.util.Probabilities;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.util.Identifier;
