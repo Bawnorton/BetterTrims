@@ -85,12 +85,6 @@ tasks {
         inputs.properties(modMetadata)
         filesMatching("fabric.mod.json") { expand(modMetadata) }
         filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-
-        filesMatching("bettertrims.mixins.json5") {
-            filter {
-                it.replace("\${refmap}", "${mod.name}-$mcVersion-$loader-refmap.json")
-            }
-        }
     }
 
     jar {
@@ -137,6 +131,14 @@ if(loader.isFabric) {
             from("src/main/generated")
             into("${layout.buildDirectory.get()}/resources/main")
             dependsOn("runDatagen")
+        }
+
+        processResources {
+            filesMatching("bettertrims.mixins.json5") {
+                filter {
+                    it.replace("\${refmap}", "${mod.name}-$mcVersion-$loader-refmap.json")
+                }
+            }
         }
     }
 

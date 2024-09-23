@@ -7,9 +7,12 @@ import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import java.util.Map;
 
 @Mixin(Criteria.class)
 public abstract class CriteriaMixin {
@@ -36,26 +39,29 @@ public abstract class CriteriaMixin {
         return Registry.register(Registries.CRITERION, BetterTrims.id(id), criterion);
     }
     *///?} else {
-    @Shadow
-    public static <T extends Criterion<?>> T register(T object) {
-        throw new AssertionError();
-    }
+    @Shadow @Final private static Map<Identifier, Criterion<?>> VALUES;
 
     static {
-        TrimCriteria.BREWERS_DREAM_EXTENDED = register(new BrewersDreamExtendedCriteron());
-        TrimCriteria.DODGED = register(new DodgeCriterion());
-        TrimCriteria.WALKING_FURNACE_SMELTED = register(new WalkingFurnaceSmeltedCriteron());
-        TrimCriteria.KILLED_WITH_ELECTRICITY = register(new ElectrifyingKilledCriterion());
-        TrimCriteria.MINERS_RUSH_MAX_LEVEL = register(new MinersRushMaxLevelCriterion());
-        TrimCriteria.SHARED_EFFECT = register(new SharedEffectCriterion());
-        TrimCriteria.ECHOING_TRIGGERED = register(new EchoingTriggeredCriterion());
-        TrimCriteria.DISCOUNTED_TRADE = register(new DiscountedTradeCriterion());
-        TrimCriteria.HYDROPHOBIC_TOUCH_WATER = register(new HydrophobicTouchWaterCriterion());
-        TrimCriteria.MAGNETIC_HELMET_WORN = register(new MagneticHelmetWornCriterion());
-        TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS = register(new EnchantersFavourRerolledMaxCriterion());
-        TrimCriteria.SNUCK_BY_CREEPER = register(new LightFootedSneakByCreeperCriterion());
-        TrimCriteria.DECAPITATED_PIGLIN = register(new CleavingDecapitatePiglinCriterion());
-        TrimCriteria.BOUNCY_BOOTS_WORN = register(new BouncyBootsWornCriterion());
+        TrimCriteria.BREWERS_DREAM_EXTENDED = bettertrims$register(new BrewersDreamExtendedCriteron());
+        TrimCriteria.DODGED = bettertrims$register(new DodgeCriterion());
+        TrimCriteria.WALKING_FURNACE_SMELTED = bettertrims$register(new WalkingFurnaceSmeltedCriteron());
+        TrimCriteria.KILLED_WITH_ELECTRICITY = bettertrims$register(new ElectrifyingKilledCriterion());
+        TrimCriteria.MINERS_RUSH_MAX_LEVEL = bettertrims$register(new MinersRushMaxLevelCriterion());
+        TrimCriteria.SHARED_EFFECT = bettertrims$register(new SharedEffectCriterion());
+        TrimCriteria.ECHOING_TRIGGERED = bettertrims$register(new EchoingTriggeredCriterion());
+        TrimCriteria.DISCOUNTED_TRADE = bettertrims$register(new DiscountedTradeCriterion());
+        TrimCriteria.HYDROPHOBIC_TOUCH_WATER = bettertrims$register(new HydrophobicTouchWaterCriterion());
+        TrimCriteria.MAGNETIC_HELMET_WORN = bettertrims$register(new MagneticHelmetWornCriterion());
+        TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS = bettertrims$register(new EnchantersFavourRerolledMaxCriterion());
+        TrimCriteria.SNUCK_BY_CREEPER = bettertrims$register(new LightFootedSneakByCreeperCriterion());
+        TrimCriteria.DECAPITATED_PIGLIN = bettertrims$register(new CleavingDecapitatePiglinCriterion());
+        TrimCriteria.BOUNCY_BOOTS_WORN = bettertrims$register(new BouncyBootsWornCriterion());
+    }
+
+    @Unique
+    private static <T extends Criterion<?>> T bettertrims$register(T criterion) {
+        VALUES.put(criterion.getId(), criterion);
+        return criterion;
     }
     //?}
 }

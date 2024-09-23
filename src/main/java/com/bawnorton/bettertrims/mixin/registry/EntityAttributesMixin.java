@@ -53,7 +53,7 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.WALKING_FURNACE = bettertrims$registerLeveledAttribute("walking_furnace");
         //? if <1.21 {
         TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$registerAttribute("player_block_break_speed", 1, 0, 1024, true);
-        TrimEntityAttributes.GENERIC_STEP_HEIGHT = bettertrims$registerAttribute("generic_step_height", 0.6, 0.0, 10.0, true);
+        TrimEntityAttributes.GENERIC_STEP_HEIGHT = bettertrims$registerAttribute("generic_step_height", 0.0, 0.0, 10.0, true);
         TrimEntityAttributes.GENERIC_OXYGEN_BONUS = bettertrims$registerAttribute("generic_oxygen_bonus", 0.0, 0.0, 1024.0, true);
         //?}
 
