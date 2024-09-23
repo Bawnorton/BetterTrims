@@ -1,3 +1,9 @@
+# 3.1.1
+
+- Upgrade Configurable to 1.3.0
+  - Server enforces client settings now
+- Fix client crashing on 1.20.1 servers
+
 # 3.1.0
 
 - Fix Feel the Rush applying with 0 duration (#61)

@@ -6,6 +6,8 @@ import com.bawnorton.bettertrims.client.compat.lambdynlights.LambDynLightsCompat
 import com.bawnorton.bettertrims.client.compat.sodiumdynlights.SodiumDynLightsCompat;
 import com.bawnorton.bettertrims.client.keybind.KeybindManager;
 import com.bawnorton.bettertrims.client.networking.ClientNetworking;
+import com.bawnorton.bettertrims.effect.attribute.TrimEntityAttributeApplicator;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmLinkScreen;
@@ -52,6 +54,10 @@ public final class BetterTrimsClient {
             }
             return TypedActionResult.pass(handStack);
         });
+
+        //? if <1.21 {
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> TrimEntityAttributeApplicator.registryManager = handler.getRegistryManager());
+        //?}
     }
 
     public static Text twoDpFormatter(float value) {

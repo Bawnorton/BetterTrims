@@ -28,7 +28,7 @@ StonecutterSwapper(stonecutter)
     .apply(mcVersion.toString())
 
 repositories {
-    mavenLocal()
+//    mavenLocal()
     mavenCentral()
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.bawnorton.com/releases/")

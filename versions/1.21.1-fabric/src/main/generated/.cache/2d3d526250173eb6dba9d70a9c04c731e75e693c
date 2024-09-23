@@ -1,4 +1,4 @@
-// 1.21.1	2024-09-21T09:34:39.619082	BetterTrims/Tags for minecraft:item
+// 1.21.1	2024-09-22T18:25:56.168146	BetterTrims/Tags for minecraft:item
 68c33d7c2aa4010f0c167c55715648b67fc2fe9f data/bettertrims/tags/item/trim_materials/leather.json
 5022adad8e582b5a44eb427f8f3517178c29fa74 data/bettertrims/tags/item/trim_materials/coal.json
 7c84f6aad1e03941b0167daf5d2ce9d5072ff591 data/bettertrims/tags/item/trim_materials/copper.json
@@ -6,11 +6,11 @@
 3c136ad71b9cc1a962b06ab779e09369ea8e25a9 data/bettertrims/tags/item/trim_materials/echo_shard.json
 c672b8a811ac141859195f38804a5f17e05bf2fe data/bettertrims/tags/item/trim_materials/amethyst.json
 f49728bf595bea984366429ac92f573b5e218e36 data/bettertrims/tags/item/trim_materials/lapis.json
-2768b0d3ac944ff50b0932d71437296236a18fc1 data/bettertrims/tags/item/trim_materials/redstone.json
 24e174c21c07ff8f8087a9d8be081a6d28547d93 data/bettertrims/tags/item/trim_materials/quartz.json
+2768b0d3ac944ff50b0932d71437296236a18fc1 data/bettertrims/tags/item/trim_materials/redstone.json
 b4cc0642cc95aece33ec9cce364d245dd186c647 data/bettertrims/tags/item/trim_materials/chorus_fruit.json
-582d4d57943300bddf4bfb9fbb8288c7b4e9bfa1 data/bettertrims/tags/item/trim_materials/nether_brick.json
 e11ed0b6a7871924f38af8fc5dd6c9cb70d4e018 data/bettertrims/tags/item/trim_materials/fire_charge.json
+582d4d57943300bddf4bfb9fbb8288c7b4e9bfa1 data/bettertrims/tags/item/trim_materials/nether_brick.json
 310c2e953a3a8eafcb4138addcbb41f3fc707583 data/bettertrims/tags/item/trim_materials/slime.json
 caa12dd48836412e30130754183a3700e3e0439a data/bettertrims/tags/item/trim_materials/diamond.json
 a1643e1233196112e39c775c3243c6cd2149f3e7 data/bettertrims/tags/item/trim_materials/netherite.json
