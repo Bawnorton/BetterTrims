@@ -1,3 +1,7 @@
+# 3.1.2
+
+- Fix step height defaulting to too high of a value
+
 # 3.1.1
 
 - Upgrade Configurable to 1.3.0
