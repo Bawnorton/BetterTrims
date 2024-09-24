@@ -21,44 +21,44 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 //? if >=1.21 {
-/*import net.minecraft.advancement.AdvancementEntry;
-*///?} else {
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-//?}
+import net.minecraft.advancement.AdvancementEntry;
+//?} else {
+/*import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+*///?}
 
 public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementProvider {
     //? if >=1.21 {
-    /*public BetterTrimsTabAdvancementProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
+    public BetterTrimsTabAdvancementProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
         super(output, lookup);
     }
-    *///?} else {
-    public BetterTrimsTabAdvancementProvider(FabricDataOutput output) {
+    //?} else {
+    /*public BetterTrimsTabAdvancementProvider(FabricDataOutput output) {
         super(output);
     }
-    //?}
+    *///?}
 
     //? if >=1.21 {
-    /*@Override
-    public void generateAdvancement(RegistryWrapper.WrapperLookup lookup, Consumer<AdvancementEntry> exporter) {
-    *///?} else {
     @Override
+    public void generateAdvancement(RegistryWrapper.WrapperLookup lookup, Consumer<AdvancementEntry> exporter) {
+    //?} else {
+    /*@Override
     public void generateAdvancement(Consumer<Advancement> exporter) {
-    //?}
+    *///?}
         //? if >=1.21 {
-        /*AdvancementEntry root;
-        *///?} else {
-        Advancement root;
-        //?}
+        AdvancementEntry root;
+        //?} else {
+        /*Advancement root;
+        *///?}
         root = Advancement.Builder.create()
                 .display(
                         Items.COAST_ARMOR_TRIM_SMITHING_TEMPLATE,
                         Text.translatable("advancements.bettertrims.root.title"),
                         Text.translatable("advancements.bettertrims.root.description"),
                         //? if >=1.21 {
-                        /*Identifier.ofVanilla("textures/gui/advancements/backgrounds/adventure.png"),
-                        *///?} else {
-                        new Identifier("textures/gui/advancements/backgrounds/adventure.png"),
-                        //?}
+                        Identifier.ofVanilla("textures/gui/advancements/backgrounds/adventure.png"),
+                        //?} else {
+                        /*new Identifier("textures/gui/advancements/backgrounds/adventure.png"),
+                        *///?}
                         AdvancementFrame.TASK,
                         true,
                         true,
@@ -67,7 +67,7 @@ public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementPr
                 .criterion("inventory_changed", InventoryChangedCriterion.Conditions.items(ItemPredicate.Builder.create()
                         .tag(ItemTags.TRIM_TEMPLATES)
                         //? if <1.21
-                        .build()
+                        /*.build()*/
                 ))
                 .rewards(AdvancementRewards.Builder.loot(TrimLootTables.GUIDE_BOOK))
                 .build(exporter, BetterTrims.sid("root"));
@@ -186,7 +186,7 @@ public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementPr
     }
 
     //? if >=1.21 {
-    /*private AdvancementEntry createChallengeEntry(AdvancementEntry parent, Item displayItem, String name, AdvancementCriterion<?> criterion, Consumer<AdvancementEntry> exporter) {
+    private AdvancementEntry createChallengeEntry(AdvancementEntry parent, Item displayItem, String name, AdvancementCriterion<?> criterion, Consumer<AdvancementEntry> exporter) {
         return createEntry(parent, displayItem, name, AdvancementFrame.CHALLENGE, true, true, false, 100, criterion, exporter);
     }
 
@@ -211,8 +211,8 @@ public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementPr
                 .rewards(AdvancementRewards.Builder.experience(xp))
                 .build(exporter, BetterTrims.sid(name));
     }
-    *///?} else {
-    private Advancement createChallengeEntry(Advancement parent, Item displayItem, String name, AbstractCriterionConditions criterion, Consumer<Advancement> exporter) {
+    //?} else {
+    /*private Advancement createChallengeEntry(Advancement parent, Item displayItem, String name, AbstractCriterionConditions criterion, Consumer<Advancement> exporter) {
         return createEntry(parent, displayItem, name, AdvancementFrame.CHALLENGE, true, true, false, 100, criterion, exporter);
     }
 
@@ -237,5 +237,5 @@ public final class BetterTrimsTabAdvancementProvider extends FabricAdvancementPr
                 .rewards(AdvancementRewards.Builder.experience(xp))
                 .build(exporter, BetterTrims.sid(name));
     }
-    //?}
+    *///?}
 }

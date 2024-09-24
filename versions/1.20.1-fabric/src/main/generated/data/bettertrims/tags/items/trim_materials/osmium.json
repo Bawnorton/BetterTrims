@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:osmium_ingots",
+    "#c:osmium_blocks"
+  ]
+}

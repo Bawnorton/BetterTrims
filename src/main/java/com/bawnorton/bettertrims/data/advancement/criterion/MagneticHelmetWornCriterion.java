@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 //? if <1.21
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+/*import net.minecraft.advancement.criterion.AbstractCriterionConditions;*/
 
 public final class MagneticHelmetWornCriterion extends AttributeCriterion<MagneticHelmetWornCriterion.Conditions> {
     @Override
@@ -19,13 +19,13 @@ public final class MagneticHelmetWornCriterion extends AttributeCriterion<Magnet
     }
 
     //? if >=1.21 {
-    /*public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
         public static AdvancementCriterion<Conditions> create() {
             return TrimCriteria.MAGNETIC_HELMET_WORN.create(new Conditions(Optional.empty()));
         }
     }
-    *///?} else {
-    public static final class Conditions extends AbstractCriterionConditions {
+    //?} else {
+    /*public static final class Conditions extends AbstractCriterionConditions {
         public Conditions() {
             super(ID, LootContextPredicate.EMPTY);
         }
@@ -41,5 +41,5 @@ public final class MagneticHelmetWornCriterion extends AttributeCriterion<Magnet
     public Identifier getId() {
         return ID;
     }
-    //?}
+    *///?}
 }

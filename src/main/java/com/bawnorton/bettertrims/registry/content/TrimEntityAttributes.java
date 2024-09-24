@@ -5,7 +5,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 
 public final class TrimEntityAttributes {
     //? if >=1.21 {
-    /*public static RegistryEntry<EntityAttribute> BONUS_XP;
+    public static RegistryEntry<EntityAttribute> BONUS_XP;
     public static RegistryEntry<EntityAttribute> BOUNCY;
     public static RegistryEntry<EntityAttribute> BREWERS_DREAM;
     public static RegistryEntry<EntityAttribute> CLEAVING;
@@ -34,8 +34,8 @@ public final class TrimEntityAttributes {
     public static RegistryEntry<EntityAttribute> THORNS;
     public static RegistryEntry<EntityAttribute> TRADE_DISCOUNT;
     public static RegistryEntry<EntityAttribute> WALKING_FURNACE;
-    *///?} else {
-    public static EntityAttribute BONUS_XP;
+    //?} else {
+    /*public static EntityAttribute BONUS_XP;
     public static EntityAttribute BOUNCY;
     public static EntityAttribute BREWERS_DREAM;
     public static EntityAttribute CLEAVING;
@@ -68,5 +68,5 @@ public final class TrimEntityAttributes {
     public static EntityAttribute PLAYER_BLOCK_BREAK_SPEED;
     public static EntityAttribute GENERIC_STEP_HEIGHT;
     public static EntityAttribute GENERIC_OXYGEN_BONUS;
-    //?}
+    *///?}
 }

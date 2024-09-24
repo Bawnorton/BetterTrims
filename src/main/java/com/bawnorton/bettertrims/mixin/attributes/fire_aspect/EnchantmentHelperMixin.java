@@ -14,12 +14,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >=1.21
-/*import net.minecraft.enchantment.EnchantmentLevelBasedValue;*/
+import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
     //? if >=1.21 {
-    /*@Inject(
+    @Inject(
             method = "onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/item/ItemStack;)V",
             at = @At("HEAD")
     )
@@ -31,8 +31,8 @@ public abstract class EnchantmentHelperMixin {
             }
         }
     }
-    *///?} else {
-    @Inject(
+    //?} else {
+    /*@Inject(
             method = "onTargetDamaged",
             at = @At("HEAD")
     )
@@ -42,5 +42,5 @@ public abstract class EnchantmentHelperMixin {
             target.setOnFireFor(AttributeSettings.FireAspect.base + AttributeSettings.FireAspect.seconds * fireAspectLevel);
         }
     }
-    //?}
+    *///?}
 }

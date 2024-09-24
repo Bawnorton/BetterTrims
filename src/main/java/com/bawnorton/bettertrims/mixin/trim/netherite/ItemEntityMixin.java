@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 //? if >=1.21
-/*import net.minecraft.component.DataComponentTypes;*/
+import net.minecraft.component.DataComponentTypes;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin extends Entity {
@@ -32,7 +32,7 @@ public abstract class ItemEntityMixin extends Entity {
 
         ItemStack stack = getStack();
         World world = getWorld();
-        ArmorTrim trim = /*$ trim_getter >>*/ ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);
+        ArmorTrim trim = /*$ trim_getter >>*/ stack.get(DataComponentTypes.TRIM);
         if(trim == null) return false;
 
         return TrimEffects.NETHERITE.matchesMaterial(trim.getMaterial());

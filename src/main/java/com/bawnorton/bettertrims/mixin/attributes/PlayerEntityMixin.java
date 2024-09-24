@@ -26,17 +26,17 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
         original.add(TrimEntityAttributes.MINERS_RUSH);
         original.add(TrimEntityAttributes.TRADE_DISCOUNT);
         //? if <1.21
-        original.add(TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
+        /*original.add(TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED);*/
         return original;
     }
 
     //? if <1.21 {
-    @ModifyReturnValue(
+    /*@ModifyReturnValue(
             method = "getBlockBreakingSpeed",
             at = @At("RETURN")
     )
     private float applyBlockBreakSpeed(float original) {
         return original * (float) getAttributeValue(TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
     }
-    //?}
+    *///?}
 }

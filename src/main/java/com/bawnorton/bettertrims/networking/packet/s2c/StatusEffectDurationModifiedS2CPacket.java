@@ -4,7 +4,7 @@ import com.bawnorton.bettertrims.BetterTrims;
 import net.minecraft.entity.effect.StatusEffect;
 
 //? if <1.21 {
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+/*import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.PacketByteBuf;
 
@@ -28,9 +28,9 @@ public record StatusEffectDurationModifiedS2CPacket(StatusEffect effect, int mod
         return TYPE;
     }
 }
-//?} else {
+*///?} else {
 
-/*import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -52,4 +52,4 @@ public record StatusEffectDurationModifiedS2CPacket(RegistryEntry<StatusEffect> 
         return PACKET_ID;
     }
 }
-*///?}
+//?}

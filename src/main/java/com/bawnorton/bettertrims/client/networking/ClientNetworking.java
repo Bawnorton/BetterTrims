@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 //? if <1.21 {
-public final class ClientNetworking {
+/*public final class ClientNetworking {
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(StatusEffectDurationModifiedS2CPacket.TYPE, ClientNetworking::handleStatusEffectDurationModified);
         ClientPlayNetworking.registerGlobalReceiver(EchoTriggeredS2CPacket.TYPE, ClientNetworking::handleEchoTriggered);
@@ -62,8 +62,8 @@ public final class ClientNetworking {
         }
     }
 }
-//?} else {
-/*import net.minecraft.network.PacketByteBuf;
+*///?} else {
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.network.RegistryByteBuf;
@@ -111,4 +111,4 @@ public final class ClientNetworking {
         }
     }
 }
-*///?}
+//?}

@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 //? if >=1.21 {
-/*import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentType;
 import net.minecraft.component.DataComponentTypes;
-*///?}
+//?}
 
 @Mixin(SmithingTrimRecipe.class)
 public abstract class SmithingTrimRecipeMixin {
     //? if >=1.21 {
-    /*@SuppressWarnings("MixinExtrasOperationParameters")
+    @SuppressWarnings("MixinExtrasOperationParameters")
     @WrapOperation(
             method = "craft(Lnet/minecraft/recipe/input/SmithingRecipeInput;Lnet/minecraft/registry/RegistryWrapper$WrapperLookup;)Lnet/minecraft/item/ItemStack;",
             at = @At(
@@ -33,8 +33,8 @@ public abstract class SmithingTrimRecipeMixin {
         }
         return result;
     }
-    *///?} else {
-    @WrapOperation(
+    //?} else {
+    /*@WrapOperation(
             method = "craft",
             at = @At(
                     value = "INVOKE",
@@ -48,5 +48,5 @@ public abstract class SmithingTrimRecipeMixin {
         }
         return result;
     }
-    //?}
+    *///?}
 }

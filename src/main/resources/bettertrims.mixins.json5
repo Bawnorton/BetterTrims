@@ -4,12 +4,12 @@
   "minVersion": "0.8",
   "mixins": [
     //? if <1.21 {
-    "accessor.ItemAccessor",
-    //?} else {
-    /*"accessor.AttributeModifiersComponentAccessor",
+    /*"accessor.ItemAccessor",
+    *///?} else {
+    "accessor.AttributeModifiersComponentAccessor",
     "registry.DataComponentTypesMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
-    *///?}
+    //?}
     "accessor.PlayerEntityAccessor",
     "accessor.StatusEffectAccessor",
     "accessor.StatusEffectInstanceAccessor",

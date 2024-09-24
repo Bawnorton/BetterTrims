@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //? if >=1.21
-/*import net.minecraft.component.DataComponentTypes;*/
+import net.minecraft.component.DataComponentTypes;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
@@ -39,7 +39,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     @Shadow public abstract Iterable<ItemStack> getArmorItems();
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @Unique
     private boolean bettertrims$avoidedDamage;
@@ -84,9 +84,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         original.add(TrimEntityAttributes.THORNS);
         original.add(TrimEntityAttributes.WALKING_FURNACE);
         //? if <1.21 {
-        original.add(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
+        /*original.add(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
         original.add(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
-        //?}
+        *///?}
         return original;
     }
  
@@ -147,7 +147,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         List<RegistryEntry<ArmorTrimMaterial>> wornMaterials = new ArrayList<>();
         World world = getWorld();
         getArmorItems().forEach(stack -> {
-            ArmorTrim trim = /*$ trim_getter >>*/ ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);
+            ArmorTrim trim = /*$ trim_getter >>*/ stack.get(DataComponentTypes.TRIM);
             if(trim == null) return;
 
             wornMaterials.add(trim.getMaterial());
@@ -156,7 +156,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //? if <1.21 {
-    @ModifyExpressionValue(
+    /*@ModifyExpressionValue(
             method = "getStepHeight",
             at = @At(
                     value = "INVOKE",
@@ -177,5 +177,5 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     private int applyOxygenBonus(int original) {
         return original + (int) getAttributeValue(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
     }
-    //?}
+    *///?}
 }

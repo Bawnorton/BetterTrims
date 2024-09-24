@@ -3,7 +3,7 @@ package com.bawnorton.bettertrims.networking.packet.c2s;
 import com.bawnorton.bettertrims.BetterTrims;
 
 //? if <1.21 {
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+/*import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.PacketByteBuf;
 
@@ -27,8 +27,8 @@ public record MagnetToggleC2SPacket(boolean enabled) implements FabricPacket {
         return TYPE;
     }
 }
-//?} else {
-/*import io.netty.buffer.ByteBuf;
+*///?} else {
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
@@ -42,4 +42,4 @@ public record MagnetToggleC2SPacket(boolean enabled) implements CustomPayload {
         return PACKET_ID;
     }
 }
-*///?}
+//?}

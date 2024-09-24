@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //? if >=1.21
-/*import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;*/
+import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 
 @Mixin(EnchantmentScreenHandler.class)
 public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
@@ -60,14 +60,14 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
         this.context.run((world, pos) -> {
             ItemStack enchanting = inventory.getStack(0);
             //? if >=1.21 {
-            /*int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
-            *///?} else {
-            int usedBlessings = 0;
+            int usedBlessings = enchanting.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
+            //?} else {
+            /*int usedBlessings = 0;
             NbtCompound nbt = enchanting.getNbt();
             if(nbt != null) {
                 usedBlessings = nbt.getInt("bettertrims$used_blessings");
             }
-            //?}
+            *///?}
             usedBlessings++;
             if(usedBlessings >= 4 && player instanceof ServerPlayerEntity serverPlayer) {
                 TrimCriteria.ENCHANTERS_FAVOUR_MAX_REROLLS.trigger(serverPlayer);
@@ -78,14 +78,14 @@ public abstract class EnchantmentScreenHandlerMixin extends ScreenHandler {
             }
 
             //? if >=1.21 {
-            /*enchanting.set(TrimComponentTypes.USED_BLESSINGS, usedBlessings);
-            *///?} else {
-            if(nbt == null) {
+            enchanting.set(TrimComponentTypes.USED_BLESSINGS, usedBlessings);
+            //?} else {
+            /*if(nbt == null) {
                 nbt = new NbtCompound();
             }
             nbt.putInt("bettertrims$used_blessings", usedBlessings);
             enchanting.setNbt(nbt);
-            //?}
+            *///?}
             inventory.setStack(0, enchanting);
             ((PlayerEntityAccessor) player).setEnchantmentTableSeed(player.getRandom().nextInt());
             seed.set(player.getEnchantmentTableSeed());
