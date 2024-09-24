@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:bronze_ingots",
+    "#c:bronze_blocks"
+  ]
+}

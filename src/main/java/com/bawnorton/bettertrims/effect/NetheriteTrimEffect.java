@@ -30,7 +30,7 @@ public final class NetheriteTrimEffect extends TrimEffect {
     }
 
     @Override
-    protected boolean getEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 }

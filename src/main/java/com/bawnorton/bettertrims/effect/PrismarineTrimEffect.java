@@ -27,14 +27,14 @@ public final class PrismarineTrimEffect extends TrimEffect {
         adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.SWIM_SPEED, swimSpeed));
         adder.accept(TrimAttribute.leveled(TrimEntityAttributes.THORNS));
         //? if >=1.21 {
-        /*adder.accept(TrimAttribute.leveled(EntityAttributes.GENERIC_OXYGEN_BONUS));
-        *///?} else {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.GENERIC_OXYGEN_BONUS));
-        //?}
+        adder.accept(TrimAttribute.leveled(EntityAttributes.GENERIC_OXYGEN_BONUS));
+        //?} else {
+        /*adder.accept(TrimAttribute.leveled(TrimEntityAttributes.GENERIC_OXYGEN_BONUS));
+        *///?}
     }
 
     @Override
-    protected boolean getEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 }

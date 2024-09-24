@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#c:prometheum_ingots",
+    "#c:prometheum_blocks"
+  ]
+}

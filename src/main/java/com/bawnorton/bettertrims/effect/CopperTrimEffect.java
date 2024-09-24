@@ -42,7 +42,7 @@ public final class CopperTrimEffect extends TrimEffect {
     }
 
     @Override
-    protected boolean getEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 

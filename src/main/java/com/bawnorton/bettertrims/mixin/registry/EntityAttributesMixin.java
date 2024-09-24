@@ -34,10 +34,10 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.GLOWING = bettertrims$registerTrackedLeveledAttribute("glowing");
         TrimEntityAttributes.HELLS_BLESSING = bettertrims$registerLeveledAttribute("hells_blessing");
         //? if >=1.21 {
-        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$registerAttribute("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
-        *///?} else {
-        TrimEntityAttributes.HYDROPHOBIC = bettertrims$registerAttribute("hydrophobic", 0, 0, 1, false);
-        //?}
+        TrimEntityAttributes.HYDROPHOBIC = bettertrims$registerAttribute("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
+        //?} else {
+        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$registerAttribute("hydrophobic", 0, 0, 1, false);
+        *///?}
         TrimEntityAttributes.ITEM_MAGNET = bettertrims$registerLeveledAttribute("item_magnet");
         TrimEntityAttributes.LIGHT_FOOTED = bettertrims$registerLeveledAttribute("light_footed");
         TrimEntityAttributes.MINERS_RUSH = bettertrims$registerLeveledAttribute("miners_rush");
@@ -50,18 +50,19 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.SWIM_SPEED = bettertrims$registerTrackedPercentage("swim_speed");
         TrimEntityAttributes.THORNS = bettertrims$registerLeveledAttribute("thorns");
         TrimEntityAttributes.TRADE_DISCOUNT = bettertrims$registerPercentage("trade_discount");
+        TrimEntityAttributes.UNBREAKING = bettertrims$registerLeveledAttribute("unbreaking");
         TrimEntityAttributes.WALKING_FURNACE = bettertrims$registerLeveledAttribute("walking_furnace");
         //? if <1.21 {
-        TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$registerAttribute("player_block_break_speed", 1, 0, 1024, true);
+        /*TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$registerAttribute("player_block_break_speed", 1, 0, 1024, true);
         TrimEntityAttributes.GENERIC_STEP_HEIGHT = bettertrims$registerAttribute("generic_step_height", 0.0, 0.0, 10.0, true);
         TrimEntityAttributes.GENERIC_OXYGEN_BONUS = bettertrims$registerAttribute("generic_oxygen_bonus", 0.0, 0.0, 1024.0, true);
-        //?}
+        *///?}
 
         TrimEffects.init();
     }
 
     //? if >=1.21 {
-    /*@Unique
+    @Unique
     private static RegistryEntry<EntityAttribute> bettertrims$registerLeveledAttribute(String id) {
         return bettertrims$registerAttribute(id, 0, 0, 4, false);
     }
@@ -104,8 +105,8 @@ public abstract class EntityAttributesMixin {
                 ).setTracked(tracked).setCategory(category)
         );
     }
-    *///?} else {
-    @Unique
+    //?} else {
+    /*@Unique
     private static EntityAttribute bettertrims$registerLeveledAttribute(String id) {
         return bettertrims$registerAttribute(id, 0, 0, 4, false);
     }
@@ -143,7 +144,7 @@ public abstract class EntityAttributesMixin {
                 ).setTracked(tracked)
         );
     }
-    //?}
+    *///?}
 
     @ModifyArg(
             method = "<clinit>",

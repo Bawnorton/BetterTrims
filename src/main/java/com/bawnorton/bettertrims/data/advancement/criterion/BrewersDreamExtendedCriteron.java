@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.Optional;
 
 //? if <1.21
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+/*import net.minecraft.advancement.criterion.AbstractCriterionConditions;*/
 
 public final class BrewersDreamExtendedCriteron extends AttributeCriterion<BrewersDreamExtendedCriteron.Conditions> {
     @Override
@@ -19,13 +19,13 @@ public final class BrewersDreamExtendedCriteron extends AttributeCriterion<Brewe
     }
 
     //? if >=1.21 {
-    /*public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
+    public record Conditions(Optional<LootContextPredicate> player) implements AbstractCriterion.Conditions {
         public static AdvancementCriterion<Conditions> create() {
             return TrimCriteria.BREWERS_DREAM_EXTENDED.create(new Conditions(Optional.empty()));
         }
     }
-    *///?} else {
-    public static final class Conditions extends AbstractCriterionConditions {
+    //?} else {
+    /*public static final class Conditions extends AbstractCriterionConditions {
         public Conditions() {
             super(ID, LootContextPredicate.EMPTY);
         }
@@ -41,5 +41,5 @@ public final class BrewersDreamExtendedCriteron extends AttributeCriterion<Brewe
     public Identifier getId() {
         return ID;
     }
-    //?}
+    *///?}
 }

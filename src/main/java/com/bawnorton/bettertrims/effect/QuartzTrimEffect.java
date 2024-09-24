@@ -27,7 +27,7 @@ public final class QuartzTrimEffect extends TrimEffect {
     }
 
     @Override
-    protected boolean getEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 }

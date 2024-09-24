@@ -18,10 +18,10 @@ public abstract class ApplyBonusLootFunctionMixin {
             at = @At(
                     value = "INVOKE",
                     //? if >=1.21 {
-                    /*target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/item/ItemStack;)I"
-                    *///?} else {
-                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I"
-                    //?}
+                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/item/ItemStack;)I"
+                    //?} else {
+                    /*target = "Lnet/minecraft/enchantment/EnchantmentHelper;getLevel(Lnet/minecraft/enchantment/Enchantment;Lnet/minecraft/item/ItemStack;)I"
+                    *///?}
             )
     )
     private int applyFortune(int original, ItemStack stack, LootContext context) {

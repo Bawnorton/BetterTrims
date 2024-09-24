@@ -35,6 +35,34 @@ public final class TrimMaterialTags {
     public static final TagKey<Item> SLIME = register("slime");
     public static final TagKey<Item> ENCHANTED_GOLDEN_APPLE = register("enchanted_golden_apple");
 
+    public static final TagKey<Item> ADAMANTITE = register("adamantite");
+    public static final TagKey<Item> AQUARIUM = register("aquarium");
+    public static final TagKey<Item> BANGLUM = register("banglum");
+    public static final TagKey<Item> BRONZE = register("bronze");
+    public static final TagKey<Item> CARMOT = register("carmot");
+    public static final TagKey<Item> CELESTIUM = register("celestium");
+    public static final TagKey<Item> DURASTEEL = register("durasteel");
+    public static final TagKey<Item> HALLOWED = register("hallowed");
+    public static final TagKey<Item> KYBER = register("kyber");
+    public static final TagKey<Item> MANGANESE = register("manganese");
+    public static final TagKey<Item> METALLURGIUM = register("metallurgium");
+    public static final TagKey<Item> MIDAS_GOLD = register("midas_gold");
+    public static final TagKey<Item> MYTHRIL = register("mythril");
+    public static final TagKey<Item> ORICHALCUM = register("orichalcum");
+    public static final TagKey<Item> OSMIUM = register("osmium");
+    public static final TagKey<Item> PALLADIUM = register("palladium");
+    public static final TagKey<Item> PLATINUM = register("platinum");
+    public static final TagKey<Item> PROMETHEUM = register("prometheum");
+    public static final TagKey<Item> QUADRILLUM = register("quadrillum");
+    public static final TagKey<Item> RUNITE = register("runite");
+    public static final TagKey<Item> SILVER = register("silver");
+    public static final TagKey<Item> STARRITE = register("starrite");
+    public static final TagKey<Item> STAR_PLATINUM = register("star_platinum");
+    public static final TagKey<Item> STEEL = register("steel");
+    public static final TagKey<Item> STORMYX = register("stormyx");
+    public static final TagKey<Item> TIN = register("tin");
+    public static final TagKey<Item> UNOBTAINIUM = register("unobtainium");
+
     private static TagKey<Item> register(String material) {
         return TagKey.of(RegistryKeys.ITEM, BetterTrims.id("trim_materials/%s".formatted(material)));
     }

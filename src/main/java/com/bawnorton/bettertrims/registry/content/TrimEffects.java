@@ -34,12 +34,36 @@ public final class TrimEffects {
     public static final RabbitTrimEffect RABBIT = register("rabbit", TrimMaterialTags.RABBIT, RabbitTrimEffect::new);
     public static final SlimeTrimEffect SLIME = register("slime", TrimMaterialTags.SLIME, SlimeTrimEffect::new);
 
+    public static final AdamantiteTrimEffect ADAMANTITE = register("adamantite", TrimMaterialTags.ADAMANTITE, AdamantiteTrimEffect::new);
+    public static final AquariumTrimEffect AQUARIUM = register("aquarium", TrimMaterialTags.AQUARIUM, AquariumTrimEffect::new);
+    public static final BanglumTrimEffect BANGLUM = register("banglum", TrimMaterialTags.BANGLUM, BanglumTrimEffect::new);
+    public static final BronzeTrimEffect BRONZE = register("bronze", TrimMaterialTags.BRONZE, BronzeTrimEffect::new);
+    public static final CarmotTrimEffect CARMOT = register("carmot", TrimMaterialTags.CARMOT, CarmotTrimEffect::new);
+    public static final CelestiumTrimEffect CELESTIUM = register("celestium", TrimMaterialTags.CELESTIUM, CelestiumTrimEffect::new);
+    public static final DurasteelTrimEffect DURASTEEL = register("durasteel", TrimMaterialTags.DURASTEEL, DurasteelTrimEffect::new);
+    public static final HallowedTrimEffect HALLOWED = register("hallowed", TrimMaterialTags.HALLOWED, HallowedTrimEffect::new);
+    public static final KyberTrimEffect KYBER = register("kyber", TrimMaterialTags.KYBER, KyberTrimEffect::new);
+    public static final ManganeseTrimEffect MANGANESE = register("manganese", TrimMaterialTags.MANGANESE, ManganeseTrimEffect::new);
+    public static final MetallurgiumTrimEffect METALLURGIUM = register("metallurgium", TrimMaterialTags.METALLURGIUM, MetallurgiumTrimEffect::new);
+    public static final MidasGoldTrimEffect MIDAS_GOLD = register("midas_gold", TrimMaterialTags.MIDAS_GOLD, MidasGoldTrimEffect::new);
+    public static final MythrilTrimEffect MYTHRIL = register("mythril", TrimMaterialTags.MYTHRIL, MythrilTrimEffect::new);
+    public static final OrichalcumTrimEffect ORICHALCUM = register("orichalcum", TrimMaterialTags.ORICHALCUM, OrichalcumTrimEffect::new);
+    public static final OsmiumTrimEffect OSMIUM = register("osmium", TrimMaterialTags.OSMIUM, OsmiumTrimEffect::new);
+    public static final PalladiumTrimEffect PALLADIUM = register("palladium", TrimMaterialTags.PALLADIUM, PalladiumTrimEffect::new);
+    public static final PlatinumTrimEffect PLATINUM = register("platinum", TrimMaterialTags.PLATINUM, PlatinumTrimEffect::new);
+    public static final PrometheumTrimEffect PROMETHEUM = register("prometheum", TrimMaterialTags.PROMETHEUM, PrometheumTrimEffect::new);
+    public static final QuadrillumTrimEffect QUADRILLUM = register("quadrillum", TrimMaterialTags.QUADRILLUM, QuadrillumTrimEffect::new);
+    public static final RuniteTrimEffect RUNITE = register("runite", TrimMaterialTags.RUNITE, RuniteTrimEffect::new);
+    public static final SilverTrimEffect SILVER = register("silver", TrimMaterialTags.SILVER, SilverTrimEffect::new);
+    public static final StarriteTrimEffect STARRITE = register("starrite", TrimMaterialTags.STARRITE, StarriteTrimEffect::new);
+    public static final StarPlatinumTrimEffect STAR_PLATINUM = register("star_platinum", TrimMaterialTags.STAR_PLATINUM, StarPlatinumTrimEffect::new);
+    public static final SteelTrimEffect STEEL = register("steel", TrimMaterialTags.STEEL, SteelTrimEffect::new);
+    public static final StormyxTrimEffect STORMYX = register("stormyx", TrimMaterialTags.STORMYX, StormyxTrimEffect::new);
+    public static final TinTrimEffect TIN = register("tin", TrimMaterialTags.TIN, TinTrimEffect::new);
+    public static final UnobtainiumTrimEffect UNOBTAINIUM = register("unobtainium", TrimMaterialTags.UNOBTAINIUM, UnobtainiumTrimEffect::new);
+
     private static <T extends TrimEffect> T register(String id, TagKey<Item> materials, TrimEffect.Factory<T> factory) {
-        return Registry.register(
-                TrimRegistries.TRIM_EFFECTS,
-                BetterTrims.id(id),
-                factory.create(materials)
-        );
+        return Registry.register(TrimRegistries.TRIM_EFFECTS, BetterTrims.id(id), factory.create(materials));
     }
 
     public static void init() {

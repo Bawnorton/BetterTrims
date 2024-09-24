@@ -19,7 +19,7 @@ import java.util.function.BiConsumer;
 
 public final class TrimsAdvancementLootProvider extends SimpleFabricLootTableProvider {
     //? if >=1.21 {
-    /*public TrimsAdvancementLootProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
+    public TrimsAdvancementLootProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> lookup) {
         super(output, lookup, LootContextTypes.ADVANCEMENT_REWARD);
     }
 
@@ -43,8 +43,8 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
         );
         //?}
     }
-    *///?} else {
-    public TrimsAdvancementLootProvider(FabricDataOutput output) {
+    //?} else {
+    /*public TrimsAdvancementLootProvider(FabricDataOutput output) {
         super(output, LootContextTypes.ADVANCEMENT_REWARD);
     }
 
@@ -65,5 +65,5 @@ public final class TrimsAdvancementLootProvider extends SimpleFabricLootTablePro
         );
         //?}
     }
-    //?}
+    *///?}
 }

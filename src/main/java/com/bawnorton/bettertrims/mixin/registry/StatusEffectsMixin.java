@@ -31,27 +31,27 @@ public abstract class StatusEffectsMixin {
                 StatusEffectAccessor.createStatusEffect(StatusEffectCategory.BENEFICIAL, 0xFF0000FF)
                         .addAttributeModifier(
                                 //? if >=1.21 {
-                                /*EntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
+                                EntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
                                 BetterTrims.id("effect.feel_the_rush"),
                                 AttributeSettings.MinersRush.bonusMineSpeed,
                                 EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
-                                *///?} else {
-                                TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
+                                //?} else {
+                                /*TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED,
                                 bettertrims$randomUuid(BetterTrims.sid("effect.feel_the_rush")),
                                 AttributeSettings.MinersRush.bonusMineSpeed,
                                 EntityAttributeModifier.Operation.MULTIPLY_TOTAL
-                                //?}
+                                *///?}
                         )
         );
     }
 
     //? if >=1.21 {
-    /*@Unique
+    @Unique
     private static RegistryEntry<StatusEffect> bettertrims$register(String id, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, BetterTrims.id(id), statusEffect);
     }
-    *///?} else {
-    @Unique
+    //?} else {
+    /*@Unique
     private static StatusEffect bettertrims$register(String id, StatusEffect statusEffect) {
         return Registry.register(Registries.STATUS_EFFECT, BetterTrims.id(id), statusEffect);
     }
@@ -62,5 +62,5 @@ public abstract class StatusEffectsMixin {
         UUID uuid = new UUID(random.nextLong(), random.nextLong());
         return uuid.toString();
     }
-    //?}
+    *///?}
 }

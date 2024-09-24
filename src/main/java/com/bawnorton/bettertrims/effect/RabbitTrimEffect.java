@@ -24,7 +24,7 @@ public final class RabbitTrimEffect extends TrimEffect {
     }
 
     @Override
-    protected boolean getEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 }
