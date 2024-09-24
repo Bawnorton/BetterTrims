@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.effect;
 
+import com.bawnorton.bettertrims.client.compat.yacl.ItemImageRenderer;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.configurable.Configurable;
@@ -42,24 +43,6 @@ public final class EnchantedGoldenAppleTrimEffect extends TrimEffect {
     }
 
     public static ImageRenderer getImage() {
-        return new ImageRenderer() {
-            @Override
-            public int render(DrawContext graphics, int x, int y, int renderWidth, float tickDelta) {
-                float ratio = renderWidth / 16f;
-                int targetHeight = (int) (16f * ratio);
-
-                graphics.getMatrices().push();
-                graphics.getMatrices().translate(x, y, 0);
-                graphics.getMatrices().scale(ratio, ratio, 1);
-                graphics.drawItem(Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack(), 0, 0);
-                graphics.getMatrices().pop();
-
-                return targetHeight;
-            }
-
-            @Override
-            public void close() {
-            }
-        };
+        return new ItemImageRenderer(Items.ENCHANTED_GOLDEN_APPLE.getDefaultStack());
     }
 }

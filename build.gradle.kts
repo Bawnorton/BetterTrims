@@ -148,6 +148,7 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
 
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$mcVersion")
+        modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 
 //        modRuntimeOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 //        modRuntimeOnly("maven.modrinth:alloy-forgery:${property("alloy_forgery")}")

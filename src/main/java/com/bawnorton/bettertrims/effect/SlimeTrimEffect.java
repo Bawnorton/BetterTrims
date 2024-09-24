@@ -32,13 +32,7 @@ public final class SlimeTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        if(bouncyBoots) {
-            //? if >=1.21 {
-            adder.accept(TrimAttribute.leveled(TrimEntityAttributes.BOUNCY).forSlot(AttributeModifierSlot.FEET));
-            //?} else {
-            /*adder.accept(TrimAttribute.leveled(TrimEntityAttributes.BOUNCY).forSlot(EquipmentSlot.FEET));
-            *///?}
-        }
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.BOUNCY).forSlot(EquipmentSlot.FEET));
         adder.accept(TrimAttribute.adding(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, -knockbackVulnerability));
         adder.accept(TrimAttribute.adding(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, attackKnockback));
     }

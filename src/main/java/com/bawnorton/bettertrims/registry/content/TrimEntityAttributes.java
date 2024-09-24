@@ -33,6 +33,7 @@ public final class TrimEntityAttributes {
     public static RegistryEntry<EntityAttribute> SWIM_SPEED;
     public static RegistryEntry<EntityAttribute> THORNS;
     public static RegistryEntry<EntityAttribute> TRADE_DISCOUNT;
+    public static RegistryEntry<EntityAttribute> UNBREAKING;
     public static RegistryEntry<EntityAttribute> WALKING_FURNACE;
     //?} else {
     /*public static EntityAttribute BONUS_XP;
@@ -63,6 +64,7 @@ public final class TrimEntityAttributes {
     public static EntityAttribute SWIM_SPEED;
     public static EntityAttribute THORNS;
     public static EntityAttribute TRADE_DISCOUNT;
+    public static EntityAttribute UNBREAKING;
     public static EntityAttribute WALKING_FURNACE;
 
     public static EntityAttribute PLAYER_BLOCK_BREAK_SPEED;

@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.effect.attribute;
 
 import com.google.common.base.Predicates;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.registry.Registries;
@@ -26,12 +27,16 @@ public record TrimAttribute(RegistryEntry<EntityAttribute> entry, double value, 
         return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE, Predicates.alwaysTrue());
     }
 
+    public static TrimAttribute multiplyTotal(RegistryEntry<EntityAttribute> entry, double value) {
+        return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, Predicates.alwaysTrue());
+    }
+
     public Identifier getSlotId(AttributeModifierSlot slot) {
         return Identifier.of("%s_trimmed_%s".formatted(entry.getIdAsString(), slot.asString()));
     }
 
-    public TrimAttribute forSlot(AttributeModifierSlot slot) {
-        return new TrimAttribute(entry, value, operation, s -> s.equals(slot));
+    public TrimAttribute forSlot(EquipmentSlot slot) {
+        return new TrimAttribute(entry, value, operation, s -> s.equals(AttributeModifierSlot.forEquipmentSlot(slot)));
     }
 }
 //?} else {

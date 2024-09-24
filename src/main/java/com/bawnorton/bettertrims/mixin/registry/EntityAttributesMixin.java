@@ -50,6 +50,7 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.SWIM_SPEED = bettertrims$registerTrackedPercentage("swim_speed");
         TrimEntityAttributes.THORNS = bettertrims$registerLeveledAttribute("thorns");
         TrimEntityAttributes.TRADE_DISCOUNT = bettertrims$registerPercentage("trade_discount");
+        TrimEntityAttributes.UNBREAKING = bettertrims$registerLeveledAttribute("unbreaking");
         TrimEntityAttributes.WALKING_FURNACE = bettertrims$registerLeveledAttribute("walking_furnace");
         //? if <1.21 {
         /*TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$registerAttribute("player_block_break_speed", 1, 0, 1024, true);

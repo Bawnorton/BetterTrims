@@ -5,9 +5,11 @@
   "mixins": [
     //? if <1.21 {
     /*"accessor.ItemAccessor",
+    "attributes.unbreaking.UnbreakingEnchantementMixin",
     *///?} else {
     "accessor.AttributeModifiersComponentAccessor",
     "registry.DataComponentTypesMixin",
+    "attributes.unbreaking.EnchantementMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
     //?}
     "accessor.PlayerEntityAccessor",
