@@ -41,7 +41,10 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:$mcVersion")
 
-    modCompileOnly("maven.modrinth:sodium-dynamic-lights:${property("sodium_dynamic_lights")}")
+    val sodiumDynLightDep = modCompileOnly("maven.modrinth:sodium-dynamic-lights:${property("sodium_dynamic_lights")}")
+    if (loader.isNeoForge) {
+        sodiumDynLightDep.stripAw(project)
+    }
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}-$loader")
     annotationProcessor(modImplementation("com.bawnorton.configurable:configurable-$loader-yarn:${property("configurable")}+$mcVersion") { isTransitive = false })
 }

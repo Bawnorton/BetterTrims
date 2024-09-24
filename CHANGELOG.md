@@ -1,3 +1,7 @@
+# 3.1.3
+
+- Fix dyn light compat
+
 # 3.1.2
 
 - Fix step height defaulting to too high of a value
