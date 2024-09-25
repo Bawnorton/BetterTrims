@@ -3,3 +3,4 @@ run
 .idea
 build/
 .DS_Store
+.cache
