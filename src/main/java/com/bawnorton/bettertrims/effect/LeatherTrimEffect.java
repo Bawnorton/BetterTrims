@@ -21,7 +21,7 @@ public final class LeatherTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.LIGHT_FOOTED));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.LIGHT_FOOTED));
     }
 
     @Override

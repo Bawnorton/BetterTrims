@@ -5,11 +5,11 @@
   "mixins": [
     //? if <1.21 {
     /*"accessor.ItemAccessor",
-    "attributes.unbreaking.UnbreakingEnchantementMixin",
+    "attributes.unbreaking.UnbreakingEnchantmentMixin",
     *///?} else {
     "accessor.AttributeModifiersComponentAccessor",
     "registry.DataComponentTypesMixin",
-    "attributes.unbreaking.EnchantementMixin",
+    "attributes.unbreaking.EnchantmentMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
     //?}
     "accessor.PlayerEntityAccessor",
@@ -57,6 +57,7 @@
     "registry.EntityAttributesMixin",
     "registry.RegistriesMixin",
     "registry.RegistryKeysMixin",
+    "registry.SimpleRegistryMixin",
     "registry.SoundEventsMixin",
     "registry.StatusEffectsMixin",
     "trim.gold.PiglinBrainMixin",

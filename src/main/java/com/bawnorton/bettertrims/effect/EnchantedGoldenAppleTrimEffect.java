@@ -32,9 +32,9 @@ public final class EnchantedGoldenAppleTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.adding(EntityAttributes.GENERIC_MAX_HEALTH, maxHealth));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.RESISTANCE, resistance));
-        adder.accept(TrimAttribute.adding(TrimEntityAttributes.REGENERATION, regeneration));
+        adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_MAX_HEALTH, maxHealth));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.RESISTANCE, resistance));
+        adder.accept(TrimAttribute.adding(() -> TrimEntityAttributes.REGENERATION, regeneration));
     }
 
     @Override

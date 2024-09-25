@@ -25,8 +25,8 @@ public final class NetheriteTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.RESISTANCE, resistance));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.RESISTANCE, resistance));
     }
 
     @Override

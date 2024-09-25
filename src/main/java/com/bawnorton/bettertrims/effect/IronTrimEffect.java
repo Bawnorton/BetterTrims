@@ -28,7 +28,7 @@ public final class IronTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ITEM_MAGNET));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.ITEM_MAGNET));
     }
 
     @Override

@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
-@Configurable(value = "rabbit", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/rabbit_hide.png"), collapsed = true))
+//@Configurable(value = "rabbit", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/rabbit_hide.png"), collapsed = true))
 public final class RabbitTrimEffect extends TrimEffect {
-    @Configurable
+//    @Configurable
     public static boolean enabled = false;
 
     public RabbitTrimEffect(TagKey<Item> materials) {
@@ -20,7 +20,6 @@ public final class RabbitTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-
     }
 
     @Override

@@ -23,8 +23,8 @@ public final class EnderPearlTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.HYDROPHOBIC));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.PROJECTILE_DODGE_CHANCE, projectileDodegChance));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.HYDROPHOBIC));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.PROJECTILE_DODGE_CHANCE, projectileDodegChance));
     }
 
     @Override

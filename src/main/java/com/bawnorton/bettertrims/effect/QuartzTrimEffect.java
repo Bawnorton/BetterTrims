@@ -23,7 +23,7 @@ public final class QuartzTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.BONUS_XP, bonusXp));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.BONUS_XP, bonusXp));
     }
 
     @Override

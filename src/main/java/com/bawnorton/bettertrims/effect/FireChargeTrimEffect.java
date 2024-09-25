@@ -23,9 +23,9 @@ public final class FireChargeTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.FIRE_ASPECT));
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.FIREY_THORNS));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.FIRE_ASPECT));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.FIREY_THORNS));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
     }
 
     @Override

@@ -47,7 +47,7 @@ public final class EchoShardTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ECHOING));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.ECHOING));
     }
 
     @Override

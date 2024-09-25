@@ -1,27 +1,31 @@
+import org.gradle.configurationcache.extensions.capitalized
+
 plugins {
     id("dev.kikugie.stonecutter")
 }
 stonecutter active "1.21.1-fabric" /* [SC] DO NOT EDIT */
 
-stonecutter registerChiseled tasks.register("chiseledBuildAndCollect", stonecutter.chiseled) {
-    group = "project"
-    ofTask("buildAndCollect")
+fun chiseledTask(task : String, group : String) {
+    val name = "chiseled${task.capitalized()}"
+
+    stonecutter registerChiseled tasks.register(name, stonecutter.chiseled) {
+        versions = stonecutter.versions.filter { it.project.endsWith("neoforge") }
+        this.group = group
+        ofTask(task)
+        dependsOn("Pre${name.capitalized()}")
+    }
+
+    stonecutter registerChiseled tasks.register("Pre${name.capitalized()}", stonecutter.chiseled) {
+        versions = stonecutter.versions.filter { it.project.endsWith("fabric") }
+        this.group = group
+        ofTask(task)
+    }
 }
 
-stonecutter registerChiseled tasks.register("chiseledPublishMods", stonecutter.chiseled) {
-    group = "project"
-    ofTask("publishMods")
-}
-
-stonecutter registerChiseled tasks.register("chiseledPublishMavenLocal", stonecutter.chiseled) {
-    group = "publishing"
-    ofTask("publishMavenPublicationToMavenLocal")
-}
-
-stonecutter registerChiseled tasks.register("chiseledPublishMavenRemote", stonecutter.chiseled) {
-    group = "publishing"
-    ofTask("publishMavenPublicationToBawnortonRepository")
-}
+chiseledTask("buildAndCollect", "project")
+chiseledTask("publishMods", "publishing")
+chiseledTask("publishMavenPublicationToMavenLocal", "publishing")
+chiseledTask("publishMavenPublicationToBawnortonRepository", "publishing")
 
 stonecutter configureEach {
     val current = project.property("loom.platform")

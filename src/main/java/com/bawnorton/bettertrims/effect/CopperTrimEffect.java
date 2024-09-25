@@ -38,7 +38,7 @@ public final class CopperTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.ELECTRIFYING));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.ELECTRIFYING));
     }
 
     @Override

@@ -25,8 +25,8 @@ public final class NetherBrickTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.CLEAVING, cleavingChance));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.CLEAVING, cleavingChance));
     }
 
     @Override

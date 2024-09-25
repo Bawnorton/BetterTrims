@@ -21,8 +21,8 @@ public final class DiamondTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.MINERS_RUSH));
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.FORTUNE));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.MINERS_RUSH));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.FORTUNE));
     }
 
     @Override

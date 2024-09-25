@@ -1,22 +1,27 @@
 package com.bawnorton.bettertrims.effect;
 
+import com.bawnorton.bettertrims.client.compat.yacl.CyclingItemImageRenderer;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
-import net.minecraft.entity.EquipmentSlot;
+import dev.isxander.yacl3.gui.image.ImageRenderer;
+
+
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -66,7 +71,7 @@ public abstract class TrimEffect {
         entityAttributes.forEach(attribute -> {
             EntityAttributeModifier modifier = getAttributeModifier(attribute, slot);
             if (modifier != null) {
-                biConsumer.accept(attribute.entry(), modifier);
+                biConsumer.accept(attribute.entry().get(), modifier);
             }
         });
     }
@@ -103,6 +108,16 @@ public abstract class TrimEffect {
 
     public Identifier getId() {
         return TrimRegistries.TRIM_EFFECTS.getId(this);
+    }
+
+    public static CompletableFuture<Optional<ImageRenderer>> getImageFor(TagKey<Item> materials) {
+        return CompletableFuture.completedFuture(
+                Registries.ITEM.getEntryList(materials)
+                        .map(named -> named.stream()
+                                .map(itemEntry -> itemEntry.value().getDefaultStack())
+                                .toList())
+                        .map(CyclingItemImageRenderer::new)
+        );
     }
 
     public interface Factory<T extends TrimEffect> {

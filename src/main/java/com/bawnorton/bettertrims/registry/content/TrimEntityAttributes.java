@@ -1,17 +1,24 @@
 package com.bawnorton.bettertrims.registry.content;
 
+import com.bawnorton.bettertrims.registry.AliasedRegistryEntry;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.registry.entry.RegistryEntry;
 
 public final class TrimEntityAttributes {
     //? if >=1.21 {
+    public static RegistryEntry<EntityAttribute> ATTACK_DEFLECT_CHANCE;
+    public static RegistryEntry<EntityAttribute> BLAST_RESISTANCE;
+    public static RegistryEntry<EntityAttribute> BLAST_MINING;
     public static RegistryEntry<EntityAttribute> BONUS_XP;
     public static RegistryEntry<EntityAttribute> BOUNCY;
     public static RegistryEntry<EntityAttribute> BREWERS_DREAM;
+    public static AliasedRegistryEntry<EntityAttribute> CARMOT_SHIELD;
     public static RegistryEntry<EntityAttribute> CLEAVING;
+    public static RegistryEntry<EntityAttribute> DENSE;
     public static RegistryEntry<EntityAttribute> DODGE_CHANCE;
     public static RegistryEntry<EntityAttribute> ECHOING;
     public static RegistryEntry<EntityAttribute> ELECTRIFYING;
+    public static AliasedRegistryEntry<EntityAttribute> ELYTRA_ROCKET_SPEED;
     public static RegistryEntry<EntityAttribute> ENCHANTERS_FAVOUR;
     public static RegistryEntry<EntityAttribute> ENDS_BLESSING;
     public static RegistryEntry<EntityAttribute> FIREY_THORNS;
@@ -20,12 +27,22 @@ public final class TrimEntityAttributes {
     public static RegistryEntry<EntityAttribute> FORTUNE;
     public static RegistryEntry<EntityAttribute> GLOWING;
     public static RegistryEntry<EntityAttribute> HELLS_BLESSING;
+    public static RegistryEntry<EntityAttribute> HOLY;
     public static RegistryEntry<EntityAttribute> HYDROPHOBIC;
     public static RegistryEntry<EntityAttribute> ITEM_MAGNET;
+    public static AliasedRegistryEntry<EntityAttribute> LAVA_MOVEMENT_SPEED;
+    public static AliasedRegistryEntry<EntityAttribute> LAVA_VISIBILITY;
     public static RegistryEntry<EntityAttribute> LIGHT_FOOTED;
+    public static RegistryEntry<EntityAttribute> LOOTING;
+    public static AliasedRegistryEntry<EntityAttribute> MAGIC_PROTECTION;
+    public static RegistryEntry<EntityAttribute> MIDAS_TOUCH;
     public static RegistryEntry<EntityAttribute> MINERS_RUSH;
     public static RegistryEntry<EntityAttribute> MOONS_BLESSING;
+    public static RegistryEntry<EntityAttribute> OVERGROWN;
+    public static RegistryEntry<EntityAttribute> PROJECTILE_DAMAGE;
+    public static RegistryEntry<EntityAttribute> PROJECTILE_DEFLECT_CHANCE;
     public static RegistryEntry<EntityAttribute> PROJECTILE_DODGE_CHANCE;
+    public static RegistryEntry<EntityAttribute> PROJECTILE_SPEED;
     public static RegistryEntry<EntityAttribute> REGENERATION;
     public static RegistryEntry<EntityAttribute> RESISTANCE;
     public static RegistryEntry<EntityAttribute> SHARE_EFFECT_RADIUS;
@@ -35,6 +52,7 @@ public final class TrimEntityAttributes {
     public static RegistryEntry<EntityAttribute> TRADE_DISCOUNT;
     public static RegistryEntry<EntityAttribute> UNBREAKING;
     public static RegistryEntry<EntityAttribute> WALKING_FURNACE;
+    public static RegistryEntry<EntityAttribute> WARRIORS_OF_OLD;
     //?} else {
     /*public static EntityAttribute BONUS_XP;
     public static EntityAttribute BOUNCY;

@@ -24,7 +24,7 @@ public final class GlowstoneTrimEffect extends CelestialEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.GLOWING));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.GLOWING));
     }
 
     //? if >=1.21 {

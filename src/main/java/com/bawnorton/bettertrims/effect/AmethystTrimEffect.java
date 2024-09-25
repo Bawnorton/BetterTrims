@@ -21,7 +21,7 @@ public final class AmethystTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.BREWERS_DREAM));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.BREWERS_DREAM));
     }
 
     @Override

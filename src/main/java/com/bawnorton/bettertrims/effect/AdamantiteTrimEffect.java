@@ -1,9 +1,5 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.client.compat.Compat;
-import com.bawnorton.bettertrims.client.compat.mythicmetals.MythicMetalsCompat;
-import com.bawnorton.bettertrims.client.compat.yacl.CyclingItemImageRenderer;
-import com.bawnorton.bettertrims.client.compat.yacl.ItemImageRenderer;
 import com.bawnorton.bettertrims.data.tag.AdditionalItemTags;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
@@ -13,7 +9,6 @@ import com.bawnorton.configurable.OptionType;
 import com.bawnorton.configurable.Yacl;
 import dev.isxander.yacl3.gui.image.ImageRenderer;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -32,8 +27,8 @@ public final class AdamantiteTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.RESISTANCE, resistance));
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.UNBREAKING));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.RESISTANCE, resistance));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.UNBREAKING));
     }
 
     @Override
@@ -42,12 +37,6 @@ public final class AdamantiteTrimEffect extends TrimEffect {
     }
 
     public static CompletableFuture<Optional<ImageRenderer>> getImage() {
-        return CompletableFuture.completedFuture(
-                Registries.ITEM.getEntryList(AdditionalItemTags.ADAMANTITE_INGOTS)
-                        .map(named -> named.stream()
-                                .map(itemEntry -> itemEntry.value().getDefaultStack())
-                                .toList())
-                        .map(CyclingItemImageRenderer::new)
-        );
+        return getImageFor(AdditionalItemTags.ADAMANTITE_INGOTS);
     }
 }

@@ -23,7 +23,7 @@ public final class EmeraldTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.TRADE_DISCOUNT, tradeDiscount));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.TRADE_DISCOUNT, tradeDiscount));
     }
 
     @Override

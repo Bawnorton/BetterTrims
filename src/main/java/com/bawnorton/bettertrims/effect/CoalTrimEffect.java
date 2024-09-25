@@ -21,7 +21,7 @@ public final class CoalTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.WALKING_FURNACE));
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.WALKING_FURNACE));
     }
 
     @Override

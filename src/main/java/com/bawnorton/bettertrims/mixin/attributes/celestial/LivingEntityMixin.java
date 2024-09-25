@@ -67,11 +67,11 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         if(getWorld().isDay()) {
             return Optional.of(TrimEffects.GOLD);
         } else if (getWorld().isNight()) {
-            return Optional.empty();
+            return Optional.of(TrimEffects.SILVER);
         } else if (getWorld().getRegistryKey().equals(World.NETHER)) {
             return Optional.of(TrimEffects.GLOWSTONE);
         } else if (getWorld().getRegistryKey().equals(World.END)) {
-            return Optional.empty();
+            return Optional.of(TrimEffects.STARRITE);
         }
         return Optional.empty();
     }

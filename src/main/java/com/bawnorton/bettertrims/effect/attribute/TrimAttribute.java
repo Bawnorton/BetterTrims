@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.effect.attribute;
 
+import com.bawnorton.bettertrims.registry.AliasedRegistryEntry;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -9,30 +10,49 @@ import net.minecraft.util.Identifier;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-//? if >=1.21 {
+        //? if >=1.21 {
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.registry.entry.RegistryEntry;
 
-public record TrimAttribute(RegistryEntry<EntityAttribute> entry, double value, EntityAttributeModifier.Operation operation, Predicate<AttributeModifierSlot> slotPredicate) {
-    public static TrimAttribute adding(RegistryEntry<EntityAttribute> entry, double value) {
+public record TrimAttribute(Supplier<RegistryEntry<EntityAttribute>> entry, double value, EntityAttributeModifier.Operation operation, Predicate<AttributeModifierSlot> slotPredicate) {
+    public static TrimAttribute adding(Supplier<RegistryEntry<EntityAttribute>> entry, double value) {
         return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADD_VALUE, Predicates.alwaysTrue());
     }
 
-    public static TrimAttribute leveled(RegistryEntry<EntityAttribute> entry) {
+    public static TrimAttribute leveled(Supplier<RegistryEntry<EntityAttribute>> entry) {
         return new TrimAttribute(entry, 1, EntityAttributeModifier.Operation.ADD_VALUE, Predicates.alwaysTrue());
     }
 
-    public static TrimAttribute multiplyBase(RegistryEntry<EntityAttribute> entry, double value) {
+    public static TrimAttribute multiplyBase(Supplier<RegistryEntry<EntityAttribute>> entry, double value) {
         return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE, Predicates.alwaysTrue());
     }
 
-    public static TrimAttribute multiplyTotal(RegistryEntry<EntityAttribute> entry, double value) {
+    public static TrimAttribute multiplyTotal(Supplier<RegistryEntry<EntityAttribute>> entry, double value) {
         return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, Predicates.alwaysTrue());
     }
 
+    public static TrimAttribute addingAliased(Supplier<AliasedRegistryEntry<EntityAttribute>> entry, double value) {
+        return adding(() -> entry.get().getEntry(), value);
+    }
+
+    public static TrimAttribute leveledAliased(Supplier<AliasedRegistryEntry<EntityAttribute>> entry) {
+        return leveled(() -> entry.get().getEntry());
+    }
+
+    public static TrimAttribute multiplyBaseAliased(Supplier<AliasedRegistryEntry<EntityAttribute>> entry, double value) {
+        return multiplyBase(() -> entry.get().getEntry(), value);
+    }
+
+    public static TrimAttribute multiplyTotalAliased(Supplier<AliasedRegistryEntry<EntityAttribute>> entry, double value) {
+        return multiplyTotal(() -> entry.get().getEntry(), value);
+    }
+
     public Identifier getSlotId(AttributeModifierSlot slot) {
-        return Identifier.of("%s_trimmed_%s".formatted(entry.getIdAsString(), slot.asString()));
+        if(entry.get() == null) throw new IllegalStateException("Trim attribute is not defined for %s".formatted(entry));
+
+        return Identifier.of("%s_trimmed_%s".formatted(entry.get().getIdAsString(), slot.asString()));
     }
 
     public TrimAttribute forSlot(EquipmentSlot slot) {

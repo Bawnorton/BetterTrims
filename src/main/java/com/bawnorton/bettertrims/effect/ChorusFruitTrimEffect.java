@@ -23,7 +23,7 @@ public final class ChorusFruitTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.DODGE_CHANCE, dodgeChance));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.DODGE_CHANCE, dodgeChance));
     }
 
     @Override

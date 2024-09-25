@@ -14,7 +14,7 @@ public abstract class CelestialEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(getEntityAttribute()));
+        adder.accept(TrimAttribute.leveled(this::getEntityAttribute));
     }
 
     //? if >=1.21 {

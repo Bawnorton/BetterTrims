@@ -1,9 +1,5 @@
 package com.bawnorton.bettertrims.effect;
 
-import com.bawnorton.bettertrims.client.compat.Compat;
-import com.bawnorton.bettertrims.client.compat.mythicmetals.MythicMetalsCompat;
-import com.bawnorton.bettertrims.client.compat.yacl.CyclingItemImageRenderer;
-import com.bawnorton.bettertrims.client.compat.yacl.ItemImageRenderer;
 import com.bawnorton.bettertrims.data.tag.AdditionalItemTags;
 import com.bawnorton.bettertrims.effect.attribute.TrimAttribute;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
@@ -15,7 +11,6 @@ import dev.isxander.yacl3.gui.image.ImageRenderer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.TagKey;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -25,10 +20,10 @@ import java.util.function.Consumer;
 public final class AquariumTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "submerged_mining_speed", min = 0, max = 16)
-    public static double submergedMiningSpeed = 4;
-    @Configurable(value = "swim_speed", min = 0, max = 10)
-    public static double swimSpeed = 0.4;
+    @Configurable(value = "submerged_mining_speed", min = 0, max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    public static float submergedMiningSpeed = 4;
+    @Configurable(value = "swim_speed", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    public static float swimSpeed = 0.5f;
 
     public AquariumTrimEffect(TagKey<Item> materials) {
         super(materials);
@@ -36,8 +31,9 @@ public final class AquariumTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyTotal(EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed).forSlot(EquipmentSlot.HEAD));
-        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.SWIM_SPEED, swimSpeed));
+        adder.accept(TrimAttribute.multiplyTotal(() -> EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed)
+                .forSlot(EquipmentSlot.HEAD));
+        adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.SWIM_SPEED, swimSpeed));
     }
 
     @Override
@@ -46,12 +42,6 @@ public final class AquariumTrimEffect extends TrimEffect {
     }
 
     public static CompletableFuture<Optional<ImageRenderer>> getImage() {
-        return CompletableFuture.completedFuture(
-                Registries.ITEM.getEntryList(AdditionalItemTags.AQUARIUM_INGOTS)
-                        .map(named -> named.stream()
-                                .map(itemEntry -> itemEntry.value().getDefaultStack())
-                                .toList())
-                        .map(CyclingItemImageRenderer::new)
-        );
+        return getImageFor(AdditionalItemTags.ADAMANTITE_INGOTS);
     }
 }

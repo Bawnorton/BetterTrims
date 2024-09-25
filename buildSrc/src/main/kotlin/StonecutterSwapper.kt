@@ -13,9 +13,9 @@ class StonecutterSwapper(private val stonecutter: StonecutterBuild) {
         return this
     }
 
-    fun apply(version: String) {
+    fun apply(version: MinecraftVersionData) {
         for ((key, swap) in swaps) {
-            stonecutter.swap(key, if (swap.version > Version.parse(version)) swap.first() else swap.second())
+            stonecutter.swap(key, if (swap.version > Version.parse(version.toString())) swap.first() else swap.second())
         }
     }
 

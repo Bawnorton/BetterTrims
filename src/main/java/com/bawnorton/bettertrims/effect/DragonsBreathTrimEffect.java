@@ -23,7 +23,7 @@ public final class DragonsBreathTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.adding(TrimEntityAttributes.SHARE_EFFECT_RADIUS, shareEffectRadius));
+        adder.accept(TrimAttribute.adding(() -> TrimEntityAttributes.SHARE_EFFECT_RADIUS, shareEffectRadius));
     }
 
     @Override
