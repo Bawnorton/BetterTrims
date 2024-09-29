@@ -1,3 +1,12 @@
+# 3.2.1
+
+- Fix warriors of old causing server to hang
+- Fix warriors name
+
+# 3.2.0
+
+- Add compat for Mythic Metals materials
+
 # 3.1.3
 
 - Fix dyn light compat

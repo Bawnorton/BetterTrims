@@ -54,7 +54,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         boolean canSpawn;
         do {
             pos.set(getX() + random.nextBetween(-3, 3), getY() + random.nextBetween(-3, 3), getZ() + random.nextBetween(-3, 3));
-            while(getWorld().getBlockState(pos.down()).isAir() || getY() - 3 < pos.getY()) {
+            for(int i = 0; i < 4; i++) {
+                if (!getWorld().getBlockState(pos.down()).isAir()) {
+                    break;
+                }
                 pos.setY(pos.getY() - 1);
             }
             //? if >=1.21 {
