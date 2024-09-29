@@ -18,10 +18,10 @@ import java.util.function.Consumer;
 public final class RuniteTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "projectile_damage", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "projectile_damage", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float projectileDamage = 0.5f;
-    @Configurable(value = "projectile_speed", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
-    public static float projectileSpeed = 0.25f;
+    @Configurable(value = "projectile_speed", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    public static float projectileSpeed = 0.1f;
 
     public RuniteTrimEffect(TagKey<Item> materials) {
         super(materials);

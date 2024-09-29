@@ -19,11 +19,11 @@ import java.util.function.Consumer;
 public final class CelestiumTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "elytra_rocket_speed", min = 0, max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "elytra_rocket_speed", max = 5, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float elytraRocketSpeed = 0.1f;
-    @Configurable(value = "movement_speed", min = 0, max = 16)
+    @Configurable(value = "movement_speed", max = 16)
     public static float movementSpeed = 0.1f;
-    @Configurable(value = "attack_damage", min = 0, max = 16)
+    @Configurable(value = "attack_damage", max = 16)
     public static float attackDamage = 0.5f;
 
     public CelestiumTrimEffect(TagKey<Item> materials) {
@@ -32,7 +32,7 @@ public final class CelestiumTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.addingAliased(() -> TrimEntityAttributes.ELYTRA_ROCKET_SPEED, elytraRocketSpeed));
+        adder.accept(TrimAttribute.adding(TrimEntityAttributes.ELYTRA_ROCKET_SPEED::get, elytraRocketSpeed));
         adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_MOVEMENT_SPEED, movementSpeed));
         adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_ATTACK_DAMAGE, attackDamage));
     }

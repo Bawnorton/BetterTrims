@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 public final class PrismarineTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "swim_speed", min = 0, max = 10)
+    @Configurable(value = "swim_speed", max = 10)
     public static float swimSpeed = 0.5f;
 
     public PrismarineTrimEffect(TagKey<Item> materials) {
@@ -27,10 +27,10 @@ public final class PrismarineTrimEffect extends TrimEffect {
         adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.SWIM_SPEED, swimSpeed));
         adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.THORNS));
         //? if >=1.21 {
-        adder.accept(TrimAttribute.leveled(() -> EntityAttributes.GENERIC_OXYGEN_BONUS));
-        //?} else {
-        /*adder.accept(TrimAttribute.leveled(TrimEntityAttributes.GENERIC_OXYGEN_BONUS));
-        *///?}
+        /*adder.accept(TrimAttribute.leveled(() -> EntityAttributes.GENERIC_OXYGEN_BONUS));
+        *///?} else {
+        adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.GENERIC_OXYGEN_BONUS));
+        //?}
     }
 
     @Override

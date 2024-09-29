@@ -8,11 +8,9 @@ import com.bawnorton.configurable.Image;
 import com.bawnorton.configurable.OptionType;
 import com.bawnorton.configurable.Yacl;
 import dev.isxander.yacl3.gui.image.ImageRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.registry.tag.TagKey;
-import nourl.mythicmetals.registry.RegisterEntityAttributes;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -21,7 +19,7 @@ import java.util.function.Consumer;
 public final class StormyxTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "attack_damage", min = 0, max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "attack_damage", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float attackDamage = 0.5f;
 
     public StormyxTrimEffect(TagKey<Item> materials) {
@@ -30,7 +28,7 @@ public final class StormyxTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveledAliased(() -> TrimEntityAttributes.MAGIC_PROTECTION));
+        adder.accept(TrimAttribute.leveled(TrimEntityAttributes.MAGIC_PROTECTION::get));
         adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_ATTACK_DAMAGE, attackDamage));
     }
 

@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public final class BanglumTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "blast_resistance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "blast_resistance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float blastResistance = 0.12f;
 
     public BanglumTrimEffect(TagKey<Item> materials) {

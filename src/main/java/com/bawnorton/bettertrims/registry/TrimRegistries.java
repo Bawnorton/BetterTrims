@@ -6,8 +6,8 @@ import net.minecraft.registry.MutableRegistry;
 
 public final class TrimRegistries {
     //? if >=1.21 {
-    public static MutableRegistry<TrimEffect> TRIM_EFFECTS;
-    //?} else {
-    /*public static DefaultedRegistry<TrimEffect> TRIM_EFFECTS;
-    *///?}
+    /*public static MutableRegistry<TrimEffect> TRIM_EFFECTS;
+    *///?} else {
+    public static DefaultedRegistry<TrimEffect> TRIM_EFFECTS;
+    //?}
 }

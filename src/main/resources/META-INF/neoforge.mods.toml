@@ -19,9 +19,6 @@ config = "bettertrims.mixins.json"
 [[mixins]]
 config = "bettertrims-client.mixins.json"
 
-[[mixins]]
-config = "bettertrims-compat.mixins.json"
-
 [[dependencies.bettertrims]]
 modId = "minecraft"
 type = "required"

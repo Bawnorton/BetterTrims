@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @ModifyArg(
             method = "travel",

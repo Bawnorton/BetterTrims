@@ -4,7 +4,7 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
 
 //? if <1.21 {
-/*import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.PacketByteBuf;
 
@@ -28,8 +28,8 @@ public record EchoTriggeredS2CPacket(EchoShardTrimEffect.Echo echo) implements F
         return TYPE;
     }
 }
-*///?} else {
-import io.netty.buffer.ByteBuf;
+//?} else {
+/*import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.packet.CustomPayload;
 
@@ -42,4 +42,4 @@ public record EchoTriggeredS2CPacket(EchoShardTrimEffect.Echo echo) implements C
         return PACKET_ID;
     }
 }
-//?}
+*///?}

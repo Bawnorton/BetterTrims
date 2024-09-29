@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class EnderPearlTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "projectile_dodge_chance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "projectile_dodge_chance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float projectileDodegChance = 0.25f;
 
     public EnderPearlTrimEffect(TagKey<Item> materials) {

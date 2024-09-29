@@ -34,10 +34,10 @@ import java.util.function.Function;
 @Mixin(StatusEffectInstance.class)
 public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
     //? if >=1.21 {
-    @Shadow @Final private RegistryEntry<StatusEffect> type;
-    //?} else {
-    /*@Shadow @Final private StatusEffect type;
-    *///?}
+    /*@Shadow @Final private RegistryEntry<StatusEffect> type;
+    *///?} else {
+    @Shadow @Final private StatusEffect type;
+    //?}
 
     @Unique
     private static final ThreadLocal<LivingEntity> bettertrims$ENTITY_CAPTURE = new ThreadLocal<>();
@@ -77,17 +77,17 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
             ((ModifiedTimeHolder) instance).bettertrims$incrementModifiedTime();
             int modifiedTime = ((ModifiedTimeHolder) instance).bettertrims$getModifiedTime();
             //? if >=1.21 {
-            RegistryEntry<StatusEffect> entry = Registries.STATUS_EFFECT.getEntry(effect);
+            /*RegistryEntry<StatusEffect> entry = Registries.STATUS_EFFECT.getEntry(effect);
             ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(entry, modifiedTime));
             if(modifiedTime / player.getWorld().getTickManager().getTickRate() > 60) {
                 TrimCriteria.BREWERS_DREAM_EXTENDED.trigger(player);
             }
-            //?} else {
-            /*ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(effect, modifiedTime));
+            *///?} else {
+            ServerPlayNetworking.send(player, new StatusEffectDurationModifiedS2CPacket(effect, modifiedTime));
             if(modifiedTime / 20 > 60) {
                 TrimCriteria.BREWERS_DREAM_EXTENDED.trigger(player);
             }
-            *///?}
+            //?}
         }
         return modified;
     }
@@ -102,10 +102,10 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
     private void captureData(LivingEntity entity, Runnable overwriteCallback, CallbackInfoReturnable<Boolean> cir) {
         bettertrims$ENTITY_CAPTURE.set(entity);
         //? if >=1.21 {
-        bettertrims$STATUS_EFFECT_CAPTURE.set(type.value());
-        //?} else {
-        /*bettertrims$STATUS_EFFECT_CAPTURE.set(type);
-        *///?}
+        /*bettertrims$STATUS_EFFECT_CAPTURE.set(type.value());
+        *///?} else {
+        bettertrims$STATUS_EFFECT_CAPTURE.set(type);
+        //?}
         bettertrims$INSTANCE_CAPTURE.set((StatusEffectInstance) (Object) this);
     }
 
@@ -125,7 +125,7 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
     }
 
     //? if >=1.21 {
-    @Inject(
+    /*@Inject(
             method = "<init>(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/entity/effect/StatusEffectInstance$Parameters;)V",
             at = @At("TAIL")
     )
@@ -186,8 +186,8 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
             return bettertrims$modifiedTime;
         }
     }
-    //?} else {
-    /*@Inject(
+    *///?} else {
+    @Inject(
             method = "writeTypelessNbt",
             at = @At("TAIL")
     )
@@ -204,5 +204,5 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
         ((ModifiedTimeHolder) original).bettertrims$setModifiedTime(modifedTime);
         return original;
     }
-    *///?}
+    //?}
 }

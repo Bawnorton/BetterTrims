@@ -29,24 +29,24 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >=1.21 {
-import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
+/*import com.bawnorton.bettertrims.registry.content.TrimComponentTypes;
 import net.minecraft.client.gui.screen.ButtonTextures;
-//?}
+*///?}
 
 @Mixin(EnchantmentScreen.class)
 public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentScreenHandler> {
     @Shadow private ItemStack stack;
 
     //? if >=1.21 {
-    @Unique
+    /*@Unique
     private static final ButtonTextures bettertrims$REROLL_BUTTON_TEXTURES = new ButtonTextures(
             BetterTrims.id("reroll"),
             BetterTrims.id("reroll")
     );
-    //?} else {
-    /*@Unique
+    *///?} else {
+    @Unique
     private static final Identifier bettertrims$REROLL_BUTTON_TEXTURE = BetterTrims.id("reroll");
-    *///?}
+    //?}
 
     @Unique
     private ButtonWidget rerollButton;
@@ -63,7 +63,7 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
         int x = (this.width - this.backgroundWidth) / 2;
         int y = (this.height - this.backgroundHeight) / 2;
         //? if >=1.21 {
-        rerollButton = new TexturedButtonWidget(
+        /*rerollButton = new TexturedButtonWidget(
                 x + backgroundWidth - 20,
                 y - 6,
                 15,
@@ -71,8 +71,8 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
                 bettertrims$REROLL_BUTTON_TEXTURES,
                 button -> {}, ScreenTexts.EMPTY
         );
-        //?} else {
-        /*rerollButton = new TexturedButtonWidget(
+        *///?} else {
+        rerollButton = new TexturedButtonWidget(
                 x + backgroundWidth - 20,
                 y - 6,
                 15,
@@ -86,7 +86,7 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
                 button -> {},
                 ScreenTexts.EMPTY
         );
-        *///?}
+        //?}
     }
 
     @Inject(
@@ -108,10 +108,10 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
                 y
         );
         //? if >=1.21 {
-        boolean enchanted = EnchantmentHelper.hasEnchantments(stack);
-        //?} else {
-        /*boolean enchanted = stack.hasEnchantments();
-        *///?}
+        /*boolean enchanted = EnchantmentHelper.hasEnchantments(stack);
+        *///?} else {
+        boolean enchanted = stack.hasEnchantments();
+        //?}
         if(mouseY < y && rerollButton.isMouseOver(mouseX, mouseY) && !stack.isEmpty() && !enchanted) {
             rerollButton.setY(MathHelper.lerp(delta, rerollButton.getY(), y - 15));
         } else {
@@ -140,23 +140,23 @@ public abstract class EnchantmentScreenMixin extends HandledScreen<EnchantmentSc
     private void bettertrims$updateRerollTooltip() {
         Text message;
         //? if >=1.21 {
-        boolean enchanted = EnchantmentHelper.hasEnchantments(stack);
-         //?} else {
-        /*boolean enchanted = stack.hasEnchantments();
-        *///?}
+        /*boolean enchanted = EnchantmentHelper.hasEnchantments(stack);
+         *///?} else {
+        boolean enchanted = stack.hasEnchantments();
+        //?}
         if(stack.isEmpty() || enchanted) {
             message = ScreenTexts.EMPTY;
         } else {
             int enchantersBlessingLevel = (int) client.player.getAttributeValue(TrimEntityAttributes.ENCHANTERS_FAVOUR);
             //? if >=1.21 {
-            int usedBlessings = stack.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
-            //?} else {
-            /*int usedBlessings = 0;
+            /*int usedBlessings = stack.getOrDefault(TrimComponentTypes.USED_BLESSINGS, 0);
+            *///?} else {
+            int usedBlessings = 0;
             NbtCompound nbt = stack.getNbt();
             if(nbt != null) {
                 usedBlessings = nbt.getInt("bettertrims$used_blessings");
             }
-            *///?}
+            //?}
             int rerollsLeft = enchantersBlessingLevel * AttributeSettings.EnchantersFavour.rerolls - usedBlessings;
             if(rerollsLeft > 0) {
                 message = Text.translatable("bettertrims.enchanters_blessing.rerolls", enchantersBlessingLevel - usedBlessings, enchantersBlessingLevel);

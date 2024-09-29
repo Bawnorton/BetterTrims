@@ -19,9 +19,9 @@ import java.util.function.Consumer;
 public final class CarmotTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "carmot_shield", min = 0, max = 15)
+    @Configurable(value = "carmot_shield", max = 15)
     public static float carmotShield = 3f;
-    @Configurable(value = "max_health", min = 0, max = 15)
+    @Configurable(value = "max_health", max = 15)
     public static float maxHealth = 1f;
 
     public CarmotTrimEffect(TagKey<Item> materials) {
@@ -30,7 +30,7 @@ public final class CarmotTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.addingAliased(() -> TrimEntityAttributes.CARMOT_SHIELD, carmotShield));
+        adder.accept(TrimAttribute.adding(TrimEntityAttributes.CARMOT_SHIELD::get, carmotShield));
         adder.accept(TrimAttribute.leveled(() -> TrimEntityAttributes.FORTUNE));
         adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_MAX_HEALTH, maxHealth));
     }

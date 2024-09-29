@@ -2,17 +2,18 @@
   "required": true,
   "package": "com.bawnorton.bettertrims.client.mixin",
   "minVersion": "0.8",
-  "mixins": [
-  ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
     "AbstractInventoryScreenMixin",
+    "EntityRenderersMixin",
     "attributes.brewers_dream.AbstractInventoryScreenMixin",
     "attributes.celestial.ClientWorldMixin",
+    "attributes.dense.ClientPlayerEntityMixin",
     "attributes.electrifying.ClientWorldMixin",
     "attributes.enchanters_blessing.EnchantmentScreenMixin",
+    "attributes.lava_visibility.BackgroundRendererMixin",
     "attributes.regeneration.InGameHudMixin"
   ]
 }

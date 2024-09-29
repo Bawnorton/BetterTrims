@@ -32,29 +32,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Optional;
 
 //? if >=1.21 {
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
+/*import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
-//?} else {
-/*import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
-*///?}
+*///?} else {
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalItemTags;
+//?}
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     //? if >=1.21 {
-    @Unique
-    private RecipeManager.MatchGetter<SingleStackRecipeInput, SmeltingRecipe> bettertrims$matchGetter;
-    //?} else {
     /*@Unique
+    private RecipeManager.MatchGetter<SingleStackRecipeInput, SmeltingRecipe> bettertrims$matchGetter;
+    *///?} else {
+    @Unique
     private RecipeManager.MatchGetter<Inventory, SmeltingRecipe> bettertrims$matchGetter;
-    *///?}
+    //?}
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
@@ -116,19 +116,19 @@ public abstract class LivingEntityMixin extends Entity {
         }
         boolean oreBlock = stack.isIn(ConventionalItemTags.ORES);
         //? if >=1.21 {
-        boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_MATERIALS);
-        //?} else {
-        /*boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_ORES);
-        *///?}
+        /*boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_MATERIALS);
+        *///?} else {
+        boolean oreMaterial = stack.isIn(ConventionalItemTags.RAW_ORES);
+        //?}
         if(!(oreBlock || oreMaterial)) return Optional.empty();
 
         //? if >=1.21 {
-        RegistryWrapper.WrapperLookup lookup = world.getRegistryManager().toImmutable();
+        /*RegistryWrapper.WrapperLookup lookup = world.getRegistryManager().toImmutable();
         Optional<RecipeEntry<SmeltingRecipe>> recipe = bettertrims$matchGetter.getFirstMatch(new SingleStackRecipeInput(stack), world);
         return recipe.map(recipeEntry -> recipeEntry.value().getResult(lookup).copy());
-        //?} else {
-        /*Optional<SmeltingRecipe> recipe = bettertrims$matchGetter.getFirstMatch(new SimpleInventory(stack), world);
+        *///?} else {
+        Optional<SmeltingRecipe> recipe = bettertrims$matchGetter.getFirstMatch(new SimpleInventory(stack), world);
         return recipe.map(recipeEntry -> recipeEntry.getOutput(world.getRegistryManager()).copy());
-        *///?}
+        //?}
     }
 }

@@ -20,9 +20,9 @@ import java.util.function.Consumer;
 public final class AquariumTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "submerged_mining_speed", min = 0, max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "submerged_mining_speed", max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float submergedMiningSpeed = 4;
-    @Configurable(value = "swim_speed", min = 0, max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "swim_speed", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float swimSpeed = 0.5f;
 
     public AquariumTrimEffect(TagKey<Item> materials) {
@@ -31,8 +31,11 @@ public final class AquariumTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.multiplyTotal(() -> EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed)
-                .forSlot(EquipmentSlot.HEAD));
+        //? if >=1.21 {
+        /*adder.accept(TrimAttribute.multiplyTotal(() -> EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed).forSlot(EquipmentSlot.HEAD));
+        *///?} else {
+        adder.accept(TrimAttribute.multiplyTotal(() -> TrimEntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed).forSlot(EquipmentSlot.HEAD));
+        //?}
         adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.SWIM_SPEED, swimSpeed));
     }
 

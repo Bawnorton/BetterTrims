@@ -127,7 +127,9 @@ if (stonecutter.current.isActive) {
 
 if(loader.isFabric) {
     fabricApi {
-        configureDataGeneration()
+        configureDataGeneration {
+            modId = mod.id
+        }
     }
 
     tasks {

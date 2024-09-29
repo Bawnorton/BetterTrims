@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 //? if >=1.21
-import net.minecraft.component.DataComponentTypes;
+/*import net.minecraft.component.DataComponentTypes;*/
 
 @Mixin(PowderSnowBlock.class)
 public abstract class PowderSnowBlockMixin {
@@ -30,7 +30,7 @@ public abstract class PowderSnowBlockMixin {
         if(original.call(stack, item)) return true;
 
         World world = entity.getWorld();
-        ArmorTrim trim = /*$ trim_getter >>*/ stack.get(DataComponentTypes.TRIM);
+        ArmorTrim trim = /*$ trim_getter >>*/ ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);
         if(trim == null) return false;
 
         return TrimEffects.LEATHER.matchesMaterial(trim.getMaterial());

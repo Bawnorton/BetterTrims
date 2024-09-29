@@ -29,9 +29,9 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 //? if >=1.21 {
-import net.minecraft.network.codec.PacketCodec;
+/*import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-//?}
+*///?}
 
 @SuppressWarnings("UnstableApiUsage")
 @Configurable(value = "echo_shard", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/echo_shard.png"), collapsed = true))
@@ -83,10 +83,10 @@ public final class EchoShardTrimEffect extends TrimEffect {
         for(Echo echo : queue) {
             DataResult<NbtElement> encoded = Echo.CODEC.encodeStart(NbtOps.INSTANCE, echo);
             //? if <1.21 {
-            /*encoded.get().ifLeft(echoes::add).ifRight(partial -> BetterTrims.LOGGER.error("Failed to encode echo: {}", partial));
-            *///?} else {
-            encoded.ifSuccess(echoes::add).ifError(error -> BetterTrims.LOGGER.error("Failed to encode echo: {}", error));
-            //?}
+            encoded.get().ifLeft(echoes::add).ifRight(partial -> BetterTrims.LOGGER.error("Failed to encode echo: {}", partial));
+            //?} else {
+            /*encoded.ifSuccess(echoes::add).ifError(error -> BetterTrims.LOGGER.error("Failed to encode echo: {}", error));
+            *///?}
         }
         nbt.put("echoes", echoes);
         return nbt;
@@ -100,13 +100,13 @@ public final class EchoShardTrimEffect extends TrimEffect {
         for (NbtElement echoElement : echoes) {
             DataResult<Echo> decoded = Echo.CODEC.parse(NbtOps.INSTANCE, echoElement);
             //? if <1.21 {
-            /*decoded.get()
+            decoded.get()
                     .ifLeft(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
                     .ifRight(partial -> BetterTrims.LOGGER.error("Failed to decode echo: {}", partial));
-            *///?} else {
-            decoded.ifSuccess(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
+            //?} else {
+            /*decoded.ifSuccess(echo -> createEcho(entity, echo.pos(), echo.pitch(), echo.yaw(), echo.health()))
                     .ifError(error -> BetterTrims.LOGGER.error("Failed to decode echo: {}", error));
-            //?}
+            *///?}
         }
     }
 
@@ -125,7 +125,7 @@ public final class EchoShardTrimEffect extends TrimEffect {
                 ).apply(instance, Echo::new)
         );
         //? if >=1.21 {
-        public static final PacketCodec<ByteBuf, Echo> PACKET_CODEC = PacketCodec.tuple(
+        /*public static final PacketCodec<ByteBuf, Echo> PACKET_CODEC = PacketCodec.tuple(
                 PacketCodecs.VECTOR3F.xmap(Vec3d::new, Vec3d::toVector3f),
                 Echo::pos,
                 PacketCodecs.FLOAT,
@@ -136,8 +136,8 @@ public final class EchoShardTrimEffect extends TrimEffect {
                 Echo::health,
                 Echo::new
         );
-        //?} else {
-        /*public void writeBuf(PacketByteBuf buf) {
+        *///?} else {
+        public void writeBuf(PacketByteBuf buf) {
             buf.writeDouble(pos.x);
             buf.writeDouble(pos.y);
             buf.writeDouble(pos.z);
@@ -155,7 +155,7 @@ public final class EchoShardTrimEffect extends TrimEffect {
             );
         }
 
-        *///?}
+        //?}
 
     }
 }

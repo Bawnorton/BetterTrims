@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
     //? if >=1.21 {
-    @Inject(
+    /*@Inject(
             method = "onTargetDamaged(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/damage/DamageSource;Lnet/minecraft/item/ItemStack;)V",
             at = @At("HEAD")
     )
@@ -37,8 +37,8 @@ public abstract class EnchantmentHelperMixin {
 
         attacker.damage(attacker.getWorld().getDamageSources().thorns(livingTarget), thornsLevel);
     }
-    //?} else {
-    /*@Unique
+    *///?} else {
+    @Unique
     private static final ThreadLocal<LivingEntity> bettertrims$entityCapture = ThreadLocal.withInitial(() -> null);
 
     @Inject(
@@ -60,5 +60,5 @@ public abstract class EnchantmentHelperMixin {
         int thornsLevel = (int) livingEntity.getAttributeValue(TrimEntityAttributes.THORNS);
         return original + thornsLevel;
     }
-    *///?}
+    //?}
 }

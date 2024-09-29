@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 
 public final class AdditionalItemTags {
     //? if >=1.21 {
-    public static final TagKey<Item> ADAMANTITE_INGOTS = register("ingots/adamantite");
+    /*public static final TagKey<Item> ADAMANTITE_INGOTS = register("ingots/adamantite");
     public static final TagKey<Item> AQUARIUM_INGOTS = register("ingots/aquarium");
     public static final TagKey<Item> BANGLUM_INGOTS = register("ingots/banglum");
     public static final TagKey<Item> BRONZE_INGOTS = register("ingots/bronze");
@@ -69,8 +69,8 @@ public final class AdditionalItemTags {
         return TagKey.of(RegistryKeys.ITEM, Identifier.of("c", path));
     }
 
-    //?} else {
-    /*public static final TagKey<Item> ADAMANTITE_INGOTS = register("adamantite_ingots");
+    *///?} else {
+    public static final TagKey<Item> ADAMANTITE_INGOTS = register("adamantite_ingots");
     public static final TagKey<Item> AQUARIUM_INGOTS = register("aquarium_ingots");
     public static final TagKey<Item> BANGLUM_INGOTS = register("banglum_ingots");
     public static final TagKey<Item> BRONZE_INGOTS = register("bronze_ingots");
@@ -131,5 +131,5 @@ public final class AdditionalItemTags {
     private static TagKey<Item> register(String path) {
         return TagKey.of(RegistryKeys.ITEM, new Identifier("c", path));
     }
-    *///?}
+    //?}
 }

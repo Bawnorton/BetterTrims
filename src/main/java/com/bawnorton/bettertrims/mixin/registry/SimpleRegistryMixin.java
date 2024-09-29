@@ -18,6 +18,9 @@ public abstract class SimpleRegistryMixin {
             at = @At("HEAD")
     )
     private <T> void invokePreFreeze(CallbackInfoReturnable<Registry<T>> cir) {
-        if(!frozen) PreRegistryFreezeCallback.EVENT.invoker().beforeFreeze((Registry<?>) this);
+        if(!frozen) {
+            PreRegistryFreezeCallback.PRE.invoker().beforeFreeze((Registry<?>) this);
+            PreRegistryFreezeCallback.POST.invoker().beforeFreeze((Registry<?>) this);
+        }
     }
 }

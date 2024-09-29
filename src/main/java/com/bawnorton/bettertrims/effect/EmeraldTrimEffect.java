@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class EmeraldTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "trade_discount", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "trade_discount", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float tradeDiscount = 0.1f;
 
     public EmeraldTrimEffect(TagKey<Item> materials) {

@@ -19,10 +19,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >=1.21 {
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
-//?} else {
-/*import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
-*///?}
+/*import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+*///?} else {
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBlockTags;
+//?}
 
 @Mixin(Block.class)
 public abstract class BlockMixin {

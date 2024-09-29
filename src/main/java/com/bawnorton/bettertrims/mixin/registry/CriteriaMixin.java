@@ -17,7 +17,7 @@ import java.util.Map;
 @Mixin(Criteria.class)
 public abstract class CriteriaMixin {
     //? if >=1.21 {
-    static {
+    /*static {
         TrimCriteria.BREWERS_DREAM_EXTENDED = bettertrims$register("brewers_dream_extended", new BrewersDreamExtendedCriteron());
         TrimCriteria.DODGED = bettertrims$register("dodged", new DodgeCriterion());
         TrimCriteria.WALKING_FURNACE_SMELTED = bettertrims$register("walking_furnace_smelted", new WalkingFurnaceSmeltedCriteron());
@@ -38,8 +38,8 @@ public abstract class CriteriaMixin {
     private static <T extends Criterion<?>> T bettertrims$register(String id, T criterion) {
         return Registry.register(Registries.CRITERION, BetterTrims.id(id), criterion);
     }
-    //?} else {
-    /*@Shadow @Final private static Map<Identifier, Criterion<?>> VALUES;
+    *///?} else {
+    @Shadow @Final private static Map<Identifier, Criterion<?>> VALUES;
 
     static {
         TrimCriteria.BREWERS_DREAM_EXTENDED = bettertrims$register(new BrewersDreamExtendedCriteron());
@@ -63,5 +63,5 @@ public abstract class CriteriaMixin {
         VALUES.put(criterion.getId(), criterion);
         return criterion;
     }
-    *///?}
+    //?}
 }

@@ -34,10 +34,10 @@ public abstract class ServerWorldMixin {
     private void applyElectrifying(EntityList instance, Consumer<Entity> entityConsumer, Operation<Void> original) {
         instance.forEach(entity -> {
             //? if >=1.21 {
-            if(!chunkManager.chunkLoadingManager.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) return;
-            //?} else {
-            /*if(!chunkManager.threadedAnvilChunkStorage.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) return;
-            *///?}
+            /*if(!chunkManager.chunkLoadingManager.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) return;
+            *///?} else {
+            if(!chunkManager.threadedAnvilChunkStorage.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) return;
+            //?}
             if (!(entity instanceof LivingEntity livingEntity)) return;
 
             CopperTrimEffect.ElectrifyingInfo info = TrimEffects.COPPER.electrifyingInfo(livingEntity);

@@ -18,9 +18,9 @@ import java.util.function.Consumer;
 public final class KyberTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "projectile_deflect_chance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "projectile_deflect_chance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float projectileDeflectChance = 0.15f;
-    @Configurable(value = "fire_resistance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "fire_resistance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float fireResistance = 0.08f;
 
     public KyberTrimEffect(TagKey<Item> materials) {

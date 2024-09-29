@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public final class MythrilTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "attack_deflect_chance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "attack_deflect_chance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float attackDeflectChance = 0.1f;
 
     public MythrilTrimEffect(TagKey<Item> materials) {

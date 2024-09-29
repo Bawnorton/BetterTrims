@@ -19,11 +19,11 @@ import java.util.function.Consumer;
 public final class PalladiumTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "fire_resistance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "fire_resistance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float fireResistance = 0.25f;
-    @Configurable(value = "lava_visibility", min = 0, max = 24)
+    @Configurable(value = "lava_visibility", max = 24)
     public static int lavaVisibility = 6;
-    @Configurable(value = "lava_movement_speed", min = 0, max = 10)
+    @Configurable(value = "lava_movement_speed", max = 10)
     public static float lavaMovementSpeed = 0.7f;
 
     public PalladiumTrimEffect(TagKey<Item> materials) {
@@ -33,8 +33,8 @@ public final class PalladiumTrimEffect extends TrimEffect {
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
         adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.FIRE_RESISTANCE, fireResistance));
-        adder.accept(TrimAttribute.addingAliased(() -> TrimEntityAttributes.LAVA_VISIBILITY, lavaVisibility).forSlot(EquipmentSlot.HEAD));
-        adder.accept(TrimAttribute.multiplyBaseAliased(() -> TrimEntityAttributes.LAVA_MOVEMENT_SPEED, lavaMovementSpeed));
+        adder.accept(TrimAttribute.adding(TrimEntityAttributes.LAVA_VISIBILITY::get, lavaVisibility).forSlot(EquipmentSlot.HEAD));
+        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.LAVA_MOVEMENT_SPEED::get, lavaMovementSpeed));
     }
 
     @Override

@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",
@@ -30,6 +30,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             argsOnly = true
     )
     protected float applyDodgeChance(float original, DamageSource source, float amount) {
+        if(original <= 0) return original;
         if (!source.isIn(DamageTypeTags.IS_PROJECTILE)) return original;
 
         double chance = getAttributeValue(TrimEntityAttributes.PROJECTILE_DODGE_CHANCE) - 1;

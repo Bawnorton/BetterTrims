@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public final class EnchantedGoldenAppleTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "max_health", min = 0, max = 20)
+    @Configurable(value = "max_health", max = 20)
     public static int maxHealth = 3;
     @Configurable(min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float resistance = 0.04f;

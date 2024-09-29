@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.text.Text;
 
 //? if <1.21 {
-/*import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 
 public final class Networking {
@@ -23,8 +23,8 @@ public final class Networking {
         player.sendMessage(message, true);
     }
 }
-*///?} else {
-import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;
+//?} else {
+/*import com.bawnorton.bettertrims.networking.packet.s2c.StatusEffectDurationModifiedS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EchoTriggeredS2CPacket;
 import com.bawnorton.bettertrims.networking.packet.s2c.EntityEchoedS2CPacket;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -53,4 +53,4 @@ public final class Networking {
         context.player().sendMessage(message, true);
     }
 }
-//?}
+*///?}

@@ -2,9 +2,9 @@ package com.bawnorton.bettertrims.mixin.registry;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.event.PreRegistryFreezeCallback;
-import com.bawnorton.bettertrims.registry.AliasedRegistryEntry;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.bawnorton.bettertrims.util.Aliasable;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -33,8 +33,12 @@ public abstract class EntityAttributesMixin {
                 0,
                 0,
                 2048,
-                true,
+                //? if >=1.21 {
+                /*true,
                 EntityAttribute.Category.NEUTRAL
+                *///?} else {
+                true
+                //?}
         );
         TrimEntityAttributes.CLEAVING = bettertrims$registerPercentage("cleaving");
         TrimEntityAttributes.DENSE = bettertrims$registerTrackedLeveled("dense");
@@ -47,8 +51,12 @@ public abstract class EntityAttributesMixin {
                 1,
                 0,
                 1024,
-                true,
+                //? if >=1.21 {
+                /*true,
                 EntityAttribute.Category.NEUTRAL
+                *///?} else {
+                true
+                //?}
         );
         TrimEntityAttributes.ENCHANTERS_FAVOUR = bettertrims$registerTrackedLeveled("enchanters_favour");
         TrimEntityAttributes.ENDS_BLESSING = bettertrims$registerLeveled("ends_blessing");
@@ -60,28 +68,36 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.HELLS_BLESSING = bettertrims$registerLeveled("hells_blessing");
         TrimEntityAttributes.HOLY = bettertrims$registerLeveled("holy");
         //? if >=1.21 {
-        TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
-        //?} else {
-        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false);
-        *///?}
+        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
+        *///?} else {
+        TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false);
+        //?}
         TrimEntityAttributes.ITEM_MAGNET = bettertrims$registerLeveled("item_magnet");
         TrimEntityAttributes.LAVA_MOVEMENT_SPEED = bettertrims$registerAliased(
                 "lava_movement_speed",
                 Identifier.of("additionalentityattributes", "generic.lava_speed"),
-                0.5,
-                0,
                 1,
-                true,
+                1,
+                1024,
+                //? if >=1.21 {
+                /*true,
                 EntityAttribute.Category.NEUTRAL
+                *///?} else {
+                true
+                //?}
         );
         TrimEntityAttributes.LAVA_VISIBILITY = bettertrims$registerAliased(
                 "lava_visibility",
                 Identifier.of("additionalentityattributes", "player.lava_visibility"),
-                1,
+                0,
                 0,
                 1024,
-                true,
+                //? if >=1.21 {
+                /*true,
                 EntityAttribute.Category.NEUTRAL
+                *///?} else {
+                true
+                //?}
         );
         TrimEntityAttributes.LIGHT_FOOTED = bettertrims$registerLeveled("light_footed");
         TrimEntityAttributes.LOOTING = bettertrims$registerLeveled("looting");
@@ -91,10 +107,18 @@ public abstract class EntityAttributesMixin {
                 0,
                 0,
                 1024,
-                true,
+                //? if >=1.21 {
+                /*true,
                 EntityAttribute.Category.NEUTRAL
+                *///?} else {
+                true
+                //?}
         );
-        TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true, EntityAttribute.Category.NEGATIVE);
+        //? if >=1.21 {
+        /*TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true, EntityAttribute.Category.NEGATIVE);
+         *///?} else {
+        TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true);
+        //?}
         TrimEntityAttributes.MINERS_RUSH = bettertrims$registerLeveled("miners_rush");
         TrimEntityAttributes.MOONS_BLESSING = bettertrims$registerTrackedLeveled("moons_blessing");
         TrimEntityAttributes.OVERGROWN = bettertrims$registerLeveled("overgrown");
@@ -113,16 +137,17 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.WALKING_FURNACE = bettertrims$registerLeveled("walking_furnace");
         TrimEntityAttributes.WARRIORS_OF_OLD = bettertrims$registerLeveled("warriors_of_old");
         //? if <1.21 {
-        /*TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$register("player_block_break_speed", 1, 0, 1024, true);
+        TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$register("player_block_break_speed", 1, 0, 1024, true);
+        TrimEntityAttributes.PLAYER_SUBMERGED_MINING_SPEED = bettertrims$register("player_submerged_mining_speed", 0.2, 0.0, 20.0, true);
         TrimEntityAttributes.GENERIC_STEP_HEIGHT = bettertrims$register("generic_step_height", 0.0, 0.0, 10.0, true);
         TrimEntityAttributes.GENERIC_OXYGEN_BONUS = bettertrims$register("generic_oxygen_bonus", 0.0, 0.0, 1024.0, true);
-        *///?}
+        //?}
 
         TrimEffects.init();
     }
 
     //? if >=1.21 {
-    @Unique
+    /*@Unique
     private static RegistryEntry<EntityAttribute> bettertrims$registerLeveled(String id) {
         return bettertrims$register(id, 0, 0, 1024, false);
     }
@@ -167,20 +192,22 @@ public abstract class EntityAttributesMixin {
     }
 
     @Unique
-    private static AliasedRegistryEntry<EntityAttribute> bettertrims$registerAliased(String id, Identifier alias, double fallback, double min, double max, boolean tracked, EntityAttribute.Category category) {
-        AliasedRegistryEntry<EntityAttribute> aliasedRegEntry = new AliasedRegistryEntry<>();
-        PreRegistryFreezeCallback.EVENT.register(registry -> {
+    private static Aliasable<RegistryEntry<EntityAttribute>> bettertrims$registerAliased(String path, Identifier alias, double fallback, double min, double max, boolean tracked, EntityAttribute.Category category) {
+        Aliasable<RegistryEntry<EntityAttribute>> aliasable = new Aliasable<>();
+        PreRegistryFreezeCallback.PRE.register(registry -> {
             if (registry == Registries.ATTRIBUTE) {
-                aliasedRegEntry.init(Registries.ATTRIBUTE.getEntry(alias)
-                        .map(entry -> new AliasedRegistryEntry.EntryHolder<>(entry, true))
-                        .orElse(new AliasedRegistryEntry.EntryHolder<>(bettertrims$register(id, fallback, min, max, tracked, category), false)));
+                Registries.ATTRIBUTE.getEntry(alias)
+                        .ifPresentOrElse(
+                                entry -> aliasable.setHolder(entry, true),
+                                () -> aliasable.setHolder(bettertrims$register(path, fallback, min, max, tracked, category), false)
+                        );
             }
         });
-        return aliasedRegEntry;
+        return aliasable;
     }
 
-    //?} else {
-    /*@Unique
+    *///?} else {
+    @Unique
     private static EntityAttribute bettertrims$registerLeveled(String id) {
         return bettertrims$register(id, 0, 0, 4, false);
     }
@@ -218,7 +245,22 @@ public abstract class EntityAttributesMixin {
                 ).setTracked(tracked)
         );
     }
-    *///?}
+
+    @Unique
+    private static Aliasable<EntityAttribute> bettertrims$registerAliased(String id, Identifier alias, double fallback, double min, double max, boolean tracked) {
+        Aliasable<EntityAttribute> aliasable = new Aliasable<>();
+        PreRegistryFreezeCallback.PRE.register(registry -> {
+            if (registry == Registries.ATTRIBUTE) {
+                if(Registries.ATTRIBUTE.containsId(alias)) {
+                    aliasable.setHolder(Registries.ATTRIBUTE.get(alias), true);
+                } else {
+                    aliasable.setHolder(bettertrims$register(id, fallback, min, max, tracked), false);
+                }
+            }
+        });
+        return aliasable;
+    }
+    //?}
 
     @ModifyArg(
             method = "<clinit>",

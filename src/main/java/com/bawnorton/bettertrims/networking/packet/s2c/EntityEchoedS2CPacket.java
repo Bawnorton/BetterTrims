@@ -5,7 +5,7 @@ import com.bawnorton.bettertrims.effect.EchoShardTrimEffect;
 import net.minecraft.util.math.Vec3d;
 
 //? if <1.21 {
-/*import net.fabricmc.fabric.api.networking.v1.FabricPacket;
+import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
 import net.minecraft.network.PacketByteBuf;
 
@@ -32,8 +32,8 @@ public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo ech
         return TYPE;
     }
 }
-*///?} else {
-import io.netty.buffer.ByteBuf;
+//?} else {
+/*import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.network.packet.CustomPayload;
@@ -53,4 +53,4 @@ public record EntityEchoedS2CPacket(Vec3d priorPos, EchoShardTrimEffect.Echo ech
         return PACKET_ID;
     }
 }
-//?}
+*///?}

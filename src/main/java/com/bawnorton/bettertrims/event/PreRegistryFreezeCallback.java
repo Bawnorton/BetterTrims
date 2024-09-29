@@ -5,7 +5,15 @@ import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.registry.Registry;
 
 public interface PreRegistryFreezeCallback {
-    Event<PreRegistryFreezeCallback> EVENT = EventFactory.createArrayBacked(
+    Event<PreRegistryFreezeCallback> PRE = EventFactory.createArrayBacked(
+            PreRegistryFreezeCallback.class,
+            listeners -> registry -> {
+                for(PreRegistryFreezeCallback listener : listeners) {
+                    listener.beforeFreeze(registry);
+                }
+            });
+
+    Event<PreRegistryFreezeCallback> POST = EventFactory.createArrayBacked(
             PreRegistryFreezeCallback.class,
             listeners -> registry -> {
                 for(PreRegistryFreezeCallback listener : listeners) {

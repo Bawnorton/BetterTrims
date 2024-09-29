@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",
@@ -22,12 +22,10 @@ public abstract class LivingEntityMixin {
             argsOnly = true
     )
     private float applyFireResistanceToDamage(float original, DamageSource source, float amount) {
-        if (!source.isIn(DamageTypeTags.IS_FIRE)) {
-            return original;
-        }
+        if (!source.isIn(DamageTypeTags.IS_FIRE)) return original;
 
         double fireResistance = getAttributeValue(TrimEntityAttributes.FIRE_RESISTANCE) - 1;
         original *= (float) (1 - fireResistance);
-        return original;
+        return Math.max(original, 0);
     }
 }

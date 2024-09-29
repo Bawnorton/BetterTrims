@@ -14,14 +14,14 @@ public abstract class CelestialEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.leveled(this::getEntityAttribute));
+        adder.accept(TrimAttribute.leveled(() -> getEntityAttribute()));
     }
 
     //? if >=1.21 {
-    public abstract RegistryEntry<EntityAttribute> getEntityAttribute();
-    //?} else {
-    /*public abstract EntityAttribute getEntityAttribute();
-    *///?}
+    /*public abstract RegistryEntry<EntityAttribute> getEntityAttribute();
+    *///?} else {
+    public abstract EntityAttribute getEntityAttribute();
+    //?}
 
     public abstract float getMovementSpeed();
 

@@ -13,15 +13,15 @@ import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
 //? if >=1.21
-import net.minecraft.component.type.AttributeModifierSlot;
+/*import net.minecraft.component.type.AttributeModifierSlot;*/
 
 @Configurable(value = "slime", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/slime_ball.png"), collapsed = true))
 public final class SlimeTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "knockback_vulnerability", min = 0, max = 4)
+    @Configurable(value = "knockback_vulnerability", max = 4)
     public static double knockbackVulnerability = 1;
-    @Configurable(value = "attack_knockback", min = 0, max = 2)
+    @Configurable(value = "attack_knockback", max = 2)
     public static double attackKnockback = 1;
     @Configurable(value = "bouncy_boots")
     public static boolean bouncyBoots = true;

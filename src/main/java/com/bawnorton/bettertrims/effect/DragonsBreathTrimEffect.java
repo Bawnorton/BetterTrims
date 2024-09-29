@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class DragonsBreathTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "share_effect_radius", min = 0, max = 5)
+    @Configurable(value = "share_effect_radius", max = 5)
     public static int shareEffectRadius = 1;
 
     public DragonsBreathTrimEffect(TagKey<Item> materials) {

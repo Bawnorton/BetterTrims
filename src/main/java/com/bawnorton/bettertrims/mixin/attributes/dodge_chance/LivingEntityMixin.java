@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",
@@ -29,6 +29,8 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             argsOnly = true
     )
     protected float applyDodgeChance(float original, DamageSource source, float amount) {
+        if(original <= 0) return original;
+
         double chance = getAttributeValue(TrimEntityAttributes.DODGE_CHANCE) - 1;
         return dodge(chance) ? 0 : original;
     }

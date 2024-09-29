@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class ChorusFruitTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "dodge_chance", min = 0, max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    @Configurable(value = "dodge_chance", max = 1, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
     public static float dodgeChance = 0.07f;
 
     public ChorusFruitTrimEffect(TagKey<Item> materials) {

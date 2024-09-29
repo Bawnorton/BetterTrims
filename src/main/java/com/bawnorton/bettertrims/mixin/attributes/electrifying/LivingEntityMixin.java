@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends EntityMixin {
     @Shadow public abstract boolean damage(DamageSource source, float amount);
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
 
     @Shadow public abstract boolean isDead();
 

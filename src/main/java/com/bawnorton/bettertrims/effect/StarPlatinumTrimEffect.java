@@ -19,8 +19,8 @@ import java.util.function.Consumer;
 public final class StarPlatinumTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
-    @Configurable(value = "attack_damage", min = 0, max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
-    public static float attackDamage = 0.5f;
+    @Configurable(value = "attack_damage", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    public static float attackDamage = 1f;
 
     public StarPlatinumTrimEffect(TagKey<Item> materials) {
         super(materials);

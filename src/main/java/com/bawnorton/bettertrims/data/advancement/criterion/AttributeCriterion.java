@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 //? if >=1.21 {
-public abstract class AttributeCriterion<C extends AbstractCriterion.Conditions> extends AbstractCriterion<C> {
+/*public abstract class AttributeCriterion<C extends AbstractCriterion.Conditions> extends AbstractCriterion<C> {
     private final Function<AttributeCriterion<C>, Codec<C>> CONDITION_CODEC_GETTER = Util.memoize(criterion -> RecordCodecBuilder.create(
             instance -> instance.group(
                     EntityPredicate.LOOT_CONTEXT_PREDICATE_CODEC.optionalFieldOf("player").forGetter(Conditions::player)
@@ -37,8 +37,8 @@ public abstract class AttributeCriterion<C extends AbstractCriterion.Conditions>
         C create(Optional<LootContextPredicate> player);
     }
 }
-//?} else {
-/*import net.minecraft.advancement.criterion.AbstractCriterionConditions;
+*///?} else {
+import net.minecraft.advancement.criterion.AbstractCriterionConditions;
 import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
 
 public abstract class AttributeCriterion<C extends AbstractCriterionConditions> extends AbstractCriterion<C> {
@@ -57,4 +57,4 @@ public abstract class AttributeCriterion<C extends AbstractCriterionConditions> 
         C create();
     }
 }
-*///?}
+//?}

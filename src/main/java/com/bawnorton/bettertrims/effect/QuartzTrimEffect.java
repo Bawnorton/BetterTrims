@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 public final class QuartzTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "bonus_xp", min = 0, max = 100)
+    @Configurable(value = "bonus_xp", max = 100)
     public static double bonusXp = 0.1;
 
     public QuartzTrimEffect(TagKey<Item> materials) {
