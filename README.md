@@ -71,8 +71,6 @@ datapack or mod, like my [AllTheTrims](https://github.com/Bawnorton/AllTheTrims)
   - +1 Oxygen Bonus (Respiration)
 - Quartz
   - +10% Bonus XP
-- Rabbit
-  - Unimplemented
 - Redstone
   - +10% Movement Speed
   - +0.5 Step Height
@@ -80,6 +78,72 @@ datapack or mod, like my [AllTheTrims](https://github.com/Bawnorton/AllTheTrims)
   - -10 Knockback Resistance
   - +1 Knockback
   - When on Boots: +1 Bouncy
+
+- Adamantite
+  - +10% Resistance
+  - +1 Unbreaking
+- Aquarium
+  - +100% Submerged Mining Speed
+  - +30% Swim Speed
+  - +3 Oxygen Bonus
+- Banglum
+  - +12% Blast Resistance
+  - +1 Blast Mining
+- Bronze
+  - +1 Warriors of Old
+- Carmot
+  - +3 Carmot Shield
+  - +1 Max Health
+  - +1 Fortune
+- Celestium
+  - +10% Elytra Rocket Speed
+  - +10% Movement Speed
+  - +0.5 Attack Damage
+- Durasteel
+  - +1 Unbreaking
+  - +5% Resistance
+- Hallowed
+  - +1 Holy
+- Kyber
+  - +15% Projectile Deflect Chance
+  - +8% Fire Resistance
+- Manganese
+  - +1 Regeneration
+- Metallurgium
+  - +12% Resistance
+  - +2 Armour
+  - +1 Unbreaking
+- Mythril
+  - +10% Attack Deflect Chance
+  - +1 Unbreaking
+- Orichalcum
+  - +1.5 Attack Damage
+- Osmium
+  - +1 Dense
+  - +2 Unbreaking
+- Palladium
+  - +25% Fire Resistance
+  - +6 Lava Visibility
+  - +70% Lava Movement Speed
+- Platinum
+  - +1 Looting
+  - +1 Fortune
+- Prometheum
+  - +1 Overgrown
+- Quadrillum
+  - +1 Item Magnet
+- Runite
+  - +0.5 Projectile Damage
+  - +10% Projectile Speed
+- Silver
+  - +1 Moon's Blessing
+- Star Platinum
+  - +1 Attack Damage
+  - +1 Looting
+- Starrite
+  - +1 End's Blessing
+- Steel
+  - +1 Unbreaking
 
 </details>
 
@@ -89,18 +153,29 @@ BetterTrims adds many new attributes to control how the trimmed armour interacts
 <details>
 <summary>Expand Attributes</summary>
 
+- Attack Deflect Chance
+  - Chance to avoid damage by deflecting it
+- Blast Mining
+  - Mine in a 3x3 area at a depth equal to the attribute level
+- Blast Resistance
+  - Reduce damage from explosions
 - Bonus XP
   - When picking up XP gain that much more XP (from any source)
 - Bouncy
   - Landing on the ground causes you to bounce and avoid fall damage
 - Brewer's Dream
   - Extends the duration of positive effects and shortens the duration of negative effects
+- Carmot Shield
+  - Provides a regenerating shield that protects against damage
 - Celestial Blessings
   - Sun's Blessing/Moon's Blessing/End's Blessing/Hell's Blessing
   - Only applies when in the correct dimension or its the correct time of day
   - Provides minor increase to movement speed, resistance, attack damage and attack speed
 - Cleaving
   - Chance to drop the head of the slain entity (includes players)
+- Dense
+  - Move through liquids as if they weren't there
+  - Unable to swim
 - Dodge Chance
   - Chance to avoid damage and teleport a short distance away
 - Echoing
@@ -111,28 +186,50 @@ BetterTrims adds many new attributes to control how the trimmed armour interacts
 - Electrifying
   - Become immune to lightning damage
   - In water create an electric field that deals 1heart/tick of lightning damage to all entities within it
+- Elytra Rocket Speed
+  - Rockets propel you further
 - Enchanter's Favour
   - Provides a re-roll button in the Enchanting Table UI that re-rolls the provided enchantments
 - Firey Thorns
   - Attackers are set ablaze
 - Fire Aspect
   - Attacked entities are set ablaze
+- Fire Resistance
+  - Reduce damage from fire
 - Fortune
   - Acts the same as the Fortune enchantment
 - Glowing
   - Requires a Dynamic Light mod
   - Makes the entity emit light
+- Holy
+  - Deal extra damage to undead mobs
 - Hydrophobic
   - Water damages the entity
 - Item Magnet
   - Items are drawn towards you
+- Lava Movement Speed
+  - Move faster in lava
+- Lava Visibility
+  - See further in lava
 - Light Footed
   - Decreases the range at which entities can detect you
   - You can get within 5 blocks of some hostile mobs at the max level
+- Looting
+  - Acts the same as the Looting enchantment
+- Magic Protection
+  - Reduces damage from magic damage sources
 - Miner's Rush
   - Mining an ore grants you one level of "Feel The Rush" up to a cap which increases your mining speed
+- Overgrown
+  - Repairs worn and held items over time
+- Projectile Damage
+  - Increases the damage of shot projectiles
+- Projectile Deflect Chance
+  - Same as Attack Deflect Chance bu only for projectiles
 - Projectile Dodge Chance
   - Same as Dodge Chance but only for projectiles
+- Projectile Speed
+  - Increases the speed of shot projectiles
 - Regeneration
   - Same as the Regeneration effect
 - Resistance
@@ -147,8 +244,12 @@ BetterTrims adds many new attributes to control how the trimmed armour interacts
   - Acts the same as the Thorns enchantment except without the durability cost
 - Trade Discount 
   - Discounts villager trades
+- Unbreaking
+  - Acts the same as the Unbreaking Enchantment
 - Walking Furnace
   - Ores/Raw Materials within the player's inventory (not hotbar) are smelted when they take fire damage
+- Warriors of Old
+  - When damaged summon a temporary ancient warrior skeleton wearing random enchanted gear to assist you in battle 
 </details>
 
 ### Advancements
