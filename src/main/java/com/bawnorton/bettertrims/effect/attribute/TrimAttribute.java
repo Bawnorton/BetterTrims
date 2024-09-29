@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 //? if >=1.21 {
-/*import net.minecraft.component.type.AttributeModifierSlot;
+import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.registry.entry.RegistryEntry;
 
 public record TrimAttribute(Supplier<RegistryEntry<EntityAttribute>> entry, double value, EntityAttributeModifier.Operation operation, Predicate<AttributeModifierSlot> slotPredicate) {
@@ -42,8 +42,8 @@ public record TrimAttribute(Supplier<RegistryEntry<EntityAttribute>> entry, doub
         return new TrimAttribute(entry, value, operation, s -> s.equals(AttributeModifierSlot.forEquipmentSlot(slot)));
     }
 }
-*///?} else {
-public record TrimAttribute(Supplier<EntityAttribute> entry, double value, EntityAttributeModifier.Operation operation, Predicate<EquipmentSlot> slotPredicate) {
+//?} else {
+/*public record TrimAttribute(Supplier<EntityAttribute> entry, double value, EntityAttributeModifier.Operation operation, Predicate<EquipmentSlot> slotPredicate) {
     public static TrimAttribute adding(Supplier<EntityAttribute> entry, double value) {
         return new TrimAttribute(entry, value, EntityAttributeModifier.Operation.ADDITION, Predicates.alwaysTrue());
     }
@@ -70,4 +70,4 @@ public record TrimAttribute(Supplier<EntityAttribute> entry, double value, Entit
         return new TrimAttribute(entry, value, operation, s -> s.equals(slot));
     }
 }
-//?}
+*///?}

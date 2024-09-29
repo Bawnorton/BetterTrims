@@ -34,11 +34,11 @@ public abstract class EntityAttributesMixin {
                 0,
                 2048,
                 //? if >=1.21 {
-                /*true,
+                true,
                 EntityAttribute.Category.NEUTRAL
-                *///?} else {
-                true
-                //?}
+                //?} else {
+                /*true
+                *///?}
         );
         TrimEntityAttributes.CLEAVING = bettertrims$registerPercentage("cleaving");
         TrimEntityAttributes.DENSE = bettertrims$registerTrackedLeveled("dense");
@@ -52,11 +52,11 @@ public abstract class EntityAttributesMixin {
                 0,
                 1024,
                 //? if >=1.21 {
-                /*true,
+                true,
                 EntityAttribute.Category.NEUTRAL
-                *///?} else {
-                true
-                //?}
+                //?} else {
+                /*true
+                *///?}
         );
         TrimEntityAttributes.ENCHANTERS_FAVOUR = bettertrims$registerTrackedLeveled("enchanters_favour");
         TrimEntityAttributes.ENDS_BLESSING = bettertrims$registerLeveled("ends_blessing");
@@ -68,10 +68,10 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.HELLS_BLESSING = bettertrims$registerLeveled("hells_blessing");
         TrimEntityAttributes.HOLY = bettertrims$registerLeveled("holy");
         //? if >=1.21 {
-        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
-        *///?} else {
-        TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false);
-        //?}
+        TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false, EntityAttribute.Category.NEGATIVE);
+        //?} else {
+        /*TrimEntityAttributes.HYDROPHOBIC = bettertrims$register("hydrophobic", 0, 0, 1, false);
+        *///?}
         TrimEntityAttributes.ITEM_MAGNET = bettertrims$registerLeveled("item_magnet");
         TrimEntityAttributes.LAVA_MOVEMENT_SPEED = bettertrims$registerAliased(
                 "lava_movement_speed",
@@ -80,11 +80,11 @@ public abstract class EntityAttributesMixin {
                 1,
                 1024,
                 //? if >=1.21 {
-                /*true,
+                true,
                 EntityAttribute.Category.NEUTRAL
-                *///?} else {
-                true
-                //?}
+                //?} else {
+                /*true
+                *///?}
         );
         TrimEntityAttributes.LAVA_VISIBILITY = bettertrims$registerAliased(
                 "lava_visibility",
@@ -93,11 +93,11 @@ public abstract class EntityAttributesMixin {
                 0,
                 1024,
                 //? if >=1.21 {
-                /*true,
+                true,
                 EntityAttribute.Category.NEUTRAL
-                *///?} else {
-                true
-                //?}
+                //?} else {
+                /*true
+                *///?}
         );
         TrimEntityAttributes.LIGHT_FOOTED = bettertrims$registerLeveled("light_footed");
         TrimEntityAttributes.LOOTING = bettertrims$registerLeveled("looting");
@@ -108,17 +108,17 @@ public abstract class EntityAttributesMixin {
                 0,
                 1024,
                 //? if >=1.21 {
-                /*true,
+                true,
                 EntityAttribute.Category.NEUTRAL
-                *///?} else {
-                true
-                //?}
+                //?} else {
+                /*true
+                *///?}
         );
         //? if >=1.21 {
-        /*TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true, EntityAttribute.Category.NEGATIVE);
-         *///?} else {
-        TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true);
-        //?}
+        TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true, EntityAttribute.Category.NEGATIVE);
+         //?} else {
+        /*TrimEntityAttributes.MIDAS_TOUCH = bettertrims$register("midas_touch", 0, 0, 1, true);
+        *///?}
         TrimEntityAttributes.MINERS_RUSH = bettertrims$registerLeveled("miners_rush");
         TrimEntityAttributes.MOONS_BLESSING = bettertrims$registerTrackedLeveled("moons_blessing");
         TrimEntityAttributes.OVERGROWN = bettertrims$registerLeveled("overgrown");
@@ -137,17 +137,17 @@ public abstract class EntityAttributesMixin {
         TrimEntityAttributes.WALKING_FURNACE = bettertrims$registerLeveled("walking_furnace");
         TrimEntityAttributes.WARRIORS_OF_OLD = bettertrims$registerLeveled("warriors_of_old");
         //? if <1.21 {
-        TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$register("player_block_break_speed", 1, 0, 1024, true);
+        /*TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED = bettertrims$register("player_block_break_speed", 1, 0, 1024, true);
         TrimEntityAttributes.PLAYER_SUBMERGED_MINING_SPEED = bettertrims$register("player_submerged_mining_speed", 0.2, 0.0, 20.0, true);
         TrimEntityAttributes.GENERIC_STEP_HEIGHT = bettertrims$register("generic_step_height", 0.0, 0.0, 10.0, true);
         TrimEntityAttributes.GENERIC_OXYGEN_BONUS = bettertrims$register("generic_oxygen_bonus", 0.0, 0.0, 1024.0, true);
-        //?}
+        *///?}
 
         TrimEffects.init();
     }
 
     //? if >=1.21 {
-    /*@Unique
+    @Unique
     private static RegistryEntry<EntityAttribute> bettertrims$registerLeveled(String id) {
         return bettertrims$register(id, 0, 0, 1024, false);
     }
@@ -206,8 +206,8 @@ public abstract class EntityAttributesMixin {
         return aliasable;
     }
 
-    *///?} else {
-    @Unique
+    //?} else {
+    /*@Unique
     private static EntityAttribute bettertrims$registerLeveled(String id) {
         return bettertrims$register(id, 0, 0, 4, false);
     }
@@ -260,7 +260,7 @@ public abstract class EntityAttributesMixin {
         });
         return aliasable;
     }
-    //?}
+    *///?}
 
     @ModifyArg(
             method = "<clinit>",

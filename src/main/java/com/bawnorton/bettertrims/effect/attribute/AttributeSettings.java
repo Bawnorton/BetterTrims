@@ -100,8 +100,8 @@ public final class AttributeSettings {
 
     @Configurable("item_magnet")
     public static class ItemMagnet {
-        @Configurable(min = 0, max = 4)
-        public static float radius = 1;
+        @Configurable(min = 0, max = 8)
+        public static float radius = 2.5f;
     }
 
     @Configurable("light_footed")

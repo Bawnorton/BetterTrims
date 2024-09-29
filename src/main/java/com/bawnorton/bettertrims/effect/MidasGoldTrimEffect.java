@@ -14,9 +14,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-@Configurable(value = "midas_gold", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image(custom = "getImage"), collapsed = true))
+//@Configurable(value = "midas_gold", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image(custom = "getImage"), collapsed = true))
 public final class MidasGoldTrimEffect extends TrimEffect {
-	@Configurable
+//	@Configurable
 	public static boolean enabled = false;
 
     public MidasGoldTrimEffect(TagKey<Item> materials) {

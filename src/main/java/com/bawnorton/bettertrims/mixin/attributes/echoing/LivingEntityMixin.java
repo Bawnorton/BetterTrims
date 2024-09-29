@@ -51,7 +51,7 @@ public abstract class LivingEntityMixin extends Entity {
     @Shadow public abstract boolean clearStatusEffects();
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
 

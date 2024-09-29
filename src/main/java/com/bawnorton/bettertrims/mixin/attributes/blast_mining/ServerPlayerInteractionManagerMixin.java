@@ -6,10 +6,10 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.EquipmentSlot;import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.Hand;import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -24,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ServerPlayerInteractionManager.class)
 public abstract class ServerPlayerInteractionManagerMixin {
     //? if >=1.21 {
-    /*@WrapOperation(
+    @WrapOperation(
             method = "tryBreakBlock",
             at = @At(
                     value = "INVOKE",
@@ -50,15 +50,15 @@ public abstract class ServerPlayerInteractionManagerMixin {
                 middle.getX(),
                 middle.getY(),
                 middle.getZ(),
-                depth * 3,
+                0,
                 false,
                 World.ExplosionSourceType.NONE
         );
 
         return centre;
     }
-    *///?} else {
-    @WrapOperation(
+    //?} else {
+    /*@WrapOperation(
             method = "tryBreakBlock",
             at = @At(
                     value = "INVOKE",
@@ -79,17 +79,17 @@ public abstract class ServerPlayerInteractionManagerMixin {
 
         world.createExplosion(
                 player,
-                world.getDamageSources().explosion(player, player),
+                null,
                 null,
                 middle.getX(),
                 middle.getY(),
                 middle.getZ(),
-                depth * 3,
+                0,
                 false,
                 World.ExplosionSourceType.NONE
         );
     }
-    //?}
+    *///?}
 
     @Unique
     private static @Nullable Vec3d bettertrims$mineBlocks(World world, BlockPos pos, BlockState state, PlayerEntity player, int depth, ItemStack held) {
@@ -116,15 +116,21 @@ public abstract class ServerPlayerInteractionManagerMixin {
             }
 
             BlockState mined = world.getBlockState(minePos);
+            if(mined.isAir()) return;
             //? if >=1.21 {
-            /*if(!held.getItem().isCorrectForDrops(held, state)) return;
-            *///?} else {
-            if(!held.getItem().isSuitableFor(held, state)) return;
-            //?}
+            if(!held.getItem().isCorrectForDrops(held, state)) return;
+            //?} else {
+            /*if(!held.getItem().isSuitableFor(held, state)) return;
+            *///?}
 
             mined.getBlock().onBreak(world, pos, state, player);
             BlockEntity minedEntity = world.getBlockEntity(minePos);
             Block.dropStacks(mined, world, minePos, minedEntity, player, player.getMainHandStack());
+            //? if >=1.21 {
+            player.getMainHandStack().damage(1, player, EquipmentSlot.MAINHAND);
+            //?} else {
+            /*player.getMainHandStack().damage(1, player, playerx -> playerx.sendToolBreakStatus(Hand.MAIN_HAND));
+            *///?}
             world.breakBlock(minePos, false, player);
         });
 

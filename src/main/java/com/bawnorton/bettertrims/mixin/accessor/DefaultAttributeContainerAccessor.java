@@ -12,16 +12,16 @@ import java.util.Map;
 @Mixin(DefaultAttributeContainer.class)
 public interface DefaultAttributeContainerAccessor {
     //? if >=1.21 {
-    /*@Accessor
+    @Accessor
     Map<RegistryEntry<EntityAttribute>, EntityAttributeInstance> getInstances();
     @Accessor
     @Mutable
     void setInstances(Map<RegistryEntry<EntityAttribute>, EntityAttributeInstance> instances);
-    *///?} else {
-    @Accessor
+    //?} else {
+    /*@Accessor
     Map<EntityAttribute, EntityAttributeInstance> getInstances();
     @Accessor
     @Mutable
     void setInstances(Map<EntityAttribute, EntityAttributeInstance> instances);
-    //?}
+    *///?}
 }

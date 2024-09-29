@@ -10,12 +10,12 @@ import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 //? if >=1.21
-/*import net.minecraft.enchantment.EnchantmentLevelBasedValue;*/
+import net.minecraft.enchantment.EnchantmentLevelBasedValue;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
     //? if >=1.21 {
-    /*@ModifyReturnValue(
+    @ModifyReturnValue(
             method = "getEquipmentDropChance",
             at = @At("RETURN")
     )
@@ -25,8 +25,8 @@ public abstract class EnchantmentHelperMixin {
 
         return original + EnchantmentLevelBasedValue.linear(0.01f).getValue((int) player.getAttributeValue(TrimEntityAttributes.LOOTING));
     }
-    *///?} else {
-    @ModifyReturnValue(
+    //?} else {
+    /*@ModifyReturnValue(
             method = "getLooting",
             at = @At("RETURN")
     )
@@ -36,5 +36,5 @@ public abstract class EnchantmentHelperMixin {
 
         return original + (int) player.getAttributeValue(TrimEntityAttributes.LOOTING);
     }
-    //?}
+    *///?}
 }

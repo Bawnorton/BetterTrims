@@ -3,7 +3,7 @@ import org.gradle.configurationcache.extensions.capitalized
 plugins {
     id("dev.kikugie.stonecutter")
 }
-stonecutter active "1.20.1-fabric" /* [SC] DO NOT EDIT */
+stonecutter active "1.21.1-fabric" /* [SC] DO NOT EDIT */
 
 fun chiseledTask(task : String, group : String) {
     val name = "chiseled${task.capitalized()}"

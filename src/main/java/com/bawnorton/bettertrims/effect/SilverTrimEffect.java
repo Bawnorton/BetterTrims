@@ -26,10 +26,10 @@ public final class SilverTrimEffect extends CelestialEffect {
 
     @Override
     //? if >=1.21 {
-    /*public RegistryEntry<EntityAttribute> getEntityAttribute() {
-    *///?} else {
-    public EntityAttribute getEntityAttribute() {
-    //?}
+    public RegistryEntry<EntityAttribute> getEntityAttribute() {
+    //?} else {
+    /*public EntityAttribute getEntityAttribute() {
+    *///?}
         return TrimEntityAttributes.MOONS_BLESSING;
     }
 

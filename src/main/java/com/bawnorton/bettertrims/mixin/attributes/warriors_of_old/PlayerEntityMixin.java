@@ -54,20 +54,20 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         boolean canSpawn;
         do {
             pos.set(getX() + random.nextBetween(-3, 3), getY() + random.nextBetween(-3, 3), getZ() + random.nextBetween(-3, 3));
-            while(getWorld().getBlockState(pos.down()).isAir() || pos.getY() < getY() - 3) {
+            while(getWorld().getBlockState(pos.down()).isAir() || getY() - 3 < pos.getY()) {
                 pos.setY(pos.getY() - 1);
             }
             //? if >=1.21 {
-            /*canSpawn = getWorld().isBlockSpaceEmpty(null, TrimEntities.ANCIENT_SKELETON.getDimensions().getBoxAt(pos.toCenterPos()));
-            *///?} else {
-            canSpawn = true;
+            canSpawn = getWorld().isBlockSpaceEmpty(null, TrimEntities.ANCIENT_SKELETON.getDimensions().getBoxAt(pos.toCenterPos()));
+            //?} else {
+            /*canSpawn = true;
             for (VoxelShape voxelShape : getWorld().getBlockCollisions(null, TrimEntities.ANCIENT_SKELETON.getDimensions().getBoxAt(pos.toCenterPos()))) {
                 if (!voxelShape.isEmpty()) {
                     canSpawn = false;
                     break;
                 }
             }
-            //?}
+            *///?}
             checks++;
         } while(!canSpawn || checks > 200);
 
@@ -76,7 +76,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         TrimEntities.ANCIENT_SKELETON.spawn(
                 (ServerWorld) getWorld(),
                 //? if <1.21
-                null,
+                /*null,*/
                 entity -> {
                     entity.setOwner((PlayerEntity) (Object) this);
                     bettertrims$ancientSkeletons.add(entity);

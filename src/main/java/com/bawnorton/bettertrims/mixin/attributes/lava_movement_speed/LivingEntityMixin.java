@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @WrapOperation(
             method = "travel",

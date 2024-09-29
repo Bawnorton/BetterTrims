@@ -1,12 +1,15 @@
 package com.bawnorton.bettertrims.mixin.attributes.projectile_deflect_chance;
 
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
+import com.bawnorton.bettertrims.extend.ProjectileEntityExtender;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.world.World;
@@ -22,7 +25,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",
@@ -34,6 +37,9 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         if (!source.isIn(DamageTypeTags.IS_PROJECTILE)) return original;
 
         double chance = getAttributeValue(TrimEntityAttributes.PROJECTILE_DEFLECT_CHANCE) - 1;
-        return deflect(chance) ? 0 : original;
+        if(deflect(chance, source.getSource())) {
+            return 0;
+        }
+        return original;
     }
 }

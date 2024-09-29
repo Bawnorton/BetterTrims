@@ -20,10 +20,12 @@ import java.util.function.Consumer;
 public final class AquariumTrimEffect extends TrimEffect {
     @Configurable
     public static boolean enabled = true;
-    @Configurable(value = "submerged_mining_speed", max = 16, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
-    public static float submergedMiningSpeed = 4;
+    @Configurable(value = "submerged_mining_speed", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
+    public static float submergedMiningSpeed = 1;
     @Configurable(value = "swim_speed", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
-    public static float swimSpeed = 0.5f;
+    public static float swimSpeed = 0.3f;
+    @Configurable(value = "oxygen_bonus", max = 15)
+    public static int oxygenBonus = 3;
 
     public AquariumTrimEffect(TagKey<Item> materials) {
         super(materials);
@@ -32,10 +34,12 @@ public final class AquariumTrimEffect extends TrimEffect {
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
         //? if >=1.21 {
-        /*adder.accept(TrimAttribute.multiplyTotal(() -> EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed).forSlot(EquipmentSlot.HEAD));
-        *///?} else {
-        adder.accept(TrimAttribute.multiplyTotal(() -> TrimEntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed).forSlot(EquipmentSlot.HEAD));
-        //?}
+        adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_OXYGEN_BONUS, oxygenBonus).forSlot(EquipmentSlot.HEAD));
+        adder.accept(TrimAttribute.multiplyTotal(() -> EntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed));
+        //?} else {
+        /*adder.accept(TrimAttribute.adding(() -> TrimEntityAttributes.GENERIC_OXYGEN_BONUS, oxygenBonus).forSlot(EquipmentSlot.HEAD));
+        adder.accept(TrimAttribute.multiplyTotal(() -> TrimEntityAttributes.PLAYER_SUBMERGED_MINING_SPEED, submergedMiningSpeed));
+        *///?}
         adder.accept(TrimAttribute.multiplyBase(() -> TrimEntityAttributes.SWIM_SPEED, swimSpeed));
     }
 

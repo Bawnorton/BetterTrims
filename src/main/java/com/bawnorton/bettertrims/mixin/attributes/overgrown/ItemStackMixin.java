@@ -29,10 +29,10 @@ public abstract class ItemStackMixin {
         if(world.isClient()) return;
         if(!stack.isDamageable()) return;
         //? if >=1.21 {
-        /*if(!selected && !Iterables.contains(livingEntity.getEquippedItems(), stack)) return;
-        *///?} else {
-        if(!selected && !Iterables.contains(livingEntity.getItemsEquipped(), stack)) return;
-        //?}
+        if(!selected && !Iterables.contains(livingEntity.getEquippedItems(), stack)) return;
+        //?} else {
+        /*if(!selected && !Iterables.contains(livingEntity.getItemsEquipped(), stack)) return;
+        *///?}
 
         double overgrown = livingEntity.getAttributeValue(TrimEntityAttributes.OVERGROWN);
         double chance = AttributeSettings.Overgrown.chanceToRepair * overgrown;

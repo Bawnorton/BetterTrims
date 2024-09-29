@@ -1,18 +1,12 @@
 package com.bawnorton.bettertrims.registry.content;
 
-import com.bawnorton.bettertrims.mixin.accessor.DefaultAttributeContainerAccessor;
-import com.bawnorton.bettertrims.mixin.accessor.DefaultAttributeRegistryAccessor;
 import com.bawnorton.bettertrims.util.Aliasable;
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.DefaultAttributeRegistry;
 import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.registry.entry.RegistryEntry;
 
 public final class TrimEntityAttributes {
     //? if >=1.21 {
-    /*public static RegistryEntry<EntityAttribute> ATTACK_DEFLECT_CHANCE;
+    public static RegistryEntry<EntityAttribute> ATTACK_DEFLECT_CHANCE;
     public static RegistryEntry<EntityAttribute> BLAST_MINING;
     public static RegistryEntry<EntityAttribute> BLAST_RESISTANCE;
     public static RegistryEntry<EntityAttribute> BONUS_XP;
@@ -59,25 +53,8 @@ public final class TrimEntityAttributes {
     public static RegistryEntry<EntityAttribute> UNBREAKING;
     public static RegistryEntry<EntityAttribute> WALKING_FURNACE;
     public static RegistryEntry<EntityAttribute> WARRIORS_OF_OLD;
-
-    @SafeVarargs
-    public static void lateAddAttributes(EntityType<?> entityType, Aliasable<RegistryEntry<EntityAttribute>>... aliasables) {
-        if(!DefaultAttributeRegistry.hasDefinitionFor(entityType)) return;
-
-        DefaultAttributeContainerAccessor accessor = (DefaultAttributeContainerAccessor) DefaultAttributeRegistryAccessor.getRegistry().get(entityType);
-        var builder = ImmutableMap.<RegistryEntry<EntityAttribute>, EntityAttributeInstance>builder()
-                        .putAll(accessor.getInstances());
-        for(Aliasable<RegistryEntry<EntityAttribute>> aliasable : aliasables) {
-            if(aliasable.isUsingAlias()) return;
-            if(accessor.getInstances().containsKey(aliasable.get())) return;
-
-            RegistryEntry<EntityAttribute> registryEntry = aliasable.get();
-            builder.put(registryEntry, new EntityAttributeInstance(registryEntry, instance -> {}));
-        }
-        accessor.setInstances(builder.build());
-    }
-    *///?} else {
-    public static EntityAttribute ATTACK_DEFLECT_CHANCE;
+    //?} else {
+    /*public static EntityAttribute ATTACK_DEFLECT_CHANCE;
     public static EntityAttribute BLAST_MINING;
     public static EntityAttribute BLAST_RESISTANCE;
     public static EntityAttribute BONUS_XP;
@@ -129,22 +106,5 @@ public final class TrimEntityAttributes {
     public static EntityAttribute PLAYER_SUBMERGED_MINING_SPEED;
     public static EntityAttribute GENERIC_STEP_HEIGHT;
     public static EntityAttribute GENERIC_OXYGEN_BONUS;
-
-    @SafeVarargs
-    public static void lateAddAttributes(EntityType<?> entityType, Aliasable<EntityAttribute>... aliasables) {
-        if(!DefaultAttributeRegistry.hasDefinitionFor(entityType)) return;
-
-        DefaultAttributeContainerAccessor accessor = (DefaultAttributeContainerAccessor) DefaultAttributeRegistryAccessor.getRegistry().get(entityType);
-        var builder = ImmutableMap.<EntityAttribute, EntityAttributeInstance>builder()
-                .putAll(accessor.getInstances());
-        for(Aliasable<EntityAttribute> aliasable : aliasables) {
-            if(aliasable.isUsingAlias()) return;
-            if(accessor.getInstances().containsKey(aliasable.get())) return;
-
-            EntityAttribute registryEntry = aliasable.get();
-            builder.put(registryEntry, new EntityAttributeInstance(registryEntry, instance -> {}));
-        }
-        accessor.setInstances(builder.build());
-    }
-    //?}
+    *///?}
 }

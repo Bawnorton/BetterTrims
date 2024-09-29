@@ -21,8 +21,8 @@ public final class BetterTrims {
         TrimLootTables.init();
 
         //? if <1.21 {
-        ServerWorldEvents.LOAD.register((server, world) -> TrimEntityAttributeApplicator.registryManager = world.getRegistryManager());
-        //?}
+        /*ServerWorldEvents.LOAD.register((server, world) -> TrimEntityAttributeApplicator.registryManager = world.getRegistryManager());
+        *///?}
     }
 
     public static Identifier id(String path) {

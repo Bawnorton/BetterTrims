@@ -9,10 +9,10 @@ import net.minecraft.util.Identifier;
 
 public final class AncientSkeletonEntityRenderer extends BipedEntityRenderer<AncientSkeletonEntity, AncientSkeletonEntityModel> {
     //? if >=1.21 {
-    /*private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/skeleton/skeleton.png");
-    *///?} else {
-    private static final Identifier TEXTURE = new Identifier("textures/entity/skeleton/skeleton.png");
-    //?}
+    private static final Identifier TEXTURE = Identifier.ofVanilla("textures/entity/skeleton/skeleton.png");
+    //?} else {
+    /*private static final Identifier TEXTURE = new Identifier("textures/entity/skeleton/skeleton.png");
+    *///?}
 
     public AncientSkeletonEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new AncientSkeletonEntityModel(ctx.getPart(EntityModelLayers.SKELETON)), 0.5f);

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends EntityMixin {
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @Override
     protected boolean applyDense(boolean original) {

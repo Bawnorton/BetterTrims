@@ -32,7 +32,7 @@ public abstract class ItemStackMixin implements ItemStackExtender {
     }
 
     //? if >=1.21 {
-    /*@WrapMethod(method = "damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V")
+    @WrapMethod(method = "damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V")
     private void captureWearer(int amount, LivingEntity entity, EquipmentSlot slot, Operation<Void> original) {
         bettertrims$setWearer(entity);
         original.call(amount, entity, slot);
@@ -59,8 +59,8 @@ public abstract class ItemStackMixin implements ItemStackExtender {
     private void addAttributesToTrims(CallbackInfo ci) {
         TrimEntityAttributeApplicator.apply((ItemStack) (Object) this);
     }
-    *///?} else {
-    @WrapMethod(method = "damage(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V")
+    //?} else {
+    /*@WrapMethod(method = "damage(ILnet/minecraft/entity/LivingEntity;Ljava/util/function/Consumer;)V")
     private <T> void captureWearer(int amount, LivingEntity entity, Consumer<T> breakCallback, Operation<Void> original) {
         bettertrims$setWearer(entity);
         original.call(amount, entity, breakCallback);
@@ -77,5 +77,5 @@ public abstract class ItemStackMixin implements ItemStackExtender {
         }
         return original;
     }
-    //?}
+    *///?}
 }

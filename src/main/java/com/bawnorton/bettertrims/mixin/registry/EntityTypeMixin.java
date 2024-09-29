@@ -18,11 +18,11 @@ public abstract class EntityTypeMixin {
                 "ancient_skeleton",
                 EntityType.Builder.create(AncientSkeletonEntity::new, SpawnGroup.CREATURE)
                         //? if >=1.21 {
-                        /*.dimensions(0.6F, 2F)
+                        .dimensions(0.6F, 2F)
                         .eyeHeight(1.74F)
-                        *///?} else {
-                        .setDimensions(0.6F, 2F)
-                        //?}
+                        //?} else {
+                        /*.setDimensions(0.6F, 2F)
+                        *///?}
                         .maxTrackingRange(8)
         );
     }

@@ -18,10 +18,10 @@ public abstract class CelestialEffect extends TrimEffect {
     }
 
     //? if >=1.21 {
-    /*public abstract RegistryEntry<EntityAttribute> getEntityAttribute();
-    *///?} else {
-    public abstract EntityAttribute getEntityAttribute();
-    //?}
+    public abstract RegistryEntry<EntityAttribute> getEntityAttribute();
+    //?} else {
+    /*public abstract EntityAttribute getEntityAttribute();
+    *///?}
 
     public abstract float getMovementSpeed();
 

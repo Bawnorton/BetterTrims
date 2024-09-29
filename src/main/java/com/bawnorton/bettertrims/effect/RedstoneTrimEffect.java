@@ -28,10 +28,10 @@ public final class RedstoneTrimEffect extends TrimEffect {
     protected void addAttributes(Consumer<TrimAttribute> adder) {
         adder.accept(TrimAttribute.multiplyBase(() -> EntityAttributes.GENERIC_MOVEMENT_SPEED, movementSpeed));
         //? if >=1.21 {
-        /*adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
-        *///?} else {
-        adder.accept(TrimAttribute.adding(() -> TrimEntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
-        //?}
+        adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
+        //?} else {
+        /*adder.accept(TrimAttribute.adding(() -> TrimEntityAttributes.GENERIC_STEP_HEIGHT, stepHeight));
+        *///?}
     }
 
     @Override

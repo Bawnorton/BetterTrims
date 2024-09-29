@@ -22,11 +22,11 @@ public abstract class InGameHudMixin {
             at = @At(
                     value = "INVOKE",
                     //? if >=1.21 {
-                    /*target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"
-                    *///?} else {
-                    target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z",
+                    target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/registry/entry/RegistryEntry;)Z"
+                    //?} else {
+                    /*target = "Lnet/minecraft/entity/player/PlayerEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z",
                     ordinal = 0
-                    //?}
+                    *///?}
             )
     )
     private boolean orHasRegenAttribute(boolean original) {

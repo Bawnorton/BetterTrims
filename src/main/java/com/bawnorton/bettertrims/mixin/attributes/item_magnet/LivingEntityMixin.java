@@ -28,14 +28,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 //? if >=1.21 {
-/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
-*///?}
+//?}
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -58,7 +58,7 @@ public abstract class LivingEntityMixin extends Entity {
             ItemStack helm = player.getEquippedStack(EquipmentSlot.HEAD);
             if(helm.getItem() == Items.IRON_HELMET) {
                 //? if >=1.21 {
-                /*AttributeModifiersComponent component = helm.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+                AttributeModifiersComponent component = helm.get(DataComponentTypes.ATTRIBUTE_MODIFIERS);
                 if(component != null) {
                     component.modifiers()
                             .stream()
@@ -66,12 +66,12 @@ public abstract class LivingEntityMixin extends Entity {
                             .findFirst()
                             .ifPresent(entry -> TrimCriteria.MAGNETIC_HELMET_WORN.trigger(player));
                 }
-                *///?} else {
-                Multimap<EntityAttribute, EntityAttributeModifier> modifiers = helm.getAttributeModifiers(EquipmentSlot.HEAD);
+                //?} else {
+                /*Multimap<EntityAttribute, EntityAttributeModifier> modifiers = helm.getAttributeModifiers(EquipmentSlot.HEAD);
                 if(!modifiers.get(TrimEntityAttributes.ITEM_MAGNET).isEmpty()) {
                     TrimCriteria.MAGNETIC_HELMET_WORN.trigger(player);
-                };
-                //?}
+                }
+                *///?}
             }
         }
 

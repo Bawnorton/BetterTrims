@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.mixin.attributes.unbreaking;
 
 
 //? if <1.21 {
-import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+/*import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.bawnorton.bettertrims.extend.ItemStackExtender;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.enchantment.UnbreakingEnchantment;
@@ -27,4 +27,4 @@ public abstract class UnbreakingEnchantmentMixin {
         return original + level;
     }
 }
-//?}
+*///?}

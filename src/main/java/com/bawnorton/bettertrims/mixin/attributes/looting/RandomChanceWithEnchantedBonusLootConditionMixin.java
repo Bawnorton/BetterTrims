@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.looting;
 
 //? if >=1.21 {
-/*import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.LivingEntity;
@@ -25,4 +25,4 @@ public abstract class RandomChanceWithEnchantedBonusLootConditionMixin {
         return (int) (original + player.getAttributeValue(TrimEntityAttributes.LOOTING));
     }
 }
-*///?}
+//?}

@@ -3,16 +3,19 @@ package com.bawnorton.bettertrims.mixin.attributes;
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.event.PreRegistryFreezeCallback;
 import com.bawnorton.bettertrims.extend.LivingEntityExtender;
+import com.bawnorton.bettertrims.mixin.accessor.DefaultAttributeContainerAccessor;
 import com.bawnorton.bettertrims.registry.TrimRegistries;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+import com.bawnorton.bettertrims.util.Aliasable;
+import com.google.common.collect.ImmutableMap;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
@@ -29,9 +32,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 //? if >=1.21
-/*import net.minecraft.component.DataComponentTypes;*/
+import net.minecraft.component.DataComponentTypes;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements LivingEntityExtender {
@@ -42,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     @Shadow public abstract Iterable<ItemStack> getArmorItems();
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @Unique
     private boolean bettertrims$avoidedDamage;
@@ -97,24 +101,58 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         original.add(TrimEntityAttributes.WALKING_FURNACE);
         original.add(TrimEntityAttributes.UNBREAKING);
 
-        PreRegistryFreezeCallback.POST.register(registry -> {
-            if (registry != Registries.ATTRIBUTE) {
-                return;
-            }
-
-            Registries.ENTITY_TYPE.stream()
-                    .forEach(entityType -> TrimEntityAttributes.lateAddAttributes(
-                            entityType,
-                            TrimEntityAttributes.CARMOT_SHIELD,
-                            TrimEntityAttributes.LAVA_MOVEMENT_SPEED,
-                            TrimEntityAttributes.LAVA_VISIBILITY
-                    ));
-        });
-
         //? if <1.21 {
-        original.add(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
+        /*original.add(TrimEntityAttributes.GENERIC_STEP_HEIGHT);
         original.add(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
-        //?}
+        *///?}
+        return original;
+    }
+
+    @Override
+    //? if >=1.21 {
+    public void bettertrims$addLateAttributes(Consumer<Aliasable<RegistryEntry<EntityAttribute>>> adder) {
+    //?} else {
+    /*public void bettertrims$addLateAttributes(Consumer<Aliasable<EntityAttribute>> adder) {
+    *///?}
+        adder.accept(TrimEntityAttributes.CARMOT_SHIELD);
+        adder.accept(TrimEntityAttributes.LAVA_MOVEMENT_SPEED);
+    }
+
+    @ModifyExpressionValue(
+            method = "<init>",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/attribute/DefaultAttributeRegistry;get(Lnet/minecraft/entity/EntityType;)Lnet/minecraft/entity/attribute/DefaultAttributeContainer;"
+            )
+    )
+    private DefaultAttributeContainer lateAddAttributes(DefaultAttributeContainer original) {
+        DefaultAttributeContainerAccessor accessor = (DefaultAttributeContainerAccessor) original;
+        //? if >=1.21 {
+        var builder = ImmutableMap.<RegistryEntry<EntityAttribute>, EntityAttributeInstance>builder()
+                .putAll(accessor.getInstances());
+        List<Aliasable<RegistryEntry<EntityAttribute>>> lateAttributes = new ArrayList<>();
+        bettertrims$addLateAttributes(lateAttributes::add);
+        for(Aliasable<RegistryEntry<EntityAttribute>> aliasable : lateAttributes) {
+            if(aliasable.isUsingAlias()) continue;
+            if(accessor.getInstances().containsKey(aliasable.get())) continue;
+
+            RegistryEntry<EntityAttribute> registryEntry = aliasable.get();
+            builder.put(registryEntry, new EntityAttributeInstance(registryEntry, instance -> {}));
+        }
+        //?} else {
+        /*var builder = ImmutableMap.<EntityAttribute, EntityAttributeInstance>builder()
+                .putAll(accessor.getInstances());
+        List<Aliasable<EntityAttribute>> lateAttributes = new ArrayList<>();
+                bettertrims$addLateAttributes(lateAttributes::add);
+        for(Aliasable<EntityAttribute> aliasable : lateAttributes) {
+            if(aliasable.isUsingAlias()) continue;
+            if(accessor.getInstances().containsKey(aliasable.get())) continue;
+
+            EntityAttribute registryEntry = aliasable.get();
+            builder.put(registryEntry, new EntityAttributeInstance(registryEntry, instance -> {}));
+        }
+        *///?}
+        accessor.setInstances(builder.build());
         return original;
     }
  
@@ -159,11 +197,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
             ordinal = 1
     )
     private boolean updateDamageAvoidance(boolean original) {
-        if (original && bettertrims$didAvoidDamage()) {
-            bettertrims$setAvoidedDamage(false);
-            return false;
-        }
-        return true;
+        return original && !bettertrims$didAvoidDamage();
     }
 
     @ModifyReturnValue(
@@ -179,7 +213,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         List<RegistryEntry<ArmorTrimMaterial>> wornMaterials = new ArrayList<>();
         World world = getWorld();
         getArmorItems().forEach(stack -> {
-            ArmorTrim trim = /*$ trim_getter >>*/ ArmorTrim.getTrim(world.getRegistryManager(),stack).orElse(null);
+            ArmorTrim trim = /*$ trim_getter >>*/ stack.get(DataComponentTypes.TRIM);
             if(trim == null) return;
 
             wornMaterials.add(trim.getMaterial());

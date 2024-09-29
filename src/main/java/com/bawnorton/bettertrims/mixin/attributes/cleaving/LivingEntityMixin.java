@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 //? if >=1.21 {
-/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ProfileComponent;
-*///?}
+//?}
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -93,11 +93,11 @@ public abstract class LivingEntityMixin extends Entity {
         } else if (self instanceof PlayerEntity player) {
             ItemStack playerHead = Items.PLAYER_HEAD.getDefaultStack();
             //? if >=1.21 {
-            /*playerHead.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
-             *///?} else {
-            NbtCompound nbt = playerHead.getOrCreateNbt();
+            playerHead.set(DataComponentTypes.PROFILE, new ProfileComponent(player.getGameProfile()));
+             //?} else {
+            /*NbtCompound nbt = playerHead.getOrCreateNbt();
             nbt.putUuid("SkullOwner", player.getUuid());
-            //?}
+            *///?}
             skull = playerHead;
         } else {
             skull = Items.AIR.getDefaultStack();

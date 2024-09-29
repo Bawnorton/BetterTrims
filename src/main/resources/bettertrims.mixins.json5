@@ -4,7 +4,7 @@
   "minVersion": "0.8",
   "mixins": [
     //? if <1.21 {
-    "accessor.ItemAccessor",
+    /*"accessor.ItemAccessor",
     "attributes.unbreaking.UnbreakingEnchantmentMixin",
     "attributes.block_break_speed.PlayerEntityMixin",
     "attributes.step_height.LivingEntityMixin",
@@ -12,8 +12,9 @@
     "attributes.holy.PlayerEntityMixin",
     "attributes.holy.MobEntityMixin",
     "attributes.submerged_mining_speed.PlayerEntityMixin",
-    //?} else {
-    /*"accessor.AttributeModifiersComponentAccessor",
+    "attributes.carmot_shield.CarmotShieldMixin",
+    *///?} else {
+    "accessor.AttributeModifiersComponentAccessor",
     "registry.DataComponentTypesMixin",
     "attributes.unbreaking.EnchantmentHelperMixin",
     "attributes.brewers_dream.StatusEffectInstanceMixin$ParametersMixin",
@@ -22,7 +23,7 @@
     "attributes.looting.EnchantedCountIncreaseLootFunctionMixin",
     "attributes.unbreaking.EnchantmentHelperMixin",
     "registry.DataComponentTypesMixin",
-    *///?}
+    //?}
     "accessor.DefaultAttributeContainerAccessor",
     "accessor.DefaultAttributeRegistryAccessor",
     "accessor.PlayerEntityAccessor",
@@ -93,6 +94,8 @@
     "trim.leather.PowderSnowBlockMixin",
     "trim.netherite.ItemEntityMixin",
     "attributes.looting.EnchantmentHelperMixin",
+    "attributes.projectile_deflect_chance.PersistentProjectileEntityMixin",
+    "attributes.projectile_deflect_chance.ProjectileEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

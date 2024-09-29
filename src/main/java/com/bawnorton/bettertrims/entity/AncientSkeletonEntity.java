@@ -49,7 +49,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 //? if >=1.21 {
-/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifiersComponent;
 
 public final class AncientSkeletonEntity extends TameableEntity {
@@ -209,8 +209,8 @@ public final class AncientSkeletonEntity extends TameableEntity {
         return null;
     }
 }
-*///?} else {
-import com.bawnorton.bettertrims.mixin.accessor.ItemAccessor;
+//?} else {
+/*import com.bawnorton.bettertrims.mixin.accessor.ItemAccessor;
 
 public final class AncientSkeletonEntity extends TameableEntity {
     @SuppressWarnings("ConstantValue")
@@ -363,4 +363,4 @@ public final class AncientSkeletonEntity extends TameableEntity {
         return getWorld();
     }
 }
-//?}
+*///?}

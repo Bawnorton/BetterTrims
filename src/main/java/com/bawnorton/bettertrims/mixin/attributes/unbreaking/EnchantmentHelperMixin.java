@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.unbreaking;
 
 //? if >=1.21 {
-/*import com.bawnorton.bettertrims.extend.ItemStackExtender;
+import com.bawnorton.bettertrims.extend.ItemStackExtender;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -27,4 +27,4 @@ public abstract class EnchantmentHelperMixin {
                 .apply((int) wearer.getAttributeValue(TrimEntityAttributes.UNBREAKING), wearer.getRandom(), original);
     }
 }
-*///?}
+//?}

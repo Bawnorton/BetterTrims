@@ -32,8 +32,8 @@ public final class CelestiumTrimEffect extends TrimEffect {
 
     @Override
     protected void addAttributes(Consumer<TrimAttribute> adder) {
-        adder.accept(TrimAttribute.adding(TrimEntityAttributes.ELYTRA_ROCKET_SPEED::get, elytraRocketSpeed));
-        adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_MOVEMENT_SPEED, movementSpeed));
+        adder.accept(TrimAttribute.multiplyBase(TrimEntityAttributes.ELYTRA_ROCKET_SPEED::get, elytraRocketSpeed));
+        adder.accept(TrimAttribute.multiplyBase(() -> EntityAttributes.GENERIC_MOVEMENT_SPEED, movementSpeed));
         adder.accept(TrimAttribute.adding(() -> EntityAttributes.GENERIC_ATTACK_DAMAGE, attackDamage));
     }
 

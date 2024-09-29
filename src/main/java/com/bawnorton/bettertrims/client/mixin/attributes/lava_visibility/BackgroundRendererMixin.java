@@ -42,10 +42,10 @@ public abstract class BackgroundRendererMixin {
                     @At(
                             value = "CONSTANT",
                             //? if >=1.21 {
-                            /*args = "floatValue=5.0",
-                            *///?} else {
-                            args = "floatValue=3.0",
-                            //?}
+                            args = "floatValue=5.0",
+                            //?} else {
+                            /*args = "floatValue=3.0",
+                            *///?}
                             ordinal = 0
                     ),
                     @At(

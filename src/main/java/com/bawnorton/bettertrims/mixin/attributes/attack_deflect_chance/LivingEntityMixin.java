@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",
@@ -32,6 +32,6 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
         if(original <= 0) return original;
 
         double chance = getAttributeValue(TrimEntityAttributes.ATTACK_DEFLECT_CHANCE) - 1;
-        return deflect(chance) ? 0 : original;
+        return deflect(chance, source.getSource()) ? 0 : original;
     }
 }

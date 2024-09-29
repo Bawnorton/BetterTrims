@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin extends Entity implements LivingEntityEx
     }
 
     //$ attribute_shadow
-    @Shadow public abstract double getAttributeValue(EntityAttribute attribute);
+    @Shadow public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
 
     @ModifyVariable(
             method = "applyArmorToDamage",

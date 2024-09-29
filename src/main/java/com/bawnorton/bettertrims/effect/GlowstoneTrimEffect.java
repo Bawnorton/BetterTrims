@@ -28,16 +28,16 @@ public final class GlowstoneTrimEffect extends CelestialEffect {
     }
 
     //? if >=1.21 {
-    /*@Override
+    @Override
     public RegistryEntry<EntityAttribute> getEntityAttribute() {
         return TrimEntityAttributes.HELLS_BLESSING;
     }
-    *///?} else {
-    @Override
+    //?} else {
+    /*@Override
     public EntityAttribute getEntityAttribute() {
         return TrimEntityAttributes.HELLS_BLESSING;
     }
-    //?}
+    *///?}
 
     @Override
     public float getMovementSpeed() {

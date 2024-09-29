@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.mixin.attributes.holy;
 
 //? if <1.21 {
 
-import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
+/*import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.Entity;
@@ -34,4 +34,4 @@ public abstract class MobEntityMixin extends LivingEntity {
         return original + (float) getAttributeValue(TrimEntityAttributes.HOLY) * AttributeSettings.Holy.damage;
     }
 }
-//?}
+*///?}

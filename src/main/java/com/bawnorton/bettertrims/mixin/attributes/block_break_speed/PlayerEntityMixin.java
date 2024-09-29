@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.block_break_speed;
 
 //? if <1.21 {
-import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+/*import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,4 +24,4 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         return original * (float) getAttributeValue(TrimEntityAttributes.PLAYER_BLOCK_BREAK_SPEED);
     }
 }
-//?}
+*///?}

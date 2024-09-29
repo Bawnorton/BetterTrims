@@ -13,7 +13,7 @@ import net.minecraft.registry.tag.TagKey;
 import java.util.function.Consumer;
 
 //? if >=1.21
-/*import net.minecraft.component.type.AttributeModifierSlot;*/
+import net.minecraft.component.type.AttributeModifierSlot;
 
 @Configurable(value = "slime", yacl = @Yacl(type = OptionType.GAME_RESTART, image = @Image("minecraft:textures/item/slime_ball.png"), collapsed = true))
 public final class SlimeTrimEffect extends TrimEffect {

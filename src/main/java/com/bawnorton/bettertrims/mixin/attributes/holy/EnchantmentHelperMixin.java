@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.holy;
 
 //? if >=1.21 {
-/*import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
+import com.bawnorton.bettertrims.effect.attribute.AttributeSettings;
 import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -27,4 +27,4 @@ public abstract class EnchantmentHelperMixin {
         return original + (float) attacker.getAttributeValue(TrimEntityAttributes.HOLY) * AttributeSettings.Holy.damage;
     }
 }
-*///?}
+//?}

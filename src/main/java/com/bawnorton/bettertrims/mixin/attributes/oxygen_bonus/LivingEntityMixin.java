@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.mixin.attributes.oxygen_bonus;
 
 //? if <1.21 {
-import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
+/*import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -25,4 +25,4 @@ public abstract class LivingEntityMixin {
         return original + (int) getAttributeValue(TrimEntityAttributes.GENERIC_OXYGEN_BONUS);
     }
 }
-//?}
+*///?}

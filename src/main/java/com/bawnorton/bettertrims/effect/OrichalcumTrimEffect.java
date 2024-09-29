@@ -19,7 +19,7 @@ public final class OrichalcumTrimEffect extends TrimEffect {
 	@Configurable
 	public static boolean enabled = true;
     @Configurable(value = "attack_damage", max = 10, yacl = @Yacl(formatter = "com.bawnorton.bettertrims.client.BetterTrimsClient#twoDpFormatter"))
-    public static float attackDamage = 1f;
+    public static float attackDamage = 1.5f;
 
     public OrichalcumTrimEffect(TagKey<Item> materials) {
         super(materials);
