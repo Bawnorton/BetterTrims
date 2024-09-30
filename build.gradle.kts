@@ -165,7 +165,7 @@ if(loader.isFabric) {
         }
 
         include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1")!!)!!)
-        runtimeOnly("com.github.bawnorton:mixinsquared-fabric:0.2.0")
+        runtimeOnly("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")
 
         if (mcVersion.lessThan("1.21")) {
             modRuntimeOnly("maven.modrinth:allthetrims:${property("allthetrims")}")

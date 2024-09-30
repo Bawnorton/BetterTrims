@@ -1,3 +1,7 @@
+# 3.2.2
+
+- Fix M^2 dep
+
 # 3.2.1
 
 - Fix warriors of old causing server to hang
