@@ -32,10 +32,19 @@ public abstract class ItemStackMixin implements ItemStackExtender {
     }
 
     //? if >=1.21 {
-    @WrapMethod(method = "damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V")
-    private void captureWearer(int amount, LivingEntity entity, EquipmentSlot slot, Operation<Void> original) {
+    @Inject(
+            method = "damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V",
+            at = @At("HEAD")
+    )
+    private void captureWearer(int amount, LivingEntity entity, EquipmentSlot slot, CallbackInfo ci) {
         bettertrims$setWearer(entity);
-        original.call(amount, entity, slot);
+    }
+
+    @Inject(
+            method = "damage(ILnet/minecraft/entity/LivingEntity;Lnet/minecraft/entity/EquipmentSlot;)V",
+            at = @At("TAIL")
+    )
+    private void releaseWearer(int amount, LivingEntity entity, EquipmentSlot slot, CallbackInfo ci) {
         bettertrims$setWearer(null);
     }
 

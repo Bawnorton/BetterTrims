@@ -1,3 +1,8 @@
+# 3.2.3
+
+- Work around `@WrapMethod` not remapping in Neoforge correctly
+- Update Neoforge
+
 # 3.2.2
 
 - Fix M^2 dep
