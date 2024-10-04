@@ -4,6 +4,7 @@ import com.bawnorton.bettertrims.registry.content.TrimEntityAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.ThornsEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -53,8 +54,9 @@ public abstract class EnchantmentHelperMixin {
             method = "getLevel",
             at = @At("RETURN")
     )
-    private static int addThornsAttributes(int original) {
+    private static int addThornsAttributes(int original, Enchantment enchantment, ItemStack stack) {
         LivingEntity livingEntity = bettertrims$entityCapture.get();
+        if(!(enchantment instanceof ThornsEnchantment)) return original;
         if(livingEntity == null) return original;
 
         int thornsLevel = (int) livingEntity.getAttributeValue(TrimEntityAttributes.THORNS);

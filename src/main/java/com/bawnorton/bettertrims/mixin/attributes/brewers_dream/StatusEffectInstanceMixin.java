@@ -50,10 +50,10 @@ public abstract class StatusEffectInstanceMixin implements ModifiedTimeHolder {
 
     @ModifyExpressionValue(
             //? if fabric {
-            /*method = "method_48560",
-            *///?} elif neoforge {
-            method = "lambda$tickDownDuration$3",
-            //?}
+            method = "method_48560",
+            //?} elif neoforge {
+            /*method = "lambda$tickDownDuration$3",
+            *///?}
             at = @At(
                     value = "CONSTANT",
                     args = "intValue=1"

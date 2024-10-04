@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.platform;
 
 //? if fabric {
-/*import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 
 public final class Platform {
     public static boolean isModLoaded(String modId) {
@@ -9,8 +9,8 @@ public final class Platform {
     }
 }
 
-*///?} elif neoforge {
-import net.neoforged.fml.ModList;
+//?} elif neoforge {
+/*import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.LoadingModList;
 
 public final class Platform {
@@ -26,4 +26,4 @@ public final class Platform {
         return false;
     }
 }
-//?}
+*///?}

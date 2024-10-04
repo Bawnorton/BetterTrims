@@ -2,7 +2,7 @@ package com.bawnorton.bettertrims.client.compat.lambdynlights;
 
 //? if fabric {
 
-/*import com.bawnorton.bettertrims.client.compat.DynLightsCompat;
+import com.bawnorton.bettertrims.client.compat.DynLightsCompat;
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,9 +20,9 @@ public final class LambDynLightsCompat extends DynLightsCompat {
         return DynamicLightHandlers.getDynamicLightHandler(type) != null;
     }
 }
-*///?} else {
-public final class LambDynLightsCompat {
+//?} else {
+/*public final class LambDynLightsCompat {
     public void init() {
     }
 }
-//?}
+*///?}

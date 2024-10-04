@@ -15,10 +15,10 @@ public abstract class InGameHudMixin {
 
     @ModifyExpressionValue(
             //? if fabric {
-            /*method = "renderStatusBars",
-            *///?} elif neoforge {
-            method = "renderHealthLevel",
-            //?}
+            method = "renderStatusBars",
+            //?} elif neoforge {
+            /*method = "renderHealthLevel",
+            *///?}
             at = @At(
                     value = "INVOKE",
                     //? if >=1.21 {

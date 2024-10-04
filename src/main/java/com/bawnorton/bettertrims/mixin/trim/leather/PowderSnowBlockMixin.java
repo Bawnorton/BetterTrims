@@ -19,7 +19,7 @@ import net.minecraft.component.DataComponentTypes;
 @Mixin(PowderSnowBlock.class)
 public abstract class PowderSnowBlockMixin {
     //? if fabric {
-    /*@WrapOperation(
+    @WrapOperation(
             method = "canWalkOnPowderSnow",
             at = @At(
                     value = "INVOKE",
@@ -30,13 +30,13 @@ public abstract class PowderSnowBlockMixin {
         if(original.call(stack, item)) return true;
 
         World world = entity.getWorld();
-        ArmorTrim trim = /^$ trim_getter >>^/ stack.get(DataComponentTypes.TRIM);
+        ArmorTrim trim = /*$ trim_getter >>*/ stack.get(DataComponentTypes.TRIM);
         if(trim == null) return false;
 
         return TrimEffects.LEATHER.matchesMaterial(trim.getMaterial());
     }
-    *///?} elif neoforge {
-    @WrapOperation(
+    //?} elif neoforge {
+    /*@WrapOperation(
             method = "canWalkOnPowderSnow",
             at = @At(
                     value = "INVOKE",
@@ -51,5 +51,5 @@ public abstract class PowderSnowBlockMixin {
 
         return TrimEffects.LEATHER.matchesMaterial(trim.getMaterial());
     }
-    //?}
+    *///?}
 }
