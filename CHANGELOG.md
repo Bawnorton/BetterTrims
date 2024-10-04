@@ -1,5 +1,7 @@
 # 3.2.4
 
+- Fix prismarine apply all gear enchantments
+
 # 3.2.3
 
 - Work around `@WrapMethod` not remapping in Neoforge correctly
