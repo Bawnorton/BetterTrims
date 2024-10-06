@@ -56,15 +56,16 @@ public final class TrimEntityAttributeApplicator {
     //?} else {
     /*public static DynamicRegistryManager registryManager;
 
-    public static void apply(ItemStack itemStack) {
-        ArmorTrim trim = ArmorTrim.getTrim(registryManager, itemStack).orElse(null);
+    public static void apply(ItemStack stack, Multimap<EntityAttribute, EntityAttributeModifier> existingModifiers) {
+        ArmorTrim trim = ArmorTrim.getTrim(registryManager, stack).orElse(null);
         if(trim == null) return;
 
-        Item item = itemStack.getItem();
+        Item item = stack.getItem();
         if(!(item instanceof Equipment equipment)) return;
 
         EquipmentSlot slot = equipment.getSlotType();
-        Multimap<EntityAttribute, EntityAttributeModifier> modifiers = itemStack.getAttributeModifiers(slot);
+        Multimap<EntityAttribute, EntityAttributeModifier> modifiers = stack.getAttributeModifiers(slot);
+        modifiers.putAll(existingModifiers);
         TrimRegistries.TRIM_EFFECTS.forEach(trimEffect -> {
             Multimap<EntityAttribute, EntityAttributeModifier> toRemove = HashMultimap.create();
             trimEffect.getEffectIds(slot).forEach(id -> modifiers.entries()
@@ -79,8 +80,12 @@ public final class TrimEntityAttributeApplicator {
                 trimEffect.forEachAttribute(slot, modifiers::put);
             }
         });
-        itemStack.removeSubNbt("AttributeModifiers");
-        modifiers.forEach((attribute, modifier) -> itemStack.addAttributeModifier(attribute, modifier, slot));
+        stack.removeSubNbt("AttributeModifiers");
+        modifiers.forEach((attribute, modifier) -> stack.addAttributeModifier(attribute, modifier, slot));
+    }
+
+    public static void apply(ItemStack itemStack) {
+        apply(itemStack, HashMultimap.create());
     }
     *///?}
 }

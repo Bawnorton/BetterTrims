@@ -1,3 +1,7 @@
+# 3.2.5
+
+- Fix transform recipes not respecting default attribute modifiers
+
 # 3.2.4
 
 - Fix prismarine apply all gear enchantments

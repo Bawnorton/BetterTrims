@@ -13,6 +13,7 @@
     "attributes.holy.MobEntityMixin",
     "attributes.submerged_mining_speed.PlayerEntityMixin",
     "attributes.carmot_shield.CarmotShieldMixin",
+    "attributes.SmithingTransformRecipeMixin",
     *///?} else {
     "accessor.AttributeModifiersComponentAccessor",
     "registry.DataComponentTypesMixin",
