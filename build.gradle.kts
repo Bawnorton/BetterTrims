@@ -253,11 +253,25 @@ publishMods {
         accessToken = providers.gradleProperty("MODRINTH_TOKEN")
         projectId = mod.modrinthProjId
         minecraftVersions.addAll(mod.supportedVersions.split(", "))
+
+        requires("configurable")
+        if(loader.isFabric) {
+            requires("fabric-api")
+        } else if (loader.isNeoForge) {
+            requires("forgified-fabric-api")
+        }
     }
 
     curseforge {
         accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
         projectId = mod.curseforgeProjId
         minecraftVersions.addAll(mod.supportedVersions.split(", "))
+
+        requires("configurable")
+        if(loader.isFabric) {
+            requires("fabric-api")
+        } else if (loader.isNeoForge) {
+            requires("forgified-fabric-api")
+        }
     }
 }
