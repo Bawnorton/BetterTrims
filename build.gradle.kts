@@ -128,6 +128,7 @@ if (stonecutter.current.isActive) {
 if(loader.isFabric) {
     fabricApi {
         configureDataGeneration {
+            createRunConfiguration = true
             modId = mod.id
         }
     }
@@ -155,14 +156,12 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$mcVersion")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 
-        if("ideaSyncTask" in project.gradle.startParameter.taskNames) {
-            modRuntimeOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
-            modRuntimeOnly("maven.modrinth:alloy-forgery:${property("alloy_forgery")}")
-            modRuntimeOnly("maven.modrinth:additionalentityattributes:${property("additional_entity_attributes")}")
-            modRuntimeOnly("io.wispforest:owo-lib:${property("owo_lib")}")
-            modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
-            modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
-        }
+        modRuntimeOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
+        modRuntimeOnly("maven.modrinth:alloy-forgery:${property("alloy_forgery")}")
+        modRuntimeOnly("maven.modrinth:additionalentityattributes:${property("additional_entity_attributes")}")
+        modRuntimeOnly("io.wispforest:owo-lib:${property("owo_lib")}")
+        modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
+        modRuntimeOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
 
         include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.4.1")!!)!!)
         runtimeOnly("com.github.bawnorton.mixinsquared:mixinsquared-fabric:0.2.0")

@@ -49,6 +49,6 @@ public final class AquariumTrimEffect extends TrimEffect {
     }
 
     public static CompletableFuture<Optional<ImageRenderer>> getImage() {
-        return getImageFor(AdditionalItemTags.ADAMANTITE_INGOTS);
+        return getImageFor(AdditionalItemTags.AQUARIUM_INGOTS);
     }
 }

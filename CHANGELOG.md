@@ -1,3 +1,8 @@
+# 3.2.6
+
+- Fix aquarium item display
+- Update configurable
+
 # 3.2.5
 
 - Fix transform recipes not respecting default attribute modifiers
