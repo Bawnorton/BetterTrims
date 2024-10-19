@@ -3,8 +3,7 @@ package com.bawnorton.bettertrims.mixin.attributes.electrifying;
 import com.bawnorton.bettertrims.effect.CopperTrimEffect;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.util.FloodFill;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerChunkManager;
@@ -24,14 +23,14 @@ import java.util.function.Consumer;
 public abstract class ServerWorldMixin {
     @Shadow @Final private ServerChunkManager chunkManager;
 
-    @WrapOperation(
+    @ModifyReceiver(
             method = "tick",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/EntityList;forEach(Ljava/util/function/Consumer;)V"
             )
     )
-    private void applyElectrifying(EntityList instance, Consumer<Entity> entityConsumer, Operation<Void> original) {
+    private EntityList applyElectrifying(EntityList instance, Consumer<Entity> action) {
         instance.forEach(entity -> {
             //? if >=1.21 {
             if(!chunkManager.chunkLoadingManager.getTicketManager().shouldTickEntities(entity.getChunkPos().toLong())) return;
@@ -49,6 +48,6 @@ public abstract class ServerWorldMixin {
             FloodFill.solid(info.pos(), info.maxDist(), result, info.isWall());
             result.forEach(vec3d -> toElectrify.add(BlockPos.ofFloored(vec3d)));
         });
-        original.call(instance, entityConsumer);
+        return instance;
     }
 }

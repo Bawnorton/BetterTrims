@@ -1,3 +1,8 @@
+# 3.2.7
+
+- No longer wrap entity ticking to avoid false positive reports
+- Update configurable
+
 # 3.2.6
 
 - Fix aquarium item display
