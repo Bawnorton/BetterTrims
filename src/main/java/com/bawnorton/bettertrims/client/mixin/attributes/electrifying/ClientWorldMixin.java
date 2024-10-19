@@ -4,8 +4,7 @@ import com.bawnorton.bettertrims.effect.CopperTrimEffect;
 import com.bawnorton.bettertrims.registry.content.TrimEffects;
 import com.bawnorton.bettertrims.util.FloodFill;
 import com.bawnorton.bettertrims.util.Plane;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
@@ -32,14 +31,14 @@ import java.util.function.Consumer;
 
 @Mixin(ClientWorld.class)
 public abstract class ClientWorldMixin {
-    @WrapOperation(
+    @ModifyReceiver(
             method = "tickEntities",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/EntityList;forEach(Ljava/util/function/Consumer;)V"
             )
     )
-    private void applyElectrifying(EntityList instance, Consumer<Entity> entityConsumer, Operation<Void> original) {
+    private EntityList applyElectrifying(EntityList instance, Consumer<Entity> action) {
         instance.forEach(entity -> {
             if(!(entity instanceof LivingEntity livingEntity)) return;
 
@@ -83,7 +82,7 @@ public abstract class ClientWorldMixin {
                 }
             });
         });
-        original.call(instance, entityConsumer);
+        return instance;
     }
 
     @Unique

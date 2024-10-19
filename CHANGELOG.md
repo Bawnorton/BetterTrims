@@ -1,3 +1,7 @@
+# 3.2.8
+
+- No longer wrap entity ticking on the client as well
+
 # 3.2.7
 
 - No longer wrap entity ticking to avoid false positive reports
