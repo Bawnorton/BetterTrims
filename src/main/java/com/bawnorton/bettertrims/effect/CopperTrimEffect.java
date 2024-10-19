@@ -79,6 +79,8 @@ public final class CopperTrimEffect extends TrimEffect {
         }
 
         World world = entity.getWorld();
+        if(world == null) return null;
+
         Vec3d pos = entity.getPos();
         BlockPos blockPos = BlockPos.ofFloored(pos);
         if (!world.isWater(blockPos))
