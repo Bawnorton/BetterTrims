@@ -1,9 +1,6 @@
 package com.bawnorton.bettertrims.data;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 //? if fabric {
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
@@ -18,7 +15,11 @@ public final class BetterTrimsDataGen implements DataGeneratorEntrypoint {
     }
 }
 //?} else if neoforge {
-/*@EventBusSubscriber(modid = BetterTrims.MOD_ID)
+/*import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+@EventBusSubscriber(modid = BetterTrims.MOD_ID)
 public final class BetterTrimsDataGen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
