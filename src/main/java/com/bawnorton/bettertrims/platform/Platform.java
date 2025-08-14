@@ -9,7 +9,7 @@ public final class Platform {
     }
 }
 
-//?} elif neoforge {
+//?} else if neoforge {
 /*import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.LoadingModList;
 

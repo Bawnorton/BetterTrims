@@ -1,53 +1,31 @@
 {
   "schemaVersion": 1,
-  "id": "bettertrims",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "BetterTrims",
+  "name": "${mod_name}",
   "description": "${description}",
   "authors": [
     "Bawnorton"
   ],
   "contact": {
     "homepage": "https://github.com/Bawnorton",
-    "sources": "https://github.com/Bawnorton/BetterTrims",
-    "issues": "https://github.com/Bawnorton/BetterTrims/issues"
+    "sources": "https://github.com/Bawnorton/${mod_name}",
+    "issues": "https://github.com/Bawnorton/${mod_name}/issues"
   },
   "license": "MIT",
-  "icon": "assets/bettertrims/icon.png",
+  "icon": "assets/${mod_id}/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "com.bawnorton.bettertrims.platform.BetterTrimsWrapper"
-    ],
-    "client": [
-      "com.bawnorton.bettertrims.client.platform.BetterTrimsClientWrapper"
-    ],
-    "fabric-datagen": [
-      "com.bawnorton.bettertrims.data.BetterTrimsDataGen"
-    ]
-  },
-  "mixins": [
-    "bettertrims.mixins.json",
-    {
-      "config": "bettertrims-client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "accessWidener": "${minecraft_version}.accesswidener",
   "depends": {
     "fabricloader": ">=0.16.0",
     "minecraft": "${minecraft_dependency}",
-    "configurable": ">=1.3.0",
-    "fabric-api": "*",
-    "yet_another_config_lib_v3": ">=3.5.0"
-  },
-  "breaks": {
-    "sodiumdynamiclights": "<1.0.4"
+    "configurable": ">=3.2.1",
+    "fabric-api": "*"
   },
   "custom": {
     "modmenu": {
       "links": {
-        "bettertrims.website": "https://github.com/Bawnorton/BetterTrims"
+        "${mod_id}.website": "https://github.com/Bawnorton/${mod_name}"
       }
     }
   }

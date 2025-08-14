@@ -1,48 +1,30 @@
 modLoader = "javafml"
-loaderVersion = "${loader_version}"
-issueTrackerURL = "https://github.com/Bawnorton/BetterTrims/issues"
-license = "MIT"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/Bawnorton/${mod_name}/issues"
+license = "${mod_license}"
 
 [[mods]]
-modId = "bettertrims"
-version = "${version}"
-displayName = "BetterTrims"
-authors = "Bawnorton"
-description = '''
-${description}
-'''
-logoFile = "assets/bettertrims/icon.png"
+    modId = "${mod_id}"
+    version = "${mod_version}"
+    displayName = "${mod_name}"
+    logoFile = "assets/${mod_id}/logo.png"
+    description = '''${mod_description}'''
+    authors = "Bawnorton"
 
-[[mixins]]
-config = "bettertrims.mixins.json"
+[[accessTransformers]]
+    file="${minecraft_version}-accesstransformer.cfg"
 
-[[mixins]]
-config = "bettertrims-client.mixins.json"
+[[dependencies.${mod_id}]]
+    modId = "neoforge"
+    type = "required"
+    ordering = "NONE"
+    side = "BOTH"
 
-[[dependencies.bettertrims]]
-modId = "minecraft"
-type = "required"
-versionRange = "${minecraft_dependency}"
-ordering = "NONE"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId = "minecraft"
+    type = "required"
 
-[[dependencies.bettertrims]]
-modId = "configurable"
-type = "required"
-versionRange = ">=1.3.0"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.bettertrims]]
-modId = "fabric_api"
-type = "required"
-versionRange = "*"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.bettertrims]]
-modId = "yet_another_config_lib_v3"
-type = "required"
-versionRange = ">=3.5.0"
-ordering = "NONE"
-side = "BOTH"
+[[dependencies.${mod_id}]]
+    modId = "configurable"
+    type = "required"
+    versionRange = "[3.2.1,)"

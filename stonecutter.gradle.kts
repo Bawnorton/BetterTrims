@@ -1,34 +1,30 @@
-import org.gradle.configurationcache.extensions.capitalized
+import dev.kikugie.stonecutter.data.tree.struct.ProjectNode
 
 plugins {
+    kotlin("jvm") version "2.2.0" apply false
     id("dev.kikugie.stonecutter")
-}
-stonecutter active "1.21.1-fabric" /* [SC] DO NOT EDIT */
-
-fun chiseledTask(task : String, group : String) {
-    val name = "chiseled${task.capitalized()}"
-
-    stonecutter registerChiseled tasks.register(name, stonecutter.chiseled) {
-        versions = stonecutter.versions.filter { it.project.endsWith("neoforge") }
-        this.group = group
-        ofTask(task)
-        dependsOn("Pre${name.capitalized()}")
-    }
-
-    stonecutter registerChiseled tasks.register("Pre${name.capitalized()}", stonecutter.chiseled) {
-        versions = stonecutter.versions.filter { it.project.endsWith("fabric") }
-        this.group = group
-        ofTask(task)
-    }
+    id("fabric-loom") version "1.11-SNAPSHOT" apply false
+    id("net.neoforged.moddev") version "2.0.95" apply false
+    id("me.modmuss50.mod-publish-plugin") version "0.8.+" apply false
 }
 
-chiseledTask("buildAndCollect", "project")
-chiseledTask("publishMods", "publishing")
-chiseledTask("publishMavenPublicationToMavenLocal", "publishing")
-chiseledTask("publishMavenPublicationToBawnortonRepository", "publishing")
+stonecutter active "1.21.8-fabric"
 
-stonecutter configureEach {
-    val current = project.property("loom.platform")
-    val platforms = listOf("fabric", "neoforge").map { it to (it == current) }
-    consts(platforms)
+stonecutter parameters {
+    constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "neoforge")
+}
+
+stonecutter tasks {
+    val ordering = Comparator
+        .comparing<ProjectNode, _> { stonecutter.parse(it.metadata.version) }
+        .thenComparingInt { if (it.metadata.project.endsWith("fabric")) 1 else 0 }
+
+    order("publishModrinth", ordering)
+    order("publishCurseforge", ordering)
+}
+
+
+for (version in stonecutter.versions.map { it.version }.distinct()) tasks.register("publish$version") {
+    group = "publishing"
+    dependsOn(stonecutter.tasks.named("publishMods") { metadata.version == version })
 }
