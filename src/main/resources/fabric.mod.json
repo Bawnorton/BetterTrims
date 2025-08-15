@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "${mod_id}",
-  "version": "${version}",
+  "version": "${mod_version}",
   "name": "${mod_name}",
-  "description": "${description}",
+  "description": "${mod_description}",
   "authors": [
     "Bawnorton"
   ],
@@ -18,7 +18,7 @@
   "accessWidener": "${minecraft_version}.accesswidener",
   "depends": {
     "fabricloader": ">=0.16.0",
-    "minecraft": "${minecraft_dependency}",
+    "minecraft": "~${minecraft_version}",
     "configurable": ">=3.2.1",
     "fabric-api": "*"
   },

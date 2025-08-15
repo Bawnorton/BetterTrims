@@ -16,6 +16,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org")
+    maven("https://maven.bawnorton.com/releases/")
 }
 
 val minecraft: String by project
@@ -33,6 +34,10 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:0.16.14")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${deps("fabric_api")}")
+
+    deps("configurable") {
+        modImplementation(annotationProcessor("com.bawnorton.configurable:configurable-$loader:$it")!!)
+    }
 }
 
 java {
@@ -48,7 +53,7 @@ loom {
         configureDataGeneration {
             createRunConfiguration = true
             client = true
-            modId = "trimica"
+            modId = mod("id")!!
             outputDirectory = rootProject.file("src/main/generated")
         }
 
@@ -95,6 +100,10 @@ fletchingTable {
         mixin("client", "bettertrims.client.mixins.json") {
             environment = MixinEnvironment.Env.CLIENT
         }
+    }
+
+    fabric {
+        entrypointMappings.put("fabric-datagen", "net.fabricmc.fabric.api.datagen.v1.FabricDataGeneratorEntrypoint")
     }
 }
 

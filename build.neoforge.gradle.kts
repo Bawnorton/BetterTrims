@@ -14,6 +14,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org")
+    maven("https://maven.bawnorton.com/releases/")
 }
 
 val minecraft: String by project
@@ -21,6 +22,9 @@ val loader: String by project
 base.archivesName = "${mod("id")}-${mod("version")}+$minecraft-$loader"
 
 dependencies {
+    deps("configurable") {
+        implementation(annotationProcessor("com.bawnorton.configurable:configurable-$loader:$it")!!)
+    }
 }
 
 java {
