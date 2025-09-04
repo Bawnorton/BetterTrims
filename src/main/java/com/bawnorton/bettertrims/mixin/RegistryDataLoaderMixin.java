@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.mixin;
 
-import com.bawnorton.bettertrims.ability.TrimAbilityContainer;
+import com.bawnorton.bettertrims.property.TrimProperty;
 import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
 import com.google.common.collect.ImmutableList;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -27,12 +27,12 @@ public abstract class RegistryDataLoaderMixin {
     static {
         ImmutableList.Builder<RegistryDataLoader.RegistryData<?>> synchronizedBuilder = ImmutableList.builder();
         synchronizedBuilder.addAll(SYNCHRONIZED_REGISTRIES);
-        synchronizedBuilder.add(new RegistryDataLoader.RegistryData<>(BetterTrimsRegistries.TRIM_ABILITY, TrimAbilityContainer.DIRECT_CODEC, false));
+        synchronizedBuilder.add(new RegistryDataLoader.RegistryData<>(BetterTrimsRegistries.TRIM_PROPERTIES, TrimProperty.DIRECT_CODEC, false));
         SYNCHRONIZED_REGISTRIES = synchronizedBuilder.build();
 
         ImmutableList.Builder<RegistryDataLoader.RegistryData<?>> worldgenBuilder = ImmutableList.builder();
         worldgenBuilder.addAll(WORLDGEN_REGISTRIES);
-        worldgenBuilder.add(new RegistryDataLoader.RegistryData<>(BetterTrimsRegistries.TRIM_ABILITY, TrimAbilityContainer.DIRECT_CODEC, false));
+        worldgenBuilder.add(new RegistryDataLoader.RegistryData<>(BetterTrimsRegistries.TRIM_PROPERTIES, TrimProperty.DIRECT_CODEC, false));
         WORLDGEN_REGISTRIES = worldgenBuilder.build();
     }
 }

@@ -1,9 +1,8 @@
 package com.bawnorton.bettertrims.data;
 
 //? if fabric {
-import com.bawnorton.bettertrims.ability.CountBasedValue;
+
 import com.bawnorton.bettertrims.data.provider.BetterTrimsRegistriesDataProvider;
-import com.mojang.serialization.Codec;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -12,7 +11,6 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 public final class BetterTrimsDataGen implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        Codec<CountBasedValue> codec = CountBasedValue.CODEC;
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
         pack.addProvider((BetterTrimsRegistriesDataProvider::new));
     }

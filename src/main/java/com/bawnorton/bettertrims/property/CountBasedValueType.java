@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.ability;
+package com.bawnorton.bettertrims.property;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.mojang.serialization.Lifecycle;

@@ -1,0 +1,17 @@
+{
+  "abilities": [
+    {
+      "ability": {
+        "type": "bettertrims:experience_gain",
+        "multiplier": {
+          "type": "bettertrims:linear",
+          "base": 1.0,
+          "per_count_above_first": 0.05
+        }
+      },
+      "applies_to": {
+        "material": "minecraft:quartz"
+      }
+    }
+  ]
+}

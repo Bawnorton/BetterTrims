@@ -1,0 +1,38 @@
+{
+  "abilities": [
+    {
+      "ability": {
+        "type": "bettertrims:attribute",
+        "modifiers": [
+          {
+            "attribute": "minecraft:mining_efficiency",
+            "id": "bettertrims:trim_mining_speed",
+            "operation": "add_value",
+            "value": {
+              "type": "bettertrims:count_squared",
+              "constant": 1.0
+            }
+          }
+        ]
+      },
+      "applies_to": {
+        "material": "minecraft:iron"
+      }
+    },
+    {
+      "ability": {
+        "type": "bettertrims:effect",
+        "effects": [
+          {
+            "amplifier": 1.0,
+            "id": "minecraft:haste"
+          }
+        ]
+      },
+      "applies_to": {
+        "material": "minecraft:iron",
+        "min_count": 4
+      }
+    }
+  ]
+}

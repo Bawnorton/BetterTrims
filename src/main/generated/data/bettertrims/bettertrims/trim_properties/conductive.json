@@ -1,0 +1,35 @@
+{
+  "abilities": [
+    {
+      "ability": {
+        "type": "bettertrims:damage_resistant",
+        "damage_type": "#minecraft:is_lightning"
+      },
+      "applies_to": {
+        "material": "minecraft:copper"
+      }
+    },
+    {
+      "ability": {
+        "type": "bettertrims:electrifying",
+        "damage": 6.0,
+        "projectile_types": "#minecraft:impact_projectiles"
+      },
+      "applies_to": {
+        "material": "minecraft:copper",
+        "min_count": 4
+      }
+    }
+  ],
+  "item_properties": [
+    {
+      "applies_to": {
+        "material": "minecraft:copper"
+      },
+      "property": {
+        "type": "bettertrims:damage_resistant",
+        "damage_type": "#minecraft:is_lightning"
+      }
+    }
+  ]
+}

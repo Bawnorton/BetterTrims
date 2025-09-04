@@ -1,4 +1,4 @@
-package com.bawnorton.bettertrims.ability;
+package com.bawnorton.bettertrims.property;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -21,6 +21,34 @@ public interface CountBasedValue {
     float calculate(int count);
 
     CountBasedValueType<? extends CountBasedValue> getType();
+
+    static Clamped clamped(CountBasedValue value, float min, float max) {
+        return new Clamped(value, min, max);
+    }
+
+    static Constant constant(float value) {
+        return new Constant(value);
+    }
+
+    static Fraction fraction(CountBasedValue numerator, CountBasedValue denominator) {
+        return new Fraction(numerator, denominator);
+    }
+
+    static CountSquared countSquared(float constant) {
+        return new CountSquared(constant);
+    }
+
+    static Linear linear(float base, float perCountAboveFirst) {
+        return new Linear(base, perCountAboveFirst);
+    }
+
+    static Linear linear(float value) {
+        return new Linear(value, value);
+    }
+
+    static Lookup lookup(List<Float> values, CountBasedValue fallback) {
+        return new Lookup(values, fallback);
+    }
 
     record Clamped(CountBasedValue value, float min, float max) implements CountBasedValue {
         public static final MapCodec<Clamped> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

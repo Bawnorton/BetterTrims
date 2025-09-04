@@ -1,0 +1,24 @@
+{
+  "abilities": [
+    {
+      "ability": {
+        "type": "bettertrims:attribute",
+        "modifiers": [
+          {
+            "attribute": "minecraft:movement_speed",
+            "id": "bettertrims:trim_movement_speed",
+            "operation": "add_value",
+            "value": {
+              "type": "bettertrims:linear",
+              "base": 0.1,
+              "per_count_above_first": 0.1
+            }
+          }
+        ]
+      },
+      "applies_to": {
+        "material": "minecraft:redstone"
+      }
+    }
+  ]
+}

@@ -32,7 +32,7 @@ dependencies {
         }
     })
 
-    modImplementation("net.fabricmc:fabric-loader:0.16.14")
+    modImplementation("net.fabricmc:fabric-loader:0.17.2")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${deps("fabric_api")}")
 
     deps("configurable") {

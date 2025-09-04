@@ -1,6 +1,8 @@
-package com.bawnorton.bettertrims.ability.type;
+package com.bawnorton.bettertrims.property.ability.type;
 
-import com.bawnorton.bettertrims.ability.CountBasedValue;
+import com.bawnorton.bettertrims.property.CountBasedValue;
+import com.bawnorton.bettertrims.property.ability.TrimAbility;
+import com.bawnorton.bettertrims.property.ability.TrimAbilityType;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.serialization.Codec;
@@ -18,18 +20,30 @@ public record AttributeTrimAbility(List<TrimAttributeModifier> modifiers) implem
             TrimAttributeModifier.CODEC.listOf().fieldOf("modifiers").forGetter(AttributeTrimAbility::modifiers)
     ).apply(instance, AttributeTrimAbility::new));
 
+    public static AttributeTrimAbility multiple(TrimAttributeModifier... modifiers) {
+        return new AttributeTrimAbility(List.of(modifiers));
+    }
+
+    public static AttributeTrimAbility single(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value, AttributeModifier.Operation operation) {
+        return multiple(modifier(id, attribute, value, operation));
+    }
+
+    public static AttributeTrimAbility.TrimAttributeModifier modifier(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value, AttributeModifier.Operation operation) {
+        return TrimAttributeModifier.create(id, attribute, value, operation);
+    }
+
     @Override
     public TrimAbilityType<? extends TrimAbility> getType() {
         return TrimAbilityType.ATTRIBUTE;
     }
 
     @Override
-    public  void onAdded(LivingEntity livingEntity, int newCount) {
+    public  void start(LivingEntity livingEntity, int newCount) {
         livingEntity.getAttributes().addTransientAttributeModifiers(makeAttributeMap(newCount));
     }
 
     @Override
-    public void onRemoved(LivingEntity livingEntity, int priorCount) {
+    public void stop(LivingEntity livingEntity, int priorCount) {
         livingEntity.getAttributes().removeAttributeModifiers(makeAttributeMap(priorCount));
     }
 
@@ -48,6 +62,10 @@ public record AttributeTrimAbility(List<TrimAttributeModifier> modifiers) implem
                 CountBasedValue.CODEC.fieldOf("value").forGetter(TrimAttributeModifier::value),
                 AttributeModifier.Operation.CODEC.fieldOf("operation").forGetter(TrimAttributeModifier::operation)
         ).apply(instance, TrimAttributeModifier::new));
+
+        public static TrimAttributeModifier create(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value, AttributeModifier.Operation operation) {
+            return new TrimAttributeModifier(id, attribute, value, operation);
+        }
 
         private AttributeModifier getAttributeModifier(int count) {
             return new AttributeModifier(id, value.calculate(count), operation);
