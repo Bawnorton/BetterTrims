@@ -24,3 +24,21 @@ fun Project.applyMixinDebugSettings(
     propertyConsumer("mixin.hotSwap", "true")
     propertyConsumer("mixin.debug.export", "true")
 }
+
+enum class ReplacementType {
+    STRING,
+    REGEX
+}
+
+class Replacement(val predicate: String, val from: String, val to: String, val type: ReplacementType = ReplacementType.STRING)
+
+fun getReplacements() = listOf(
+    Replacement("<1.21.8", "EntitySpawnReason", "MobSpawnType"),
+    Replacement("<1.21.8", "snapTo", "moveTo"),
+    Replacement("<1.21.8", "equipment.trim", "armortrim"),
+    Replacement("<1.21.8", "util.context.ContextKeySet;", "world.level.storage.loot.parameters.LootContextParamSet;"),
+    Replacement("<1.21.8", "util.context.ContextKey;", "world.level.storage.loot.parameters.LootContextParam;"),
+    Replacement("<1.21.8", "ContextKeySet", "LootContextParamSet"),
+    Replacement("<1.21.8", "ContextKey<", "LootContextParam<"),
+    Replacement("<1.21.8", "MobEffects.HASTE", "MobEffects.DIG_SPEED")
+)

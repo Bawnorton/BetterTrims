@@ -1,0 +1,12 @@
+{
+  "abilities": {
+    "bettertrims:piglin_safe": [
+      {
+        "ability": {}
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:gold"
+  }
+}

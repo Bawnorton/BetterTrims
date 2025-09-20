@@ -1,0 +1,64 @@
+{
+  "abilities": {
+    "bettertrims:equipped": [
+      {
+        "ability": {
+          "type": "bettertrims:attribute",
+          "attribute": "minecraft:player.mining_efficiency",
+          "id": "bettertrims:trim_mining_speed",
+          "operation": "add_value",
+          "value": {
+            "type": "bettertrims:count_squared",
+            "constant": 1.0
+          }
+        }
+      },
+      {
+        "ability": {
+          "type": "bettertrims:toggle_mob_effect",
+          "amplifier": 1.0,
+          "effect": "minecraft:haste"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "equipment": {
+              "chest": {
+                "predicates": {
+                  "minecraft:trim": {
+                    "material": "#c:iron"
+                  }
+                }
+              },
+              "feet": {
+                "predicates": {
+                  "minecraft:trim": {
+                    "material": "#c:iron"
+                  }
+                }
+              },
+              "head": {
+                "predicates": {
+                  "minecraft:trim": {
+                    "material": "#c:iron"
+                  }
+                }
+              },
+              "legs": {
+                "predicates": {
+                  "minecraft:trim": {
+                    "material": "#c:iron"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:iron"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "abilities": {
+    "bettertrims:equipped": [
+      {
+        "ability": {
+          "type": "bettertrims:all_of",
+          "abilities": [
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:generic.attack_damage",
+              "id": "bettertrims:trim_solar_bonus_attack_damage",
+              "operation": "add_value",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 1.0,
+                "per_count_above_first": 1.0
+              }
+            },
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:generic.movement_speed",
+              "id": "bettertrims:trim_solar_bonus_movement_speed",
+              "operation": "add_multiplied_total",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 0.07,
+                "per_count_above_first": 0.07
+              }
+            },
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:generic.armor",
+              "id": "bettertrims:trim_solar_bonus_armour",
+              "operation": "add_value",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 1.0,
+                "per_count_above_first": 1.0
+              }
+            },
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:generic.attack_speed",
+              "id": "bettertrims:trim_solar_bonus_attack_speed",
+              "operation": "add_value",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 0.5,
+                "per_count_above_first": 0.5
+              }
+            }
+          ]
+        },
+        "requirements": {
+          "condition": "minecraft:all_of",
+          "terms": [
+            {
+              "condition": "minecraft:time_check",
+              "period": 24000,
+              "value": {
+                "max": 13000.0
+              }
+            },
+            {
+              "condition": "bettertrims:dimension_check",
+              "dimensions": "#bettertrims:has_sun"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:gold"
+  }
+}

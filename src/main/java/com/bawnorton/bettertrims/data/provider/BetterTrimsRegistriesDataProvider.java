@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BetterTrimsRegistriesDataProvider extends RegistriesDatapackGenerator {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(BetterTrimsRegistries.TRIM_PROPERTIES, TrimProperties::bootstrap);
+        .add(BetterTrimsRegistries.Keys.TRIM_PROPERTIES, TrimProperties::bootstrap);
 
     public BetterTrimsRegistriesDataProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, RegistryPatchGenerator.createLookup(registries, BUILDER).thenApply(RegistrySetBuilder.PatchedRegistries::patches));

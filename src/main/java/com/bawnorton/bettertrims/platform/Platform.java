@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.platform;
 
 //? if fabric {
+
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class Platform {

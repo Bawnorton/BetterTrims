@@ -1,6 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
-import bettertrims.utils.*
+import bettertrims.utils.ReplacementType
+import bettertrims.utils.applyMixinDebugSettings
+import bettertrims.utils.deps
+import bettertrims.utils.getReplacements
+import bettertrims.utils.mod
 import dev.kikugie.fletching_table.annotation.MixinEnvironment
 
 plugins {
@@ -54,7 +58,6 @@ loom {
             createRunConfiguration = true
             client = true
             modId = mod("id")!!
-            outputDirectory = rootProject.file("src/main/generated")
         }
 
         configureTests {
@@ -106,6 +109,23 @@ fletchingTable {
         entrypointMappings.put("fabric-datagen", "net.fabricmc.fabric.api.datagen.v1.FabricDataGeneratorEntrypoint")
     }
 }
+
+stonecutter {
+    replacements {
+        for (replacement in getReplacements()) {
+            when(replacement.type) {
+                ReplacementType.STRING -> string(eval(current.version, replacement.predicate)) {
+                    replace(replacement.from, replacement.to)
+                }
+                ReplacementType.REGEX -> regex(eval(current.version, replacement.predicate)) {
+                    replace(replacement.from, replacement.to)
+                    reverse(replacement.to, replacement.from)
+                }
+            }
+        }
+    }
+}
+
 
 tasks {
     register<Copy>("buildAndCollect") {
