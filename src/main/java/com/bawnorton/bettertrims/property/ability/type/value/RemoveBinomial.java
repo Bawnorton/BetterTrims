@@ -1,10 +1,16 @@
 package com.bawnorton.bettertrims.property.ability.type.value;
 
+import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
 public record RemoveBinomial(CountBasedValue chance) implements TrimValueAbility {
     public static final MapCodec<RemoveBinomial> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -15,12 +21,21 @@ public record RemoveBinomial(CountBasedValue chance) implements TrimValueAbility
     public float process(int count, RandomSource random, float value) {
         float chance = this.chance.calculate(count);
         int removed = 0;
-        for(int i = 0; i < value; i++) {
+        for (int i = 0; i < value; i++) {
             if (random.nextFloat() <= chance) {
                 removed++;
             }
         }
         return value - removed;
+    }
+
+    @Override
+    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+        return CompositeContainerComponent.builder()
+            .cycle(builder -> this.chance.getValueComponents(4, includeCount, percent -> Component.literal("%.1f%%".formatted(percent * 100))).forEach(builder::textComponent))
+            .space()
+            .translate("bettertrims.tooltip.ability.remove_binomial", Styler::positive)
+            .build();
     }
 
     @Override

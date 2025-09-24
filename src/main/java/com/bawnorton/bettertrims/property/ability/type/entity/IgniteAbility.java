@@ -1,10 +1,15 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
+import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -20,6 +25,21 @@ public record IgniteAbility(CountBasedValue duration) implements TrimEntityAbili
     @Override
     public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
         target.igniteForSeconds(duration.calculate(items.size()));
+    }
+
+    @Override
+    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+        return CompositeContainerComponent.builder()
+            .translate("bettertrims.tooltip.ability.ignite.ignite_for", Styler::positive)
+            .cycle(builder -> duration.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f))).forEach(builder::textComponent))
+            .translate("bettertrims.tooltip.ability.ignite.seconds", Styler::positive)
+            .spaced()
+            .build();
+    }
+
+    @Override
+    public boolean usesCount() {
+        return true;
     }
 
     @Override

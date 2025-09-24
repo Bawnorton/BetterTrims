@@ -1,13 +1,19 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
+import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -27,7 +33,10 @@ public record ReplaceDiskAbility(
     Vec3i offset,
     Optional<BlockPredicate> predicate,
     BlockStateProvider blockState,
-    Optional<Holder<GameEvent>> triggerGameEvent
+    Optional<Holder<GameEvent>> triggerGameEvent,
+    Optional<String> replaceTranslationKey,
+    String offsetTranslationKey,
+    String withTranslationKey
 ) implements TrimEntityAbility {
     public static final MapCodec<ReplaceDiskAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         CountBasedValue.CODEC.fieldOf("radius").forGetter(ReplaceDiskAbility::radius),
@@ -35,9 +44,12 @@ public record ReplaceDiskAbility(
         Vec3i.CODEC.optionalFieldOf("offset", Vec3i.ZERO).forGetter(ReplaceDiskAbility::offset),
         BlockPredicate.CODEC.optionalFieldOf("predicate").forGetter(ReplaceDiskAbility::predicate),
         BlockStateProvider.CODEC.fieldOf("block_state").forGetter(ReplaceDiskAbility::blockState),
-        GameEvent.CODEC.optionalFieldOf("trigger_game_event").forGetter(ReplaceDiskAbility::triggerGameEvent)
+        GameEvent.CODEC.optionalFieldOf("trigger_game_event").forGetter(ReplaceDiskAbility::triggerGameEvent),
+        Codec.STRING.optionalFieldOf("replace_translation_key").forGetter(ReplaceDiskAbility::replaceTranslationKey),
+        Codec.STRING.fieldOf("offset_translation_key").forGetter(ReplaceDiskAbility::offsetTranslationKey),
+        Codec.STRING.fieldOf("with_translation_key").forGetter(ReplaceDiskAbility::withTranslationKey)
     ).apply(instance, ReplaceDiskAbility::new));
-    
+
     @Override
     public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
         int count = items.size();
@@ -53,6 +65,26 @@ public record ReplaceDiskAbility(
                 this.triggerGameEvent.ifPresent(holder -> level.gameEvent(wearer, holder, pos));
             }
         }
+    }
+
+    @Override
+    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+        Component replace = Styler.property(replaceTranslationKey.map(Component::translatable)
+            .orElse(Component.translatable("bettertrims.tooltip.ability.replace_disk.anything")));
+        Component offset = Styler.positive(Component.translatable(this.offsetTranslationKey));
+        Component with = Styler.name(Component.translatable(this.withTranslationKey));
+        return CompositeContainerComponent.builder()
+            .translate("bettertrims.tooltip.ability.replace_disk.replace", Styler::positive)
+            .textComponent(replace)
+            .textComponent(offset)
+            .translate("bettertrims.tooltip.ability.replace_disk.radius", Styler::positive)
+            .cycle(builder -> radius.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f))).forEach(builder::textComponent))
+            .translate("bettertrims.tooltip.ability.replace_disk.height", Styler::positive)
+            .cycle(builder -> height.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f))).forEach(builder::textComponent))
+            .translate("bettertrims.tooltip.ability.replace_block.with", Styler::positive)
+            .textComponent(with)
+            .spaced()
+            .build();
     }
 
     @Override

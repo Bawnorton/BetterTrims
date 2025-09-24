@@ -22,6 +22,10 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.predicates.DataComponentPredicates;
+import net.minecraft.core.component.predicates.EnchantmentsPredicate;
+import net.minecraft.core.component.predicates.PotionsPredicate;
+import net.minecraft.core.component.predicates.TrimPredicate;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -35,6 +39,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.effects.SpawnParticlesEffect;
@@ -49,13 +54,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-//? if 1.21.8 {
-import net.minecraft.core.component.predicates.DataComponentPredicates;
-import net.minecraft.core.component.predicates.EnchantmentsPredicate;
-import net.minecraft.core.component.predicates.TrimPredicate;
-//?}
-
 public interface TrimProperties {
+    ResourceKey<TrimProperty> DUMMY = key("dummy");
     ResourceKey<TrimProperty> CONDUCTIVE = key("conductive");
     ResourceKey<TrimProperty> FIREPROOF = key("fireproof");
     ResourceKey<TrimProperty> IMPROVED_TRADING = key("improved_trading");
@@ -73,6 +73,24 @@ public interface TrimProperties {
         HolderGetter<EntityType<?>> entityTypeGetter = context.lookup(Registries.ENTITY_TYPE);
         HolderGetter<Enchantment> enchantmentGetter = context.lookup(Registries.ENCHANTMENT);
         HolderGetter<DimensionType> dimensionGetter = context.lookup(Registries.DIMENSION_TYPE);
+        register(
+            context,
+            DUMMY,
+            TrimProperty.builder(getMaterialMatcher(materialGetter, TrimMaterialTags.RESIN))
+                .ability(
+                    TrimAbilityComponents.HIT_BLOCK,
+                    new SummonEntityAbility(EntityType.LIGHTNING_BOLT),
+                    MatchTool.toolMatches(ItemPredicate.Builder.item()
+                        .withComponents(DataComponentMatchers.Builder.components()
+                            .partial(
+                                DataComponentPredicates.POTIONS, new PotionsPredicate(
+                                    HolderSet.direct(Potions.HARMING))
+                                ).build()
+                        )
+                    )
+                )
+                .build()
+        );
         register(
             context,
             WEARING_GOLD,
@@ -251,7 +269,7 @@ public interface TrimProperties {
                 .ability(
                     TrimAbilityComponents.POST_ATTACK,
                     AllOf.entityAbilities(
-                        new SummonEntityAbility(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder())),
+                        new SummonEntityAbility(EntityType.LIGHTNING_BOLT),
                         new PlaySoundAbility(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5F), ConstantFloat.of(1F))
                     ),
                     AllOfCondition.allOf(
@@ -263,22 +281,20 @@ public interface TrimProperties {
                                     .setCanSeeSky(true)
                                 )
                         ),
-                        AllOfCondition.allOf(
-                            LootItemEntityPropertyCondition.hasProperties(
-                                LootContext.EntityTarget.DIRECT_ATTACKER,
-                                EntityPredicate.Builder.entity()
-                                    .entityType(getEntityTypePredicate(entityTypeGetter, BetterTrimsEntityTypeTags.CONDUCTIVE_PROJECTILES))
-                            ),
-                            InvertedLootItemCondition.invert(
-                                MatchTool.toolMatches(itemEnchantedPredicate(enchantmentGetter, Enchantments.CHANNELING))
-                            )
+                        LootItemEntityPropertyCondition.hasProperties(
+                            LootContext.EntityTarget.DIRECT_ATTACKER,
+                            EntityPredicate.Builder.entity()
+                                .entityType(getEntityTypePredicate(entityTypeGetter, BetterTrimsEntityTypeTags.CONDUCTIVE_PROJECTILES))
+                        ),
+                        InvertedLootItemCondition.invert(
+                            MatchTool.toolMatches(itemEnchantedPredicate(enchantmentGetter, Enchantments.CHANNELING))
                         )
                     )
                 )
                 .ability(
                     TrimAbilityComponents.HIT_BLOCK,
                     AllOf.entityAbilities(
-                        new SummonEntityAbility(HolderSet.direct(EntityType.LIGHTNING_BOLT.builtInRegistryHolder())),
+                        new SummonEntityAbility(EntityType.LIGHTNING_BOLT),
                         new PlaySoundAbility(SoundEvents.TRIDENT_THUNDER, ConstantFloat.of(5.0F), ConstantFloat.of(1.0F))
                     ),
                     AllOfCondition.allOf(
@@ -408,7 +424,7 @@ public interface TrimProperties {
         return EntityTypePredicate.of(entityTypeGetter, tag);
         //?} elif 1.21.1 {
         /*return EntityTypePredicate.of(tag);
-        *///?}
+         *///?}
     }
 
     private static LootItemCondition.Builder wearingInSlot(HolderGetter<TrimMaterial> materialGetter, TagKey<TrimMaterial> material, EquipmentSlot slot) {
@@ -461,7 +477,7 @@ public interface TrimProperties {
                     )
                     .build()
             );
-            //?} elif 1.21.1 {
+        //?} elif 1.21.1 {
             /*.withSubPredicate(
                 ItemSubPredicates.ARMOR_TRIM,
                 new ItemTrimPredicate(
@@ -488,7 +504,7 @@ public interface TrimProperties {
                     )
                     .build()
             );
-            //?} elif 1.21.1 {
+        //?} elif 1.21.1 {
             /*.withSubPredicate(
                 ItemSubPredicates.ENCHANTMENTS,
                 ItemEnchantmentsPredicate.enchantments(

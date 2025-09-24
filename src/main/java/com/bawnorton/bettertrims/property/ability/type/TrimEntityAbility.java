@@ -2,8 +2,9 @@ package com.bawnorton.bettertrims.property.ability.type;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.property.AllOf;
-import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.ability.type.entity.*;
+import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.property.element.TrimElement;
 import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -16,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
-public interface TrimEntityAbility {
+public interface TrimEntityAbility extends TrimElement {
     Codec<TrimEntityAbility> CODEC = BetterTrimsRegistries.TRIM_ENTITY_ABILITY_TYPE
         .byNameCodec()
         .dispatch(TrimEntityAbility::codec, Function.identity());
@@ -30,6 +31,7 @@ public interface TrimEntityAbility {
         Registry.register(registry, BetterTrims.rl("ignite"), IgniteAbility.CODEC);
         Registry.register(registry, BetterTrims.rl("play_sound"), PlaySoundAbility.CODEC);
         Registry.register(registry, BetterTrims.rl("replace_block"), ReplaceBlockAbility.CODEC);
+        Registry.register(registry, BetterTrims.rl("replace_disk"), ReplaceDiskAbility.CODEC);
         Registry.register(registry, BetterTrims.rl("run_function"), RunFunctionAbility.CODEC);
         Registry.register(registry, BetterTrims.rl("set_block_properties"), SetBlockPropertiesAbility.CODEC);
         Registry.register(registry, BetterTrims.rl("spawn_particles"), SpawnParticlesAbility.CODEC);

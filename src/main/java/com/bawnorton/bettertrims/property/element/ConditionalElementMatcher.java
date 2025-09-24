@@ -4,7 +4,7 @@ import com.bawnorton.bettertrims.property.Matcher;
 import net.minecraft.world.level.storage.loot.LootContext;
 import java.util.function.Predicate;
 
-public final class ConditionalElementMatcher<T> extends ElementMatcher<T> {
+public final class ConditionalElementMatcher<T extends TrimElement> extends ElementMatcher<T> {
     private final ConditionalElement<T> conditionalElement;
 
     public ConditionalElementMatcher(Matcher matcher, ConditionalElement<T> conditionalElement) {
@@ -15,5 +15,9 @@ public final class ConditionalElementMatcher<T> extends ElementMatcher<T> {
     @Override
     public Predicate<LootContext> conditionChecker() {
         return conditionalElement::matches;
+    }
+
+    public ConditionalElement<T> getConditionalElement() {
+        return conditionalElement;
     }
 }

@@ -44,7 +44,10 @@ abstract class GuiGraphicsMixin {
         boolean focused
     ) {
         ItemStack stack = AbilityTooltipRenderer.getStack();
-        if (stack.isEmpty()) return original;
+        if (stack.isEmpty()) {
+            AbilityTooltipRenderer.clearRendering();
+            return original;
+        }
 
         GuiGraphics self = (GuiGraphics) (Object) this;
         AbilityTooltipRenderer.clearStack();

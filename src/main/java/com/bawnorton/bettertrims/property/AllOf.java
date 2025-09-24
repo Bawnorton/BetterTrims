@@ -1,13 +1,18 @@
 package com.bawnorton.bettertrims.property;
 
-import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
+import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.property.element.TrimElement;
 import com.bawnorton.bettertrims.property.item.type.TrimItemProperty;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -41,6 +46,28 @@ public interface AllOf {
         return new ItemProperties(List.of(properties));
     }
 
+    static CompositeContainerComponent getAllOfTooltip(ClientLevel level, boolean includeCount, List<? extends TrimElement> elements) {
+        if(elements.isEmpty()) return null;
+
+        CompositeContainerComponent.Builder allOfBuilder = CompositeContainerComponent.builder()
+            .vertical();
+        boolean moreThanOneUsesCount = elements.stream().filter(TrimElement::usesCount).count() > 1;
+        if (includeCount && moreThanOneUsesCount) {
+            allOfBuilder.cycle(builder -> {
+                for (int i = 1; i <= 4; i++) {
+                    builder.literal("Count [%d]".formatted(i), Styler::trim);
+                }
+            });
+        }
+        for (TrimElement element : elements) {
+            ClientTooltipComponent tooltip = element.getTooltip(level, !moreThanOneUsesCount);
+            if (tooltip != null) {
+                allOfBuilder.component(tooltip);
+            }
+        }
+        return allOfBuilder.build();
+    }
+
     record ToggleAbilities(List<TrimToggleAbility> abilities) implements TrimToggleAbility {
         public static final MapCodec<ToggleAbilities> CODEC = AllOf.codec(TrimToggleAbility.CODEC, ToggleAbilities::abilities, ToggleAbilities::new);
 
@@ -59,6 +86,11 @@ public interface AllOf {
         }
 
         @Override
+        public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+            return getAllOfTooltip(level, includeCount, abilities);
+        }
+
+        @Override
         public MapCodec<? extends TrimToggleAbility> codec() {
             return CODEC;
         }
@@ -72,6 +104,11 @@ public interface AllOf {
             for (TrimEntityAbility ability : abilities) {
                 ability.apply(level, wearer, target, items, targetSlot, origin);
             }
+        }
+
+        @Override
+        public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+            return getAllOfTooltip(level, includeCount, abilities);
         }
 
         @Override
@@ -92,6 +129,11 @@ public interface AllOf {
         }
 
         @Override
+        public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+            return getAllOfTooltip(level, includeCount, values);
+        }
+
+        @Override
         public MapCodec<? extends TrimValueAbility> codec() {
             return CODEC;
         }
@@ -99,6 +141,11 @@ public interface AllOf {
 
     record ItemProperties(List<TrimItemProperty> properties) implements TrimItemProperty {
         public static final MapCodec<ItemProperties> CODEC = AllOf.codec(TrimItemProperty.CODEC, ItemProperties::properties, ItemProperties::new);
+
+        @Override
+        public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+            return getAllOfTooltip(level, includeCount, properties);
+        }
 
         @Override
         public MapCodec<? extends TrimItemProperty> codec() {

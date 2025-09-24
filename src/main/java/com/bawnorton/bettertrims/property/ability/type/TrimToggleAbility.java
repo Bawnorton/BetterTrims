@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.property.AllOf;
 import com.bawnorton.bettertrims.property.ability.type.toggle.AttributeAbility;
 import com.bawnorton.bettertrims.property.ability.type.toggle.ToggleMobEffectAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.property.element.TrimElement;
 import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -13,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import java.util.function.Function;
 
-public interface TrimToggleAbility {
+public interface TrimToggleAbility extends TrimElement {
     Codec<TrimToggleAbility> CODEC = BetterTrimsRegistries.TRIM_TOGGLE_ABILITY_TYPE
         .byNameCodec()
         .dispatch(TrimToggleAbility::codec, Function.identity());

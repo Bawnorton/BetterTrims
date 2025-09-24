@@ -1,17 +1,22 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.property.context.TrimmedItems;
+import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
+import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -79,6 +84,20 @@ public record ExplodeAbility(
 
     private DamageSource getDamageSource(Entity entity, Vec3 pos) {
         return this.damageType.map(damageTypeHolder -> this.attributeToWearer ? new DamageSource(damageTypeHolder, entity) : new DamageSource(damageTypeHolder, pos)).orElse(null);
+    }
+
+    @Override
+    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+        return CompositeContainerComponent.builder()
+            .translate("bettertrims.tooltip.ability.explode.explodes_with_radius", style -> style.withColor(ChatFormatting.DARK_RED))
+            .cycle(builder -> this.radius.getValueComponents(4, includeCount, f -> Component.literal("%.1f".formatted(f))).forEach(builder::textComponent))
+            .spaced()
+            .build();
+    }
+
+    @Override
+    public boolean usesCount() {
+        return true;
     }
 
     @Override

@@ -1,0 +1,23 @@
+{
+  "abilities": {
+    "bettertrims:hit_block": [
+      {
+        "ability": {
+          "type": "bettertrims:summon_entity",
+          "entity": "minecraft:lightning_bolt"
+        },
+        "requirements": {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:potion_contents": "minecraft:harming"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:resin"
+  }
+}

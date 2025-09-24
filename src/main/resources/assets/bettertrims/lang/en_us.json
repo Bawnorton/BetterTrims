@@ -1,6 +1,158 @@
 {
-  "bettertrims.tooltip.properties.material": "Material: ",
-  "bettertrims.tooltip.properties.pattern": "Pattern: ",
+  "bettertrims.property.bettertrims.dummy": "Dummy",
+  "bettertrims.property.bettertrims.conductive": "Conductive",
+  "bettertrims.property.bettertrims.fireproof": "Fireproof",
+  "bettertrims.property.bettertrims.improved_trading": "Better Trades",
+  "bettertrims.property.bettertrims.increase_experience_gain": "More XP",
+  "bettertrims.property.bettertrims.increase_mining_speed": "Mine Faster",
+  "bettertrims.property.bettertrims.increase_movement_speed": "Move Faster",
+  "bettertrims.property.bettertrims.lunar_bonuses": "Lunar Bonuses",
+  "bettertrims.property.bettertrims.tougher": "Tougher",
+  "bettertrims.property.bettertrims.resilient": "Resilient",
+  "bettertrims.property.bettertrims.solar_bonuses": "Solar Bonuses",
+  "bettertrims.property.bettertrims.wearing_gold": "Wearing Gold",
+
+  "bettertrims.tooltip.and": "&",
+
+  "bettertrims.tooltip.properties.none": "No Properties",
+  "bettertrims.tooltip.properties.error": "Something Went Wrong :(",
+  "bettertrims.tooltip.properties.count.n_of": "When %s of",
+  "bettertrims.tooltip.properties.count.any_of": "When Any of",
+  "bettertrims.tooltip.properties.count.all_of": "When All of",
+  "bettertrims.tooltip.properties.count.equipped": "Are Equipped:",
+  "bettertrims.tooltip.properties.as_item": "When as Dropped Item:",
   "bettertrims.tooltip.properties.title": "Properties",
-  "bettertrims.tooltip.properties.with": "With: "
+
+  "bettertrims.tooltip.component.unknown": "Unknown Trigger",
+  "bettertrims.tooltip.component.incoming_damage": "When Receiving Damage",
+  "bettertrims.tooltip.component.damage_immunity": "Immune to Damage",
+  "bettertrims.tooltip.component.damage": "When Dealing Damage",
+  "bettertrims.tooltip.component.armour_effectiveness": "Reduce Target Armour",
+  "bettertrims.tooltip.component.post_attack": "After Attacking",
+  "bettertrims.tooltip.component.hit_block": "When Hitting a Block",
+  "bettertrims.tooltip.component.item_damage": "When Item Damaged",
+  "bettertrims.tooltip.component.equipped": "Gain",
+  "bettertrims.tooltip.component.tick": "Every Tick",
+  "bettertrims.tooltip.component.second": "Every Second",
+  "bettertrims.tooltip.component.projectile_tick": "Every Projectile Tick",
+  "bettertrims.tooltip.component.experience_gained": "When Gaining Experience",
+  "bettertrims.tooltip.component.trade_cost": "When Calculating Trade Cost",
+  "bettertrims.tooltip.component.piglin_safe": "Piglins are Neutral",
+
+  "bettertrims.tooltip.ability.apply_mob_effect.grants": "+Effect",
+  "bettertrims.tooltip.ability.apply_mob_effect.for": "for",
+  "bettertrims.tooltip.ability.apply_mob_effect.seconds": "Seconds",
+
+  "bettertrims.tooltip.ability.change_item_damage.damages": "Damage Equipped Items",
+  "bettertrims.tooltip.ability.change_item_damage.points": "Points",
+
+  "bettertrims.tooltip.ability.damage_entity.deals": "Deal",
+  "bettertrims.tooltip.ability.damage_entity.damage": "Damage",
+
+  "bettertrims.tooltip.ability.explode.explodes_with_radius": "Create Explosion With Radius",
+
+  "bettertrims.tooltip.ability.ignite.ignite_for": "Ignite for",
+  "bettertrims.tooltip.ability.ignite.seconds": "Seconds",
+
+  "bettertrims.tooltip.ability.play_sound.play": "Play Sound",
+
+  "bettertrims.tooltip.ability.replace_block.replace": "Replace",
+  "bettertrims.tooltip.ability.replace_block.with": "With",
+  "bettertrims.tooltip.ability.replace_block.everything": "Everything",
+
+  "bettertrims.tooltip.ability.replace_disk.replace": "Replace Disk of",
+  "bettertrims.tooltip.ability.replace_disk.anything": "Anything",
+  "bettertrims.tooltip.ability.replace_disk.radius": "With Radius",
+  "bettertrims.tooltip.ability.replace_disk.height": "and Height",
+  "bettertrims.tooltip.ability.replace_disk.with": "With",
+
+  "bettertrims.tooltip.ability.set_block_properties.set": "Set",
+
+  "bettertrims.tooltip.ability.spawn_particles.spawns": "Spawn",
+  "bettertrims.tooltip.ability.spawn_particles.particles": "Particles",
+
+  "bettertrims.tooltip.ability.summon_entity": "Summon %s",
+
+  "bettertrims.tooltip.ability.add_value.add": "Add",
+  "bettertrims.tooltip.ability.add_value.to_value": "to Value",
+  "bettertrims.tooltip.ability.multiply_value": "Multiply Value by",
+  "bettertrims.tooltip.ability.remove_binomial": "Chance to Reduce Value by 1",
+  "bettertrims.tooltip.ability.set_value": "Set Value to",
+
+  "bettertrims.tooltip.condition.if": "If",
+
+  "bettertrims.tooltip.condition.number_provider.complex": "[Complex]",
+  "bettertrims.tooltip.condition.number_provider.scoreboard": "[%s's %s Score]",
+  "bettertrims.tooltip.condition.number_provider.storage": "[%s From %s]",
+
+  "bettertrims.tooltip.condition.all_of.normal": "All of the Following Are True:",
+  "bettertrims.tooltip.condition.all_of.inverted": "None of the Following Are True:",
+
+  "bettertrims.tooltip.condition.any_of.normal": "Any of the Following Are True:",
+  "bettertrims.tooltip.condition.any_of.inverted": "Any of the Following Are False:",
+
+  "bettertrims.tooltip.condition.random_chance": "%s of the Time",
+
+  "bettertrims.tooltip.condition.random_chance_with_enchanted_bonus.enchanted.normal": "Enchanted With %s",
+  "bettertrims.tooltip.condition.random_chance_with_enchanted_bonus.enchanted.inverted": "Not Enchanted With %s",
+  "bettertrims.tooltip.condition.random_chance_with_enchanted_bonus.else": "Else %s of the Time",
+
+  "bettertrims.tooltip.condition.entity_properties.normal.this": "This Entity",
+  "bettertrims.tooltip.condition.entity_properties.normal.attacker": "Attacker",
+  "bettertrims.tooltip.condition.entity_properties.normal.direct_attacker": "Direct Attacker",
+  "bettertrims.tooltip.condition.entity_properties.normal.attacking_player": "Attacking Player",
+  "bettertrims.tooltip.condition.entity_properties.inverted.this": "Not This Entity",
+  "bettertrims.tooltip.condition.entity_properties.inverted.attacker": "Not Attacker",
+  "bettertrims.tooltip.condition.entity_properties.inverted.direct_attacker": "Not Direct Attacker",
+  "bettertrims.tooltip.condition.entity_properties.inverted.attacking_player": "Not Attacking Player",
+
+  "bettertrims.tooltip.condition.entity_scores.between.normal": "%s's Score %s Is Between %s and %s",
+  "bettertrims.tooltip.condition.entity_scores.between.inverted": "%s's Score % Is Not Between %s and %s",
+  "bettertrims.tooltip.condition.entity_scores.at_least.normal": "%s's Score %s Is at Least %s",
+  "bettertrims.tooltip.condition.entity_scores.at_least.inverted": "%s's Score %s Is Less Than %s",
+  "bettertrims.tooltip.condition.entity_scores.at_most.normal": "%s's Score %s Is at Most %s",
+  "bettertrims.tooltip.condition.entity_scores.at_most.inverted": "%s's Score %s Is More Than %s",
+  "bettertrims.tooltip.condition.entity_scores.any_value.normal": "%s Has a Score for %s",
+  "bettertrims.tooltip.condition.entity_scores.any_value.inverted": "%s Does Not Have a Score for %s",
+
+  "bettertrims.tooltip.condition.block_state_property.normal": "Is %s",
+  "bettertrims.tooltip.condition.block_state_property.inverted": "Is Not %s",
+  "bettertrims.tooltip.condition.block_state_property.with_properties.normal": "Is %s With Properties:",
+  "bettertrims.tooltip.condition.block_state_property.with_properties.inverted": "Is %s Without Properties:",
+
+  "bettertrims.tooltip.condition.match_tool.normal": "the Tool Has",
+  "bettertrims.tooltip.condition.match_tool.inverted": "the Tool Does Not Have",
+
+  "bettertrims.tooltip.condition.predicate.entity.matches": "Is",
+  "bettertrims.tooltip.condition.predicate.entity.matches.multiple": "Is Any of:",
+
+  "bettertrims.tooltip.condition.predicate.location.can_see_sky.true": "Can See Sky",
+  "bettertrims.tooltip.condition.predicate.location.can_see_sky.false": "Cannot See Sky",
+
+  "bettertrims.tooltip.condition.predicate.block.state_property.exact": "%s Is %s",
+  "bettertrims.tooltip.condition.predicate.block.state_property.any": "%s Is Any",
+  "bettertrims.tooltip.condition.predicate.block.state_property.between": "%s Is Between %s and %s",
+  "bettertrims.tooltip.condition.predicate.block.state_property.at_least": "%s Is at Least %s",
+  "bettertrims.tooltip.condition.predicate.block.state_property.at_most": "%s Is at Most %s",
+
+  "bettertrims.tooltip.condition.predicate.data.enchantments.matches": "the Enchantment",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.matches.multiple": "Any of These Enchantments:",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.any": "Any Enchantment With Level",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.level.at_least": "%s or Higher",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.level.at_most": "%s or Lower",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.level.is": "%s",
+  "bettertrims.tooltip.condition.predicate.data.enchantments.level.between": "%s to %s",
+
+  "bettertrims.tooltip.condition.predicate.data.damage.max_damage.at_least": "Been Damaged at Least %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.max_damage.at_most": "Been Damaged at Most %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.max_damage.is": "Been Damaged %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.max_damage.between": "Been Damaged Between %s and %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.durability.at_least": "Durability With at Least %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.durability.at_most": "Durability With at Most %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.durability.is": "Durability With %s Points",
+  "bettertrims.tooltip.condition.predicate.data.damage.durability.between": "Durability With Between %s and %s Points",
+
+  "bettertrims.tooltip.condition.predicate.data.potions.matches": "the Effect",
+  "bettertrims.tooltip.condition.predicate.data.potions.matches.multiple": "Any of These Effects:",
+  "bettertrims.tooltip.condition.predicate.data.potions.any": "Any Effect"
 }

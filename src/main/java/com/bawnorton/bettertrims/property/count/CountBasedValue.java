@@ -1,10 +1,14 @@
 package com.bawnorton.bettertrims.property.count;
 
+import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -48,6 +52,29 @@ public interface CountBasedValue {
 
     float calculate(int count);
 
+    default List<Float> getValues(int upToCount) {
+        List<Float> values = new ArrayList<>();
+        for (int i = 1; i <= upToCount; i++) {
+            values.add(calculate(i));
+        }
+        return values;
+    }
+
+    default List<Component> getValueComponents(int upToCount, boolean includeCount, Function<Float, Component> formatter) {
+        List<Component> components = new ArrayList<>();
+        for (int i = 1; i <= upToCount; i++) {
+            float value = calculate(i);
+            Component valueComponent = Styler.number(formatter.apply(value).copy());
+            MutableComponent countComponent = Styler.trim(Component.literal("[%d]".formatted(i))).append(": ");
+            if (includeCount) {
+                components.add(countComponent.append(valueComponent));
+            } else {
+                components.add(valueComponent);
+            }
+        }
+        return components;
+    }
+
     CountBasedValueType<? extends CountBasedValue> getType();
 
     record Clamped(CountBasedValue value, float min, float max) implements CountBasedValue {
@@ -77,6 +104,11 @@ public interface CountBasedValue {
         @Override
         public float calculate(int count) {
             return value;
+        }
+
+        @Override
+        public List<Component> getValueComponents(int upToCount, boolean includeCount, Function<Float, Component> formatter) {
+            return List.of(Styler.number(formatter.apply(value).copy()));
         }
 
         @Override

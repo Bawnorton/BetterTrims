@@ -9,7 +9,7 @@ import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
 import com.bawnorton.bettertrims.property.element.ConditionalElement;
 import com.bawnorton.bettertrims.property.element.ConditionalElementMatcher;
-import com.bawnorton.bettertrims.property.element.ElementMatcher;
+import com.bawnorton.bettertrims.property.element.TrimElement;
 import com.bawnorton.bettertrims.property.item.TrimItemPropertyComponents;
 import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
 import com.mojang.serialization.Codec;
@@ -30,24 +30,24 @@ public final class TrimProperty {
     public static final Codec<TrimProperty> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Matcher.CODEC.fieldOf("trim").forGetter(TrimProperty::matcher),
         TrimAbilityComponents.CODEC.optionalFieldOf("abilities", DataComponentMap.EMPTY).forGetter(TrimProperty::abilities),
-        TrimItemPropertyComponents.CODEC.optionalFieldOf("item_properties", DataComponentMap.EMPTY).forGetter(TrimProperty::properties)
+        TrimItemPropertyComponents.CODEC.optionalFieldOf("item_properties", DataComponentMap.EMPTY).forGetter(TrimProperty::itemProperties)
     ).apply(instance, TrimProperty::new));
 
     public static final Codec<Holder<TrimProperty>> CODEC = RegistryFixedCodec.create(BetterTrimsRegistries.Keys.TRIM_PROPERTIES);
 
     private final Matcher matcher;
     private final DataComponentMap abilities;
-    private final DataComponentMap properties;
+    private final DataComponentMap itemProperties;
 
     private final Map<DataComponentType<?>, List<TrimEntityAbilityRunner<?>>> entityAbilityRunners = new HashMap<>();
     private final Map<DataComponentType<?>, List<TrimToggleAbilityRunner<?>>> toggleAbilityRunners = new HashMap<>();
     private final Map<DataComponentType<?>, List<TrimValueAbilityRunner<?>>> valueAbilityRunners = new HashMap<>();
-    private final Map<DataComponentType<?>, List<ElementMatcher<?>>> elementMatchers = new HashMap<>();
+    private final Map<DataComponentType<?>, List<ConditionalElementMatcher<?>>> elementMatchers = new HashMap<>();
 
-    public TrimProperty(Matcher matcher, DataComponentMap abilities, DataComponentMap properties) {
+    public TrimProperty(Matcher matcher, DataComponentMap abilities, DataComponentMap itemProperties) {
         this.matcher = matcher;
         this.abilities = abilities;
-        this.properties = properties;
+        this.itemProperties = itemProperties;
     }
 
     public <A extends TrimEntityAbility> List<TrimEntityAbilityRunner<?>> getEntityAbilityRunners(DataComponentType<List<ConditionalElement<A>>> type) {
@@ -89,19 +89,19 @@ public final class TrimProperty {
         });
     }
 
-    public <A> List<ElementMatcher<?>> getAbilityElements(DataComponentType<List<ConditionalElement<A>>> type) {
+    public <A extends TrimElement> List<ConditionalElementMatcher<?>> getAbilityElements(DataComponentType<List<ConditionalElement<A>>> type) {
         return elementMatchers.computeIfAbsent(type, k -> getElements(type, abilities));
     }
 
-    public <A> List<ElementMatcher<?>> getItemPropertyElements(DataComponentType<List<ConditionalElement<A>>> type) {
-        return elementMatchers.computeIfAbsent(type, k -> getElements(type, properties));
+    public <A extends TrimElement> List<ConditionalElementMatcher<?>> getItemPropertyElements(DataComponentType<List<ConditionalElement<A>>> type) {
+        return elementMatchers.computeIfAbsent(type, k -> getElements(type, itemProperties));
     }
 
-    private <A> @NotNull List<ElementMatcher<?>> getElements(DataComponentType<List<ConditionalElement<A>>> type, DataComponentMap elementMap) {
+    private <A extends TrimElement> @NotNull List<ConditionalElementMatcher<?>> getElements(DataComponentType<List<ConditionalElement<A>>> type, DataComponentMap elementMap) {
         List<ConditionalElement<A>> elements = elementMap.get(type);
         if (elements == null) return List.of();
 
-        List<ElementMatcher<?>> matchers = new ArrayList<>();
+        List<ConditionalElementMatcher<?>> matchers = new ArrayList<>();
         for (ConditionalElement<A> element : elements) {
             matchers.add(new ConditionalElementMatcher<>(matcher, element));
         }
@@ -112,12 +112,17 @@ public final class TrimProperty {
         return matcher;
     }
 
-    public DataComponentMap abilities() {
+    private DataComponentMap abilities() {
         return abilities;
     }
 
-    public DataComponentMap properties() {
-        return properties;
+    private DataComponentMap itemProperties() {
+        return itemProperties;
+    }
+
+    @Override
+    public String toString() {
+        return "TrimProperty{matcher=%s, abilities=%s, itemProperties=%s}".formatted(matcher, abilities, itemProperties);
     }
 
     public static Builder builder(Matcher matcher) {
@@ -137,27 +142,22 @@ public final class TrimProperty {
             this.matcher = matcher;
         }
 
-        public <A> Builder ability(DataComponentType<List<ConditionalElement<A>>> type, A ability) {
+        public <A extends TrimElement> Builder ability(DataComponentType<List<ConditionalElement<A>>> type, A ability) {
             getAbilityList(type).add(new ConditionalElement<>(ability, Optional.empty()));
             return this;
         }
 
-        public <A> Builder ability(DataComponentType<List<ConditionalElement<A>>> type, A ability, LootItemCondition.Builder requirements) {
+        public <A extends TrimElement> Builder ability(DataComponentType<List<ConditionalElement<A>>> type, A ability, LootItemCondition.Builder requirements) {
             getAbilityList(type).add(new ConditionalElement<>(ability, Optional.of(requirements.build())));
             return this;
         }
 
-        public <A> Builder specialAbility(DataComponentType<List<A>> type, A ability) {
-            getAbilityList(type).add(ability);
-            return this;
-        }
-
-        public <A> Builder itemProperty(DataComponentType<List<ConditionalElement<A>>> type, A itemProperty) {
+        public <A extends TrimElement> Builder itemProperty(DataComponentType<List<ConditionalElement<A>>> type, A itemProperty) {
             getItemProperties(type).add(new ConditionalElement<>(itemProperty, Optional.empty()));
             return this;
         }
 
-        public <A> Builder itemProperty(DataComponentType<List<ConditionalElement<A>>> type, A itemProperty, LootItemCondition.Builder requirements) {
+        public <A extends TrimElement> Builder itemProperty(DataComponentType<List<ConditionalElement<A>>> type, A itemProperty, LootItemCondition.Builder requirements) {
             getItemProperties(type).add(new ConditionalElement<>(itemProperty, Optional.of(requirements.build())));
             return this;
         }

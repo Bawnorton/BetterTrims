@@ -11,16 +11,16 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class ElementMatcher<E> implements ContextChecker {
+public class ElementMatcher<T extends TrimElement> implements ContextChecker {
     private final Matcher matcher;
-    private final E element;
+    private final T element;
 
-    public ElementMatcher(Matcher matcher, E element) {
+    public ElementMatcher(Matcher matcher, T element) {
         this.matcher = matcher;
         this.element = element;
     }
 
-    public E getElement() {
+    public T getElement() {
         return element;
     }
 

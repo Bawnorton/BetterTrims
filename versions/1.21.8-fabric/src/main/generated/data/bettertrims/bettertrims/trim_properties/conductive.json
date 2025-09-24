@@ -127,31 +127,26 @@
               }
             },
             {
-              "condition": "minecraft:all_of",
-              "terms": [
-                {
-                  "condition": "minecraft:entity_properties",
-                  "entity": "direct_attacker",
-                  "predicate": {
-                    "type": "#bettertrims:conductive_projectiles"
-                  }
-                },
-                {
-                  "condition": "minecraft:inverted",
-                  "term": {
-                    "condition": "minecraft:match_tool",
-                    "predicate": {
-                      "predicates": {
-                        "minecraft:enchantments": [
-                          {
-                            "enchantments": "minecraft:channeling"
-                          }
-                        ]
+              "condition": "minecraft:entity_properties",
+              "entity": "direct_attacker",
+              "predicate": {
+                "type": "#bettertrims:conductive_projectiles"
+              }
+            },
+            {
+              "condition": "minecraft:inverted",
+              "term": {
+                "condition": "minecraft:match_tool",
+                "predicate": {
+                  "predicates": {
+                    "minecraft:enchantments": [
+                      {
+                        "enchantments": "minecraft:channeling"
                       }
-                    }
+                    ]
                   }
                 }
-              ]
+              }
             }
           ]
         }
