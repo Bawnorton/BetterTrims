@@ -3,7 +3,7 @@ package com.bawnorton.bettertrims.client.tooltip;
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.BetterTrimsClient;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
-import com.bawnorton.bettertrims.client.tooltip.component.GapComponent;
+import com.bawnorton.bettertrims.client.tooltip.component.DynamicWidthComponent;
 import com.bawnorton.bettertrims.client.tooltip.component.ItemComponent;
 import com.bawnorton.bettertrims.property.Matcher;
 import com.bawnorton.bettertrims.property.TrimProperty;
@@ -35,27 +35,28 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TrimTooltipPage {
     private final Matcher matcher;
     private final TrimProperty property;
-    private final List<ClientTooltipComponent> components;
+    private ClientTooltipComponent component;
 
     public TrimTooltipPage(TrimProperty property, Matcher matcher) {
         this.matcher = matcher;
         this.property = property;
-        this.components = new ArrayList<>();
     }
 
-    public List<ClientTooltipComponent> getComponents() {
-        return components;
+    public ClientTooltipComponent getComponent() {
+        if (component == null) {
+            throw new IllegalStateException("Components have not been generated yet");
+        }
+        return component;
     }
 
     @SuppressWarnings("unchecked")
-    public void generateComponents(ClientLevel level, ArmorTrim trim, Font font, int index, int total) {
-        components.clear();
+    public void generateComponent(ClientLevel level, ArmorTrim trim, Font font, int index, int total) {
+        component = null;
 
         CompositeContainerComponent.Builder pageBuilder = CompositeContainerComponent.builder().vertical();
         pageBuilder.component(generateTitle(level, index, total));
@@ -63,7 +64,7 @@ public class TrimTooltipPage {
         boolean addHeader = true;
         for (DataComponentType<?> type : BetterTrimsRegistries.TRIM_ABILITY_COMPONENT_TYPE) {
             DataComponentType<List<ConditionalElement<TrimElement>>> castType = (DataComponentType<List<ConditionalElement<TrimElement>>>) type;
-            CompositeContainerComponent abilityComponent = generateAbilityTooltipComponent(castType, level);
+            CompositeContainerComponent abilityComponent = generateAbilityTooltipComponent(level, font, castType);
             if (abilityComponent == null) continue;
 
             if (addHeader) {
@@ -93,8 +94,11 @@ public class TrimTooltipPage {
         }
 
         CompositeContainerComponent page = pageBuilder.build();
-        components.addAll(page.getComponents());
-        components.add(new GapComponent(page.getMaxWidth(font), 0));
+        component = TooltipComponentOptimiser.optimise(page);
+    }
+
+    public int getMaxWidth(Font font) {
+        return DynamicWidthComponent.getMaxWidth(font, component, 0);
     }
 
     private static ClientTooltipComponent generateAsItemHeader() {
@@ -130,7 +134,7 @@ public class TrimTooltipPage {
             .translate("bettertrims.property.%s.%s".formatted(propertyId.getNamespace(), propertyId.getPath()), Styler::trim)
             .space()
             .literal("(", Styler::trim)
-            .component(generateMatcherComponent(level))
+            .component(generateMatcherComponent(level, matcher.material(), matcher.pattern()))
             .literal(")", Styler::trim)
             .centred();
         if (total > 1) {
@@ -139,14 +143,14 @@ public class TrimTooltipPage {
         return builder.build();
     }
 
-    private CompositeContainerComponent generateAbilityTooltipComponent(DataComponentType<List<ConditionalElement<TrimElement>>> type, ClientLevel level) {
+    private CompositeContainerComponent generateAbilityTooltipComponent(ClientLevel level, Font font, DataComponentType<List<ConditionalElement<TrimElement>>> type) {
         List<ConditionalElementMatcher<?>> elements = property.getAbilityElements(type);
         if (elements.isEmpty()) return null;
 
         CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
             .vertical();
         for (ConditionalElementMatcher<?> element : elements) {
-            builder.component(element.getConditionalElement().getTooltip(level));
+            builder.component(element.getConditionalElement().getTooltip(level, font));
         }
         return builder.build();
     }
@@ -184,19 +188,19 @@ public class TrimTooltipPage {
         };
     }
 
-    private ClientTooltipComponent generateMatcherComponent(ClientLevel level) {
-        List<TrimMaterial> materials = matcher.material().stream().map(Holder::value).toList();
-        List<TrimPattern> patterns = matcher.pattern().stream().map(Holder::value).toList();
-        if (materials.isEmpty()) {
-            return generateAnyMaterialComponent(patterns, level);
-        } else if (patterns.isEmpty()) {
-            return generateAnyPatternComponent(materials, level);
+    public static ClientTooltipComponent generateMatcherComponent(ClientLevel level, HolderSet<TrimMaterial> materials, HolderSet<TrimPattern> patterns) {
+        List<TrimMaterial> materialList = materials.stream().map(Holder::value).toList();
+        List<TrimPattern> patternList = patterns.stream().map(Holder::value).toList();
+        if (materialList.isEmpty()) {
+            return generateAnyMaterialComponent(patternList, level);
+        } else if (patternList.isEmpty()) {
+            return generateAnyPatternComponent(materialList, level);
         } else {
-            return generateSpecificMaterialPatternComponent(patterns, materials, level);
+            return generateSpecificMaterialPatternComponent(patternList, materialList, level);
         }
     }
 
-    private ClientTooltipComponent generateAnyMaterialComponent(List<TrimPattern> patterns, ClientLevel level) {
+    private static ClientTooltipComponent generateAnyMaterialComponent(List<TrimPattern> patterns, ClientLevel level) {
         if (patterns.isEmpty()) {
             return generateAnyMaterialOrPatternComponent();
         }
@@ -204,7 +208,7 @@ public class TrimTooltipPage {
         return generateMatcherComponentFor(getAllMaterialProviders(), getPatternProviders(patterns, level));
     }
 
-    private ClientTooltipComponent generateAnyPatternComponent(List<TrimMaterial> materials, ClientLevel level) {
+    private static ClientTooltipComponent generateAnyPatternComponent(List<TrimMaterial> materials, ClientLevel level) {
         if (materials.isEmpty()) {
             return generateAnyMaterialOrPatternComponent();
         }
@@ -212,15 +216,15 @@ public class TrimTooltipPage {
         return generateMatcherComponentFor(getMaterialProviders(materials, level), getAllPatternProviders());
     }
 
-    private ClientTooltipComponent generateAnyMaterialOrPatternComponent() {
+    private static ClientTooltipComponent generateAnyMaterialOrPatternComponent() {
         return generateMatcherComponentFor(getAllMaterialProviders(), getAllPatternProviders());
     }
 
-    private ClientTooltipComponent generateSpecificMaterialPatternComponent(List<TrimPattern> patterns, List<TrimMaterial> materials, ClientLevel level) {
+    private static ClientTooltipComponent generateSpecificMaterialPatternComponent(List<TrimPattern> patterns, List<TrimMaterial> materials, ClientLevel level) {
         return generateMatcherComponentFor(getMaterialProviders(materials, level), getPatternProviders(patterns, level));
     }
 
-    private ClientTooltipComponent generateMatcherComponentFor(List<ItemStack> materialProviders, List<ItemStack> patternProviders) {
+    private static ClientTooltipComponent generateMatcherComponentFor(List<ItemStack> materialProviders, List<ItemStack> patternProviders) {
         return CompositeContainerComponent.builder()
             .cycle(builder -> materialProviders.stream().map(ItemComponent::new).forEach(builder::component))
             .literal("-", Styler::trim)
@@ -230,7 +234,7 @@ public class TrimTooltipPage {
             .build();
     }
 
-    private List<ItemStack> getMaterialProviders(List<TrimMaterial> materials, ClientLevel level) {
+    private static List<ItemStack> getMaterialProviders(List<TrimMaterial> materials, ClientLevel level) {
         return getAllMaterialProviders()
             .stream()
             .filter(item -> {
@@ -245,7 +249,7 @@ public class TrimTooltipPage {
             .toList();
     }
 
-    private List<ItemStack> getAllMaterialProviders() {
+    private static List<ItemStack> getAllMaterialProviders() {
         return BuiltInRegistries.ITEM.getOrThrow(ItemTags.TRIM_MATERIALS)
             .stream()
             .map(holder -> holder.unwrap()
@@ -254,7 +258,7 @@ public class TrimTooltipPage {
             .toList();
     }
 
-    private List<ItemStack> getAllPatternProviders() {
+    private static List<ItemStack> getAllPatternProviders() {
         return BetterTrimsClient.getPatternSources()
             .values()
             .stream()

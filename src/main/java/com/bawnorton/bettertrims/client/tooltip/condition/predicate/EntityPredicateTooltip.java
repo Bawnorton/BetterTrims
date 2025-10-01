@@ -2,6 +2,8 @@ package com.bawnorton.bettertrims.client.tooltip.condition.predicate;
 
 import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
+import com.bawnorton.bettertrims.client.tooltip.condition.predicate.data.DataComponentMatchersTooltip;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -20,96 +22,96 @@ import java.util.function.Function;
 import static com.bawnorton.bettertrims.client.tooltip.condition.predicate.PredicateTooltip.addMinMaxToBuilder;
 
 public interface EntityPredicateTooltip {
-    static void addToBuilder(ClientLevel level, EntityPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addToBuilder(ClientLevel level, EntityPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Optional<EntityTypePredicate> entityTypePredicate = predicate.entityType();
-        if(entityTypePredicate.isPresent()) {
-            addEntityTypePredicateToBuilder(level, entityTypePredicate.orElseThrow(), builder);
+        if (entityTypePredicate.isPresent()) {
+            addEntityTypePredicateToBuilder(level, entityTypePredicate.orElseThrow(), state, builder);
         }
 
         Optional<DistancePredicate> distancePredicate = predicate.distanceToPlayer();
-        if(distancePredicate.isPresent()) {
-            addDistancePredicateToBuilder(level, distancePredicate.orElseThrow(), builder);
+        if (distancePredicate.isPresent()) {
+            addDistancePredicateToBuilder(level, distancePredicate.orElseThrow(), state, builder);
         }
 
         Optional<MovementPredicate> movement = predicate.movement();
-        if(movement.isPresent()) {
-            addMovementPredicateToBuilder(level, movement.orElseThrow(), builder);
+        if (movement.isPresent()) {
+            addMovementPredicateToBuilder(level, movement.orElseThrow(), state, builder);
         }
 
         EntityPredicate.LocationWrapper location = predicate.location();
         Optional<LocationPredicate> located = location.located();
-        if(located.isPresent()) {
-            addLocationPredicateToBuilder(level, located.orElseThrow(), builder);
+        if (located.isPresent()) {
+            addLocationPredicateToBuilder(level, located.orElseThrow(), state, builder);
         }
 
         Optional<LocationPredicate> steppingOn = location.steppingOn();
-        if(steppingOn.isPresent()) {
-            addLocationPredicateToBuilder(level, steppingOn.orElseThrow(), builder);
+        if (steppingOn.isPresent()) {
+            addLocationPredicateToBuilder(level, steppingOn.orElseThrow(), state, builder);
         }
 
         Optional<LocationPredicate> affectsMovement = location.affectsMovement();
-        if(affectsMovement.isPresent()) {
-            addLocationPredicateToBuilder(level, affectsMovement.orElseThrow(), builder);
+        if (affectsMovement.isPresent()) {
+            addLocationPredicateToBuilder(level, affectsMovement.orElseThrow(), state, builder);
         }
 
         Optional<MobEffectsPredicate> effects = predicate.effects();
-        if(effects.isPresent()) {
-            addMobEffectsPredicateToBuilder(level, effects.orElseThrow(), builder);
+        if (effects.isPresent()) {
+            addMobEffectsPredicateToBuilder(level, effects.orElseThrow(), state, builder);
         }
 
         Optional<NbtPredicate> nbt = predicate.nbt();
-        if(nbt.isPresent()) {
-            addNbtPredicateToBuilder(level, nbt.orElseThrow(), builder);
+        if (nbt.isPresent()) {
+            addNbtPredicateToBuilder(level, nbt.orElseThrow(), state, builder);
         }
 
         Optional<EntityFlagsPredicate> flags = predicate.flags();
-        if(flags.isPresent()) {
-            addEntityFlagsPredicateToBuilder(level, flags.orElseThrow(), builder);
+        if (flags.isPresent()) {
+            addEntityFlagsPredicateToBuilder(level, flags.orElseThrow(), state, builder);
         }
 
         Optional<EntityEquipmentPredicate> equipment = predicate.equipment();
-        if(equipment.isPresent()) {
-            addEntityEquipmentPredicateToBuilder(level, equipment.orElseThrow(), builder);
+        if (equipment.isPresent()) {
+            addEntityEquipmentPredicateToBuilder(level, equipment.orElseThrow(), state, builder);
         }
 
         Optional<EntitySubPredicate> subPredicate = predicate.subPredicate();
-        if(subPredicate.isPresent()) {
-            addEntitySubPredicateToBuilder(level, subPredicate.orElseThrow(), builder);
+        if (subPredicate.isPresent()) {
+            addEntitySubPredicateToBuilder(level, subPredicate.orElseThrow(), state, builder);
         }
 
         Optional<Integer> periodicTick = predicate.periodicTick();
-        if(periodicTick.isPresent()) {
-            addPeriodicTickToBuilder(level, periodicTick.orElseThrow(), builder);
+        if (periodicTick.isPresent()) {
+            addPeriodicTickToBuilder(level, periodicTick.orElseThrow(), state, builder);
         }
 
         Optional<EntityPredicate> vehicle = predicate.vehicle();
-        if(vehicle.isPresent()) {
-            addEntityPredicateToBuilder(level, "vehicle", vehicle.orElseThrow(), builder);
+        if (vehicle.isPresent()) {
+            addEntityPredicateToBuilder(level, "vehicle", vehicle.orElseThrow(), state, builder);
         }
 
         Optional<EntityPredicate> passenger = predicate.passenger();
-        if(passenger.isPresent()) {
-            addEntityPredicateToBuilder(level, "passenger", passenger.orElseThrow(), builder);
+        if (passenger.isPresent()) {
+            addEntityPredicateToBuilder(level, "passenger", passenger.orElseThrow(), state, builder);
         }
 
         Optional<EntityPredicate> targetedEntity = predicate.targetedEntity();
-        if(targetedEntity.isPresent()) {
-            addEntityPredicateToBuilder(level, "targeted_entity", targetedEntity.orElseThrow(), builder);
+        if (targetedEntity.isPresent()) {
+            addEntityPredicateToBuilder(level, "targeted_entity", targetedEntity.orElseThrow(), state, builder);
         }
 
         Optional<String> team = predicate.team();
-        if(team.isPresent()) {
-            addTeamToBuilder(level, team.orElseThrow(), builder);
+        if (team.isPresent()) {
+            addTeamToBuilder(level, team.orElseThrow(), state, builder);
         }
 
         Optional<SlotsPredicate> slots = predicate.slots();
-        if(slots.isPresent()) {
-            addSlotsPredicateToBuilder(level, slots.orElseThrow(), builder);
+        if (slots.isPresent()) {
+            addSlotsPredicateToBuilder(level, slots.orElseThrow(), state, builder);
         }
 
         DataComponentMatchers components = predicate.components();
-        if(!components.isEmpty()) {
-            addDataComponentMatchersToBuilder(level, components, builder);
+        if (!components.isEmpty()) {
+            addDataComponentMatchersToBuilder(level, components, state, builder);
         }
     }
 
@@ -117,11 +119,11 @@ public interface EntityPredicateTooltip {
         return PredicateTooltip.key("entity.%s".formatted(key));
     }
 
-    static void addEntityTypePredicateToBuilder(ClientLevel level, EntityTypePredicate predicate, CompositeContainerComponent.Builder builder) {
-        PredicateTooltip.addRegisteredElementsToBuilder(level, key("matches"), Registries.ENTITY_TYPE, predicate.types(), EntityType::getDescription, builder);
+    static void addEntityTypePredicateToBuilder(ClientLevel level, EntityTypePredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        PredicateTooltip.addRegisteredElementsToBuilder(level, key("matches"), Registries.ENTITY_TYPE, predicate.types(), EntityType::getDescription, state, builder);
     }
 
-    static void addDistancePredicateToBuilder(ClientLevel level, DistancePredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addDistancePredicateToBuilder(ClientLevel level, DistancePredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         MinMaxBounds.Doubles x = predicate.x();
         MinMaxBounds.Doubles y = predicate.y();
         MinMaxBounds.Doubles z = predicate.z();
@@ -133,29 +135,29 @@ public interface EntityPredicateTooltip {
             .translate(key("distance"))
             .space();
         boolean useAnd = false;
-        if(!x.isAny()) {
-            addMinMaxToBuilder(key("distance.x"), false, x, distanceBuilder);
+        if (!x.isAny()) {
+            addMinMaxToBuilder(key("distance.x"), false, x, state, distanceBuilder);
             useAnd = true;
         }
-        if(!y.isAny()) {
-            addMinMaxToBuilder(key("distance.y"), useAnd, y, distanceBuilder);
+        if (!y.isAny()) {
+            addMinMaxToBuilder(key("distance.y"), useAnd, y, state, distanceBuilder);
             useAnd = true;
         }
-        if(!z.isAny()) {
-            addMinMaxToBuilder(key("distance.z"), useAnd, z, distanceBuilder);
+        if (!z.isAny()) {
+            addMinMaxToBuilder(key("distance.z"), useAnd, z, state, distanceBuilder);
             useAnd = true;
         }
-        if(!horizontal.isAny()) {
-            addMinMaxToBuilder(key("distance.horizontal"), useAnd, horizontal, distanceBuilder);
+        if (!horizontal.isAny()) {
+            addMinMaxToBuilder(key("distance.horizontal"), useAnd, horizontal, state, distanceBuilder);
             useAnd = true;
         }
-        if(!absolute.isAny()) {
-            addMinMaxToBuilder(key("distance.absolute"), useAnd, absolute, distanceBuilder);
+        if (!absolute.isAny()) {
+            addMinMaxToBuilder(key("distance.absolute"), useAnd, absolute, state, distanceBuilder);
         }
         builder.component(distanceBuilder.build());
     }
 
-    static void addMovementPredicateToBuilder(ClientLevel level, MovementPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addMovementPredicateToBuilder(ClientLevel level, MovementPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         MinMaxBounds.Doubles x = predicate.x();
         MinMaxBounds.Doubles y = predicate.y();
         MinMaxBounds.Doubles z = predicate.z();
@@ -169,43 +171,43 @@ public interface EntityPredicateTooltip {
             .translate(key("movement"))
             .space();
         boolean useAnd = false;
-        if(!x.isAny()) {
-            addMinMaxToBuilder(key("movement.x"), false, x, movementBuilder);
+        if (!x.isAny()) {
+            addMinMaxToBuilder(key("movement.x"), false, x, state, movementBuilder);
             useAnd = true;
         }
-        if(!y.isAny()) {
-            addMinMaxToBuilder(key("movement.y"), useAnd, y, movementBuilder);
+        if (!y.isAny()) {
+            addMinMaxToBuilder(key("movement.y"), useAnd, y, state, movementBuilder);
             useAnd = true;
         }
-        if(!z.isAny()) {
-            addMinMaxToBuilder(key("movement.z"), useAnd, z, movementBuilder);
+        if (!z.isAny()) {
+            addMinMaxToBuilder(key("movement.z"), useAnd, z, state, movementBuilder);
             useAnd = true;
         }
-        if(!horizontalSpeed.isAny()) {
-            addMinMaxToBuilder(key("movement.horizontal_speed"), useAnd, horizontalSpeed, movementBuilder);
+        if (!horizontalSpeed.isAny()) {
+            addMinMaxToBuilder(key("movement.horizontal_speed"), useAnd, horizontalSpeed, state, movementBuilder);
             useAnd = true;
         }
-        if(!verticalSpeed.isAny()) {
-            addMinMaxToBuilder(key("movement.vertical_speed"), useAnd, verticalSpeed, movementBuilder);
+        if (!verticalSpeed.isAny()) {
+            addMinMaxToBuilder(key("movement.vertical_speed"), useAnd, verticalSpeed, state, movementBuilder);
             useAnd = true;
         }
-        if(!speed.isAny()) {
-            addMinMaxToBuilder(key("movement.speed"), useAnd, speed, movementBuilder);
+        if (!speed.isAny()) {
+            addMinMaxToBuilder(key("movement.speed"), useAnd, speed, state, movementBuilder);
             useAnd = true;
         }
-        if(!fallDistance.isAny()) {
-            addMinMaxToBuilder(key("movement.fall_distance"), useAnd, fallDistance, movementBuilder);
+        if (!fallDistance.isAny()) {
+            addMinMaxToBuilder(key("movement.fall_distance"), useAnd, fallDistance, state, movementBuilder);
         }
         builder.component(movementBuilder.build());
     }
 
-    static void addLocationPredicateToBuilder(ClientLevel level, LocationPredicate predicate, CompositeContainerComponent.Builder builder) {
-        LocationPredicateTooltip.addToBuilder(level, predicate, builder);
+    static void addLocationPredicateToBuilder(ClientLevel level, LocationPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        LocationPredicateTooltip.addToBuilder(level, predicate, state, builder);
     }
 
-    static void addMobEffectsPredicateToBuilder(ClientLevel level, MobEffectsPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addMobEffectsPredicateToBuilder(ClientLevel level, MobEffectsPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Map<Holder<MobEffect>, MobEffectsPredicate.MobEffectInstancePredicate> effectMap = predicate.effectMap();
-        if(effectMap.isEmpty()) {
+        if (effectMap.isEmpty()) {
             builder.space().translate(key("effects.any"), Styler::value);
         } else {
             Registry<MobEffect> effectRegistry = level.registryAccess().lookupOrThrow(Registries.MOB_EFFECT);
@@ -221,41 +223,41 @@ public interface EntityPredicateTooltip {
                     CompositeContainerComponent.Builder conditionBuilder = CompositeContainerComponent.builder();
                     boolean useAnd = false;
                     Optional<Boolean> ambient = effectInstancePredicate.ambient();
-                    if(ambient.isPresent()) {
+                    if (ambient.isPresent()) {
                         conditionBuilder.translate(key("effects.ambient.%s".formatted(ambient.orElseThrow() ? "true" : "false")), Styler::value);
                         useAnd = true;
                     }
                     Optional<Boolean> visible = effectInstancePredicate.visible();
-                    if(visible.isPresent()) {
-                        if(useAnd) conditionBuilder.literal(", ", Styler::condition);
+                    if (visible.isPresent()) {
+                        if (useAnd) conditionBuilder.literal(", ", Styler::condition);
                         conditionBuilder.translate(key("effects.visible.%s".formatted(visible.orElseThrow() ? "true" : "false")), Styler::value);
                         useAnd = true;
                     }
                     MinMaxBounds.Ints amplifier = effectInstancePredicate.amplifier();
-                    if(!amplifier.isAny()) {
-                        if(useAnd) conditionBuilder.literal(", ", Styler::condition);
+                    if (!amplifier.isAny()) {
+                        if (useAnd) conditionBuilder.literal(", ", Styler::condition);
                         addMinMaxToBuilder(
                             key("effects.amplifier"),
                             false,
                             amplifier,
                             value -> Component.translatable("enchantment.level.%s".formatted("%.0f".formatted(value + 1))),
-                            conditionBuilder
+                            state, conditionBuilder
                         );
                         useAnd = true;
                     }
                     MinMaxBounds.Ints duration = effectInstancePredicate.duration();
-                    if(!duration.isAny()) {
-                        if(useAnd) conditionBuilder.literal(", ", Styler::condition);
+                    if (!duration.isAny()) {
+                        if (useAnd) conditionBuilder.literal(", ", Styler::condition);
                         addMinMaxToBuilder(
                             key("effects.duration"),
                             false,
                             duration,
                             i -> Component.literal("%.0fs".formatted(i * 20)),
-                            conditionBuilder
+                            state, conditionBuilder
                         );
                     }
                     CompositeContainerComponent effectConditions = conditionBuilder.build();
-                    if(!effectConditions.isEmpty()) {
+                    if (!effectConditions.isEmpty()) {
                         effectBuilder.literal(" (", Styler::condition)
                             .component(effectConditions)
                             .literal(")", Styler::condition);
@@ -266,11 +268,14 @@ public interface EntityPredicateTooltip {
         }
     }
 
-    static void addNbtPredicateToBuilder(ClientLevel level, NbtPredicate predicate, CompositeContainerComponent.Builder builder) {
-        builder.component(CompositeContainerComponent.builder().space().translate(key("nbt")).build());
+    static void addNbtPredicateToBuilder(ClientLevel level, NbtPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        builder.component(CompositeContainerComponent.builder()
+            .space()
+            .translate(key("nbt"), Styler::condition, Styler.value(Component.literal(predicate.tag().toString())))
+            .build());
     }
 
-    static void addEntityFlagsPredicateToBuilder(ClientLevel level, EntityFlagsPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addEntityFlagsPredicateToBuilder(ClientLevel level, EntityFlagsPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Map<String, Optional<Boolean>> flagMap = Map.of(
             "on_ground", predicate.isOnGround(),
             "on_fire", predicate.isOnFire(),
@@ -283,8 +288,8 @@ public interface EntityPredicateTooltip {
         CompositeContainerComponent.Builder flagsBuilder = CompositeContainerComponent.builder().space();
         boolean useAnd = false;
         for (Map.Entry<String, Optional<Boolean>> entry : flagMap.entrySet()) {
-            if(entry.getValue().isPresent()) {
-                if(useAnd) {
+            if (entry.getValue().isPresent()) {
+                if (useAnd) {
                     flagsBuilder.literal(" & ", Styler::condition);
                 }
                 flagsBuilder.translate(key("flags.%s.%s".formatted(entry.getKey(), entry.getValue().orElseThrow() ? "true" : "false")), Styler::value);
@@ -293,7 +298,7 @@ public interface EntityPredicateTooltip {
         }
     }
 
-    static void addEntityEquipmentPredicateToBuilder(ClientLevel level, EntityEquipmentPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addEntityEquipmentPredicateToBuilder(ClientLevel level, EntityEquipmentPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Map<EquipmentSlot, Optional<ItemPredicate>> equipmentMap = Map.of(
             EquipmentSlot.HEAD, predicate.head(),
             EquipmentSlot.CHEST, predicate.chest(),
@@ -308,12 +313,12 @@ public interface EntityPredicateTooltip {
             .space()
             .cycle(equipmentCycler -> {
                 equipmentMap.forEach((slot, itemPredicate) -> {
-                    if(itemPredicate.isPresent()) {
+                    if (itemPredicate.isPresent()) {
                         Component slotName = Styler.name(Component.translatable("slot.%s".formatted(slot.getName())));
                         CompositeContainerComponent.Builder itemBuilder = CompositeContainerComponent.builder()
                             .translate(key("equipment.slot"), Styler::condition, slotName)
                             .space();
-                        ItemPredicateTooltip.addToBuilder(level, itemPredicate.orElseThrow(), itemBuilder);
+                        ItemPredicateTooltip.addToBuilder(level, itemPredicate.orElseThrow(), new LootConditionTooltips.State(), itemBuilder);
                         equipmentCycler.component(itemBuilder.build());
                     }
                 });
@@ -321,33 +326,33 @@ public interface EntityPredicateTooltip {
         builder.component(equipmentBuilder.build());
     }
 
-    static void addEntitySubPredicateToBuilder(ClientLevel level, EntitySubPredicate predicate, CompositeContainerComponent.Builder builder) {
-        EntitySubPredicateTooltip.addToBuilder(level, predicate, builder);
+    static void addEntitySubPredicateToBuilder(ClientLevel level, EntitySubPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        EntitySubPredicateTooltip.addToBuilder(level, predicate, state, builder);
     }
 
-    static void addPeriodicTickToBuilder(ClientLevel level, int tick, CompositeContainerComponent.Builder builder) {
+    static void addPeriodicTickToBuilder(ClientLevel level, int tick, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         builder.component(CompositeContainerComponent.builder()
             .space()
-            .translate(key("periodic_tick"), Styler.number(Component.literal(String.valueOf(tick))))
+            .translate(key("periodic_tick"), Styler.number(tick))
             .build());
     }
 
-    static void addEntityPredicateToBuilder(ClientLevel level, String label, EntityPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addEntityPredicateToBuilder(ClientLevel level, String label, EntityPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         CompositeContainerComponent.Builder entityBuilder = CompositeContainerComponent.builder()
             .translate(key("%s.matches".formatted(label)), Styler::condition)
             .space();
-        EntityPredicateTooltip.addToBuilder(level, predicate, entityBuilder);
+        EntityPredicateTooltip.addToBuilder(level, predicate, state, entityBuilder);
         builder.component(entityBuilder.build());
     }
 
-    static void addTeamToBuilder(ClientLevel level, String team, CompositeContainerComponent.Builder builder) {
+    static void addTeamToBuilder(ClientLevel level, String team, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         builder.component(CompositeContainerComponent.builder()
             .space()
             .translate(key("team"), Styler.name(Component.literal(team)))
             .build());
     }
 
-    static void addSlotsPredicateToBuilder(ClientLevel level, SlotsPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addSlotsPredicateToBuilder(ClientLevel level, SlotsPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Map<SlotRange, ItemPredicate> slots = predicate.slots();
         CompositeContainerComponent.Builder slotsBuilder = CompositeContainerComponent.builder()
             .space()
@@ -360,16 +365,16 @@ public interface EntityPredicateTooltip {
                 for (int i = 0; i < slotsList.size(); i++) {
                     int slot = slotsList.getInt(i);
                     CompositeContainerComponent.Builder slotBuilder = CompositeContainerComponent.builder()
-                        .translate(key("slots.slot"), Styler::condition, Styler.number(Component.literal(String.valueOf(slot))))
+                        .translate(key("slots.slot"), Styler::condition, Styler.number(slot))
                         .space();
-                    ItemPredicateTooltip.addToBuilder(level, itemPredicate, slotBuilder);
+                    ItemPredicateTooltip.addToBuilder(level, itemPredicate, new LootConditionTooltips.State(), slotBuilder);
                     slotCycler.component(slotBuilder.build());
                 }
             }));
         builder.component(slotsBuilder.build());
     }
 
-    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, CompositeContainerComponent.Builder builder) {
-        DataComponentMatchersTooltip.addToBuilder(level, components, builder);
+    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
     }
 }

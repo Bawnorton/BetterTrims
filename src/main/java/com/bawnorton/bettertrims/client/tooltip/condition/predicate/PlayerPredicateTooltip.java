@@ -2,6 +2,7 @@ package com.bawnorton.bettertrims.client.tooltip.condition.predicate;
 
 import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -22,30 +23,30 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface PlayerPredicateTooltip {
-    static void addToBuilder(ClientLevel level, PlayerPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addToBuilder(ClientLevel level, PlayerPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         MinMaxBounds.Ints playerLevel = predicate.level();
-        addLevelToBuilder(level, playerLevel, builder);
+        addLevelToBuilder(level, playerLevel, state, builder);
 
         GameTypePredicate gameType = predicate.gameType();
-        addGameTypeToBuilder(level, gameType, builder);
+        addGameTypeToBuilder(level, gameType, state, builder);
 
         List<PlayerPredicate.StatMatcher<?>> stats = predicate.stats();
-        addStatsToBuilder(level, stats, builder);
+        addStatsToBuilder(level, stats, state, builder);
 
         Object2BooleanMap<ResourceKey<Recipe<?>>> recipes = predicate.recipes();
-        addRecipesToBuilder(level, recipes, builder);
+        addRecipesToBuilder(level, recipes, state, builder);
 
         Map<ResourceLocation, PlayerPredicate.AdvancementPredicate> advancements = predicate.advancements();
-        addAdvancementsToBuilder(level, advancements, builder);
+        addAdvancementsToBuilder(level, advancements, state, builder);
 
         Optional<EntityPredicate> lookingAt = predicate.lookingAt();
-        if(lookingAt.isPresent()) {
-            addLookingAtToBuilder(level, lookingAt.orElseThrow(), builder);
+        if (lookingAt.isPresent()) {
+            addLookingAtToBuilder(level, lookingAt.orElseThrow(), state, builder);
         }
 
         Optional<InputPredicate> input = predicate.input();
-        if(input.isPresent()) {
-            addInputToBuilder(level, input.orElseThrow(), builder);
+        if (input.isPresent()) {
+            addInputToBuilder(level, input.orElseThrow(), state, builder);
         }
     }
 
@@ -53,33 +54,33 @@ public interface PlayerPredicateTooltip {
         return PredicateTooltip.key("player.%s".formatted(key));
     }
 
-    static void addLevelToBuilder(ClientLevel level, MinMaxBounds.Ints playerLevel, CompositeContainerComponent.Builder builder) {
-        if(!playerLevel.isAny()) {
-            PredicateTooltip.addMinMaxToBuilder(key("level"), false, playerLevel, builder);
+    static void addLevelToBuilder(ClientLevel level, MinMaxBounds.Ints playerLevel, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        if (!playerLevel.isAny()) {
+            PredicateTooltip.addMinMaxToBuilder(key("level"), false, playerLevel, state, builder);
         }
     }
 
-    static void addGameTypeToBuilder(ClientLevel level, GameTypePredicate gameType, CompositeContainerComponent.Builder builder) {
+    static void addGameTypeToBuilder(ClientLevel level, GameTypePredicate gameType, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         List<GameType> types = gameType.types();
-        if(!types.isEmpty()) {
-            PredicateTooltip.addEnumListToBuilder(key("game_type"), types, GameType::getShortDisplayName, builder);
+        if (!types.isEmpty()) {
+            PredicateTooltip.addEnumListToBuilder(key("game_type"), types, GameType::getShortDisplayName, state, builder);
         }
     }
 
-    static void addStatsToBuilder(ClientLevel level, List<PlayerPredicate.StatMatcher<?>> stats, CompositeContainerComponent.Builder builder) {
-        if(stats.isEmpty()) return;
+    static void addStatsToBuilder(ClientLevel level, List<PlayerPredicate.StatMatcher<?>> stats, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        if (stats.isEmpty()) return;
 
         CompositeContainerComponent.Builder statsBuilder = CompositeContainerComponent.builder()
             .space()
             .translate(key("stats.matches"), Styler::condition)
             .space()
             .cycle(cycleBuilder -> {
-                for(PlayerPredicate.StatMatcher<?> stat : stats) {
+                for (PlayerPredicate.StatMatcher<?> stat : stats) {
                     CompositeContainerComponent.Builder cycledBuilder = CompositeContainerComponent.builder();
                     cycledBuilder.textComponent(Component.translatable(key("stat"), Styler.name(stat.type().getDisplayName().copy())))
                         .space()
                         .literal("[", Styler::condition);
-                    PredicateTooltip.addMinMaxToBuilder(key("stat.range"), false, stat.range(), cycledBuilder);
+                    PredicateTooltip.addMinMaxToBuilder(key("stat.range"), false, stat.range(), state, cycledBuilder);
                     cycledBuilder.literal("]", Styler::condition);
                     cycleBuilder.component(cycledBuilder.build());
                 }
@@ -87,8 +88,8 @@ public interface PlayerPredicateTooltip {
         builder.component(statsBuilder.build());
     }
 
-    static void addRecipesToBuilder(ClientLevel level, Object2BooleanMap<ResourceKey<Recipe<?>>> recipes, CompositeContainerComponent.Builder builder) {
-        if(recipes.isEmpty()) return;
+    static void addRecipesToBuilder(ClientLevel level, Object2BooleanMap<ResourceKey<Recipe<?>>> recipes, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        if (recipes.isEmpty()) return;
 
         CompositeContainerComponent.Builder recipesBuilder = CompositeContainerComponent.builder()
             .space()
@@ -105,8 +106,8 @@ public interface PlayerPredicateTooltip {
         builder.component(recipesBuilder.build());
     }
 
-    static void addAdvancementsToBuilder(ClientLevel level, Map<ResourceLocation, PlayerPredicate.AdvancementPredicate> advancements, CompositeContainerComponent.Builder builder) {
-        if(advancements.isEmpty()) return;
+    static void addAdvancementsToBuilder(ClientLevel level, Map<ResourceLocation, PlayerPredicate.AdvancementPredicate> advancements, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        if (advancements.isEmpty()) return;
 
         Registry<Advancement> registry = level.registryAccess().lookupOrThrow(Registries.ADVANCEMENT);
         CompositeContainerComponent.Builder advancementsBuilder = CompositeContainerComponent.builder()
@@ -115,15 +116,15 @@ public interface PlayerPredicateTooltip {
             .space()
             .cycle(cycleBuilder -> advancements.forEach((id, advancementPredicate) -> {
                 Advancement advancement = registry.getValue(id);
-                if(advancement == null) return;
+                if (advancement == null) return;
 
                 Component name = Styler.name(advancement.name().orElse(Component.literal(id.toString())).copy());
                 CompositeContainerComponent.Builder advancementBuilder = CompositeContainerComponent.builder()
                     .textComponent(name);
                 switch (advancementPredicate) {
                     case PlayerPredicate.AdvancementDonePredicate donePredicate -> {
-                        boolean state = donePredicate.state();
-                        advancementBuilder.translate(key("advancement.%s".formatted(state ? "completed" : "not_completed")), Styler::value);
+                        boolean isDone = donePredicate.state();
+                        advancementBuilder.translate(key("advancement.%s".formatted(isDone ? "completed" : "not_completed")), Styler::value);
                     }
                     case PlayerPredicate.AdvancementCriterionsPredicate criterionsPredicate -> {
                         Object2BooleanMap<String> criterions = criterionsPredicate.criterions();
@@ -154,11 +155,11 @@ public interface PlayerPredicateTooltip {
         builder.component(advancementsBuilder.build());
     }
 
-    static void addLookingAtToBuilder(ClientLevel level, EntityPredicate entityPredicate, CompositeContainerComponent.Builder builder) {
-        EntityPredicateTooltip.addEntityPredicateToBuilder(level, "looking_at", entityPredicate, builder);
+    static void addLookingAtToBuilder(ClientLevel level, EntityPredicate entityPredicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        EntityPredicateTooltip.addEntityPredicateToBuilder(level, "looking_at", entityPredicate, state, builder);
     }
 
-    static void addInputToBuilder(ClientLevel level, InputPredicate inputPredicate, CompositeContainerComponent.Builder builder) {
+    static void addInputToBuilder(ClientLevel level, InputPredicate inputPredicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Map<String, Optional<Boolean>> inputs = Map.of(
             "forward", inputPredicate.forward(),
             "backward", inputPredicate.backward(),
@@ -173,10 +174,10 @@ public interface PlayerPredicateTooltip {
             .translate(key("input.matches"), Styler::condition)
             .space()
             .cycle(cycleBuilder -> inputs.forEach((inputName, input) -> {
-                if(input.isPresent()) {
-                    boolean state = input.orElse(false);
+                if (input.isPresent()) {
+                    boolean isHeld = input.orElse(false);
                     cycleBuilder.component(CompositeContainerComponent.builder()
-                        .translate(key("input.%s.%s".formatted(inputName, state ? "true" : "false")), Styler::value)
+                        .translate(key("input.%s.%s".formatted(inputName, isHeld ? "true" : "false")), Styler::value)
                         .build());
                 }
             }));

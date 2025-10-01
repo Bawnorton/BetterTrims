@@ -9,8 +9,23 @@
         "requirements": {
           "condition": "minecraft:match_tool",
           "predicate": {
+            "items": "minecraft:trident",
             "predicates": {
-              "minecraft:potion_contents": "minecraft:harming"
+              "minecraft:attribute_modifiers": {
+                "modifiers": {
+                  "contains": [
+                    {
+                      "amount": {
+                        "max": 3.0
+                      },
+                      "attribute": "minecraft:block_break_speed",
+                      "id": "bettertrims:test",
+                      "operation": "add_value",
+                      "slot": "offhand"
+                    }
+                  ]
+                }
+              }
             }
           }
         }

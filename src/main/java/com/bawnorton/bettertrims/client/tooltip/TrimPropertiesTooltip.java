@@ -3,14 +3,11 @@ package com.bawnorton.bettertrims.client.tooltip;
 import com.bawnorton.bettertrims.client.tooltip.component.GapComponent;
 import com.bawnorton.bettertrims.property.Matcher;
 import com.bawnorton.bettertrims.property.TrimProperty;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import java.util.ArrayList;
@@ -50,16 +47,19 @@ public class TrimPropertiesTooltip {
             List<TrimProperty> properties = entry.getValue();
             for (int i = 0; i < properties.size(); i++) {
                 TrimTooltipPage page = new TrimTooltipPage(properties.get(i), matcher);
-                page.generateComponents(level, trim, font, i, properties.size());
+                page.generateComponent(level, trim, font, i, properties.size());
                 pages.add(page);
             }
         }
     }
 
     public void render(GuiGraphics graphics, ClientLevel level, Font font, Rect2i parentTooltipBounds, boolean horizontallyFlipped, ResourceLocation background) {
-        List<ClientTooltipComponent> components = pages.isEmpty()
-            ? List.of(new ClientTextTooltip(Component.translatable("bettertrims.tooltip.properties.none").withStyle(ChatFormatting.GOLD).getVisualOrderText()))
-            : pages.get(index).getComponents();
+        if (index >= pages.size()) return;
+
+        TrimTooltipPage page = pages.get(index);
+        List<ClientTooltipComponent> components = new ArrayList<>();
+        components.add(page.getComponent());
+        components.add(new GapComponent(page.getMaxWidth(font), 0));
 
         int offsetX = parentTooltipBounds.getX() + parentTooltipBounds.getWidth() + (horizontallyFlipped ? 14 : 0);
         int offsetY = parentTooltipBounds.getY();

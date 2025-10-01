@@ -5,6 +5,7 @@ import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComp
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.ProblemReporter;
@@ -53,10 +54,10 @@ public record ConditionalElement<T extends TrimElement>(T element, Optional<Loot
         return this.requirements.isEmpty() || this.requirements.get().test(context);
     }
 
-    public ClientTooltipComponent getTooltip(ClientLevel level) {
+    public ClientTooltipComponent getTooltip(ClientLevel level, Font font) {
         CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
             .vertical();
-        CompositeContainerComponent requirementTooltip = getRequirementTooltip(level);
+        CompositeContainerComponent requirementTooltip = getRequirementTooltip(level, font);
         if (requirementTooltip != null && !requirementTooltip.isEmpty()) {
             builder.component(requirementTooltip);
         }
@@ -67,10 +68,10 @@ public record ConditionalElement<T extends TrimElement>(T element, Optional<Loot
         return builder.build();
     }
 
-    private CompositeContainerComponent getRequirementTooltip(ClientLevel level) {
+    private CompositeContainerComponent getRequirementTooltip(ClientLevel level, Font font) {
         if (requirements.isEmpty()) return null;
 
         LootItemCondition condition = requirements.get();
-        return LootConditionTooltips.getTooltip(level, condition);
+        return LootConditionTooltips.getTooltip(level, font, condition);
     }
 }

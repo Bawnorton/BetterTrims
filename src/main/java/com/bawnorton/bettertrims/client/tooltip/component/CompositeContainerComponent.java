@@ -9,10 +9,11 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
-public abstract class CompositeContainerComponent implements ClientTooltipComponent, CompositeComponent {
+public abstract class CompositeContainerComponent implements CompositeComponent {
     protected final List<ClientTooltipComponent> components;
     protected final boolean centred;
 
@@ -40,6 +41,10 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
         return true;
     }
 
+    public boolean isCentred() {
+        return centred;
+    }
+
     @Override
     public boolean showTooltipWithItemInHand() {
         for (ClientTooltipComponent component : components) {
@@ -55,6 +60,24 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
         return "Composite{%s, centred=%s}".formatted(components, centred);
     }
 
+    @Override
+    public int hashCode() {
+        int result = components != null ? components.hashCode() : 0;
+        result = 31 * result + (centred ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        CompositeContainerComponent that = (CompositeContainerComponent) obj;
+
+        if (centred != that.centred) return false;
+        return Objects.equals(components, that.components);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -65,6 +88,15 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
         private boolean centred = false;
 
         public Builder component(ClientTooltipComponent component) {
+            if(component instanceof CompositeContainerComponent composite) {
+                if(composite.centred) {
+                    centred = true;
+                }
+            } else if (component instanceof ConditionalComponent conditional && conditional.component() instanceof CompositeContainerComponent composite) {
+                if(composite.centred) {
+                    centred = true;
+                }
+            }
             return (Builder) super.component(component);
         }
 
@@ -118,6 +150,13 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
             if (vertical) return this;
 
             vertical = true;
+            return this;
+        }
+
+        public Builder horizontal() {
+            if (!vertical) return this;
+
+            vertical = false;
             return this;
         }
 
@@ -181,8 +220,8 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
         public int getMaxWidth(Font font) {
             int totalWidth = 0;
             for (ClientTooltipComponent component : components) {
-                if (component instanceof CompositeComponent compositeComponent) {
-                    totalWidth += compositeComponent.getMaxWidth(font);
+                if (component instanceof DynamicWidthComponent dynamic) {
+                    totalWidth += dynamic.getMaxWidth(font);
                 } else {
                     totalWidth += component.getWidth(font);
                 }
@@ -260,6 +299,18 @@ public abstract class CompositeContainerComponent implements ClientTooltipCompon
                 component.renderText(graphics, font, x, currentY);
                 currentY += componentHeight;
             }
+        }
+
+        @Override
+        public boolean isOneLine() {
+            if(components.size() > 1) return false;
+            if(components.isEmpty()) return true;
+
+            ClientTooltipComponent component = components.getFirst();
+            if (component instanceof CompositeComponent composite) {
+                return composite.isOneLine();
+            }
+            return true;
         }
     }
 }

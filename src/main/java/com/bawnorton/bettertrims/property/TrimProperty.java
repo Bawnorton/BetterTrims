@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property;
 
+import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.property.ability.TrimAbilityComponents;
 import com.bawnorton.bettertrims.property.ability.runner.TrimEntityAbilityRunner;
 import com.bawnorton.bettertrims.property.ability.runner.TrimToggleAbilityRunner;

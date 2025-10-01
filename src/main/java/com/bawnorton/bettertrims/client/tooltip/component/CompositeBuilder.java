@@ -2,6 +2,7 @@ package com.bawnorton.bettertrims.client.tooltip.component;
 
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import java.util.ArrayList;
@@ -9,7 +10,13 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 public abstract class CompositeBuilder<T> {
+    private static final ClientTooltipComponent SPACE = new ClientTextTooltip(CommonComponents.SPACE.getVisualOrderText());
+
     protected final List<ClientTooltipComponent> components = new ArrayList<>();
+
+    public List<ClientTooltipComponent> peek() {
+        return components.stream().toList();
+    }
 
     public CompositeBuilder<T> component(ClientTooltipComponent component) {
         components.add(component);
@@ -37,7 +44,7 @@ public abstract class CompositeBuilder<T> {
     }
 
     public CompositeBuilder<T> space() {
-        return literal(" ");
+        return component(SPACE);
     }
 
     public abstract T build();

@@ -22,13 +22,14 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.component.predicates.AttributeModifiersPredicate;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.component.predicates.EnchantmentsPredicate;
-import net.minecraft.core.component.predicates.PotionsPredicate;
 import net.minecraft.core.component.predicates.TrimPredicate;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
@@ -37,9 +38,11 @@ import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.effects.SpawnParticlesEffect;
@@ -73,6 +76,9 @@ public interface TrimProperties {
         HolderGetter<EntityType<?>> entityTypeGetter = context.lookup(Registries.ENTITY_TYPE);
         HolderGetter<Enchantment> enchantmentGetter = context.lookup(Registries.ENCHANTMENT);
         HolderGetter<DimensionType> dimensionGetter = context.lookup(Registries.DIMENSION_TYPE);
+        CompoundTag compoundTag = new CompoundTag();
+        compoundTag.putBoolean("CustomDataTest", true);
+        HolderGetter<Item> itemGetter = context.lookup(Registries.ITEM);
         register(
             context,
             DUMMY,
@@ -81,11 +87,31 @@ public interface TrimProperties {
                     TrimAbilityComponents.HIT_BLOCK,
                     new SummonEntityAbility(EntityType.LIGHTNING_BOLT),
                     MatchTool.toolMatches(ItemPredicate.Builder.item()
+                        .of(itemGetter, Items.TRIDENT)
                         .withComponents(DataComponentMatchers.Builder.components()
                             .partial(
-                                DataComponentPredicates.POTIONS, new PotionsPredicate(
-                                    HolderSet.direct(Potions.HARMING))
-                                ).build()
+                                DataComponentPredicates.ATTRIBUTE_MODIFIERS,
+                                new AttributeModifiersPredicate(
+                                    Optional.of(
+                                        new CollectionPredicate<>(
+                                            Optional.of(
+                                                CollectionContentsPredicate.of(
+                                                    new AttributeModifiersPredicate.EntryPredicate(
+                                                        Optional.of(HolderSet.direct(Attributes.BLOCK_BREAK_SPEED)),
+                                                        Optional.of(BetterTrims.rl("test")),
+                                                        MinMaxBounds.Doubles.atMost(3),
+                                                        Optional.of(AttributeModifier.Operation.ADD_VALUE),
+                                                        Optional.of(EquipmentSlotGroup.OFFHAND)
+                                                    )
+                                                )
+                                            ),
+                                            Optional.empty(),
+                                            Optional.empty()
+                                        )
+                                    )
+                                )
+                            )
+                            .build()
                         )
                     )
                 )

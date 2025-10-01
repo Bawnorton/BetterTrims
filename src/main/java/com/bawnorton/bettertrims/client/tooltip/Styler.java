@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.client.tooltip;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import java.awt.Color;
@@ -61,6 +62,10 @@ public interface Styler {
 
     static MutableComponent number(MutableComponent component) {
         return component.withStyle(Styler::number);
+    }
+
+    static MutableComponent number(Number number) {
+        return number(Component.literal(String.valueOf(number)));
     }
 
     static MutableComponent condition(MutableComponent component) {

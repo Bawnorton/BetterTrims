@@ -2,6 +2,8 @@ package com.bawnorton.bettertrims.client.tooltip.condition.predicate;
 
 import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
+import com.bawnorton.bettertrims.client.tooltip.condition.predicate.data.DataComponentMatchersTooltip;
 import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.advancements.critereon.DataComponentMatchers;
 import net.minecraft.advancements.critereon.NbtPredicate;
@@ -16,25 +18,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BlockPredicateTooltip {
-    static void addToBuilder(ClientLevel level, BlockPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addToBuilder(ClientLevel level, BlockPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Optional<HolderSet<Block>> blocks = predicate.blocks();
-        if(blocks.isPresent()) {
-            addBlocksToBuilder(level, blocks.orElseThrow(), builder);
+        if (blocks.isPresent()) {
+            addBlocksToBuilder(level, blocks.orElseThrow(), state, builder);
         }
 
         DataComponentMatchers components = predicate.components();
-        if(!components.isEmpty()) {
-            addDataComponentMatchersToBuilder(level, components, builder);
+        if (!components.isEmpty()) {
+            addDataComponentMatchersToBuilder(level, components, state, builder);
         }
 
         Optional<NbtPredicate> nbt = predicate.nbt();
-        if(nbt.isPresent()) {
-            addNbtPredicateToBuilder(level, nbt.orElseThrow(), builder);
+        if (nbt.isPresent()) {
+            addNbtPredicateToBuilder(level, nbt.orElseThrow(), state, builder);
         }
 
         Optional<StatePropertiesPredicate> properties = predicate.properties();
-        if(properties.isPresent()) {
-            addStatePropertiesPredicateToBuilder(level, properties.orElseThrow(), builder);
+        if (properties.isPresent()) {
+            addStatePropertiesPredicateToBuilder(level, properties.orElseThrow(), state, builder);
         }
     }
 
@@ -42,21 +44,21 @@ public interface BlockPredicateTooltip {
         return PredicateTooltip.key("block.%s".formatted(key));
     }
 
-    static void addBlocksToBuilder(ClientLevel level, HolderSet<Block> blocks, CompositeContainerComponent.Builder builder) {
-        PredicateTooltip.addRegisteredElementsToBuilder(level, key("matches"), Registries.BLOCK, blocks, Block::getName, builder);
+    static void addBlocksToBuilder(ClientLevel level, HolderSet<Block> blocks, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        PredicateTooltip.addRegisteredElementsToBuilder(level, key("matches"), Registries.BLOCK, blocks, Block::getName, state, builder);
     }
 
-    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, CompositeContainerComponent.Builder builder) {
-        DataComponentMatchersTooltip.addToBuilder(level, components, builder);
+    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
     }
 
-    static void addNbtPredicateToBuilder(ClientLevel level, NbtPredicate nbt, CompositeContainerComponent.Builder builder) {
-        EntityPredicateTooltip.addNbtPredicateToBuilder(level, nbt, builder);
+    static void addNbtPredicateToBuilder(ClientLevel level, NbtPredicate nbt, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        EntityPredicateTooltip.addNbtPredicateToBuilder(level, nbt, state, builder);
     }
 
-    static void addStatePropertiesPredicateToBuilder(ClientLevel level, StatePropertiesPredicate properties, CompositeContainerComponent.Builder builder) {
+    static void addStatePropertiesPredicateToBuilder(ClientLevel level, StatePropertiesPredicate properties, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         List<StatePropertiesPredicate.PropertyMatcher> matchers = properties.properties();
-        if(matchers.isEmpty()) {
+        if (matchers.isEmpty()) {
             builder.component(CompositeContainerComponent.builder()
                 .space()
                 .translate(key("state_properties.any"), Styler::value)
@@ -79,13 +81,13 @@ public interface BlockPredicateTooltip {
                                 String min = ranged.minValue().orElse(null);
                                 String max = ranged.maxValue().orElse(null);
 
-                                if(min == null && max == null) {
+                                if (min == null && max == null) {
                                     propertyMatcherBuilder.translate(
                                         key("state_property.any"),
                                         Styler::condition,
                                         matcherName
                                     );
-                                } else if(min != null && max != null) {
+                                } else if (min != null && max != null) {
                                     propertyMatcherBuilder.translate(
                                         key("state_property.between"),
                                         Styler::condition,
@@ -93,7 +95,7 @@ public interface BlockPredicateTooltip {
                                         Styler.number(Component.literal(min)),
                                         Styler.number(Component.literal(max))
                                     );
-                                } else if(min != null) {
+                                } else if (min != null) {
                                     propertyMatcherBuilder.translate(
                                         key("state_property.at_least"),
                                         Styler::condition,

@@ -2,19 +2,20 @@ package com.bawnorton.bettertrims.client.tooltip.condition.predicate;
 
 import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import java.util.Optional;
 
 public interface EntitySubPredicateTooltip {
-    static void addToBuilder(ClientLevel level, EntitySubPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addToBuilder(ClientLevel level, EntitySubPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         switch (predicate) {
-            case FishingHookPredicate fishingHookPredicate -> addFishingHookPredicateToBuilder(level, fishingHookPredicate, builder);
-            case LightningBoltPredicate lightningBoltPredicate -> addLightningBoltPredicateToBuilder(level, lightningBoltPredicate, builder);
-            case PlayerPredicate playerPredicate -> addPlayerPredicateToBuilder(level, playerPredicate, builder);
-            case SheepPredicate sheepPredicate -> addSheepPredicateToBuilder(level, sheepPredicate, builder);
-            case SlimePredicate slimePredicate -> addSlimePredicateToBuilder(level, slimePredicate, builder);
-            case RaiderPredicate raiderPredicate -> addRaiderPredicateToBuilder(level, raiderPredicate, builder);
+            case FishingHookPredicate fishingHookPredicate -> addFishingHookPredicateToBuilder(level, fishingHookPredicate, state, builder);
+            case LightningBoltPredicate lightningBoltPredicate -> addLightningBoltPredicateToBuilder(level, lightningBoltPredicate, state, builder);
+            case PlayerPredicate playerPredicate -> addPlayerPredicateToBuilder(level, playerPredicate, state, builder);
+            case SheepPredicate sheepPredicate -> addSheepPredicateToBuilder(level, sheepPredicate, state, builder);
+            case SlimePredicate slimePredicate -> addSlimePredicateToBuilder(level, slimePredicate, state, builder);
+            case RaiderPredicate raiderPredicate -> addRaiderPredicateToBuilder(level, raiderPredicate, state, builder);
             default -> builder.translate(key("unknown"), Styler::negative);
         }
     }
@@ -23,24 +24,23 @@ public interface EntitySubPredicateTooltip {
         return PredicateTooltip.key("sub_entity.%s".formatted(key));
     }
 
-    static void addFishingHookPredicateToBuilder(ClientLevel level, FishingHookPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addFishingHookPredicateToBuilder(ClientLevel level, FishingHookPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Optional<Boolean> inOpenWater = predicate.inOpenWater();
-        if(inOpenWater.isPresent()) {
+        if (inOpenWater.isPresent()) {
             builder.component(CompositeContainerComponent.builder()
-                .space()
                 .translate(key("fishing_hook.in_open_water.%s".formatted(inOpenWater.orElse(false) ? "true" : "false")), Styler::value)
                 .build());
         }
     }
 
-    static void addLightningBoltPredicateToBuilder(ClientLevel level, LightningBoltPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addLightningBoltPredicateToBuilder(ClientLevel level, LightningBoltPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         CompositeContainerComponent.Builder boltBuilder = CompositeContainerComponent.builder();
 
         boolean useAnd = false;
         Optional<EntityPredicate> struck = predicate.entityStruck();
-        if(struck.isPresent()) {
+        if (struck.isPresent()) {
             CompositeContainerComponent.Builder entityBuilder = CompositeContainerComponent.builder();
-            EntityPredicateTooltip.addToBuilder(level, struck.orElseThrow(), entityBuilder);
+            EntityPredicateTooltip.addToBuilder(level, struck.orElseThrow(), state, entityBuilder);
             boltBuilder.component(CompositeContainerComponent.builder()
                 .space()
                 .translate(key("lightning_bolt.entity_struck"), Styler::condition)
@@ -51,11 +51,11 @@ public interface EntitySubPredicateTooltip {
         }
 
         MinMaxBounds.Ints blocksSetOnFire = predicate.blocksSetOnFire();
-        if(!blocksSetOnFire.isAny()) {
-            PredicateTooltip.addMinMaxToBuilder(key("lightning_bolt.blocks_set_on_fire"), useAnd, blocksSetOnFire, boltBuilder);
+        if (!blocksSetOnFire.isAny()) {
+            PredicateTooltip.addMinMaxToBuilder(key("lightning_bolt.blocks_set_on_fire"), useAnd, blocksSetOnFire, state, boltBuilder);
         }
         CompositeContainerComponent boltComponent = boltBuilder.build();
-        if(!boltComponent.isEmpty()) {
+        if (!boltComponent.isEmpty()) {
             builder.component(CompositeContainerComponent.builder()
                 .space()
                 .translate(key("lightning_bolt.matches"), Styler::condition)
@@ -65,13 +65,13 @@ public interface EntitySubPredicateTooltip {
         }
     }
 
-    static void addPlayerPredicateToBuilder(ClientLevel level, PlayerPredicate predicate, CompositeContainerComponent.Builder builder) {
-        PlayerPredicateTooltip.addToBuilder(level, predicate, builder);
+    static void addPlayerPredicateToBuilder(ClientLevel level, PlayerPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+        PlayerPredicateTooltip.addToBuilder(level, predicate, state, builder);
     }
 
-    static void addSheepPredicateToBuilder(ClientLevel level, SheepPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addSheepPredicateToBuilder(ClientLevel level, SheepPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         Optional<Boolean> sheared = predicate.sheared();
-        if(sheared.isPresent()) {
+        if (sheared.isPresent()) {
             builder.component(CompositeContainerComponent.builder()
                 .space()
                 .translate(key("sheep.sheared.%s".formatted(sheared.orElse(false) ? "true" : "false")), Styler::value)
@@ -79,23 +79,23 @@ public interface EntitySubPredicateTooltip {
         }
     }
 
-    static void addSlimePredicateToBuilder(ClientLevel level, SlimePredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addSlimePredicateToBuilder(ClientLevel level, SlimePredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         MinMaxBounds.Ints size = predicate.size();
-        if(!size.isAny()) {
+        if (!size.isAny()) {
             CompositeContainerComponent.Builder sizeBuilder = CompositeContainerComponent.builder().space();
-            PredicateTooltip.addMinMaxToBuilder(key("slime.size"), false, size, sizeBuilder);
+            PredicateTooltip.addMinMaxToBuilder(key("slime.size"), false, size, state, sizeBuilder);
             builder.component(sizeBuilder.build());
         }
     }
 
-    static void addRaiderPredicateToBuilder(ClientLevel level, RaiderPredicate predicate, CompositeContainerComponent.Builder builder) {
+    static void addRaiderPredicateToBuilder(ClientLevel level, RaiderPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
         boolean hasRaid = predicate.hasRaid();
         boolean captain = predicate.isCaptain();
-        if(hasRaid || captain) {
+        if (hasRaid || captain) {
             String key = "raider.";
-            if(hasRaid) key += "in_raid";
-            if(captain) {
-                if(hasRaid) key += "_and_";
+            if (hasRaid) key += "in_raid";
+            if (captain) {
+                if (hasRaid) key += "_and_";
                 key += "is_captain";
             }
             builder.component(CompositeContainerComponent.builder()

@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
-public final class CyclingComponent implements ClientTooltipComponent, CompositeComponent {
+public final class CyclingComponent implements CompositeComponent {
     private final List<ClientTooltipComponent> components;
 
     private int index = 0;
@@ -36,7 +36,7 @@ public final class CyclingComponent implements ClientTooltipComponent, Composite
     }
 
     @Override
-    public void renderText(GuiGraphics guiGraphics, Font font, int x, int y) {
+    public void renderText(GuiGraphics graphics, Font font, int x, int y) {
         if(components.isEmpty()) return;
 
         if(frameCounter++ >= Minecraft.getInstance().getFps()) {
@@ -44,7 +44,7 @@ public final class CyclingComponent implements ClientTooltipComponent, Composite
             index = (index + 1) % components.size();
         }
 
-        components.get(index).renderText(guiGraphics, font, x, y);
+        components.get(index).renderText(graphics, font, x, y);
     }
 
     @Override

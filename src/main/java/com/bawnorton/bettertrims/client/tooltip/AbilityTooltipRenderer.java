@@ -4,6 +4,7 @@ import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.property.Matcher;
 import com.bawnorton.bettertrims.property.TrimProperties;
 import com.bawnorton.bettertrims.property.TrimProperty;
+import com.mojang.blaze3d.platform.MacosUtil;
 import it.unimi.dsi.fastutil.longs.LongArraySet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.ChatFormatting;
@@ -47,7 +48,7 @@ public final class AbilityTooltipRenderer {
 
         if(!Screen.hasAltDown()) {
             boolean shouldFlip = mouseX + tooltipBounds.getWidth() + 38 > graphics.guiWidth();
-            renderPrompt(graphics, tooltipBounds, shouldFlip, background);
+            renderPrompt(graphics, font, tooltipBounds, shouldFlip, background);
             return;
         }
 
@@ -86,22 +87,33 @@ public final class AbilityTooltipRenderer {
         currentTooltip.render(graphics, level, font, tooltipBounds, horizontallyFlipped, background);
     }
 
-    private static void renderPrompt(GuiGraphics graphics, Rect2i tooltipBounds, boolean horizontallyFlipped, @Nullable ResourceLocation background) {
+    @SuppressWarnings("DataFlowIssue")
+    private static void renderPrompt(GuiGraphics graphics, Font font, Rect2i tooltipBounds, boolean horizontallyFlipped, @Nullable ResourceLocation background) {
         int promptWidth = 8;
         int promptHeight = 8;
         int xOffset = tooltipBounds.getX() + (horizontallyFlipped ? - promptWidth - 10: tooltipBounds.getWidth() + 10);
         int yOffset = tooltipBounds.getY();
-        TooltipRenderUtil.renderTooltipBackground(graphics, xOffset, yOffset, promptWidth, promptHeight, background);
-        //noinspection DataFlowIssue
-        graphics.blitSprite(
-            RenderPipelines.GUI_TEXTURED,
-            BetterTrims.rl("text/alt"),
-            xOffset,
-            yOffset,
-            promptWidth,
-            promptHeight,
-            ARGB.color(0xFF, ChatFormatting.GOLD.getColor())
-        );
+        if(MacosUtil.IS_MACOS) {
+            TooltipRenderUtil.renderTooltipBackground(graphics, xOffset, yOffset, promptWidth, promptHeight, background);
+            graphics.blitSprite(
+                RenderPipelines.GUI_TEXTURED,
+                BetterTrims.rl("text/alt"),
+                xOffset,
+                yOffset,
+                promptWidth,
+                promptHeight,
+                ARGB.color(0xFF, ChatFormatting.GOLD.getColor())
+            );
+        } else {
+            graphics.renderTooltip(
+                font,
+                List.of(new ClientTextTooltip(Component.literal("Alt").withStyle(Styler::trim).getVisualOrderText())),
+                xOffset - 10,
+                yOffset,
+                new ExpandedTooltipPositioner(tooltipBounds.getWidth()),
+                background
+            );
+        }
     }
 
     private static void renderError(GuiGraphics graphics, Font font, Rect2i tooltipBounds, boolean shouldFlip, @Nullable ResourceLocation background) {
