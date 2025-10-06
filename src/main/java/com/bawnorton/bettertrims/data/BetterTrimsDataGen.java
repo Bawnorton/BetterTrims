@@ -30,15 +30,42 @@ public final class BetterTrimsDataGen implements DataGeneratorEntrypoint {
 	}
 }
 //?} else if neoforge {
-/*import net.neoforged.bus.api.SubscribeEvent;
+
+/*import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.data.provider.*;
+import com.bawnorton.bettertrims.property.TrimProperties;
+import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = BetterTrims.MOD_ID)
 public final class BetterTrimsDataGen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-        event.createProvider((output, lookup) -> null);
+			DataGenerator gen = event.getGenerator();
+      ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+
+			event.createDatapackRegistryObjects(new RegistrySetBuilder().add(BetterTrimsRegistries.Keys.TRIM_PROPERTIES, TrimProperties::bootstrap));
+	    CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+	    PackOutput mainPack = gen.getPackOutput();
+			gen.addProvider(event.includeServer(), new TrimMaterialTagsProvider(mainPack, lookupProvider, existingFileHelper));
+			gen.addProvider(event.includeServer(), new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
+			gen.addProvider(event.includeServer(), new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
+
+	    DataGenerator.PackGenerator defaultPack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.DEFAULT.getPath());
+			defaultPack.addProvider(output -> new BetterTrimsRegistriesDataProvider(output, lookupProvider));
+
+	    DataGenerator.PackGenerator trimEffectsDatapack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.TRIM_EFFECTS.getPath());
+			trimEffectsDatapack.addProvider(output -> new BetterTrimsTrimEffectsRegistriesDataProvider(output, lookupProvider));
     }
 }
 *///?}

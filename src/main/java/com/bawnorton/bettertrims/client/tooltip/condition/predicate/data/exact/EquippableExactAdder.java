@@ -9,7 +9,7 @@ import net.minecraft.world.item.equipment.Equippable;
 public final class EquippableExactAdder implements ExactAdder<Equippable> {
 	@Override
 	public void addToBuilder(ClientLevel level, Equippable object, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-
+		// TODO
 	}
 }
 //?}

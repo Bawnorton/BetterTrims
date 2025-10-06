@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,6 +27,7 @@ abstract class LivingEntityMixin extends Entity {
 		super(entityType, level);
 	}
 
+	//? if fabric {
 	@WrapOperation(
 			method = "doHurtEquipment",
 			at = @At(
@@ -47,4 +49,16 @@ abstract class LivingEntityMixin extends Entity {
 		}
 		return true;
 	}
+	//?} else {
+	/*@WrapOperation(
+			method = "doHurtEquipment",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/neoforged/neoforge/common/CommonHooks;onArmorHurt(Lnet/minecraft/world/damagesource/DamageSource;[Lnet/minecraft/world/entity/EquipmentSlot;FLnet/minecraft/world/entity/LivingEntity;)V"
+			)
+	)
+	private void isTrimInvulnerableTo(DamageSource armorPiece, EquipmentSlot[] equippable, float damageAfterFireResist, LivingEntity slot, Operation<Void> original) {
+
+	}
+	*///?}
 }

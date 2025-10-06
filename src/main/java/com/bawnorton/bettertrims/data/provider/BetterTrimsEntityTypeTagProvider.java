@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.data.provider;
 
+//? if fabric {
 import com.bawnorton.bettertrims.data.BetterTrimsEntityTypeTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -28,3 +29,33 @@ public class BetterTrimsEntityTypeTagProvider extends FabricTagProvider.EntityTy
 	}
 	*///?}
 }
+//?} else {
+
+/*import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.data.BetterTrimsEntityTypeTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.EntityType;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
+
+public class BetterTrimsEntityTypeTagProvider extends TagsProvider<EntityType<?>> {
+	public BetterTrimsEntityTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, Registries.ENTITY_TYPE, lookupProvider, BetterTrims.MOD_ID, existingFileHelper);
+	}
+
+	@Override
+	protected void addTags(@NotNull HolderLookup.Provider provider) {
+		tag(BetterTrimsEntityTypeTags.CONDUCTIVE_PROJECTILES)
+				.addTag(EntityTypeTags.ARROWS)
+				.add(EntityType.TRIDENT.builtInRegistryHolder().key());
+	}
+}
+
+*///?}

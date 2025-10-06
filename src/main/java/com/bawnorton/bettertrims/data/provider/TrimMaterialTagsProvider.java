@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.data.provider;
 
+//? if fabric {
 import com.bawnorton.bettertrims.data.TrimMaterialTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -29,14 +30,53 @@ public class TrimMaterialTagsProvider extends FabricTagProvider<TrimMaterial> {
 		builder(TrimMaterialTags.LAPIS).setReplace(false).add(TrimMaterials.LAPIS);
 		builder(TrimMaterialTags.AMETHYST).setReplace(false).add(TrimMaterials.AMETHYST);
 		builder(TrimMaterialTags.SILVER).setReplace(false);
-		//? if 1.21.8 {
+		//? if >=1.21.8 {
 		builder(TrimMaterialTags.RESIN).setReplace(false).add(TrimMaterials.RESIN);
 		 //?}
 	}
 
-	//? if 1.21.1 {
+	//? if <1.21.8 {
 	/*private FabricTagBuilder builder(TagKey<TrimMaterial> type) {
 		return getOrCreateTagBuilder(type);
 	}
 	*///?}
 }
+//?} else {
+/*import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.data.TrimMaterialTags;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.world.item.equipment.trim.TrimMaterial;
+import net.minecraft.world.item.equipment.trim.TrimMaterials;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.CompletableFuture;
+
+public class TrimMaterialTagsProvider extends TagsProvider<TrimMaterial> {
+	public TrimMaterialTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, Registries.TRIM_MATERIAL, lookupProvider, BetterTrims.MOD_ID, existingFileHelper);
+	}
+
+	@Override
+	protected void addTags(@NotNull HolderLookup.Provider provider) {
+		tag(TrimMaterialTags.QUARTZ).replace(false).add(TrimMaterials.QUARTZ);
+		tag(TrimMaterialTags.IRON).replace(false).add(TrimMaterials.IRON);
+		tag(TrimMaterialTags.NETHERITE).replace(false).add(TrimMaterials.NETHERITE);
+		tag(TrimMaterialTags.REDSTONE).replace(false).add(TrimMaterials.REDSTONE);
+		tag(TrimMaterialTags.COPPER).replace(false).add(TrimMaterials.COPPER);
+		tag(TrimMaterialTags.GOLD).replace(false).add(TrimMaterials.GOLD);
+		tag(TrimMaterialTags.EMERALD).replace(false).add(TrimMaterials.EMERALD);
+		tag(TrimMaterialTags.DIAMOND).replace(false).add(TrimMaterials.DIAMOND);
+		tag(TrimMaterialTags.LAPIS).replace(false).add(TrimMaterials.LAPIS);
+		tag(TrimMaterialTags.AMETHYST).replace(false).add(TrimMaterials.AMETHYST);
+		tag(TrimMaterialTags.SILVER).replace(false);
+		//? if >=1.21.8 {
+		tag(TrimMaterialTags.RESIN).replace(false).add(TrimMaterials.RESIN);
+		 //?}
+	}
+}
+*///?}

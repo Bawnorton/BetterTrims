@@ -1,3 +1,4 @@
+//? if fabric {
 package com.bawnorton.bettertrims.networking.packet;
 
 import com.bawnorton.bettertrims.BetterTrims;
@@ -34,3 +35,4 @@ public record TrimPatternSourcePayload(
 		BetterTrimsClient.setPatternSources(patternSources);
 	}
 }
+//?}

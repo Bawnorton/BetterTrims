@@ -1,10 +1,8 @@
 package com.bawnorton.bettertrims.networking;
 
+//? if fabric {
 import com.bawnorton.bettertrims.mixin.accessor.SmithingTrimRecipeAccessor;
 import com.bawnorton.bettertrims.networking.packet.TrimPatternSourcePayload;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
 public class Networking {
 	public static void init() {
 		PayloadTypeRegistry.playS2C().register(TrimPatternSourcePayload.TYPE, TrimPatternSourcePayload.CODEC);
@@ -37,9 +39,9 @@ public class Networking {
 				if (holder.value() instanceof SmithingTrimRecipe recipe) {
 					List<Holder<Item>> patternItems = new ArrayList<>();
 					//? if >=1.21.8 {
-                    recipe.templateIngredient().ifPresent(ingredient -> ingredient.items().forEach(patternItems::add));
-                    Holder<TrimPattern> patternHolder = ((SmithingTrimRecipeAccessor) recipe).bettertrims$pattern();
-                    //?} else {
+          recipe.templateIngredient().ifPresent(ingredient -> ingredient.items().forEach(patternItems::add));
+          Holder<TrimPattern> patternHolder = ((SmithingTrimRecipeAccessor) recipe).bettertrims$pattern();
+          //?} else {
 					/*SmithingTrimRecipeAccessor accessor = (SmithingTrimRecipeAccessor) recipe;
 					Ingredient templateIngredient = accessor.bettertrims$template();
 					List<ItemStack> templateItems = Arrays.asList(templateIngredient.getItems());
@@ -65,3 +67,9 @@ public class Networking {
 		ServerPlayNetworking.send(player, payload);
 	}
 }
+//?} else {
+/*public class Networking {
+	public static void init() {
+	}
+}
+*///?}

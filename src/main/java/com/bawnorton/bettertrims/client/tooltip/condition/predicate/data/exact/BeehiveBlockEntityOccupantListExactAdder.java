@@ -10,6 +10,6 @@ import java.util.List;
 public final class BeehiveBlockEntityOccupantListExactAdder implements ExactAdder<List<BeehiveBlockEntity.Occupant>> {
 	@Override
 	public void addToBuilder(ClientLevel level, List<BeehiveBlockEntity.Occupant> object, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-
+		// TODO
 	}
 }
