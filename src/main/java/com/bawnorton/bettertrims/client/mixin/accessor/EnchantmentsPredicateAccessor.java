@@ -1,3 +1,4 @@
+//? if >=1.21.8 {
 package com.bawnorton.bettertrims.client.mixin.accessor;
 
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -13,3 +14,4 @@ public interface EnchantmentsPredicateAccessor {
     @Invoker("enchantments")
     List<EnchantmentPredicate> bettertrims$enchantments();
 }
+//?}

@@ -1,8 +1,8 @@
+//? if >=1.21.8 {
 package com.bawnorton.bettertrims.client.mixin;
 
 import com.bawnorton.bettertrims.client.tooltip.AbilityTooltipRenderer;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,3 +23,4 @@ abstract class AbstractContainerScreenMixin {
         }
     }
 }
+//?}

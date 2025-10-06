@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @MixinEnvironment("client")
 @Mixin(ContainerEventHandler.class)
 interface ContainerEventHandlerMixin {
-    @Inject(
-        method = "mouseScrolled",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    private void onMouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
-        if(AbilityTooltipRenderer.mouseScrolled(scrollY)) {
-            cir.setReturnValue(true);
-        }
-    }
+	@Inject(
+			method = "mouseScrolled",
+			at = @At("HEAD"),
+			cancellable = true
+	)
+	private void onMouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
+		if (AbilityTooltipRenderer.mouseScrolled(scrollY)) {
+			cir.setReturnValue(true);
+		}
+	}
 }

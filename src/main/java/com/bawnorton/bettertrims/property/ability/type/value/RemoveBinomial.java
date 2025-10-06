@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.property.ability.type.value;
 
-import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.util.Formatter;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
@@ -13,33 +14,33 @@ import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 public record RemoveBinomial(CountBasedValue chance) implements TrimValueAbility {
-    public static final MapCodec<RemoveBinomial> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        CountBasedValue.CODEC.fieldOf("chance").forGetter(RemoveBinomial::chance)
-    ).apply(instance, RemoveBinomial::new));
+	public static final MapCodec<RemoveBinomial> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			CountBasedValue.CODEC.fieldOf("chance").forGetter(RemoveBinomial::chance)
+	).apply(instance, RemoveBinomial::new));
 
-    @Override
-    public float process(int count, RandomSource random, float value) {
-        float chance = this.chance.calculate(count);
-        int removed = 0;
-        for (int i = 0; i < value; i++) {
-            if (random.nextFloat() <= chance) {
-                removed++;
-            }
-        }
-        return value - removed;
-    }
+	@Override
+	public float process(int count, RandomSource random, float value) {
+		float chance = this.chance.calculate(count);
+		int removed = 0;
+		for (int i = 0; i < value; i++) {
+			if (random.nextFloat() <= chance) {
+				removed++;
+			}
+		}
+		return value - removed;
+	}
 
-    @Override
-    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-        return CompositeContainerComponent.builder()
-            .cycle(builder -> this.chance.getValueComponents(4, includeCount, percent -> Component.literal("%.1f%%".formatted(percent * 100))).forEach(builder::textComponent))
-            .space()
-            .translate("bettertrims.tooltip.ability.remove_binomial", Styler::positive)
-            .build();
-    }
+	@Override
+	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+		return CompositeContainerComponent.builder()
+				.cycle(builder -> this.chance.getValueComponents(4, includeCount, Formatter::percentage).forEach(builder::textComponent))
+				.space()
+				.translate("bettertrims.tooltip.ability.remove_binomial", Styler::positive)
+				.build();
+	}
 
-    @Override
-    public MapCodec<? extends TrimValueAbility> codec() {
-        return CODEC;
-    }
+	@Override
+	public MapCodec<? extends TrimValueAbility> codec() {
+		return CODEC;
+	}
 }

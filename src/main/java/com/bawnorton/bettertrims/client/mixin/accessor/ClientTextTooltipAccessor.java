@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @MixinEnvironment("client")
 @Mixin(ClientTextTooltip.class)
 public interface ClientTextTooltipAccessor {
-    @Accessor("text")
-    FormattedCharSequence bettertrims$text();
+	@Accessor("text")
+	FormattedCharSequence bettertrims$text();
 }

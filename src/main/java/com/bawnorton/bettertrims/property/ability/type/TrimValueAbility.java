@@ -13,43 +13,44 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;
 import net.minecraft.util.RandomSource;
+
 import java.util.function.Function;
 
 public interface TrimValueAbility extends TrimElement {
-    Codec<TrimValueAbility> CODEC = BetterTrimsRegistries.TRIM_VALUE_ABILITY_TYPE
-        .byNameCodec()
-        .dispatch(TrimValueAbility::codec, Function.identity());
+	Codec<TrimValueAbility> CODEC = BetterTrimsRegistries.TRIM_VALUE_ABILITY_TYPE
+			.byNameCodec()
+			.dispatch(TrimValueAbility::codec, Function.identity());
 
-    static MapCodec<? extends TrimValueAbility> bootstrap(Registry<MapCodec<? extends TrimValueAbility>> registry) {
-        Registry.register(registry, BetterTrims.rl("add"), AddValue.CODEC);
-        Registry.register(registry, BetterTrims.rl("all_of"), AllOf.ValueAbilities.CODEC);
-        Registry.register(registry, BetterTrims.rl("multiply"), MultiplyValue.CODEC);
-        Registry.register(registry, BetterTrims.rl("remove_binomial"), RemoveBinomial.CODEC);
-        return Registry.register(registry, BetterTrims.rl("set"), SetValue.CODEC);
-    }
+	static MapCodec<? extends TrimValueAbility> bootstrap(Registry<MapCodec<? extends TrimValueAbility>> registry) {
+		Registry.register(registry, BetterTrims.rl("add"), AddValue.CODEC);
+		Registry.register(registry, BetterTrims.rl("all_of"), AllOf.ValueAbilities.CODEC);
+		Registry.register(registry, BetterTrims.rl("multiply"), MultiplyValue.CODEC);
+		Registry.register(registry, BetterTrims.rl("remove_binomial"), RemoveBinomial.CODEC);
+		return Registry.register(registry, BetterTrims.rl("set"), SetValue.CODEC);
+	}
 
-    static AddValue add(CountBasedValue value) {
-        return new AddValue(value);
-    }
+	static AddValue add(CountBasedValue value) {
+		return new AddValue(value);
+	}
 
-    static MultiplyValue multiply(CountBasedValue value) {
-        return new MultiplyValue(value);
-    }
+	static MultiplyValue multiply(CountBasedValue value) {
+		return new MultiplyValue(value);
+	}
 
-    static RemoveBinomial removeBinomial(CountBasedValue chance) {
-        return new RemoveBinomial(chance);
-    }
+	static RemoveBinomial removeBinomial(CountBasedValue chance) {
+		return new RemoveBinomial(chance);
+	}
 
-    static SetValue set(CountBasedValue value) {
-        return new SetValue(value);
-    }
+	static SetValue set(CountBasedValue value) {
+		return new SetValue(value);
+	}
 
-    float process(int count, RandomSource random, float value);
+	float process(int count, RandomSource random, float value);
 
-    @Override
-    default boolean usesCount() {
-        return true;
-    }
+	@Override
+	default boolean usesCount() {
+		return true;
+	}
 
-    MapCodec<? extends TrimValueAbility> codec();
+	MapCodec<? extends TrimValueAbility> codec();
 }

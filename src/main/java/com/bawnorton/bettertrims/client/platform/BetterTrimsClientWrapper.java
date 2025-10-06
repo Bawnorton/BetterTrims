@@ -8,10 +8,10 @@ import net.fabricmc.api.ClientModInitializer;
 
 @Entrypoint
 public final class BetterTrimsClientWrapper implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
-        BetterTrimsClient.init();
-    }
+	@Override
+	public void onInitializeClient() {
+		BetterTrimsClient.init();
+	}
 }
 //?} else if neoforge {
 /*import com.bawnorton.bettertrims.BetterTrims;

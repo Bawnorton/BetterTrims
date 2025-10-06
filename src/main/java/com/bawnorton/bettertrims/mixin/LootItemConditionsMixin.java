@@ -15,16 +15,16 @@ import org.spongepowered.asm.mixin.Unique;
 @MixinEnvironment
 @Mixin(LootItemConditions.class)
 abstract class LootItemConditionsMixin {
-    static {
-        DimensionCheck.TYPE = bettertrims$register("dimension_check", DimensionCheck.CODEC);
-    }
+	static {
+		DimensionCheck.TYPE = bettertrims$register("dimension_check", DimensionCheck.CODEC);
+	}
 
-    @Unique
-    private static LootItemConditionType bettertrims$register(String name, MapCodec<? extends LootItemCondition> codec) {
-        return Registry.register(
-            BuiltInRegistries.LOOT_CONDITION_TYPE,
-            BetterTrims.rl(name),
-            new LootItemConditionType(codec)
-        );
-    }
+	@Unique
+	private static LootItemConditionType bettertrims$register(String name, MapCodec<? extends LootItemCondition> codec) {
+		return Registry.register(
+				BuiltInRegistries.LOOT_CONDITION_TYPE,
+				BetterTrims.rl(name),
+				new LootItemConditionType(codec)
+		);
+	}
 }

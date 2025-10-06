@@ -18,18 +18,18 @@ import org.spongepowered.asm.mixin.injection.At;
 @MixinEnvironment
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
-    @ModifyReturnValue(
-        method = "modifyDamage",
-        at = @At("RETURN")
-    )
-    private static float applyTrimToDamage(float original, ServerLevel level, ItemStack tool, Entity entity, DamageSource source) {
-        if(!(source.getEntity() instanceof LivingEntity wearer)) return original;
+	@ModifyReturnValue(
+			method = "modifyDamage",
+			at = @At("RETURN")
+	)
+	private static float applyTrimToDamage(float original, ServerLevel level, ItemStack tool, Entity entity, DamageSource source) {
+		if (!(source.getEntity() instanceof LivingEntity wearer)) return original;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.DAMAGE)) {
-                original = ability.runDamage(level, wearer, source, original);
-            }
-        }
-        return original;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.DAMAGE)) {
+				original = ability.runDamage(level, wearer, source, original);
+			}
+		}
+		return original;
+	}
 }

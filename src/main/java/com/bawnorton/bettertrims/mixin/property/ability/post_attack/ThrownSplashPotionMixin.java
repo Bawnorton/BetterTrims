@@ -1,3 +1,4 @@
+//? if >=1.21.8 {
 package com.bawnorton.bettertrims.mixin.property.ability.post_attack;
 
 import com.bawnorton.bettertrims.property.TrimProperties;
@@ -49,3 +50,4 @@ abstract class ThrownSplashPotionMixin extends AbstractThrownPotion {
         return false;
     }
 }
+//?}

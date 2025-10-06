@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @MixinEnvironment("client")
 @Mixin(IntRange.class)
 public interface IntRangeAccessor {
-    @Accessor("min")
-    NumberProvider bettertrims$min();
+	@Accessor("min")
+	NumberProvider bettertrims$min();
 
-    @Accessor("max")
-    NumberProvider bettertrims$max();
+	@Accessor("max")
+	NumberProvider bettertrims$max();
 }

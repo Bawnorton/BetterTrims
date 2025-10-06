@@ -4,6 +4,7 @@ import com.bawnorton.bettertrims.client.tooltip.AbilityTooltipRenderer;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -19,21 +20,25 @@ import org.joml.Vector2ic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import java.util.List;
 
 @MixinEnvironment("client")
 @Mixin(GuiGraphics.class)
 abstract class GuiGraphicsMixin {
-    @Unique
-    private static final ThreadLocal<Rect2i> TOOLTIP_DIMENSION_CAPTURE = new ThreadLocal<>();
+	@Unique
+	private static final ThreadLocal<Rect2i> TOOLTIP_DIMENSION_CAPTURE = new ThreadLocal<>();
 
+	//? if >=1.21.8 {
     @Definition(id = "deferredTooltip", field = "Lnet/minecraft/client/gui/GuiGraphics;deferredTooltip:Ljava/lang/Runnable;")
     @Expression("this.deferredTooltip = @(?)")
     @ModifyExpressionValue(
         method = "setTooltipForNextFrameInternal",
         at = @At("MIXINEXTRAS:EXPRESSION")
     )
-    private Runnable forwardStackCapture(
+    private Runnable renderTrimTooltip(
         Runnable original,
         Font font,
         List<ClientTooltipComponent> components,
@@ -53,30 +58,51 @@ abstract class GuiGraphicsMixin {
         AbilityTooltipRenderer.clearStack();
         return () -> {
             original.run();
-            AbilityTooltipRenderer.render(self, stack, font, components, TOOLTIP_DIMENSION_CAPTURE.get(), x, y, background);
+            AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), x, background);
             TOOLTIP_DIMENSION_CAPTURE.remove();
         };
     }
+    //?} else {
+	/*@Inject(
+			method = "renderTooltipInternal",
+			at = @At("TAIL")
+	)
+	*///?}
+	private void renderTrimTooltip(Font font, List<ClientTooltipComponent> components, int mouseX, int mouseY, ClientTooltipPositioner tooltipPositioner, CallbackInfo ci) {
+		ItemStack stack = AbilityTooltipRenderer.getStack();
+		if (stack.isEmpty()) {
+			return;
+		}
 
-    @WrapOperation(
-        method = "renderTooltip",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;positionTooltip(IIIIII)Lorg/joml/Vector2ic;"
-        )
-    )
-    private Vector2ic captureTooltipPosition(
-        ClientTooltipPositioner instance,
-        int screenWidth,
-        int screenHeight,
-        int mouseX,
-        int mouseY,
-        int tooltipWidth,
-        int tooltipHeight,
-        Operation<Vector2ic> original
-    ) {
-        Vector2ic result = original.call(instance, screenWidth, screenHeight, mouseX, mouseY, tooltipWidth, tooltipHeight);
-        TOOLTIP_DIMENSION_CAPTURE.set(new Rect2i(result.x(), result.y(), tooltipWidth, tooltipHeight));
-        return result;
-    }
+		GuiGraphics self = (GuiGraphics) (Object) this;
+		AbilityTooltipRenderer.clearStack();
+		AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), mouseX, null);
+		TOOLTIP_DIMENSION_CAPTURE.remove();
+	}
+
+	@WrapOperation(
+			//? if >=1.21.8 {
+			method = "renderTooltip",
+			//?} else {
+			/*method = "renderTooltipInternal",
+			*///?}
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;positionTooltip(IIIIII)Lorg/joml/Vector2ic;"
+			)
+	)
+	private Vector2ic captureTooltipPosition(
+			ClientTooltipPositioner instance,
+			int screenWidth,
+			int screenHeight,
+			int mouseX,
+			int mouseY,
+			int tooltipWidth,
+			int tooltipHeight,
+			Operation<Vector2ic> original
+	) {
+		Vector2ic result = original.call(instance, screenWidth, screenHeight, mouseX, mouseY, tooltipWidth, tooltipHeight);
+		TOOLTIP_DIMENSION_CAPTURE.set(new Rect2i(result.x(), result.y(), tooltipWidth, tooltipHeight));
+		return result;
+	}
 }

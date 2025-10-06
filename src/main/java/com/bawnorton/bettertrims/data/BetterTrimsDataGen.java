@@ -2,9 +2,11 @@ package com.bawnorton.bettertrims.data;
 
 //? if fabric {
 
+import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.data.provider.BetterTrimsDimensionTypeTagProvider;
 import com.bawnorton.bettertrims.data.provider.BetterTrimsEntityTypeTagProvider;
 import com.bawnorton.bettertrims.data.provider.BetterTrimsRegistriesDataProvider;
+import com.bawnorton.bettertrims.data.provider.BetterTrimsTrimEffectsRegistriesDataProvider;
 import com.bawnorton.bettertrims.data.provider.TrimMaterialTagsProvider;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -12,14 +14,20 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 @Entrypoint("fabric-datagen")
 public final class BetterTrimsDataGen implements DataGeneratorEntrypoint {
-    @Override
-    public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
-        FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-        pack.addProvider(BetterTrimsRegistriesDataProvider::new);
-        pack.addProvider(TrimMaterialTagsProvider::new);
-        pack.addProvider(BetterTrimsEntityTypeTagProvider::new);
-        pack.addProvider(BetterTrimsDimensionTypeTagProvider::new);
-    }
+
+	@Override
+	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
+		FabricDataGenerator.Pack mainPack = fabricDataGenerator.createPack();
+		mainPack.addProvider(TrimMaterialTagsProvider::new);
+		mainPack.addProvider(BetterTrimsEntityTypeTagProvider::new);
+		mainPack.addProvider(BetterTrimsDimensionTypeTagProvider::new);
+
+		FabricDataGenerator.Pack defaultPack = fabricDataGenerator.createBuiltinResourcePack(BetterTrims.DEFAULT);
+		defaultPack.addProvider(BetterTrimsRegistriesDataProvider::new);
+
+		FabricDataGenerator.Pack trimEffectsDatapack = fabricDataGenerator.createBuiltinResourcePack(BetterTrims.TRIM_EFFECTS);
+		trimEffectsDatapack.addProvider(BetterTrimsTrimEffectsRegistriesDataProvider::new);
+	}
 }
 //?} else if neoforge {
 /*import net.neoforged.bus.api.SubscribeEvent;

@@ -18,18 +18,18 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
-    @ModifyReturnValue(
-        method = "modifyArmorEffectiveness",
-        at = @At("RETURN")
-    )
-    private static float applyTrimToArmorEffectiveness(float original, ServerLevel level, ItemStack tool, Entity entity, DamageSource damageSource) {
-        if(!(entity instanceof LivingEntity wearer)) return original;
+	@ModifyReturnValue(
+			method = "modifyArmorEffectiveness",
+			at = @At("RETURN")
+	)
+	private static float applyTrimToArmorEffectiveness(float original, ServerLevel level, ItemStack tool, Entity entity, DamageSource damageSource) {
+		if (!(entity instanceof LivingEntity wearer)) return original;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.ARMOUR_EFFECTIVENESS)) {
-                original = ability.runDamage(level, wearer, damageSource, original);
-            }
-        }
-        return original;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.ARMOUR_EFFECTIVENESS)) {
+				original = ability.runDamage(level, wearer, damageSource, original);
+			}
+		}
+		return original;
+	}
 }

@@ -8,10 +8,10 @@ import net.fabricmc.api.ModInitializer;
 
 @Entrypoint
 public final class BetterTrimsWrapper implements ModInitializer {
-    @Override
-    public void onInitialize() {
-        BetterTrims.init();
-    }
+	@Override
+	public void onInitialize() {
+		BetterTrims.init();
+	}
 }
 //?} else if neoforge {
 /*import net.neoforged.fml.common.Mod;

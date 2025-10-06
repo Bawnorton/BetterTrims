@@ -7,10 +7,10 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 
 public record PiglinSafeAbility() implements TrimElement {
-    public static final PiglinSafeAbility INSTANCE = new PiglinSafeAbility();
-    public static final Codec<PiglinSafeAbility> CODEC = Codec.unit(() -> INSTANCE);
+	public static final PiglinSafeAbility INSTANCE = new PiglinSafeAbility();
+	public static final Codec<PiglinSafeAbility> CODEC = Codec.unit(() -> INSTANCE);
 
-    public boolean entityLooksForGold(LivingEntity entity) {
-        return entity.getBrain().checkMemory(MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD, MemoryStatus.REGISTERED);
-    }
+	public boolean entityLooksForGold(LivingEntity entity) {
+		return entity.getBrain().checkMemory(MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD, MemoryStatus.REGISTERED);
+	}
 }

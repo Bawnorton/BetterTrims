@@ -23,30 +23,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @MixinEnvironment
 @Mixin(AbstractVillager.class)
 abstract class AbstractVillagerMixin extends AgeableMob {
-    @Shadow
-    public abstract MerchantOffers getOffers();
+	@Shadow
+	public abstract MerchantOffers getOffers();
 
-    AbstractVillagerMixin(EntityType<? extends AgeableMob> entityType, Level level) {
-        super(entityType, level);
-    }
+	AbstractVillagerMixin(EntityType<? extends AgeableMob> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @Inject(
-        method = "setTradingPlayer",
-        at = @At("TAIL")
-    )
-    private void applyTrimsToOffers(@Nullable Player player, CallbackInfo ci) {
-        if(player == null) return;
-        if(!(level() instanceof ServerLevel level)) return;
+	@Inject(
+			method = "setTradingPlayer",
+			at = @At("TAIL")
+	)
+	private void applyTrimsToOffers(@Nullable Player player, CallbackInfo ci) {
+		if (player == null) return;
+		if (!(level() instanceof ServerLevel level)) return;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.TRADE_COST)) {
-                for (MerchantOffer offer : getOffers()) {
-                    int oldCost = offer.getBaseCostA().getCount();
-                    int newCost = Math.round(ability.runEquipment(level, player, oldCost));
-                    offer.addToSpecialPriceDiff(-(oldCost - newCost));
-                }
-            }
-        }
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.TRADE_COST)) {
+				for (MerchantOffer offer : getOffers()) {
+					int oldCost = offer.getBaseCostA().getCount();
+					int newCost = Math.round(ability.runEquipment(level, player, oldCost));
+					offer.addToSpecialPriceDiff(-(oldCost - newCost));
+				}
+			}
+		}
+	}
 }
 

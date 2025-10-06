@@ -17,18 +17,18 @@ import org.spongepowered.asm.mixin.injection.At;
 @MixinEnvironment
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
-    @ModifyReturnValue(
-        method = "isImmuneToDamage",
-        at = @At("RETURN")
-    )
-    private static boolean isTrimInvulnerableTo(boolean original, ServerLevel level, LivingEntity entity, DamageSource damageSource) {
-        if (original) return true;
+	@ModifyReturnValue(
+			method = "isImmuneToDamage",
+			at = @At("RETURN")
+	)
+	private static boolean isTrimInvulnerableTo(boolean original, ServerLevel level, LivingEntity entity, DamageSource damageSource) {
+		if (original) return true;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (ElementMatcher<?> ability : property.getAbilityElements(TrimAbilityComponents.DAMAGE_IMMUNITY)) {
-                return ability.matches(entity, TrimContexts.damage(level, ability.getMatchingItems(entity), entity, damageSource));
-            }
-        }
-        return false;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (ElementMatcher<?> ability : property.getAbilityElements(TrimAbilityComponents.DAMAGE_IMMUNITY)) {
+				return ability.matches(entity, TrimContexts.damage(level, ability.getMatchingItems(entity), entity, damageSource));
+			}
+		}
+		return false;
+	}
 }

@@ -1,9 +1,10 @@
+//? if >=1.21.8 {
 package com.bawnorton.bettertrims.client.tooltip.condition.predicate.data;
 
-import com.bawnorton.bettertrims.client.tooltip.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
 import com.bawnorton.bettertrims.client.tooltip.condition.predicate.PredicateTooltip;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import net.minecraft.advancements.critereon.DataComponentMatchers;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.component.DataComponentExactPredicate;
@@ -15,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 
 public interface DataComponentMatchersTooltip {
     static void addToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
@@ -56,7 +56,7 @@ public interface DataComponentMatchersTooltip {
                 return;
             }
 
-            ExactDataComponentPredicateTooltip.addToBuilder(level, entry.getKey(), entry.getValue().orElseThrow(), state, builder);
+            ExactDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue().orElseThrow(), state, builder);
         } else {
             CompositeContainerComponent.Builder listBuilder = new CompositeContainerComponent.Builder()
                 .vertical()
@@ -74,7 +74,7 @@ public interface DataComponentMatchersTooltip {
                         termBuilder.translate(key("unknown"), Styler::condition);
                     }
                 } else {
-                    ExactDataComponentPredicateTooltip.addToBuilder(level, entry.getKey(), entry.getValue().orElse(null), state, termBuilder);
+                    ExactDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue().orElse(null), state, termBuilder);
                 }
                 listBuilder.component(termBuilder.build());
             }
@@ -87,7 +87,7 @@ public interface DataComponentMatchersTooltip {
             builder.translate(key("unknown"));
         } else if (partial.size() == 1) {
             Map.Entry<DataComponentPredicate.Type<?>, DataComponentPredicate> entry = partial.entrySet().iterator().next();
-            PartialDataComponentPredicateTooltip.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);
+            PartialDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);
         } else {
             CompositeContainerComponent.Builder listBuilder = new CompositeContainerComponent.Builder()
                 .vertical()
@@ -96,14 +96,11 @@ public interface DataComponentMatchersTooltip {
                 CompositeContainerComponent.Builder termBuilder = new CompositeContainerComponent.Builder()
                     .space()
                     .literal("• ", Styler::condition);
-                PartialDataComponentPredicateTooltip.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);
+                PartialDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);
                 listBuilder.component(termBuilder.build());
             }
             builder.component(listBuilder.build());
         }
     }
-
-    interface PredicateAdder<T extends Predicate<?>> {
-        void addToBuilder(ClientLevel level, T predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder);
-    }
 }
+//?}

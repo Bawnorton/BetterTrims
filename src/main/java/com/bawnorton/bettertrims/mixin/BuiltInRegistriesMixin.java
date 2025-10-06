@@ -11,11 +11,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @MixinEnvironment
 @Mixin(BuiltInRegistries.class)
 abstract class BuiltInRegistriesMixin {
-    @Inject(
-        method = "createContents",
-        at = @At("TAIL")
-    )
-    private static void createBTContents(CallbackInfo ci) {
-        BetterTrimsRegistries.createContents();
-    }
+	@Inject(
+			method = "createContents",
+			at = @At("TAIL")
+	)
+	private static void createBTContents(CallbackInfo ci) {
+		BetterTrimsRegistries.createContents();
+	}
 }

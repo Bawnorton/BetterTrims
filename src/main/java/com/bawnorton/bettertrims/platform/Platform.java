@@ -5,9 +5,9 @@ package com.bawnorton.bettertrims.platform;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class Platform {
-    public static boolean isModLoaded(String modId) {
-        return FabricLoader.getInstance().isModLoaded(modId);
-    }
+	public static boolean isModLoaded(String modId) {
+		return FabricLoader.getInstance().isModLoaded(modId);
+	}
 }
 
 //?} else if neoforge {

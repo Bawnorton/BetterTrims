@@ -22,29 +22,29 @@ import org.spongepowered.asm.mixin.injection.At;
 @MixinEnvironment
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends Entity {
-    LivingEntityMixin(EntityType<?> entityType, Level level) {
-        super(entityType, level);
-    }
+	LivingEntityMixin(EntityType<?> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @WrapOperation(
-        method = "doHurtEquipment",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/item/ItemStack;canBeHurtBy(Lnet/minecraft/world/damagesource/DamageSource;)Z"
-        )
-    )
-    private boolean isTrimInvulnerableTo(ItemStack instance, DamageSource damageSource, Operation<Boolean> original) {
-        boolean canBeHurt = original.call(instance, damageSource);
-        if (!canBeHurt) return false;
-        if (!(level() instanceof ServerLevel level)) return false;
+	@WrapOperation(
+			method = "doHurtEquipment",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/item/ItemStack;canBeHurtBy(Lnet/minecraft/world/damagesource/DamageSource;)Z"
+			)
+	)
+	private boolean isTrimInvulnerableTo(ItemStack instance, DamageSource damageSource, Operation<Boolean> original) {
+		boolean canBeHurt = original.call(instance, damageSource);
+		if (!canBeHurt) return false;
+		if (!(level() instanceof ServerLevel level)) return false;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (ElementMatcher<?> elementMatcher : property.getItemPropertyElements(TrimItemPropertyComponents.DAMAGE_IMMUNITY)) {
-                if (elementMatcher.matches(instance, TrimContexts.damageItem(level, instance, null, damageSource))) {
-                    return true;
-                }
-            }
-        }
-        return true;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (ElementMatcher<?> elementMatcher : property.getItemPropertyElements(TrimItemPropertyComponents.DAMAGE_IMMUNITY)) {
+				if (elementMatcher.matches(instance, TrimContexts.damageItem(level, instance, null, damageSource))) {
+					return true;
+				}
+			}
+		}
+		return true;
+	}
 }

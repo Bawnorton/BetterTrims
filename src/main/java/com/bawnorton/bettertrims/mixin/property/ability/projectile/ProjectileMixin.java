@@ -21,25 +21,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @MixinEnvironment
 @Mixin(Projectile.class)
 abstract class ProjectileMixin extends Entity {
-    ProjectileMixin(EntityType<?> entityType, Level level) {
-        super(entityType, level);
-    }
+	ProjectileMixin(EntityType<?> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @Shadow
-    @Nullable
-    public abstract Entity getOwner();
+	@Shadow
+	@Nullable
+	public abstract Entity getOwner();
 
-    @Inject(
-        method = "tick",
-        at = @At("HEAD")
-    )
-    private void applyTrimsToProjectileTick(CallbackInfo ci) {
-        if (!(getOwner() instanceof LivingEntity wearer) || !(level() instanceof ServerLevel level)) return;
+	@Inject(
+			method = "tick",
+			at = @At("HEAD")
+	)
+	private void applyTrimsToProjectileTick(CallbackInfo ci) {
+		if (!(getOwner() instanceof LivingEntity wearer) || !(level() instanceof ServerLevel level)) return;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for(TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.PROJECTILE_TICK)) {
-                ability.runTick(level, wearer, this, position());
-            }
-        }
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.PROJECTILE_TICK)) {
+				ability.runTick(level, wearer, this, position());
+			}
+		}
+	}
 }

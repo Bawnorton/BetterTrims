@@ -17,23 +17,23 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @MixinEnvironment
 @Mixin(Player.class)
 abstract class PlayerMixin extends LivingEntity {
-    PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
-        super(entityType, level);
-    }
+	PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @ModifyVariable(
-        method = "giveExperiencePoints",
-        at = @At("HEAD"),
-        argsOnly = true
-    )
-    private int applyTrimToXp(int original) {
-        if (!(level() instanceof ServerLevel level)) return original;
+	@ModifyVariable(
+			method = "giveExperiencePoints",
+			at = @At("HEAD"),
+			argsOnly = true
+	)
+	private int applyTrimToXp(int original) {
+		if (!(level() instanceof ServerLevel level)) return original;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.EXPERIENCE_GAINED)) {
-                original = (int) ability.runEquipment(level, this, original);
-            }
-        }
-        return original;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.EXPERIENCE_GAINED)) {
+				original = (int) ability.runEquipment(level, this, original);
+			}
+		}
+		return original;
+	}
 }

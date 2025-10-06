@@ -8,8 +8,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 
 public record CountBasedValueType<T extends CountBasedValue>(MapCodec<T> codec) {
-    public static final Registry<CountBasedValueType<?>> REGISTRY = new MappedRegistry<>(
-        ResourceKey.createRegistryKey(BetterTrims.rl("count_based_value_types")),
-        Lifecycle.stable()
-    );
+	public static final Registry<CountBasedValueType<?>> REGISTRY = new MappedRegistry<>(
+			ResourceKey.createRegistryKey(BetterTrims.rl("count_based_value_types")),
+			Lifecycle.stable()
+	);
 }

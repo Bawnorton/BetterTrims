@@ -20,31 +20,31 @@ import org.spongepowered.asm.mixin.injection.At;
 @MixinEnvironment
 @Mixin(Entity.class)
 abstract class EntityMixin {
-    @Shadow
-    private Level level;
+	@Shadow
+	private Level level;
 
-    @SuppressWarnings("ConstantValue")
-    @ModifyReturnValue(
-        //? if 1.21.8 {
-        method = "isInvulnerableToBase",
-        //?} elif 1.21.1 {
-        /*method = "isInvulnerableTo",
-        *///?}
-        at = @At("RETURN")
-    )
-    private boolean isTrimInvulnerableTo(boolean original, DamageSource damageSource) {
-        if (original) return true;
-        if (!((Object) this instanceof ItemEntity itemEntity)) return false;
-        if (!(level instanceof ServerLevel serverLevel)) return false;
+	@SuppressWarnings("ConstantValue")
+	@ModifyReturnValue(
+			//? if 1.21.8 {
+			method = "isInvulnerableToBase",
+			//?} elif 1.21.1 {
+			/*method = "isInvulnerableTo",
+			*///?}
+			at = @At("RETURN")
+	)
+	private boolean isTrimInvulnerableTo(boolean original, DamageSource damageSource) {
+		if (original) return true;
+		if (!((Object) this instanceof ItemEntity itemEntity)) return false;
+		if (!(level instanceof ServerLevel serverLevel)) return false;
 
-        ItemStack stack = itemEntity.getItem();
-        for (TrimProperty property : TrimProperties.getProperties(serverLevel)) {
-            for (ElementMatcher<?> elementMatcher : property.getItemPropertyElements(TrimItemPropertyComponents.DAMAGE_IMMUNITY)) {
-                if (elementMatcher.matches(stack, TrimContexts.damageItem(serverLevel, stack, itemEntity, damageSource))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		ItemStack stack = itemEntity.getItem();
+		for (TrimProperty property : TrimProperties.getProperties(serverLevel)) {
+			for (ElementMatcher<?> elementMatcher : property.getItemPropertyElements(TrimItemPropertyComponents.DAMAGE_IMMUNITY)) {
+				if (elementMatcher.matches(stack, TrimContexts.damageItem(serverLevel, stack, itemEntity, damageSource))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

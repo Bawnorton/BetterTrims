@@ -18,21 +18,22 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import java.util.function.Consumer;
 
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
-    @Inject(
-        method = "onHitBlock",
-        at = @At("TAIL")
-    )
-    private static void doOnHitBlockTrimAbilites(ServerLevel level, ItemStack stack, LivingEntity owner, Entity entity, EquipmentSlot slot, Vec3 pos, BlockState state, Consumer<Item> onBreak, CallbackInfo ci) {
-        if(owner == null) return;
+	@Inject(
+			method = "onHitBlock",
+			at = @At("TAIL")
+	)
+	private static void doOnHitBlockTrimAbilites(ServerLevel level, ItemStack stack, LivingEntity owner, Entity entity, EquipmentSlot slot, Vec3 pos, BlockState state, Consumer<Item> onBreak, CallbackInfo ci) {
+		if (owner == null) return;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.HIT_BLOCK)) {
-                ability.runHitBlock(level, owner, entity, pos, state, stack);
-            }
-        }
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.HIT_BLOCK)) {
+				ability.runHitBlock(level, owner, entity, pos, state, stack);
+			}
+		}
+	}
 }

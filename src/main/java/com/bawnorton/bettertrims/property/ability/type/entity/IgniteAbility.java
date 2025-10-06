@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.client.tooltip.Styler;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
@@ -18,32 +18,32 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public record IgniteAbility(CountBasedValue duration) implements TrimEntityAbility {
-    public static final MapCodec<IgniteAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        CountBasedValue.CODEC.fieldOf("duration").forGetter(IgniteAbility::duration)
-    ).apply(instance, IgniteAbility::new));
+	public static final MapCodec<IgniteAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			CountBasedValue.CODEC.fieldOf("duration").forGetter(IgniteAbility::duration)
+	).apply(instance, IgniteAbility::new));
 
-    @Override
-    public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
-        target.igniteForSeconds(duration.calculate(items.size()));
-    }
+	@Override
+	public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
+		target.igniteForSeconds(duration.calculate(items.size()));
+	}
 
-    @Override
-    public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-        return CompositeContainerComponent.builder()
-            .translate("bettertrims.tooltip.ability.ignite.ignite_for", Styler::positive)
-            .cycle(builder -> duration.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f))).forEach(builder::textComponent))
-            .translate("bettertrims.tooltip.ability.ignite.seconds", Styler::positive)
-            .spaced()
-            .build();
-    }
+	@Override
+	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+		return CompositeContainerComponent.builder()
+				.translate("bettertrims.tooltip.ability.ignite.ignite_for", Styler::positive)
+				.cycle(builder -> duration.getValueComponents(4, includeCount).forEach(builder::textComponent))
+				.translate("bettertrims.tooltip.ability.ignite.seconds", Styler::positive)
+				.spaced()
+				.build();
+	}
 
-    @Override
-    public boolean usesCount() {
-        return true;
-    }
+	@Override
+	public boolean usesCount() {
+		return true;
+	}
 
-    @Override
-    public MapCodec<? extends TrimEntityAbility> codec() {
-        return CODEC;
-    }
+	@Override
+	public MapCodec<? extends TrimEntityAbility> codec() {
+		return CODEC;
+	}
 }

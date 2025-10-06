@@ -18,26 +18,26 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @MixinEnvironment
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends Entity {
-    LivingEntityMixin(EntityType<?> entityType, Level level) {
-        super(entityType, level);
-    }
+	LivingEntityMixin(EntityType<?> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @ModifyVariable(
-        method = "getDamageAfterMagicAbsorb",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;hasEffect(Lnet/minecraft/core/Holder;)Z"
-        ),
-        argsOnly = true
-    )
-    private float applyTrimToDamage(float original, DamageSource source) {
-        if(!(level() instanceof ServerLevel level)) return original;
+	@ModifyVariable(
+			method = "getDamageAfterMagicAbsorb",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/entity/LivingEntity;hasEffect(Lnet/minecraft/core/Holder;)Z"
+			),
+			argsOnly = true
+	)
+	private float applyTrimToDamage(float original, DamageSource source) {
+		if (!(level() instanceof ServerLevel level)) return original;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.INCOMING_DAMAGE)) {
-                original = ability.runDamage(level, (LivingEntity) (Object) this, source, original);
-            }
-        }
-        return original;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.INCOMING_DAMAGE)) {
+				original = ability.runDamage(level, (LivingEntity) (Object) this, source, original);
+			}
+		}
+		return original;
+	}
 }

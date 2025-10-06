@@ -16,31 +16,32 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
 import java.util.function.Consumer;
 
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
-    @Inject(
-        //? if 1.21.8 {
-        method = "doPostAttackEffectsWithItemSourceOnBreak",
-        //?} elif 1.21.1 {
-        /*method = "doPostAttackEffectsWithItemSource",
-        *///?}
-        at = @At("TAIL")
-    )
-    private static void doTrimPostAttackAbilities(CallbackInfo ci,
-        @Local(argsOnly = true) ServerLevel level,
-        @Local(argsOnly = true) Entity entity,
-        @Local(argsOnly = true) DamageSource damageSource,
-        @Local(argsOnly = true) ItemStack itemSource
-    ) {
-        Entity source = damageSource.getEntity();
-        if (!(source instanceof LivingEntity wearer)) return;
+	@Inject(
+			//? if 1.21.8 {
+			method = "doPostAttackEffectsWithItemSourceOnBreak",
+			//?} elif 1.21.1 {
+			/*method = "doPostAttackEffectsWithItemSource",
+			*///?}
+			at = @At("TAIL")
+	)
+	private static void doTrimPostAttackAbilities(CallbackInfo ci,
+	                                              @Local(argsOnly = true) ServerLevel level,
+	                                              @Local(argsOnly = true) Entity entity,
+	                                              @Local(argsOnly = true) DamageSource damageSource,
+	                                              @Local(argsOnly = true) ItemStack itemSource
+	) {
+		Entity source = damageSource.getEntity();
+		if (!(source instanceof LivingEntity wearer)) return;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.POST_ATTACK)) {
-                ability.runDamage(level, wearer, entity, damageSource, itemSource);
-            }
-        }
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.POST_ATTACK)) {
+				ability.runDamage(level, wearer, entity, damageSource, itemSource);
+			}
+		}
+	}
 }

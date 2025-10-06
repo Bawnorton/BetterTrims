@@ -19,45 +19,49 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public record ApplyMobEffectAbility(Holder<MobEffect> effect, CountBasedValue amplifier, CountBasedValue duration) implements TrimEntityAbility {
-    public static final MapCodec<ApplyMobEffectAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        MobEffect.CODEC.fieldOf("effect").forGetter(ApplyMobEffectAbility::effect),
-        CountBasedValue.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectAbility::amplifier),
-        CountBasedValue.CODEC.fieldOf("duration").forGetter(ApplyMobEffectAbility::duration)
-    ).apply(instance, ApplyMobEffectAbility::new));
+public record ApplyMobEffectAbility(Holder<MobEffect> effect, CountBasedValue amplifier,
+                                    CountBasedValue duration) implements TrimEntityAbility {
+	public static final MapCodec<ApplyMobEffectAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+			MobEffect.CODEC.fieldOf("effect").forGetter(ApplyMobEffectAbility::effect),
+			CountBasedValue.CODEC.fieldOf("amplifier").forGetter(ApplyMobEffectAbility::amplifier),
+			CountBasedValue.CODEC.fieldOf("duration").forGetter(ApplyMobEffectAbility::duration)
+	).apply(instance, ApplyMobEffectAbility::new));
 
-    @Override
-    public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
-        if (target instanceof LivingEntity living) {
-            int count = items.size();
-            int amplifier = (int) this.amplifier.calculate(count);
-            int duration = (int) this.duration.calculate(count) * 20;
-            MobEffectInstance effectInstance = new MobEffectInstance(effect, duration, amplifier);
-            living.addEffect(effectInstance);
-        }
-    }
+	@Override
+	public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
+		if (target instanceof LivingEntity living) {
+			int count = items.size();
+			int amplifier = (int) this.amplifier.calculate(count);
+			int duration = (int) this.duration.calculate(count) * 20;
+			if (amplifier < 0 || duration <= 0) return;
 
-    @Override
-    public ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-        return ToggleMobEffectAbility.getEffectTooltip(
-            level,
-            includeCount,
-            effect,
-            amplifier,
-            (builder, styler) -> builder.translate("bettertrims.tooltip.ability.apply_mob_effect.for", styler)
-                .cycle(durationCycler -> this.duration.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f * 20))).forEach(durationCycler::textComponent))
-                .translate("bettertrims.tooltip.ability.apply_mob_effect.seconds", styler)
-                .build()
-        );
-    }
+			MobEffectInstance effectInstance = new MobEffectInstance(effect, duration, amplifier);
+			living.addEffect(effectInstance);
+		}
+	}
 
-    @Override
-    public boolean usesCount() {
-        return true;
-    }
+	@Override
+	public ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
+		return ToggleMobEffectAbility.getEffectTooltip(
+				level,
+				includeCount,
+				effect,
+				amplifier,
+				(builder, styler) -> builder.translate("bettertrims.tooltip.ability.apply_mob_effect.for", styler)
+						.cycle(durationCycler -> duration.getValueComponents(4, includeCount, f -> Component.literal("%.0f".formatted(f)), f -> f > 0)
+								.forEach(durationCycler::textComponent))
+						.translate("bettertrims.tooltip.ability.apply_mob_effect.seconds", styler)
+						.build()
+		);
+	}
 
-    @Override
-    public MapCodec<? extends TrimEntityAbility> codec() {
-        return CODEC;
-    }
+	@Override
+	public boolean usesCount() {
+		return true;
+	}
+
+	@Override
+	public MapCodec<? extends TrimEntityAbility> codec() {
+		return CODEC;
+	}
 }

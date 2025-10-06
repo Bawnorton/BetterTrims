@@ -18,30 +18,30 @@ import org.spongepowered.asm.mixin.injection.At;
 @MixinEnvironment
 @Mixin(PiglinSpecificSensor.class)
 abstract class PiglinSpecificSensorMixin {
-    @WrapOperation(
-        method = "doTick",
-        at = @At(
-            value = "INVOKE",
-            //? if 1.21.8 {
-            target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingSafeArmor(Lnet/minecraft/world/entity/LivingEntity;)Z"
-            //?} elif 1.21.1 {
-            /*target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingGold(Lnet/minecraft/world/entity/LivingEntity;)Z"
-            *///?}
-        )
-    )
-    private static boolean isWearingSafeTrim(LivingEntity target, Operation<Boolean> original, ServerLevel level, LivingEntity entity) {
-        boolean wearingSafeArmour = original.call(target);
-        if (wearingSafeArmour) return true;
+	@WrapOperation(
+			method = "doTick",
+			at = @At(
+					value = "INVOKE",
+					//? if 1.21.8 {
+					target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingSafeArmor(Lnet/minecraft/world/entity/LivingEntity;)Z"
+					//?} elif 1.21.1 {
+					/*target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingGold(Lnet/minecraft/world/entity/LivingEntity;)Z"
+					*///?}
+			)
+	)
+	private static boolean isWearingSafeTrim(LivingEntity target, Operation<Boolean> original, ServerLevel level, LivingEntity entity) {
+		boolean wearingSafeArmour = original.call(target);
+		if (wearingSafeArmour) return true;
 
-        for(TrimProperty property : TrimProperties.getProperties(level)) {
-            for(ElementMatcher<?> ability : property.getAbilityElements(TrimAbilityComponents.PIGLIN_SAFE)) {
-                if (ability.getElement() instanceof PiglinSafeAbility piglinSafeAbility
-                    && ability.matches(target, TrimContexts.entity(level, ability.getMatchingItems(target), entity, entity.position()))
-                    && piglinSafeAbility.entityLooksForGold(entity)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (ElementMatcher<?> ability : property.getAbilityElements(TrimAbilityComponents.PIGLIN_SAFE)) {
+				if (ability.getElement() instanceof PiglinSafeAbility piglinSafeAbility
+						&& ability.matches(target, TrimContexts.entity(level, ability.getMatchingItems(target), entity, entity.position()))
+						&& piglinSafeAbility.entityLooksForGold(entity)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

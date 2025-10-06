@@ -3,15 +3,21 @@ package com.bawnorton.bettertrims.client.tooltip;
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.BetterTrimsClient;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.component.CyclingComponent;
 import com.bawnorton.bettertrims.client.tooltip.component.DynamicWidthComponent;
 import com.bawnorton.bettertrims.client.tooltip.component.ItemComponent;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.property.Matcher;
 import com.bawnorton.bettertrims.property.TrimProperty;
 import com.bawnorton.bettertrims.property.ability.TrimAbilityComponents;
 import com.bawnorton.bettertrims.property.element.ConditionalElement;
 import com.bawnorton.bettertrims.property.element.ConditionalElementMatcher;
 import com.bawnorton.bettertrims.property.element.TrimElement;
+import com.bawnorton.bettertrims.property.item.TrimItemPropertyComponents;
 import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
+import com.bawnorton.bettertrims.version.VRegistry;
+import com.bawnorton.bettertrims.version.VTrims;
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -19,253 +25,327 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.ProvidesTrimMaterial;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TrimTooltipPage {
-    private final Matcher matcher;
-    private final TrimProperty property;
-    private ClientTooltipComponent component;
+	private final Matcher matcher;
+	private final TrimProperty property;
+	private ClientTooltipComponent component;
 
-    public TrimTooltipPage(TrimProperty property, Matcher matcher) {
-        this.matcher = matcher;
-        this.property = property;
-    }
+	public TrimTooltipPage(TrimProperty property, Matcher matcher) {
+		this.matcher = matcher;
+		this.property = property;
+	}
 
-    public ClientTooltipComponent getComponent() {
-        if (component == null) {
-            throw new IllegalStateException("Components have not been generated yet");
-        }
-        return component;
-    }
+	private static ClientTooltipComponent generateAsItemHeader() {
+		return CompositeContainerComponent.builder()
+				.translate("bettertrims.tooltip.properties.as_item", Styler::normal)
+				.build();
+	}
 
-    @SuppressWarnings("unchecked")
-    public void generateComponent(ClientLevel level, ArmorTrim trim, Font font, int index, int total) {
-        component = null;
+	private static @NotNull List<ItemStack> getPatternProviders(List<TrimPattern> patterns, ClientLevel level) {
+		List<ItemStack> patternProviders = new ArrayList<>();
+		for (Map.Entry<Holder<TrimPattern>, HolderSet<Item>> entry : BetterTrimsClient.getPatternSources().entrySet()) {
+			Holder<TrimPattern> patternHolder = entry.getKey();
+			TrimPattern pattern = patternHolder.unwrap()
+					//? if >=1.21.8 {
+					.map(key -> VRegistry.get(level, Registries.TRIM_PATTERN).getValueOrThrow(key), Function.identity());
+					 //?} else {
+					/*.map(key -> VRegistry.get(level, Registries.TRIM_PATTERN).getOrThrow(key), Function.identity());
+			*///?}
+			if (patterns.contains(pattern)) {
+				HolderSet<Item> itemHolders = entry.getValue();
+				patternProviders.addAll(itemHolders.stream()
+						.map(holder -> holder.unwrap()
+								//? if >=1.21.8 {
+								.map(key -> VRegistry.get(level, Registries.ITEM).getValueOrThrow(key), Function.identity()))
+								 //?} else {
+								/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity()))
+						*///?}
+						.map(Item::getDefaultInstance)
+						.toList());
+			}
+		}
+		return patternProviders;
+	}
 
-        CompositeContainerComponent.Builder pageBuilder = CompositeContainerComponent.builder().vertical();
-        pageBuilder.component(generateTitle(level, index, total));
+	public static ClientTooltipComponent generateMatcherComponent(ClientLevel level, HolderSet<TrimMaterial> materials, HolderSet<TrimPattern> patterns) {
+		List<TrimMaterial> materialList = materials.stream().map(Holder::value).toList();
+		List<TrimPattern> patternList = patterns.stream().map(Holder::value).toList();
+		if (materialList.isEmpty()) {
+			return generateAnyMaterialComponent(patternList, level);
+		} else if (patternList.isEmpty()) {
+			return generateAnyPatternComponent(materialList, level);
+		} else {
+			return generateSpecificMaterialPatternComponent(patternList, materialList, level);
+		}
+	}
 
-        boolean addHeader = true;
-        for (DataComponentType<?> type : BetterTrimsRegistries.TRIM_ABILITY_COMPONENT_TYPE) {
-            DataComponentType<List<ConditionalElement<TrimElement>>> castType = (DataComponentType<List<ConditionalElement<TrimElement>>>) type;
-            CompositeContainerComponent abilityComponent = generateAbilityTooltipComponent(level, font, castType);
-            if (abilityComponent == null) continue;
+	private static ClientTooltipComponent generateAnyMaterialComponent(List<TrimPattern> patterns, ClientLevel level) {
+		if (patterns.isEmpty()) {
+			return generateAnyMaterialOrPatternComponent(level);
+		}
 
-            if (addHeader) {
-                pageBuilder.component(generateWearingAbilityHeader(trim));
-                addHeader = false;
-            }
+		return generateMatcherComponentFor(getAllMaterialProviders(level), getPatternProviders(patterns, level));
+	}
 
-            Component typeTooltip = TrimAbilityComponents.TOOLTIPS.get(BetterTrimsRegistries.TRIM_ABILITY_COMPONENT_TYPE.getKey(type));
-            if (typeTooltip == null) {
-                typeTooltip = Component.translatable("bettertrims.tooltip.component.unknown");
-            }
+	private static ClientTooltipComponent generateAnyPatternComponent(List<TrimMaterial> materials, ClientLevel level) {
+		if (materials.isEmpty()) {
+			return generateAnyMaterialOrPatternComponent(level);
+		}
 
-            CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
-                .vertical()
-                .component(CompositeContainerComponent.builder()
-                    .space()
-                    .textComponent(Styler.component(typeTooltip.copy()))
-                    .build());
-            if(!abilityComponent.isEmpty()) {
-                builder.component(CompositeContainerComponent.builder()
-                    .space()
-                    .space()
-                    .component(abilityComponent)
-                    .build());
-            }
-            pageBuilder.component(builder.build());
-        }
+		return generateMatcherComponentFor(getMaterialProviders(materials, level), getAllPatternProviders(level));
+	}
 
-        CompositeContainerComponent page = pageBuilder.build();
-        component = TooltipComponentOptimiser.optimise(page);
-    }
+	private static ClientTooltipComponent generateAnyMaterialOrPatternComponent(ClientLevel level) {
+		return generateMatcherComponentFor(getAllMaterialProviders(level), getAllPatternProviders(level));
+	}
 
-    public int getMaxWidth(Font font) {
-        return DynamicWidthComponent.getMaxWidth(font, component, 0);
-    }
+	private static ClientTooltipComponent generateSpecificMaterialPatternComponent(List<TrimPattern> patterns, List<TrimMaterial> materials, ClientLevel level) {
+		return generateMatcherComponentFor(getMaterialProviders(materials, level), getPatternProviders(patterns, level));
+	}
 
-    private static ClientTooltipComponent generateAsItemHeader() {
-        return CompositeContainerComponent.builder()
-            .translate("bettertrims.tooltip.properties.as_item", Styler::normal)
-            .build();
-    }
+	private static ClientTooltipComponent generateMatcherComponentFor(List<ItemStack> materialProviders, List<ItemStack> patternProviders) {
+		return CompositeContainerComponent.builder()
+				.cycle(builder -> materialProviders.stream().map(ItemComponent::new).forEach(builder::component))
+				.literal("-", Styler::trim)
+				.cycle(builder -> patternProviders.stream().map(ItemComponent::new).forEach(builder::component))
+				.spaced()
+				.centred()
+				.build();
+	}
 
-    private static @NotNull List<ItemStack> getPatternProviders(List<TrimPattern> patterns, ClientLevel level) {
-        List<ItemStack> patternProviders = new ArrayList<>();
-        for (Map.Entry<Holder<TrimPattern>, HolderSet<Item>> entry : BetterTrimsClient.getPatternSources().entrySet()) {
-            Holder<TrimPattern> patternHolder = entry.getKey();
-            TrimPattern pattern = patternHolder.unwrap()
-                .map(key -> level.registryAccess().lookupOrThrow(Registries.TRIM_PATTERN).getOrThrow(key).value(), Function.identity());
-            if (patterns.contains(pattern)) {
-                HolderSet<Item> itemHolders = entry.getValue();
-                patternProviders.addAll(itemHolders.stream()
-                    .map(holder -> holder.unwrap().map(key -> BuiltInRegistries.ITEM.getOrThrow(key).value(), Function.identity()))
-                    .map(Item::getDefaultInstance)
-                    .toList());
-            }
-        }
-        return patternProviders;
-    }
+	private static List<ItemStack> getMaterialProviders(List<TrimMaterial> materials, ClientLevel level) {
+		return getAllMaterialProviders(level)
+				.stream()
+				.filter(item -> {
+					TrimMaterial material = VTrims.getMaterialFromStack(level, item);
+					return material != null && materials.contains(material);
+				})
+				.toList();
+	}
 
-    private ClientTooltipComponent generateTitle(ClientLevel level, int index, int total) {
-        ResourceLocation propertyId = level.registryAccess().lookupOrThrow(BetterTrimsRegistries.Keys.TRIM_PROPERTIES).getKey(property);
-        if (propertyId == null) {
-            BetterTrims.LOGGER.warn("Property {} does not have a registry name", property);
-            propertyId = BetterTrims.rl("unknown");
-        }
-        CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
-            .translate("bettertrims.property.%s.%s".formatted(propertyId.getNamespace(), propertyId.getPath()), Styler::trim)
-            .space()
-            .literal("(", Styler::trim)
-            .component(generateMatcherComponent(level, matcher.material(), matcher.pattern()))
-            .literal(")", Styler::trim)
-            .centred();
-        if (total > 1) {
-            builder.literal(" - [" + (index + 1) + "/" + total + "]", Styler::trim);
-        }
-        return builder.build();
-    }
+	private static List<ItemStack> getAllMaterialProviders(ClientLevel level) {
+		return VRegistry.get(level, Registries.ITEM)
+				.stream()
+				.map(Item::getDefaultInstance)
+				.filter(stack -> VTrims.getMaterialFromStack(level, stack) != null)
+				.toList();
+	}
 
-    private CompositeContainerComponent generateAbilityTooltipComponent(ClientLevel level, Font font, DataComponentType<List<ConditionalElement<TrimElement>>> type) {
-        List<ConditionalElementMatcher<?>> elements = property.getAbilityElements(type);
-        if (elements.isEmpty()) return null;
+	private static List<ItemStack> getAllPatternProviders(ClientLevel level) {
+		return BetterTrimsClient.getPatternSources()
+				.values()
+				.stream()
+				.map(HolderSet::stream)
+				.flatMap(stream -> stream.map(holder -> holder.unwrap()
+						//? if >=1.21.8 {
+						.map(key -> VRegistry.get(level, Registries.ITEM).getValueOrThrow(key), Function.identity())))
+						 //?} else {
+						/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity())))
+				*///?}
+				.map(Item::getDefaultInstance)
+				.toList();
+	}
 
-        CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
-            .vertical();
-        for (ConditionalElementMatcher<?> element : elements) {
-            builder.component(element.getConditionalElement().getTooltip(level, font));
-        }
-        return builder.build();
-    }
+	public ClientTooltipComponent getComponent() {
+		if (component == null) {
+			throw new IllegalStateException("Components have not been generated yet");
+		}
+		return component;
+	}
 
-    private ClientTooltipComponent generateWearingAbilityHeader(ArmorTrim trim) {
-        int minCount = matcher.minCount();
-        List<ItemStack> trimmedItems = new ArrayList<>();
-        for (Item item : List.of(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS)) {
-            ItemStack stack = item.getDefaultInstance();
-            stack.set(DataComponents.TRIM, trim);
-            trimmedItems.add(stack);
-        }
-        return switch (minCount) {
-            case 4 -> CompositeContainerComponent.builder()
-                .translate("bettertrims.tooltip.properties.count.all_of", Styler::normal)
-                .stack(trimmedItems, 12)
-                .translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
-                .spaced()
-                .centred()
-                .build();
-            case 1 -> CompositeContainerComponent.builder()
-                .translate("bettertrims.tooltip.properties.count.any_of", Styler::normal)
-                .cycle(builder -> trimmedItems.stream().map(ItemComponent::new).forEach(builder::component))
-                .translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
-                .spaced()
-                .centred()
-                .build();
-            default -> CompositeContainerComponent.builder()
-                .translate("bettertrims.tooltip.properties.count.n_of", Styler::normal, minCount)
-                .stack(trimmedItems, 12)
-                .translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
-                .spaced()
-                .centred()
-                .build();
-        };
-    }
+	@SuppressWarnings("unchecked")
+	public void generateComponent(ClientLevel level, Font font, int index, int total) {
+		component = null;
 
-    public static ClientTooltipComponent generateMatcherComponent(ClientLevel level, HolderSet<TrimMaterial> materials, HolderSet<TrimPattern> patterns) {
-        List<TrimMaterial> materialList = materials.stream().map(Holder::value).toList();
-        List<TrimPattern> patternList = patterns.stream().map(Holder::value).toList();
-        if (materialList.isEmpty()) {
-            return generateAnyMaterialComponent(patternList, level);
-        } else if (patternList.isEmpty()) {
-            return generateAnyPatternComponent(materialList, level);
-        } else {
-            return generateSpecificMaterialPatternComponent(patternList, materialList, level);
-        }
-    }
+		CompositeContainerComponent.Builder pageBuilder = CompositeContainerComponent.builder().vertical();
+		pageBuilder.component(generateTitle(level, index, total));
 
-    private static ClientTooltipComponent generateAnyMaterialComponent(List<TrimPattern> patterns, ClientLevel level) {
-        if (patterns.isEmpty()) {
-            return generateAnyMaterialOrPatternComponent();
-        }
+		boolean addHeader = true;
+		boolean hasAbilities = false;
+		for (DataComponentType<?> type : BetterTrimsRegistries.TRIM_ABILITY_COMPONENT_TYPE) {
+			DataComponentType<List<ConditionalElement<TrimElement>>> castType = (DataComponentType<List<ConditionalElement<TrimElement>>>) type;
+			CompositeContainerComponent abilityComponent = generateAbilityTooltipComponent(level, font, castType);
+			if (abilityComponent == null) continue;
 
-        return generateMatcherComponentFor(getAllMaterialProviders(), getPatternProviders(patterns, level));
-    }
+			hasAbilities = true;
+			if (addHeader) {
+				pageBuilder.component(generateWearingAbilityHeader(level));
+				addHeader = false;
+			}
 
-    private static ClientTooltipComponent generateAnyPatternComponent(List<TrimMaterial> materials, ClientLevel level) {
-        if (materials.isEmpty()) {
-            return generateAnyMaterialOrPatternComponent();
-        }
+			Component typeTooltip = TrimAbilityComponents.TOOLTIPS.get(BetterTrimsRegistries.TRIM_ABILITY_COMPONENT_TYPE.getKey(type));
+			generateElementComponent(pageBuilder, abilityComponent, typeTooltip);
+		}
 
-        return generateMatcherComponentFor(getMaterialProviders(materials, level), getAllPatternProviders());
-    }
+		addHeader = true;
+		for (DataComponentType<?> type : BetterTrimsRegistries.TRIM_ITEM_PROPERTY_COMPONENT_TYPE) {
+			DataComponentType<List<ConditionalElement<TrimElement>>> castType = (DataComponentType<List<ConditionalElement<TrimElement>>>) type;
+			CompositeContainerComponent itemPropertyComponent = generateItemPropertyTooltipComponent(level, font, castType);
+			if (itemPropertyComponent == null) continue;
 
-    private static ClientTooltipComponent generateAnyMaterialOrPatternComponent() {
-        return generateMatcherComponentFor(getAllMaterialProviders(), getAllPatternProviders());
-    }
+			if (hasAbilities) {
+				pageBuilder.space();
+			}
+			if (addHeader) {
+				pageBuilder.component(generateAsItemHeader());
+				addHeader = false;
+			}
 
-    private static ClientTooltipComponent generateSpecificMaterialPatternComponent(List<TrimPattern> patterns, List<TrimMaterial> materials, ClientLevel level) {
-        return generateMatcherComponentFor(getMaterialProviders(materials, level), getPatternProviders(patterns, level));
-    }
+			Component typeTooltip = TrimItemPropertyComponents.TOOLTIPS.get(BetterTrimsRegistries.TRIM_ITEM_PROPERTY_COMPONENT_TYPE.getKey(type));
+			generateElementComponent(pageBuilder, itemPropertyComponent, typeTooltip);
+		}
 
-    private static ClientTooltipComponent generateMatcherComponentFor(List<ItemStack> materialProviders, List<ItemStack> patternProviders) {
-        return CompositeContainerComponent.builder()
-            .cycle(builder -> materialProviders.stream().map(ItemComponent::new).forEach(builder::component))
-            .literal("-", Styler::trim)
-            .cycle(builder -> patternProviders.stream().map(ItemComponent::new).forEach(builder::component))
-            .spaced()
-            .centred()
-            .build();
-    }
+		CompositeContainerComponent page = pageBuilder.build();
+		component = TooltipComponentOptimiser.optimise(page);
+	}
 
-    private static List<ItemStack> getMaterialProviders(List<TrimMaterial> materials, ClientLevel level) {
-        return getAllMaterialProviders()
-            .stream()
-            .filter(item -> {
-                ProvidesTrimMaterial providesTrimMaterial = item.get(DataComponents.PROVIDES_TRIM_MATERIAL);
-                if (providesTrimMaterial == null) return false;
+	private void generateElementComponent(CompositeContainerComponent.Builder pageBuilder, CompositeContainerComponent elementComponent, Component typeTooltip) {
+		if (typeTooltip == null) {
+			typeTooltip = Component.translatable("bettertrims.tooltip.component.unknown");
+		}
 
-                TrimMaterial material = providesTrimMaterial.material()
-                    .unwrap(level.registryAccess().lookupOrThrow(Registries.TRIM_MATERIAL))
-                    .orElse(null);
-                return material != null && materials.contains(material);
-            })
-            .toList();
-    }
+		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
+				.vertical()
+				.component(CompositeContainerComponent.builder()
+						.space()
+						.textComponent(Styler.component(typeTooltip.copy()))
+						.build());
+		if (!elementComponent.isEmpty()) {
+			builder.component(CompositeContainerComponent.builder()
+					.space()
+					.space()
+					.component(elementComponent)
+					.build());
+		}
+		pageBuilder.component(builder.build());
+	}
 
-    private static List<ItemStack> getAllMaterialProviders() {
-        return BuiltInRegistries.ITEM.getOrThrow(ItemTags.TRIM_MATERIALS)
-            .stream()
-            .map(holder -> holder.unwrap()
-                .map(key -> BuiltInRegistries.ITEM.getOrThrow(key).value(), Function.identity()))
-            .map(Item::getDefaultInstance)
-            .toList();
-    }
+	public int getMaxWidth(Font font) {
+		return DynamicWidthComponent.getMaxWidth(font, component, 0);
+	}
 
-    private static List<ItemStack> getAllPatternProviders() {
-        return BetterTrimsClient.getPatternSources()
-            .values()
-            .stream()
-            .map(HolderSet::stream)
-            .flatMap(stream -> stream.map(holder -> holder.unwrap()
-                .map(key -> BuiltInRegistries.ITEM.getOrThrow(key).value(), Function.identity())))
-            .map(Item::getDefaultInstance)
-            .toList();
-    }
+	private ClientTooltipComponent generateTitle(ClientLevel level, int index, int total) {
+		ResourceLocation propertyId = VRegistry.get(level, BetterTrimsRegistries.Keys.TRIM_PROPERTIES).getKey(property);
+		if (propertyId == null) {
+			BetterTrims.LOGGER.warn("Property {} does not have a registry name", property);
+			propertyId = BetterTrims.rl("unknown");
+		}
+		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
+				.translate("bettertrims.property.%s.%s".formatted(propertyId.getNamespace(), propertyId.getPath()), Styler::trim)
+				.space()
+				.literal("(", Styler::trim)
+				.component(generateMatcherComponent(level, matcher.material(), matcher.pattern()))
+				.literal(")", Styler::trim)
+				.centred();
+		if (total > 1) {
+			builder.literal(" - [" + (index + 1) + "/" + total + "]", Styler::trim);
+		}
+		return builder.build();
+	}
+
+	private CompositeContainerComponent generateAbilityTooltipComponent(ClientLevel level, Font font, DataComponentType<List<ConditionalElement<TrimElement>>> type) {
+		List<ConditionalElementMatcher<?>> elements = property.getAbilityElements(type);
+		if (elements.isEmpty()) return null;
+
+		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
+				.vertical();
+		for (ConditionalElementMatcher<?> element : elements) {
+			builder.component(element.getConditionalElement().getTooltip(level, font));
+		}
+		return builder.build();
+	}
+
+	private CompositeContainerComponent generateItemPropertyTooltipComponent(ClientLevel level, Font font, DataComponentType<List<ConditionalElement<TrimElement>>> castType) {
+		List<ConditionalElementMatcher<?>> elements = property.getItemPropertyElements(castType);
+		if (elements.isEmpty()) return null;
+
+		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
+				.vertical();
+		for (ConditionalElementMatcher<?> element : elements) {
+			builder.component(element.getConditionalElement().getTooltip(level, font));
+		}
+		return builder.build();
+	}
+
+	private ClientTooltipComponent generateWearingAbilityHeader(ClientLevel level) {
+		int minCount = matcher.minCount();
+		List<CyclingComponent> trimmedItems = new ArrayList<>();
+		for (Item item : List.of(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS)) {
+			HolderSet<TrimMaterial> materials = matcher.material();
+			if (materials.size() == 0) {
+				materials = HolderSet.direct(getAllMaterialProviders(level).stream()
+						.map(stack -> Holder.direct(VTrims.getMaterialFromStack(level, stack)))
+						.toList());
+			}
+			HolderSet<TrimPattern> patterns = matcher.pattern();
+			if (patterns.size() == 0) {
+				patterns = HolderSet.direct(BetterTrimsClient.getPatternSources().keySet().stream().toList());
+			}
+			List<Pair<Holder<TrimPattern>, Holder<TrimMaterial>>> pairs = new ArrayList<>();
+			for (Holder<TrimMaterial> material : materials) {
+				for (Holder<TrimPattern> pattern : patterns) {
+					pairs.add(Pair.of(pattern, material));
+				}
+			}
+			List<ItemStack> items = new ArrayList<>();
+			for (Pair<Holder<TrimPattern>, Holder<TrimMaterial>> pair : pairs) {
+				ArmorTrim trim = new ArmorTrim(pair.right(), pair.left());
+				ItemStack stack = item.getDefaultInstance();
+				stack.set(DataComponents.TRIM, trim);
+				items.add(stack);
+			}
+			if (!items.isEmpty()) {
+				CyclingComponent.Builder builder = CyclingComponent.builder();
+				items.stream().map(ItemComponent::new).forEach(builder::component);
+				trimmedItems.add(builder.build());
+			}
+		}
+		return switch (minCount) {
+			case 4 -> CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.properties.count.all_of", Styler::normal)
+					.stack(trimmedItems, 16)
+					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
+					.spaced()
+					.centred()
+					.build();
+			case 1 -> CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.properties.count.any_of", Styler::normal)
+					.cycle(builder -> trimmedItems.stream()
+							.flatMap(cycler -> cycler.getComponents().stream())
+							.collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
+								Collections.shuffle(list);
+								return list;
+							}))
+							.forEach(builder::component))
+					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
+					.spaced()
+					.centred()
+					.build();
+			default -> CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.properties.count.n_of", Styler::normal, minCount)
+					.stack(trimmedItems, 16)
+					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
+					.spaced()
+					.centred()
+					.build();
+		};
+	}
 }

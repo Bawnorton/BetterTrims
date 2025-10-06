@@ -4,6 +4,7 @@ import bettertrims.utils.ReplacementType
 import bettertrims.utils.applyMixinDebugSettings
 import bettertrims.utils.deps
 import bettertrims.utils.getReplacements
+import bettertrims.utils.getSwaps
 import bettertrims.utils.mod
 import dev.kikugie.fletching_table.annotation.MixinEnvironment
 
@@ -116,12 +117,21 @@ stonecutter {
             when(replacement.type) {
                 ReplacementType.STRING -> string(eval(current.version, replacement.predicate)) {
                     replace(replacement.from, replacement.to)
+                    if (replacement.id != null) id = replacement.id
                 }
                 ReplacementType.REGEX -> regex(eval(current.version, replacement.predicate)) {
                     replace(replacement.from, replacement.to)
                     reverse(replacement.to, replacement.from)
+                    if (replacement.id != null) id = replacement.id
                 }
             }
+        }
+    }
+
+    for (swap in getSwaps()) {
+        swaps[swap.id] = when {
+            eval(current.version, swap.predicate) -> swap.to
+            else -> swap.from
         }
     }
 }

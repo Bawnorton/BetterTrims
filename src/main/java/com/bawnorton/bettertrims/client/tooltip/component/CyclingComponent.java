@@ -4,37 +4,47 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+
 import java.util.List;
 import java.util.function.UnaryOperator;
 
 public final class CyclingComponent implements CompositeComponent {
-    private final List<ClientTooltipComponent> components;
+	private final List<ClientTooltipComponent> components;
 
-    private int index = 0;
-    private int frameCounter = 0;
+	private int index = 0;
+	private int frameCounter = 0;
 
-    public CyclingComponent(List<ClientTooltipComponent> components) {
-        this.components = components;
-    }
+	public CyclingComponent(List<ClientTooltipComponent> components) {
+		this.components = components;
+	}
 
-    @Override
-    public List<ClientTooltipComponent> getComponents() {
-        return components;
-    }
+	@Override
+	public List<ClientTooltipComponent> getComponents() {
+		return components;
+	}
 
-    @Override
-    public int getHeight(@NotNull Font font) {
+	@Override
+			//? if >=1.21.8 {
+    public int getHeight(Font font) {
         return components.get(index).getHeight(font);
     }
+    //?} else {
+	/*public int getHeight() {
+		return components.get(index).getHeight();
+	}
+	*///?}
 
-    @Override
-    public int getWidth(@NotNull Font font) {
-        return components.get(index).getWidth(font);
-    }
+	@Override
+	public int getWidth(@NotNull Font font) {
+		return components.get(index).getWidth(font);
+	}
 
+	//? if >=1.21.8 {
     @Override
     public void renderText(GuiGraphics graphics, Font font, int x, int y) {
         if(components.isEmpty()) return;
@@ -53,55 +63,76 @@ public final class CyclingComponent implements CompositeComponent {
 
         components.get(index).renderImage(font, x, y, width, height, graphics);
     }
+    //?} else {
 
-    public int size() {
-        return components.size();
-    }
+	/*@Override
+	public void renderText(Font font, int mouseX, int mouseY, Matrix4f matrix, MultiBufferSource.BufferSource bufferSource) {
+		if (components.isEmpty()) return;
 
-    public ClientTooltipComponent get(int index) {
-        return components.get(index);
-    }
+		if (frameCounter++ >= Minecraft.getInstance().getFps()) {
+			frameCounter = 0;
+			index = (index + 1) % components.size();
+		}
 
-    @Override
-    public String toString() {
-        return "Cycling{%s}".formatted(components);
-    }
+		components.get(index).renderText(font, mouseX, mouseY, matrix, bufferSource);
+	}
 
-    public static Builder builder() {
-        return new Builder();
-    }
+	@Override
+	public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
+		if (components.isEmpty()) return;
 
-    public static class Builder extends CompositeBuilder<CyclingComponent> {
-        public Builder component(ClientTooltipComponent component) {
-            return (Builder) super.component(component);
-        }
+		components.get(index).renderImage(font, x, y, guiGraphics);
+	}
+	*///?}
 
-        public Builder textComponent(Component component) {
-            return (Builder) super.textComponent(component);
-        }
+	public int size() {
+		return components.size();
+	}
 
-        public Builder translate(String key, Object... args) {
-            return (Builder) super.translate(key, args);
-        }
+	public ClientTooltipComponent get(int index) {
+		return components.get(index);
+	}
 
-        public Builder translate(String key, UnaryOperator<Style> styler, Object... args) {
-            return (Builder) super.translate(key, styler, args);
-        }
+	@Override
+	public String toString() {
+		return "Cycling{%s}".formatted(components);
+	}
 
-        public Builder literal(String text) {
-            return (Builder) super.literal(text);
-        }
+	public static Builder builder() {
+		return new Builder();
+	}
 
-        public Builder literal(String text, UnaryOperator<Style> styler) {
-            return (Builder) super.literal(text, styler);
-        }
+	public static class Builder extends CompositeBuilder<CyclingComponent> {
+		public Builder component(ClientTooltipComponent component) {
+			return (Builder) super.component(component);
+		}
 
-        public Builder space() {
-            return (Builder) super.space();
-        }
+		public Builder textComponent(Component component) {
+			return (Builder) super.textComponent(component);
+		}
 
-        public CyclingComponent build() {
-            return new CyclingComponent(components);
-        }
-    }
+		public Builder translate(String key, Object... args) {
+			return (Builder) super.translate(key, args);
+		}
+
+		public Builder translate(String key, UnaryOperator<Style> styler, Object... args) {
+			return (Builder) super.translate(key, styler, args);
+		}
+
+		public Builder literal(String text) {
+			return (Builder) super.literal(text);
+		}
+
+		public Builder literal(String text, UnaryOperator<Style> styler) {
+			return (Builder) super.literal(text, styler);
+		}
+
+		public Builder space() {
+			return (Builder) super.space();
+		}
+
+		public CyclingComponent build() {
+			return new CyclingComponent(components);
+		}
+	}
 }
