@@ -39,18 +39,32 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+//? if >=1.21.8 {
+import net.minecraft.data.tags.TagAppender;
+//?} else {
+/^import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
+^///?}
+
 public class BetterTrimsDimensionTypeTagProvider extends TagsProvider<DimensionType> {
-	public BetterTrimsDimensionTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+	//? if <1.21.8 {
+	/^public BetterTrimsDimensionTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, Registries.DIMENSION_TYPE, lookupProvider, BetterTrims.MOD_ID, existingFileHelper);
 	}
+	^///?} else {
+	public BetterTrimsDimensionTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, Registries.DIMENSION_TYPE, lookupProvider, BetterTrims.MOD_ID);
+	}
+	//?}
 
 	@Override
 	protected void addTags(@NotNull HolderLookup.Provider provider) {
@@ -59,5 +73,11 @@ public class BetterTrimsDimensionTypeTagProvider extends TagsProvider<DimensionT
 		tag(BetterTrimsDimensionTypeTags.HAS_MOON)
 				.add(BuiltinDimensionTypes.OVERWORLD);
 	}
+
+	//? if >=1.21.8 {
+	private TagAppender<ResourceKey<DimensionType>, DimensionType> tag(TagKey<DimensionType> type) {
+		return TagAppender.forBuilder(getOrCreateRawBuilder(type));
+	}
+	//?}
 }
 *///?}

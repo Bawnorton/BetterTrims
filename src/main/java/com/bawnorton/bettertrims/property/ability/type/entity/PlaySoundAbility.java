@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -63,19 +64,22 @@ public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volu
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		Registry<SoundEvent> registry = VRegistry.get(level, Registries.SOUND_EVENT);
-		Component soundName = getSoundName(registry, soundEvent);
-
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.play_sound.play", Styler::positive)
-				.textComponent(Styler.name(soundName.copy()))
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<PlaySoundAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, PlaySoundAbility element, boolean includeCount) {
+			Registry<SoundEvent> registry = VRegistry.get(level, Registries.SOUND_EVENT);
+			Component soundName = getSoundName(registry, element.soundEvent());
+
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.play_sound.play", Styler::positive)
+					.textComponent(Styler.name(soundName.copy()))
+					.spaced()
+					.build();
+		}
 	}
 }

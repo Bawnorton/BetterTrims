@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.List;
 
-@MixinEnvironment
 @Mixin(RegistryDataLoader.class)
 abstract class RegistryDataLoaderMixin {
 	@Shadow

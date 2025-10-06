@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@MixinEnvironment
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends Entity {
 	LivingEntityMixin(EntityType<?> entityType, Level level) {

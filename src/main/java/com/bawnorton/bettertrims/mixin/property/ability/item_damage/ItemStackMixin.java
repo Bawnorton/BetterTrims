@@ -9,14 +9,15 @@ import com.llamalad7.mixinextras.sugar.Local;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@MixinEnvironment
 @Mixin(ItemStack.class)
 abstract class ItemStackMixin {
+	//? if fabric {
 	@ModifyExpressionValue(
 			//? if 1.21.8 {
 			method = "processDurabilityChange",
@@ -38,4 +39,27 @@ abstract class ItemStackMixin {
 		}
 		return original;
 	}
+	//?} else {
+	/*@ModifyExpressionValue(
+			//? if >=1.21.8 {
+			method = "processDurabilityChange(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;)I",
+			//?} else {
+			/^method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V",
+			^///?}
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;processDurabilityChange(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;I)I"
+			)
+	)
+	private int applyTrimToItemDamage(int original, @Local(argsOnly = true) ServerLevel level, @Local(argsOnly = true) @Nullable LivingEntity wearer) {
+		if (wearer == null) return original;
+
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (TrimValueAbilityRunner<?> ability : property.getValueAbilityRunners(TrimAbilityComponents.ITEM_DAMAGE)) {
+				original = (int) ability.runEquipment(level, wearer, (ItemStack) (Object) this, original);
+			}
+		}
+		return original;
+	}
+	*///?}
 }

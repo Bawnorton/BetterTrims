@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@MixinEnvironment
 @Mixin(ThrownPotion.class)
 abstract class ThrownPotionMixin extends ThrowableItemProjectile {
 	ThrownPotionMixin(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {

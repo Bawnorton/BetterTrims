@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -56,23 +57,26 @@ public record ReplaceBlockAbility(
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		Component replace = Styler.property(replaceTranslationKey.map(Component::translatable)
-				.orElse(Component.translatable("bettertrims.tooltip.ability.replace_block.everything")));
-		Component offset = Styler.positive(Component.translatable(this.offsetTranslationKey));
-		Component with = Styler.name(Component.translatable(this.withTranslationKey));
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.replace_block.replace", Styler::positive)
-				.textComponent(replace)
-				.textComponent(offset)
-				.translate("bettertrims.tooltip.ability.replace_block.with", Styler::positive)
-				.textComponent(with)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<ReplaceBlockAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, ReplaceBlockAbility element, boolean includeCount) {
+			Component replace = Styler.property(element.replaceTranslationKey.map(Component::translatable)
+					.orElse(Component.translatable("bettertrims.tooltip.ability.replace_block.everything")));
+			Component offset = Styler.positive(Component.translatable(element.offsetTranslationKey));
+			Component with = Styler.name(Component.translatable(element.withTranslationKey));
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.replace_block.replace", Styler::positive)
+					.textComponent(replace)
+					.textComponent(offset)
+					.translate("bettertrims.tooltip.ability.replace_block.with", Styler::positive)
+					.textComponent(with)
+					.spaced()
+					.build();
+		}
 	}
 }

@@ -8,7 +8,7 @@ plugins {
     id("bettertrims.common")
     id("me.modmuss50.mod-publish-plugin")
     id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.14"
+    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.18"
 }
 
 repositories {
@@ -38,6 +38,12 @@ neoForge {
 
     validateAccessTransformers = true
     accessTransformers.from(rootProject.file("src/main/resources/$minecraft-accesstransformer.cfg"))
+
+    mods {
+        register("bettertrims") {
+            sourceSet(sourceSets["main"])
+        }
+    }
 
     deps("parchment") {
         parchment {
@@ -72,6 +78,10 @@ neoForge {
             } else {
                 data()
             }
+            programArguments.addAll(
+                "--mod", "${mod("id")}",
+                "--output", project.file("src/main/generated").toString()
+            )
         }
     }
 
@@ -114,6 +124,11 @@ stonecutter {
             else -> swap.from
         }
     }
+}
+
+sourceSets.main {
+    resources.srcDir(project.file("src/main/generated"))
+    resources.exclude(".cache")
 }
 
 tasks {

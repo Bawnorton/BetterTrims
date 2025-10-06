@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.util.function.Consumer;
 
-@MixinEnvironment
 @Mixin(ItemStack.class)
 public interface ItemStackAccessor {
 	@Invoker("addModifierTooltip")

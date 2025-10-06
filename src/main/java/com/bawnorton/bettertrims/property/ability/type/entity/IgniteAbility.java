@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -28,16 +29,6 @@ public record IgniteAbility(CountBasedValue duration) implements TrimEntityAbili
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.ignite.ignite_for", Styler::positive)
-				.cycle(builder -> duration.getValueComponents(4, includeCount).forEach(builder::textComponent))
-				.translate("bettertrims.tooltip.ability.ignite.seconds", Styler::positive)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -45,5 +36,18 @@ public record IgniteAbility(CountBasedValue duration) implements TrimEntityAbili
 	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<IgniteAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, IgniteAbility element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.ignite.ignite_for", Styler::positive)
+					.cycle(builder -> element.duration().getValueComponents(4, includeCount).forEach(builder::textComponent))
+					.translate("bettertrims.tooltip.ability.ignite.seconds", Styler::positive)
+					.spaced()
+					.build();
+		}
 	}
 }

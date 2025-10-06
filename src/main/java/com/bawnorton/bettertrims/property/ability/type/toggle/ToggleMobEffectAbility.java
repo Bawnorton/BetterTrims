@@ -1,8 +1,10 @@
 package com.bawnorton.bettertrims.property.ability.type.toggle;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
+import com.bawnorton.bettertrims.property.ability.type.entity.ApplyMobEffectAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
 import com.bawnorton.bettertrims.version.VRegistry;
@@ -40,33 +42,6 @@ public record ToggleMobEffectAbility(Holder<MobEffect> effect, CountBasedValue a
 		this(effect, amplifier, true);
 	}
 
-	public static ClientTooltipComponent getEffectTooltip(
-			ClientLevel level,
-			boolean includeCount,
-			Holder<MobEffect> effect,
-			CountBasedValue amplifier,
-			BiFunction<CompositeContainerComponent.Builder, UnaryOperator<Style>, CompositeContainerComponent> builder
-	) {
-		Registry<MobEffect> registry = VRegistry.get(level, Registries.MOB_EFFECT);
-		MobEffect mobEffect = effect.unwrap().map(registry::getValueOrThrow, Function.identity());
-		Component name = Styler.name(mobEffect.getDisplayName().copy());
-
-		List<Component> amplifierValues = amplifier.getValueComponents(
-				4,
-				includeCount,
-				f -> Component.translatable("enchantment.level.%s".formatted("%.0f".formatted(f + 1))),
-				f -> f >= 0
-		);
-		return builder.apply(
-				CompositeContainerComponent.builder()
-						.translate("bettertrims.tooltip.ability.apply_mob_effect.grants", Styler.sentiment(mobEffect.isBeneficial()))
-						.textComponent(name)
-						.cycle(amplifierCycler -> amplifierValues.forEach(amplifierCycler::textComponent))
-						.spaced(),
-				Styler.sentiment(mobEffect.isBeneficial())
-		);
-	}
-
 	private MobEffectInstance getMobEffectInstance(int count) {
 		return new MobEffectInstance(effect, -1, (int) amplifier.calculate(count), false, visible, true);
 	}
@@ -82,11 +57,6 @@ public record ToggleMobEffectAbility(Holder<MobEffect> effect, CountBasedValue a
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return getEffectTooltip(level, includeCount, effect, amplifier, (builder, styler) -> builder.build());
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -94,5 +64,16 @@ public record ToggleMobEffectAbility(Holder<MobEffect> effect, CountBasedValue a
 	@Override
 	public MapCodec<? extends TrimToggleAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<ToggleMobEffectAbility> {
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, ToggleMobEffectAbility element, boolean includeCount) {
+			return ApplyMobEffectAbility.TooltipProvider.getEffectTooltip(level,
+					includeCount,
+					element.effect(),
+					element.amplifier(),
+					(builder, styler) -> builder.build());
+		}
 	}
 }

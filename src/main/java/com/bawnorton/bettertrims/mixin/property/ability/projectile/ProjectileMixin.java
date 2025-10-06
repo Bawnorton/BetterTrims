@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@MixinEnvironment
 @Mixin(Projectile.class)
 abstract class ProjectileMixin extends Entity {
 	ProjectileMixin(EntityType<?> entityType, Level level) {

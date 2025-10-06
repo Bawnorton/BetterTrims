@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.value;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Formatter;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
@@ -31,16 +32,19 @@ public record RemoveBinomial(CountBasedValue chance) implements TrimValueAbility
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.cycle(builder -> this.chance.getValueComponents(4, includeCount, Formatter::percentage).forEach(builder::textComponent))
-				.space()
-				.translate("bettertrims.tooltip.ability.remove_binomial", Styler::positive)
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimValueAbility> codec() {
 		return CODEC;
+	}
+
+	public static final class TooltipProvider implements TrimElementTooltipProvider<RemoveBinomial> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, RemoveBinomial element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.cycle(builder -> element.chance().getValueComponents(4, includeCount, Formatter::percentage).forEach(builder::textComponent))
+					.space()
+					.translate("bettertrims.tooltip.ability.remove_binomial", Styler::positive)
+					.build();
+		}
 	}
 }

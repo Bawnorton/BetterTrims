@@ -1,7 +1,9 @@
 package com.bawnorton.bettertrims.property;
 
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltips;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
@@ -47,28 +49,6 @@ public interface AllOf {
 		return new ItemProperties(List.of(properties));
 	}
 
-	static CompositeContainerComponent getAllOfTooltip(ClientLevel level, boolean includeCount, List<? extends TrimElement> elements) {
-		if (elements.isEmpty()) return null;
-
-		CompositeContainerComponent.Builder allOfBuilder = CompositeContainerComponent.builder()
-				.vertical();
-		boolean moreThanOneUsesCount = elements.stream().filter(TrimElement::usesCount).count() > 1;
-		if (includeCount && moreThanOneUsesCount) {
-			allOfBuilder.cycle(builder -> {
-				for (int i = 1; i <= 4; i++) {
-					builder.literal("Count [%d]".formatted(i), Styler::trim);
-				}
-			});
-		}
-		for (TrimElement element : elements) {
-			ClientTooltipComponent tooltip = element.getTooltip(level, !moreThanOneUsesCount);
-			if (tooltip != null) {
-				allOfBuilder.component(tooltip);
-			}
-		}
-		return allOfBuilder.build();
-	}
-
 	record ToggleAbilities(List<TrimToggleAbility> abilities) implements TrimToggleAbility {
 		public static final MapCodec<ToggleAbilities> CODEC = AllOf.codec(TrimToggleAbility.CODEC, ToggleAbilities::abilities, ToggleAbilities::new);
 
@@ -87,13 +67,15 @@ public interface AllOf {
 		}
 
 		@Override
-		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-			return getAllOfTooltip(level, includeCount, abilities);
-		}
-
-		@Override
 		public MapCodec<? extends TrimToggleAbility> codec() {
 			return CODEC;
+		}
+
+		public static final class TooltipProvider implements TrimElementTooltipProvider<ToggleAbilities> {
+			@Override
+			public ClientTooltipComponent getTooltip(ClientLevel level, ToggleAbilities element, boolean includeCount) {
+				return AllOf.TooltipProvider.getAllOfTooltip(level, includeCount, element.abilities());
+			}
 		}
 	}
 
@@ -108,13 +90,15 @@ public interface AllOf {
 		}
 
 		@Override
-		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-			return getAllOfTooltip(level, includeCount, abilities);
-		}
-
-		@Override
 		public MapCodec<? extends TrimEntityAbility> codec() {
 			return CODEC;
+		}
+
+		public static final class TooltipProvider implements TrimElementTooltipProvider<EntityAbilities> {
+			@Override
+			public ClientTooltipComponent getTooltip(ClientLevel level, EntityAbilities element, boolean includeCount) {
+				return AllOf.TooltipProvider.getAllOfTooltip(level, includeCount, element.abilities());
+			}
 		}
 	}
 
@@ -130,27 +114,54 @@ public interface AllOf {
 		}
 
 		@Override
-		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-			return getAllOfTooltip(level, includeCount, values);
-		}
-
-		@Override
 		public MapCodec<? extends TrimValueAbility> codec() {
 			return CODEC;
+		}
+
+		public static final class TooltipProvider implements TrimElementTooltipProvider<ValueAbilities> {
+			@Override
+			public ClientTooltipComponent getTooltip(ClientLevel level, ValueAbilities element, boolean includeCount) {
+				return AllOf.TooltipProvider.getAllOfTooltip(level, includeCount, element.values());
+			}
 		}
 	}
 
 	record ItemProperties(List<TrimItemProperty> properties) implements TrimItemProperty {
 		public static final MapCodec<ItemProperties> CODEC = AllOf.codec(TrimItemProperty.CODEC, ItemProperties::properties, ItemProperties::new);
-
-		@Override
-		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-			return getAllOfTooltip(level, includeCount, properties);
-		}
-
 		@Override
 		public MapCodec<? extends TrimItemProperty> codec() {
 			return CODEC;
+		}
+
+		public static final class TooltipProvider implements TrimElementTooltipProvider<ItemProperties> {
+			@Override
+			public ClientTooltipComponent getTooltip(ClientLevel level, ItemProperties element, boolean includeCount) {
+				return AllOf.TooltipProvider.getAllOfTooltip(level, includeCount, element.properties());
+			}
+		}
+	}
+
+	final class TooltipProvider { static CompositeContainerComponent getAllOfTooltip(ClientLevel level, boolean includeCount, List<? extends TrimElement> elements) {
+			if (elements.isEmpty()) return null;
+
+			CompositeContainerComponent.Builder allOfBuilder = CompositeContainerComponent.builder()
+					.vertical();
+			boolean moreThanOneUsesCount = elements.stream().filter(TrimElement::usesCount).count() > 1;
+			if (includeCount && moreThanOneUsesCount) {
+				allOfBuilder.cycle(builder -> {
+					for (int i = 1; i <= 4; i++) {
+						builder.literal("Count [%d]".formatted(i), Styler::trim);
+					}
+				});
+			}
+			for (TrimElement element : elements) {
+				TrimElementTooltipProvider<TrimElement> provider = TrimElementTooltips.getProvider(element.getClass());
+				ClientTooltipComponent tooltip = provider.getTooltip(level, element, !moreThanOneUsesCount);
+				if (tooltip != null) {
+					allOfBuilder.component(tooltip);
+				}
+			}
+			return allOfBuilder.build();
 		}
 	}
 }

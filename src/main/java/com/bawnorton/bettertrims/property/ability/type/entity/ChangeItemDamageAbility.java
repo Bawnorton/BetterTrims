@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -58,16 +59,6 @@ public record ChangeItemDamageAbility(CountBasedValue amount) implements TrimEnt
 	}
 
 	@Override
-	public ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.change_item_damage.damages", Styler::negative)
-				.cycle(builder -> this.amount.getValueComponents(4, includeCount).forEach(builder::textComponent))
-				.translate("bettertrims.tooltip.ability.change_item_damage.points", Styler::negative)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -75,5 +66,17 @@ public record ChangeItemDamageAbility(CountBasedValue amount) implements TrimEnt
 	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<ChangeItemDamageAbility> {
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, ChangeItemDamageAbility element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.change_item_damage.damages", Styler::negative)
+					.cycle(builder -> element.amount().getValueComponents(4, includeCount).forEach(builder::textComponent))
+					.translate("bettertrims.tooltip.ability.change_item_damage.points", Styler::negative)
+					.spaced()
+					.build();
+		}
 	}
 }

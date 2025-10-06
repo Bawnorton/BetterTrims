@@ -1,0 +1,27 @@
+{
+  "abilities": {
+    "bettertrims:second": [
+      {
+        "ability": {
+          "type": "bettertrims:apply_mob_effect",
+          "amplifier": {
+            "type": "bettertrims:lookup",
+            "fallback": 0.0,
+            "values": [
+              -1.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "duration": 9.0,
+          "effect": "minecraft:dolphins_grace"
+        }
+      }
+    ]
+  },
+  "trim": {
+    "min_count": 2,
+    "pattern": "minecraft:bolt"
+  }
+}

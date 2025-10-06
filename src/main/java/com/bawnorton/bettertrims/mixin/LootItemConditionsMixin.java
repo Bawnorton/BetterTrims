@@ -12,7 +12,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-@MixinEnvironment
 @Mixin(LootItemConditions.class)
 abstract class LootItemConditionsMixin {
 	static {

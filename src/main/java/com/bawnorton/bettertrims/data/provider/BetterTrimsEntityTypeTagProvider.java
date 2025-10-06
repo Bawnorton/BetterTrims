@@ -37,18 +37,32 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+//? if >=1.21.8 {
+import net.minecraft.data.tags.TagAppender;
+//?} else {
+/^import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.Nullable;
+^///?}
+
 public class BetterTrimsEntityTypeTagProvider extends TagsProvider<EntityType<?>> {
-	public BetterTrimsEntityTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, Registries.ENTITY_TYPE, lookupProvider, BetterTrims.MOD_ID, existingFileHelper);
+	//? if <1.21.8 {
+	/^public BetterTrimsEntityTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+			super(output, Registries.ENTITY_TYPE, lookupProvider, BetterTrims.MOD_ID, existingFileHelper);
 	}
+	^///?} else {
+	public BetterTrimsEntityTypeTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, Registries.ENTITY_TYPE, lookupProvider, BetterTrims.MOD_ID);
+	}
+	//?}
 
 	@Override
 	protected void addTags(@NotNull HolderLookup.Provider provider) {
@@ -56,6 +70,12 @@ public class BetterTrimsEntityTypeTagProvider extends TagsProvider<EntityType<?>
 				.addTag(EntityTypeTags.ARROWS)
 				.add(EntityType.TRIDENT.builtInRegistryHolder().key());
 	}
+
+	//? if >=1.21.8 {
+	private TagAppender<ResourceKey<EntityType<?>>, EntityType<?>> tag(TagKey<EntityType<?>> type) {
+		return TagAppender.forBuilder(getOrCreateRawBuilder(type));
+	}
+	//?}
 }
 
 *///?}

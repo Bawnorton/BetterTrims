@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
@@ -87,15 +88,6 @@ public record ExplodeAbility(
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.explode.explodes_with_radius", style -> style.withColor(ChatFormatting.DARK_RED))
-				.cycle(builder -> this.radius.getValueComponents(4, includeCount).forEach(builder::textComponent))
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -103,5 +95,16 @@ public record ExplodeAbility(
 	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<ExplodeAbility> {
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, ExplodeAbility element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.explode.explodes_with_radius", style -> style.withColor(ChatFormatting.DARK_RED))
+					.cycle(builder -> element.radius().getValueComponents(4, includeCount).forEach(builder::textComponent))
+					.spaced()
+					.build();
+		}
 	}
 }

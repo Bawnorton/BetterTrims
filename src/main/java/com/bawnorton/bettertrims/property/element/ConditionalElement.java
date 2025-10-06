@@ -1,13 +1,8 @@
 package com.bawnorton.bettertrims.property.element;
 
-import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.context.ContextKeySet;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -24,11 +19,11 @@ public record ConditionalElement<T extends TrimElement>(T element, Optional<Loot
 							ProblemReporter.Collector collector = new ProblemReporter.Collector();
 							ValidationContext validationContext = new ValidationContext(collector, contextKeySet);
 							lootItemCondition.validate(validationContext);
-							//? if 1.21.8 {
-                    return collector.isEmpty() ?
-                        DataResult.success(lootItemCondition) :
-                        DataResult.error(() -> "Validation error in trim element condition: " + collector.getReport());
-                    //?} elif 1.21.1 {
+							//? if >=1.21.8 {
+              return collector.isEmpty() ?
+                  DataResult.success(lootItemCondition) :
+                  DataResult.error(() -> "Validation error in trim element condition: " + collector.getReport());
+              //?} else {
 							/*return collector.getReport()
 									.map(string -> DataResult.<LootItemCondition>error(() -> "Validation error in trim element condition: " + string))
 									.orElseGet(() -> DataResult.success(lootItemCondition));
@@ -53,15 +48,5 @@ public record ConditionalElement<T extends TrimElement>(T element, Optional<Loot
 
 	public boolean matches(LootContext context) {
 		return requirements.map(condition -> condition.test(context)).orElse(true);
-	}
-
-	public ClientTooltipComponent getTooltip(ClientLevel level, Font font) {
-		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder().vertical();
-		requirements.map(condition -> LootConditionTooltips.getTooltip(level, font, condition)).ifPresent(builder::component);
-		ClientTooltipComponent tooltip = element.getTooltip(level, true);
-		if (tooltip != null) {
-			builder.component(tooltip);
-		}
-		return builder.build();
 	}
 }

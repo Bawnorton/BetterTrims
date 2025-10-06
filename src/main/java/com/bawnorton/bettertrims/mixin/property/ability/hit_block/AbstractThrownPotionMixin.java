@@ -24,7 +24,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@MixinEnvironment
 @Mixin({ThrownSplashPotion.class, ThrownLingeringPotion.class})
 abstract class AbstractThrownPotionMixin extends AbstractThrownPotion {
     AbstractThrownPotionMixin(EntityType<? extends AbstractThrownPotion> entityType, Level level) {

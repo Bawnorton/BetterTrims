@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.value;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
@@ -23,16 +24,20 @@ public record MultiplyValue(CountBasedValue value) implements TrimValueAbility {
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.multiply_value", Styler::positive)
-				.space()
-				.cycle(builder -> this.value.getValueComponents(4, includeCount).forEach(builder::textComponent))
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimValueAbility> codec() {
 		return CODEC;
+	}
+
+	public static final class TooltipProvider implements TrimElementTooltipProvider<MultiplyValue> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, MultiplyValue element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.multiply_value.multiply", Styler::positive)
+					.cycle(builder -> element.value().getValueComponents(4, includeCount).forEach(builder::textComponent))
+					.translate("bettertrims.tooltip.ability.multiply_value.to_value", Styler::positive)
+					.spaced()
+					.build();
+		}
 	}
 }

@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.function.BiConsumer;
 
-@MixinEnvironment
 @Mixin(LivingEntity.class)
 abstract class LivingEntityMixin extends Entity {
 	LivingEntityMixin(EntityType<?> entityType, Level level) {

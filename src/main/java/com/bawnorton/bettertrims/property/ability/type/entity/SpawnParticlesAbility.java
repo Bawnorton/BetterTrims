@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -64,22 +65,25 @@ public record SpawnParticlesAbility(
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		Registry<ParticleType<?>> registry = VRegistry.get(level, Registries.PARTICLE_TYPE);
-		ResourceLocation particleType = registry.getKey(particle.getType());
-		if (particleType == null) return null;
-
-		Component particleName = Styler.name(Component.literal(particleType.toString()));
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.spawn_particles.spawns", Styler::positive)
-				.textComponent(particleName)
-				.translate("bettertrims.tooltip.ability.spawn_particles.particles", Styler::positive)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<SpawnParticlesAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, SpawnParticlesAbility element, boolean includeCount) {
+			Registry<ParticleType<?>> registry = VRegistry.get(level, Registries.PARTICLE_TYPE);
+			ResourceLocation particleType = registry.getKey(element.particle().getType());
+			if (particleType == null) return null;
+
+			Component particleName = Styler.name(Component.literal(particleType.toString()));
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.spawn_particles.spawns", Styler::positive)
+					.textComponent(particleName)
+					.translate("bettertrims.tooltip.ability.spawn_particles.particles", Styler::positive)
+					.spaced()
+					.build();
+		}
 	}
 }

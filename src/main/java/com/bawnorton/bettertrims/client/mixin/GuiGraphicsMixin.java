@@ -31,7 +31,7 @@ abstract class GuiGraphicsMixin {
 	@Unique
 	private static final ThreadLocal<Rect2i> TOOLTIP_DIMENSION_CAPTURE = new ThreadLocal<>();
 
-	//? if >=1.21.8 {
+	 //? if >=1.21.8 {
     @Definition(id = "deferredTooltip", field = "Lnet/minecraft/client/gui/GuiGraphics;deferredTooltip:Ljava/lang/Runnable;")
     @Expression("this.deferredTooltip = @(?)")
     @ModifyExpressionValue(
@@ -62,7 +62,7 @@ abstract class GuiGraphicsMixin {
             TOOLTIP_DIMENSION_CAPTURE.remove();
         };
     }
-    //?} else {
+  //?} else {
 	/*@Inject(
 			method = "renderTooltipInternal",
 			at = @At("TAIL")
@@ -82,7 +82,11 @@ abstract class GuiGraphicsMixin {
 
 	@WrapOperation(
 			//? if >=1.21.8 {
+			//? if fabric {
 			method = "renderTooltip",
+			//?} else {
+			/*method = "renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;IILnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipPositioner;Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/world/item/ItemStack;)V",
+			*///?}
 			//?} else {
 			/*method = "renderTooltipInternal",
 			*///?}

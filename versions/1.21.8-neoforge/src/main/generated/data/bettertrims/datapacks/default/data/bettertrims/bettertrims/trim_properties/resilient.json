@@ -1,0 +1,60 @@
+{
+  "abilities": {
+    "bettertrims:incoming_damage": [
+      {
+        "ability": {
+          "type": "bettertrims:multiply",
+          "value": {
+            "type": "bettertrims:linear",
+            "base": 0.95,
+            "per_count_above_first": -0.05
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_resistance"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "bettertrims:item_damage": [
+      {
+        "ability": {
+          "type": "bettertrims:remove_binomial",
+          "chance": {
+            "type": "bettertrims:fraction",
+            "denominator": {
+              "type": "bettertrims:linear",
+              "base": 4.0,
+              "per_count_above_first": 1.0
+            },
+            "numerator": {
+              "type": "bettertrims:linear",
+              "base": 1.0,
+              "per_count_above_first": 1.0
+            }
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:trim": {
+                "material": "#c:diamond"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:diamond"
+  }
+}

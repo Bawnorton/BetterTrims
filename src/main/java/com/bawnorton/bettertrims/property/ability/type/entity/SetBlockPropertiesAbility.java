@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -52,19 +53,22 @@ public record SetBlockPropertiesAbility(
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		Component properties = Styler.property(Component.translatable(propertiesTranslationKey));
-		Component offset = Styler.positive(Component.translatable(offsetTranslationKey));
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.set_block_properties.set", Styler::positive)
-				.textComponent(properties)
-				.textComponent(offset)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<SetBlockPropertiesAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, SetBlockPropertiesAbility element, boolean includeCount) {
+			Component properties = Styler.property(Component.translatable(element.propertiesTranslationKey));
+			Component offset = Styler.positive(Component.translatable(element.offsetTranslationKey));
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.set_block_properties.set", Styler::positive)
+					.textComponent(properties)
+					.textComponent(offset)
+					.spaced()
+					.build();
+		}
 	}
 }

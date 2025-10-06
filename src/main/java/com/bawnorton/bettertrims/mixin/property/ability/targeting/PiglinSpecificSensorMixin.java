@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.sensing.PiglinSpecificSensor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@MixinEnvironment
 @Mixin(PiglinSpecificSensor.class)
 abstract class PiglinSpecificSensorMixin {
 	@WrapOperation(

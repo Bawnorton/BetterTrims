@@ -1,8 +1,9 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
 import com.bawnorton.bettertrims.BetterTrims;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.mojang.serialization.Codec;
@@ -49,14 +50,17 @@ public record RunFunctionAbility(ResourceLocation function, String tooltipTransl
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate(tooltipTranslationKey, Styler::positive)
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<RunFunctionAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, RunFunctionAbility element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate(element.tooltipTranslationKey(), Styler::positive)
+					.build();
+		}
 	}
 }

@@ -6,6 +6,9 @@ import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComp
 import com.bawnorton.bettertrims.client.tooltip.component.CyclingComponent;
 import com.bawnorton.bettertrims.client.tooltip.component.DynamicWidthComponent;
 import com.bawnorton.bettertrims.client.tooltip.component.ItemComponent;
+import com.bawnorton.bettertrims.client.tooltip.condition.LootConditionTooltips;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltips;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.property.Matcher;
 import com.bawnorton.bettertrims.property.TrimProperty;
@@ -34,12 +37,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -268,7 +269,7 @@ public class TrimTooltipPage {
 		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
 				.vertical();
 		for (ConditionalElementMatcher<?> element : elements) {
-			builder.component(element.getConditionalElement().getTooltip(level, font));
+			builder.component(getTooltipFromConditionalElement(level, font, element.getConditionalElement()));
 		}
 		return builder.build();
 	}
@@ -280,7 +281,20 @@ public class TrimTooltipPage {
 		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder()
 				.vertical();
 		for (ConditionalElementMatcher<?> element : elements) {
-			builder.component(element.getConditionalElement().getTooltip(level, font));
+			builder.component(getTooltipFromConditionalElement(level, font, element.getConditionalElement()));
+		}
+		return builder.build();
+	}
+
+	private ClientTooltipComponent getTooltipFromConditionalElement(ClientLevel level, Font font, ConditionalElement<?> conditionalElement) {
+		TrimElement element = conditionalElement.element();
+		Optional<LootItemCondition> requirements = conditionalElement.requirements();
+		CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder().vertical();
+		requirements.map(condition -> LootConditionTooltips.getTooltip(level, font, condition)).ifPresent(builder::component);
+		TrimElementTooltipProvider<TrimElement> provider = TrimElementTooltips.getProvider(element.getClass());
+		ClientTooltipComponent tooltip = provider.getTooltip(level, element, true);
+		if (tooltip != null) {
+			builder.component(tooltip);
 		}
 		return builder.build();
 	}

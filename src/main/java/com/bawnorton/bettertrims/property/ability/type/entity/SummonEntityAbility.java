@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -42,18 +43,21 @@ public record SummonEntityAbility(EntityType<?> entityType) implements TrimEntit
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		return CompositeContainerComponent.builder()
-				.translate(
-						"bettertrims.tooltip.ability.summon_entity",
-						Styler::positive,
-						Styler.name(entityType.getDescription().copy())
-				)
-				.build();
-	}
-
-	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<SummonEntityAbility> {
+		@Nullable
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, SummonEntityAbility element, boolean includeCount) {
+			return CompositeContainerComponent.builder()
+					.translate(
+							"bettertrims.tooltip.ability.summon_entity",
+							Styler::positive,
+							Styler.name(element.entityType().getDescription().copy())
+					)
+					.build();
+		}
 	}
 }

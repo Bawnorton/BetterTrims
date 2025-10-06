@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
@@ -50,29 +51,6 @@ public record DamageEntityAbility(CountBasedValue minDamage, CountBasedValue max
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		Registry<DamageType> registry = VRegistry.get(level, Registries.DAMAGE_TYPE);
-		ResourceLocation type = damageType.unwrap().map(ResourceKey::location, registry::getKey);
-
-		List<Float> minValues = this.minDamage().getValues(4);
-		List<Float> maxValues = this.maxDamage().getValues(4);
-		List<Component> components = new ArrayList<>();
-		for (int i = 0; i < 4; i++) {
-			components.add(Styler.trim(Component.literal("[%s]".formatted(i + 1)))
-					.append(": ")
-					.append(Styler.number(Component.literal("%.1f - %.1f".formatted(minValues.get(i), maxValues.get(i))))));
-		}
-
-		return CompositeContainerComponent.builder()
-				.translate("bettertrims.tooltip.ability.damage_entity.deals", Styler::positive)
-				.cycle(builder -> components.forEach(builder::textComponent))
-				.literal(type.toString(), Styler::name)
-				.translate("bettertrims.tooltip.ability.damage_entity.damage", Styler::positive)
-				.spaced()
-				.build();
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -80,5 +58,30 @@ public record DamageEntityAbility(CountBasedValue minDamage, CountBasedValue max
 	@Override
 	public MapCodec<? extends TrimEntityAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<DamageEntityAbility> {
+		@Override
+		public ClientTooltipComponent getTooltip(ClientLevel level, DamageEntityAbility element, boolean includeCount) {
+			Registry<DamageType> registry = VRegistry.get(level, Registries.DAMAGE_TYPE);
+			ResourceLocation type = element.damageType().unwrap().map(ResourceKey::location, registry::getKey);
+
+			List<Float> minValues = element.minDamage().getValues(4);
+			List<Float> maxValues = element.maxDamage().getValues(4);
+			List<Component> components = new ArrayList<>();
+			for (int i = 0; i < 4; i++) {
+				components.add(Styler.trim(Component.literal("[%s]".formatted(i + 1)))
+						.append(": ")
+						.append(Styler.number(Component.literal("%.1f - %.1f".formatted(minValues.get(i), maxValues.get(i))))));
+			}
+
+			return CompositeContainerComponent.builder()
+					.translate("bettertrims.tooltip.ability.damage_entity.deals", Styler::positive)
+					.cycle(builder -> components.forEach(builder::textComponent))
+					.literal(type.toString(), Styler::name)
+					.translate("bettertrims.tooltip.ability.damage_entity.damage", Styler::positive)
+					.spaced()
+					.build();
+		}
 	}
 }

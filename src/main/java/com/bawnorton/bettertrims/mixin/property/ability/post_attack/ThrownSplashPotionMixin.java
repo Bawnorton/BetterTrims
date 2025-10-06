@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import java.util.List;
 
-@MixinEnvironment
 @Mixin(ThrownSplashPotion.class)
 abstract class ThrownSplashPotionMixin extends AbstractThrownPotion {
     ThrownSplashPotionMixin(EntityType<? extends AbstractThrownPotion> entityType, Level level) {

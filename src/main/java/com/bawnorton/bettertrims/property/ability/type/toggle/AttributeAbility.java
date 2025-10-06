@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.property.ability.type.toggle;
 
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.client.tooltip.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
@@ -22,7 +23,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,34 +60,6 @@ public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute,
 	}
 
 	@Override
-	public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, boolean includeCount) {
-		List<Component> modifiers = new ArrayList<>();
-		for (int i = 1; i <= 4; i++) {
-			int count = i;
-			//? if >=1.21.8 {
-			ItemAttributeModifiers.Display.attributeModifiers().apply(
-			 //?} else {
-			/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
-					*///?}
-					component -> {
-						if (includeCount) {
-							component = Styler.trim(Component.literal("[%d]".formatted(count)))
-									.append(": ")
-									.append(component);
-						}
-						modifiers.add(component);
-					},
-					Minecraft.getInstance().player,
-					attribute,
-					getAttributeModifier(i)
-			);
-		}
-		return CompositeContainerComponent.builder()
-				.cycle(builder -> modifiers.forEach(builder::textComponent))
-				.build();
-	}
-
-	@Override
 	public boolean usesCount() {
 		return true;
 	}
@@ -95,5 +67,35 @@ public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute,
 	@Override
 	public MapCodec<? extends TrimToggleAbility> codec() {
 		return CODEC;
+	}
+
+	public static class TooltipProvider implements TrimElementTooltipProvider<AttributeAbility> {
+		@Override
+		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, AttributeAbility element, boolean includeCount) {
+			List<Component> modifiers = new ArrayList<>();
+			for (int i = 1; i <= 4; i++) {
+				int count = i;
+				//? if >=1.21.8 {
+				ItemAttributeModifiers.Display.attributeModifiers().apply(
+						//?} else {
+						/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
+						 *///?}
+						component -> {
+							if (includeCount) {
+								component = Styler.trim(Component.literal("[%d]".formatted(count)))
+										.append(": ")
+										.append(component);
+							}
+							modifiers.add(component);
+						},
+						Minecraft.getInstance().player,
+						element.attribute(),
+						element.getAttributeModifier(i)
+				);
+			}
+			return CompositeContainerComponent.builder()
+					.cycle(builder -> modifiers.forEach(builder::textComponent))
+					.build();
+		}
 	}
 }
