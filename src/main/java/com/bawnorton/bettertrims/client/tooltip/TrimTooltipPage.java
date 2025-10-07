@@ -128,7 +128,7 @@ public class TrimTooltipPage {
 				.literal("-", Styler::trim)
 				.cycle(builder -> patternProviders.stream().map(ItemComponent::new).forEach(builder::component))
 				.spaced()
-				.centred()
+				.centred(true)
 				.build();
 	}
 
@@ -215,7 +215,7 @@ public class TrimTooltipPage {
 		}
 
 		CompositeContainerComponent page = pageBuilder.build();
-		component = TooltipComponentOptimiser.optimise(page);
+		component = TooltipComponentOptimiser.optimise(page, font);
 	}
 
 	private void generateElementComponent(CompositeContainerComponent.Builder pageBuilder, CompositeContainerComponent elementComponent, Component typeTooltip) {
@@ -239,7 +239,7 @@ public class TrimTooltipPage {
 		pageBuilder.component(builder.build());
 	}
 
-	public int getMaxWidth(Font font) {
+	public int getRenderedWidth(Font font) {
 		return DynamicWidthComponent.getMaxWidth(font, component, 0);
 	}
 
@@ -255,7 +255,7 @@ public class TrimTooltipPage {
 				.literal("(", Styler::trim)
 				.component(generateMatcherComponent(level, matcher.material(), matcher.pattern()))
 				.literal(")", Styler::trim)
-				.centred();
+				.centred(true);
 		if (total > 1) {
 			builder.literal(" - [" + (index + 1) + "/" + total + "]", Styler::trim);
 		}
@@ -302,63 +302,59 @@ public class TrimTooltipPage {
 	private ClientTooltipComponent generateWearingAbilityHeader(ClientLevel level) {
 		int minCount = matcher.minCount();
 		List<CyclingComponent> trimmedItems = new ArrayList<>();
-		for (Item item : List.of(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS)) {
-			HolderSet<TrimMaterial> materials = matcher.material();
-			if (materials.size() == 0) {
-				materials = HolderSet.direct(getAllMaterialProviders(level).stream()
-						.map(stack -> Holder.direct(VTrims.getMaterialFromStack(level, stack)))
-						.toList());
+		HolderSet<TrimMaterial> materials = matcher.material();
+		if (materials.size() == 0) {
+			materials = HolderSet.direct(getAllMaterialProviders(level).stream()
+					.map(stack -> Holder.direct(VTrims.getMaterialFromStack(level, stack)))
+					.toList());
+		}
+		HolderSet<TrimPattern> patterns = matcher.pattern();
+		if (patterns.size() == 0) {
+			patterns = HolderSet.direct(BetterTrimsClient.getPatternSources().keySet().stream().toList());
+		}
+		List<Pair<Holder<TrimPattern>, Holder<TrimMaterial>>> pairs = new ArrayList<>();
+		for (Holder<TrimMaterial> material : materials) {
+			for (Holder<TrimPattern> pattern : patterns) {
+				pairs.add(Pair.of(pattern, material));
 			}
-			HolderSet<TrimPattern> patterns = matcher.pattern();
-			if (patterns.size() == 0) {
-				patterns = HolderSet.direct(BetterTrimsClient.getPatternSources().keySet().stream().toList());
-			}
-			List<Pair<Holder<TrimPattern>, Holder<TrimMaterial>>> pairs = new ArrayList<>();
-			for (Holder<TrimMaterial> material : materials) {
-				for (Holder<TrimPattern> pattern : patterns) {
-					pairs.add(Pair.of(pattern, material));
-				}
-			}
+		}
+		for (Pair<Holder<TrimPattern>, Holder<TrimMaterial>> pair : pairs) {
 			List<ItemStack> items = new ArrayList<>();
-			for (Pair<Holder<TrimPattern>, Holder<TrimMaterial>> pair : pairs) {
+			for (Item item : List.of(Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS)) {
 				ArmorTrim trim = new ArmorTrim(pair.right(), pair.left());
 				ItemStack stack = item.getDefaultInstance();
 				stack.set(DataComponents.TRIM, trim);
 				items.add(stack);
 			}
-			if (!items.isEmpty()) {
-				CyclingComponent.Builder builder = CyclingComponent.builder();
-				items.stream().map(ItemComponent::new).forEach(builder::component);
-				trimmedItems.add(builder.build());
-			}
+
+			CyclingComponent.Builder builder = CyclingComponent.builder();
+			items.stream().map(ItemComponent::new).forEach(builder::component);
+			trimmedItems.add(builder.build());
 		}
+
 		return switch (minCount) {
 			case 4 -> CompositeContainerComponent.builder()
 					.translate("bettertrims.tooltip.properties.count.all_of", Styler::normal)
 					.stack(trimmedItems, 16)
 					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
 					.spaced()
-					.centred()
+					.centred(true)
 					.build();
 			case 1 -> CompositeContainerComponent.builder()
 					.translate("bettertrims.tooltip.properties.count.any_of", Styler::normal)
 					.cycle(builder -> trimmedItems.stream()
 							.flatMap(cycler -> cycler.getComponents().stream())
-							.collect(Collectors.collectingAndThen(Collectors.toCollection(ArrayList::new), list -> {
-								Collections.shuffle(list);
-								return list;
-							}))
 							.forEach(builder::component))
 					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
 					.spaced()
-					.centred()
+					.centred(true)
 					.build();
 			default -> CompositeContainerComponent.builder()
 					.translate("bettertrims.tooltip.properties.count.n_of", Styler::normal, minCount)
 					.stack(trimmedItems, 16)
 					.translate("bettertrims.tooltip.properties.count.equipped", Styler::normal)
 					.spaced()
-					.centred()
+					.centred(true)
 					.build();
 		};
 	}

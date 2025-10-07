@@ -104,17 +104,17 @@ public final class AbilityTooltipRenderer {
 		int yOffset = tooltipBounds.getY();
 		if (MacosUtil.IS_MACOS) {
 			//? if >=1.21.8 {
-            TooltipRenderUtil.renderTooltipBackground(graphics, xOffset, yOffset, promptWidth, promptHeight, background);
-            graphics.blitSprite(
-                RenderPipelines.GUI_TEXTURED,
-                BetterTrims.rl("text/alt"),
-                xOffset,
-                yOffset,
-                promptWidth,
-                promptHeight,
-                ARGB.color(0xFF, ChatFormatting.GOLD.getColor())
-            );
-            //?} else {
+			TooltipRenderUtil.renderTooltipBackground(graphics, xOffset, yOffset, promptWidth, promptHeight, background);
+			graphics.blitSprite(
+					RenderPipelines.GUI_TEXTURED,
+					BetterTrims.rl("text/alt"),
+					xOffset,
+					yOffset,
+					promptWidth,
+					promptHeight,
+					ARGB.color(0xFF, ChatFormatting.GOLD.getColor())
+			);
+			//?} else {
 			/*graphics.pose().pushPose();
 			graphics.drawManaged(() -> TooltipRenderUtil.renderTooltipBackground(graphics, xOffset, yOffset, promptWidth, promptHeight, 400));
 			graphics.pose().translate(0, 0, 400);

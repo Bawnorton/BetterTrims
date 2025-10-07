@@ -56,7 +56,7 @@ import java.util.function.UnaryOperator;
 
 public interface LootConditionTooltips {
 	static CompositeContainerComponent getTooltip(ClientLevel level, Font font, LootItemCondition condition) {
-		CompositeContainerComponent.Builder root = new CompositeContainerComponent.Builder().translate("bettertrims.tooltip.condition.if", Styler::condition).space();
+		CompositeContainerComponent.Builder root = CompositeContainerComponent.builder().translate("bettertrims.tooltip.condition.if", Styler::condition).space();
 
 		CompositeContainerComponent.Builder conditionBuilder = CompositeContainerComponent.builder();
 		addConditionToTooltip(level, condition, conditionBuilder, new State());
@@ -130,7 +130,7 @@ public interface LootConditionTooltips {
 				map.put(
 						LootItemConditions.INVERTED, (ClientLevel level, InvertedLootItemCondition condition, CompositeContainerComponent.Builder parentBuilder, State state) -> {
 							LootItemCondition term = condition.term();
-							CompositeContainerComponent.Builder builder = new CompositeContainerComponent.Builder();
+							CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder();
 							addConditionToTooltip(level, term, builder, state.withInverted(!state.doInvert()));
 							parentBuilder.component(builder.build());
 						}
@@ -138,14 +138,14 @@ public interface LootConditionTooltips {
 
 				LootTooltipAdder<CompositeLootItemCondition> compositeFactory = (ClientLevel level, CompositeLootItemCondition condition, CompositeContainerComponent.Builder parentBuilder, State state) -> {
 					CompositeLootItemConditionAccessor composite = (CompositeLootItemConditionAccessor) condition;
-					CompositeContainerComponent.Builder builder = new CompositeContainerComponent.Builder().translate(
+					CompositeContainerComponent.Builder builder = CompositeContainerComponent.builder().translate(
 							"bettertrims.tooltip.condition.%s.%s".formatted(
 									condition instanceof AllOfCondition ? "all_of" : "any_of",
 									state.key()
 							), Styler::condition
 					).vertical();
 					for (LootItemCondition term : composite.bettertrims$terms()) {
-						CompositeContainerComponent.Builder termBuilder = new CompositeContainerComponent.Builder().space().literal("• ", Styler::condition);
+						CompositeContainerComponent.Builder termBuilder = CompositeContainerComponent.builder().literal("• ", Styler::condition);
 						addConditionToTooltip(level, term, termBuilder, state.withInverted(false));
 						builder.component(termBuilder.build());
 					}

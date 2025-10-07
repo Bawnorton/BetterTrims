@@ -45,9 +45,7 @@ public class Networking {
 				send(handler.player, new TrimPatternSourcePayload(patternProviders))
 		);
 
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) ->
-				updatePatternProviders(server)
-		);
+		ServerLifecycleEvents.SERVER_STARTED.register(Networking::updatePatternProviders);
 	}
 
 	public static <T extends CustomPacketPayload> void send(ServerPlayer player, T payload) {

@@ -9,7 +9,6 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -18,13 +17,16 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.SlotRange;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
 //? if >=1.21.8 {
 import com.bawnorton.bettertrims.client.tooltip.condition.predicate.data.DataComponentMatchersTooltip;
- //?}
+import org.apache.commons.lang3.StringUtils;
+//?}
 
 import static com.bawnorton.bettertrims.client.tooltip.condition.predicate.PredicateTooltip.addMinMaxToBuilder;
 
@@ -117,11 +119,11 @@ public interface EntityPredicateTooltip {
 		}
 
 		//? if >=1.21.8 {
-        DataComponentMatchers components = predicate.components();
-        if (!components.isEmpty()) {
-            addDataComponentMatchersToBuilder(level, components, state, builder);
-        }
-        //?}
+		DataComponentMatchers components = predicate.components();
+		if (!components.isEmpty()) {
+			addDataComponentMatchersToBuilder(level, components, state, builder);
+		}
+		//?}
 	}
 
 	static String key(String key) {
@@ -320,22 +322,42 @@ public interface EntityPredicateTooltip {
 				EquipmentSlot.MAINHAND, predicate.mainhand(),
 				EquipmentSlot.OFFHAND, predicate.offhand()
 		);
+		List<CompositeContainerComponent> equipmentComponents = equipmentMap.entrySet()
+				.stream()
+				.map((entry) -> {
+					EquipmentSlot slot = entry.getKey();
+					Optional<ItemPredicate> itemPredicate = entry.getValue();
+					if (itemPredicate.isEmpty()) return null;
+
+					CompositeContainerComponent.Builder itemBuilder = CompositeContainerComponent.builder()
+							.translate(key("equipment.item"), Styler::condition);
+					ItemPredicateTooltip.addToBuilder(level, itemPredicate.orElseThrow(), new LootConditionTooltips.State().withUseWith(true), itemBuilder);
+					Component slotName = Styler.name(Component.literal(StringUtils.capitalize(slot.getName())));
+					itemBuilder.space().translate(key("equipment.slot"), Styler::condition, slotName);
+					return itemBuilder.build();
+				})
+				.filter(Objects::nonNull)
+				.toList();
+		CompositeContainerComponent.Builder equipmentComponentBuilder = CompositeContainerComponent.builder();
+		if (equipmentComponents.size() == 1) {
+			equipmentComponentBuilder.translate(key("equipment.single"), Styler::condition);
+			equipmentComponentBuilder.space().component(equipmentComponents.getFirst());
+		} else if (equipmentComponents.size() > 1) {
+			equipmentComponentBuilder.vertical().translate(key("equipment.all_of"), Styler::condition);
+			CompositeContainerComponent.Builder entryBuilder = CompositeContainerComponent.builder().vertical();
+			equipmentComponents.forEach((entry) -> entryBuilder.component(
+					CompositeContainerComponent.builder()
+							.literal("• ", Styler::condition)
+							.component(entry)
+							.build())
+			);
+			equipmentComponentBuilder.component(entryBuilder.build());
+		}
 		CompositeContainerComponent.Builder equipmentBuilder = CompositeContainerComponent.builder()
 				.space()
 				.translate(key("equipment.matches"), Styler::condition)
 				.space()
-				.cycle(equipmentCycler -> {
-					equipmentMap.forEach((slot, itemPredicate) -> {
-						if (itemPredicate.isPresent()) {
-							Component slotName = Styler.name(Component.translatable("slot.%s".formatted(slot.getName())));
-							CompositeContainerComponent.Builder itemBuilder = CompositeContainerComponent.builder()
-									.translate(key("equipment.slot"), Styler::condition, slotName)
-									.space();
-							ItemPredicateTooltip.addToBuilder(level, itemPredicate.orElseThrow(), new LootConditionTooltips.State(), itemBuilder);
-							equipmentCycler.component(itemBuilder.build());
-						}
-					});
-				});
+				.component(equipmentComponentBuilder.build());
 		builder.component(equipmentBuilder.build());
 	}
 
@@ -388,8 +410,8 @@ public interface EntityPredicateTooltip {
 	}
 
 	//? if >=1.21.8 {
-    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-        DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
-    }
-    //?}
+	static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
+	}
+	//?}
 }

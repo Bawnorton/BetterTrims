@@ -42,7 +42,7 @@ public final class FireworksPredicatePartialAdder implements PartialAdder</*$ fi
 
 		builder.cycle(cycleBuilder -> {
 			CollectionPredicate<FireworkExplosion, /*$ firework_explosion_predicate >>*/ FireworkExplosionPredicate .FireworkPredicate> fireworkCollection = explosions.orElseThrow();
-			CompositeContainerComponent.Builder fireworkBuilder = new CompositeContainerComponent.Builder();
+			CompositeContainerComponent.Builder fireworkBuilder = CompositeContainerComponent.builder();
 			addCollectionToBuilder(level, fireworkCollection, "fireworks", predicateAdder, state, fireworkBuilder);
 			cycleBuilder.component(fireworkBuilder.build());
 		});

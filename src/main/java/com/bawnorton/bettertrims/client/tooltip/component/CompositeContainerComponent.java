@@ -4,10 +4,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,16 +46,16 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 	}
 
 	//? if >=1.21.8 {
-    @Override
-    public boolean showTooltipWithItemInHand() {
-        for (ClientTooltipComponent component : components) {
-            if (component.showTooltipWithItemInHand()) {
-                return true;
-            }
-        }
-        return false;
-    }
-    //?}
+  @Override
+  public boolean showTooltipWithItemInHand() {
+      for (ClientTooltipComponent component : components) {
+          if (component.showTooltipWithItemInHand()) {
+              return true;
+          }
+      }
+      return false;
+  }
+  //?}
 
 	@Override
 	public String toString() {
@@ -170,17 +168,15 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 			return this;
 		}
 
-		public Builder centred() {
-			if (centred) return this;
-
-			centred = true;
+		public Builder centred(boolean centred) {
+			this.centred = centred;
 			return this;
 		}
 
 		public CompositeContainerComponent build() {
 			if (!spaced) {
 				if (vertical) {
-					return new Vertical(components, centred);
+					return new Vertical(components);
 				} else {
 					return new Horizontal(components, centred);
 				}
@@ -194,7 +190,7 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 				}
 			}
 			if (vertical) {
-				return new Vertical(spacedComponents, centred);
+				return new Vertical(spacedComponents);
 			} else {
 				return new Horizontal(spacedComponents, centred);
 			}
@@ -207,17 +203,17 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		@Override
-				//? if >=1.21.8 {
-        public int getHeight(Font font) {
-            int maxHeight = 0;
-            for (ClientTooltipComponent component : components) {
-                if (component.getHeight(font) > maxHeight) {
-                    maxHeight = component.getHeight(font);
-                }
+		//? if >=1.21.8 {
+    public int getHeight(Font font) {
+        int maxHeight = 0;
+        for (ClientTooltipComponent component : components) {
+            if (component.getHeight(font) > maxHeight) {
+                maxHeight = component.getHeight(font);
             }
-            return maxHeight;
         }
-        //?} else {
+        return maxHeight;
+    }
+    //?} else {
 		/*public int getHeight() {
 			int maxHeight = 0;
 			for (ClientTooltipComponent component : components) {
@@ -252,32 +248,32 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		//? if >=1.21.8 {
-        @Override
-        public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
-            int currentX = x;
-            for (ClientTooltipComponent component : components) {
-                int componentWidth = component.getWidth(font);
-                component.renderImage(font, currentX, y, componentWidth, height, graphics);
-                currentX += componentWidth;
-            }
+    @Override
+    public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
+        int currentX = x;
+        for (ClientTooltipComponent component : components) {
+            int componentWidth = component.getWidth(font);
+            component.renderImage(font, currentX, y, componentWidth, height, graphics);
+            currentX += componentWidth;
         }
+    }
 
-        @Override
-        public void renderText(GuiGraphics graphics, Font font, int x, int y) {
-            int currentX = x;
-            int height = getHeight(font);
-            for (ClientTooltipComponent component : components) {
-                int componentWidth = component.getWidth(font);
-                if(centred) {
-                    int componentHeight = component.getHeight(font);
-                    component.renderText(graphics, font, currentX, y + (height - componentHeight) / 2);
-                } else {
-                    component.renderText(graphics, font, currentX, y);
-                }
-                currentX += componentWidth;
+    @Override
+    public void renderText(GuiGraphics graphics, Font font, int x, int y) {
+        int currentX = x;
+        int height = getHeight(font);
+        for (ClientTooltipComponent component : components) {
+            int componentWidth = component.getWidth(font);
+            if(centred) {
+                int componentHeight = component.getHeight(font);
+                component.renderText(graphics, font, currentX, y + (height - componentHeight) / 2);
+            } else {
+                component.renderText(graphics, font, currentX, y);
             }
+            currentX += componentWidth;
         }
-        //?} else {
+    }
+    //?} else {
 		/*@Override
 		public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
 			int currentX = x;
@@ -307,20 +303,30 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 	}
 
 	public static final class Vertical extends CompositeContainerComponent {
-		private Vertical(List<ClientTooltipComponent> components, boolean centred) {
-			super(components, centred);
+		private int horizontalOffset = 0;
+
+		private Vertical(List<ClientTooltipComponent> components) {
+			super(components, false);
+		}
+
+		public void setHorizontalOffset(int offset) {
+			horizontalOffset = offset;
+		}
+
+		public int getHorizontalOffset() {
+			return horizontalOffset;
 		}
 
 		@Override
-				//? if >=1.21.8 {
-        public int getHeight(Font font) {
-            int totalHeight = 0;
-            for (ClientTooltipComponent component : components) {
-                totalHeight += component.getHeight(font);
-            }
-            return totalHeight;
+		//? if >=1.21.8 {
+    public int getHeight(Font font) {
+        int totalHeight = 0;
+        for (ClientTooltipComponent component : components) {
+            totalHeight += component.getHeight(font);
         }
-        //?} else {
+        return totalHeight;
+    }
+    //?} else {
 		/*public int getHeight() {
 			int totalHeight = 0;
 			for (ClientTooltipComponent component : components) {
@@ -338,46 +344,54 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 					maxWidth = component.getWidth(font);
 				}
 			}
-			return maxWidth;
+			return maxWidth - horizontalOffset;
 		}
 
 		//? if >=1.21.8 {
-        @Override
-        public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
-            int currentY = y;
-            for (ClientTooltipComponent component : components) {
-                int componentHeight = component.getHeight(font);
-                component.renderImage(font, x, currentY, width, componentHeight, graphics);
-                currentY += componentHeight;
-            }
-        }
+    @Override
+    public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
+			int currentY = y;
+			int offsetX = x - horizontalOffset;
+	    for (int i = 0; i < components.size(); i++) {
+		    ClientTooltipComponent component = components.get(i);
+		    int componentHeight = component.getHeight(font);
+		    component.renderImage(font, i == 0 ? x : offsetX, currentY, width, componentHeight, graphics);
+		    currentY += componentHeight;
+	    }
+    }
 
-        @Override
-        public void renderText(GuiGraphics graphics, Font font, int x, int y) {
-            int currentY = y;
-            for (ClientTooltipComponent component : components) {
-                int componentHeight = component.getHeight(font);
-                component.renderText(graphics, font, x, currentY);
-                currentY += componentHeight;
-            }
-        }
-        //?} else {
+    @Override
+    public void renderText(GuiGraphics graphics, Font font, int x, int y) {
+			int currentY = y;
+			int offsetX = x - horizontalOffset;
+	    for (int i = 0; i < components.size(); i++) {
+		    ClientTooltipComponent component = components.get(i);
+		    int componentHeight = component.getHeight(font);
+				component.renderText(graphics, font, i == 0 ? x : offsetX, currentY);
+		    currentY += componentHeight;
+	    }
+    }
+    //?} else {
 		/*@Override
 		public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
 			int currentY = y;
-			for (ClientTooltipComponent component : components) {
+			int offsetX = x - horizontalOffset;
+			for (int i = 0; i < components.size(); i++) {
+				ClientTooltipComponent component = components.get(i);
 				int componentHeight = component.getHeight();
-				component.renderImage(font, x, currentY, guiGraphics);
+				component.renderImage(font, i == 0 ? x : offsetX, currentY, guiGraphics);
 				currentY += componentHeight;
 			}
 		}
 
 		@Override
-		public void renderText(Font font, int mouseX, int mouseY, Matrix4f matrix, MultiBufferSource.BufferSource bufferSource) {
-			int currentY = mouseY;
-			for (ClientTooltipComponent component : components) {
+		public void renderText(Font font, int x, int y, Matrix4f matrix, MultiBufferSource.BufferSource bufferSource) {
+			int currentY = y;
+			int offsetX = x - horizontalOffset;
+			for (int i = 0; i < components.size(); i++) {
+				ClientTooltipComponent component = components.get(i);
 				int componentHeight = component.getHeight();
-				component.renderText(font, mouseX, currentY, matrix, bufferSource);
+				component.renderText(font, i == 0 ? x : offsetX, currentY, matrix, bufferSource);
 				currentY += componentHeight;
 			}
 		}

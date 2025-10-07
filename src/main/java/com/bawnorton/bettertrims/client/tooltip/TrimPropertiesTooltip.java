@@ -44,11 +44,13 @@ public class TrimPropertiesTooltip {
 		for (Map.Entry<Matcher, List<TrimProperty>> entry : properties.entrySet()) {
 			Matcher matcher = entry.getKey();
 			List<TrimProperty> properties = entry.getValue();
-			for (int i = 0; i < properties.size(); i++) {
-				TrimTooltipPage page = new TrimTooltipPage(properties.get(i), matcher);
-				page.generateComponent(level, font, i, properties.size());
+			for (TrimProperty property : properties) {
+				TrimTooltipPage page = new TrimTooltipPage(property, matcher);
 				pages.add(page);
 			}
+		}
+		for (int i = 0; i < pages.size(); i++) {
+			pages.get(i).generateComponent(level, font, i, pages.size());
 		}
 	}
 
@@ -58,7 +60,7 @@ public class TrimPropertiesTooltip {
 		TrimTooltipPage page = pages.get(index);
 		List<ClientTooltipComponent> components = new ArrayList<>();
 		components.add(page.getComponent());
-		components.add(new GapComponent(page.getMaxWidth(font), 0));
+		components.add(new GapComponent(page.getRenderedWidth(font), 0));
 
 		int offsetX = parentTooltipBounds.getX() + parentTooltipBounds.getWidth() + (horizontallyFlipped ? 14 : 0);
 		int offsetY = parentTooltipBounds.getY();

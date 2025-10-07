@@ -25,7 +25,7 @@ public final class TrimPredicatePartialAdder implements PartialAdder</*$ trim_pr
 		builder.space()
 				.translate(key("armor_trim.matches"), Styler::condition)
 				.space()
-				.centred()
+				.centred(true)
 				.component(TrimTooltipPage.generateMatcherComponent(level, material.orElse(HolderSet.direct()), pattern.orElse(HolderSet.direct())));
 	}
 }

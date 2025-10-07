@@ -111,7 +111,7 @@ public interface PartialAdder<T extends /*$ item_data_predicate >>*/ DataCompone
 
 			if (size.isPresent()) {
 				MinMaxBounds.Ints sizeBounds = size.orElseThrow();
-				CompositeContainerComponent.Builder itemPredicateBuilder = new CompositeContainerComponent.Builder();
+				CompositeContainerComponent.Builder itemPredicateBuilder = CompositeContainerComponent.builder();
 				itemPredicateBuilder.space()
 						.translate(key(key + ".size"), Styler::condition);
 				PredicateTooltip.addMinMaxToBuilder(

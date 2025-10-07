@@ -47,7 +47,7 @@ public final class AttributeModifiersPartialAdder implements PartialAdder</*$ at
 									attributeSet.orElseThrow(),
 									(attribute, appender) -> {
 										if (operation.isPresent() && !amount.isAny()) {
-											CompositeContainerComponent.Builder detailBuilder = new CompositeContainerComponent.Builder();
+											CompositeContainerComponent.Builder detailBuilder = CompositeContainerComponent.builder();
 											PredicateTooltip.addMinMaxToBuilder(
 													key("attribute_modifiers.amount.%s".formatted(operation.orElseThrow().id())),
 													false,

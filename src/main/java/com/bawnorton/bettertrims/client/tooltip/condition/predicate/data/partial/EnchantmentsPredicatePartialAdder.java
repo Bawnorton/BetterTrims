@@ -39,7 +39,7 @@ public final class EnchantmentsPredicatePartialAdder<T extends /*$ enchantments_
 		for (EnchantmentPredicate enchantmentPredicate : enchantmentPredicates) {
 			Optional<HolderSet<Enchantment>> enchantments = enchantmentPredicate.enchantments();
 			MinMaxBounds.Ints enchLevel = enchantmentPredicate.level();
-			CompositeContainerComponent.Builder enchBuilder = new CompositeContainerComponent.Builder();
+			CompositeContainerComponent.Builder enchBuilder = CompositeContainerComponent.builder();
 			if (enchantments.isPresent()) {
 				HolderSet<Enchantment> enchantmentHolderSet = enchantments.orElseThrow();
 				PredicateTooltip.addRegisteredElementsToBuilder(

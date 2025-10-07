@@ -14,7 +14,7 @@ public final class UseRemainderExactAdder implements ExactAdder<UseRemainder> {
 	public void addToBuilder(ClientLevel level, UseRemainder remainder, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
 		ItemStack itemStack = remainder.convertInto();
 		CompositeContainerComponent.Builder remainderBuilder = CompositeContainerComponent.builder()
-				.centred()
+				.centred(true)
 				.space()
 				.translate(key("use_remainder"), Styler::condition)
 				.space()

@@ -16,6 +16,14 @@ public interface CompositeComponent extends DynamicWidthComponent {
 		return maxWidth;
 	}
 
+	default int getMinWidth(Font font) {
+		int minWidth = Integer.MAX_VALUE;
+		for (ClientTooltipComponent component : getComponents()) {
+			minWidth = DynamicWidthComponent.getMinWidth(font, component, minWidth);
+		}
+		return minWidth;
+	}
+
 	default boolean isOneLine() {
 		for (ClientTooltipComponent component : getComponents()) {
 			if (component instanceof CompositeComponent composite) {

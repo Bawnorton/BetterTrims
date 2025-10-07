@@ -115,12 +115,12 @@ public interface ItemPredicateTooltip {
 
 			ExactDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue().orElseThrow(), state, builder);
 		} else {
-			CompositeContainerComponent.Builder listBuilder = new CompositeContainerComponent.Builder()
+			CompositeContainerComponent.Builder listBuilder = CompositeContainerComponent.builder()
 					.vertical()
 					.literal(":", Styler::condition);
 			for (Map.Entry<DataComponentType<?>, Optional<?>> entry : entries) {
 				Optional<?> value = entry.getValue();
-				CompositeContainerComponent.Builder termBuilder = new CompositeContainerComponent.Builder()
+				CompositeContainerComponent.Builder termBuilder = CompositeContainerComponent.builder()
 						.space()
 						.literal("• ", Styler::condition);
 				if (value.isEmpty()) {
@@ -151,11 +151,11 @@ public interface ItemPredicateTooltip {
 			Map.Entry<ItemSubPredicate.Type<?>, ItemSubPredicate> entry = subPredicates.entrySet().iterator().next();
 			PartialDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);
 		} else {
-			CompositeContainerComponent.Builder listBuilder = new CompositeContainerComponent.Builder()
+			CompositeContainerComponent.Builder listBuilder = CompositeContainerComponent.builder()
 					.vertical()
 					.literal(":", Styler::condition);
 			for (Map.Entry<ItemSubPredicate.Type<?>, ItemSubPredicate> entry : subPredicates.entrySet()) {
-				CompositeContainerComponent.Builder termBuilder = new CompositeContainerComponent.Builder()
+				CompositeContainerComponent.Builder termBuilder = CompositeContainerComponent.builder()
 						.space()
 						.literal("• ", Styler::condition);
 				PartialDataComponentPredicateTooltipAdders.addToBuilder(level, entry.getKey(), entry.getValue(), state, builder);

@@ -381,9 +381,25 @@ public interface TrimProperties {
 		registerTrimEffect(context, SPIRE, TrimPatterns.SPIRE, MobEffects.STRENGTH);
 		registerTrimEffect(context, TIDE, TrimPatterns.TIDE, MobEffects.CONDUIT_POWER);
 		registerTrimEffect(context, VEX, TrimPatterns.VEX, MobEffects.INVISIBILITY);
-		registerTrimEffect(context, WARD, TrimPatterns.WARD, MobEffects.NIGHT_VISION);
 		registerTrimEffect(context, WAYFINDER, TrimPatterns.WAYFINDER, MobEffects.SLOW_FALLING);
 		registerTrimEffect(context, WILD, TrimPatterns.WILD, MobEffects.HERO_OF_THE_VILLAGE);
+
+		register(
+				context,
+				WARD,
+				TrimProperty.builder(Matcher.forPattern(HolderSet.direct(context.lookup(Registries.TRIM_PATTERN).getOrThrow(TrimPatterns.WARD)), 2)).ability(
+						TrimAbilityComponents.SECOND,
+						new ApplyMobEffectAbility(
+								MobEffects.ABSORPTION,
+								CountBasedValue.lookup(List.of(-1F, 0F, 0F, 1F), CountBasedValue.constant(0)),
+								CountBasedValue.constant(16)
+						),
+						LootItemEntityPropertyCondition.hasProperties(
+								LootContext.EntityTarget.THIS,
+								new EntityPredicate.Builder().periodicTick(300)
+						)
+				).build()
+		);
 	}
 
 	private static void registerTrimEffect(BootstrapContext<TrimProperty> context, ResourceKey<TrimProperty> key, ResourceKey<TrimPattern> pattern, Holder<MobEffect> effect) {
