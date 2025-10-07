@@ -72,16 +72,17 @@ public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute,
 	public static class TooltipProvider implements TrimElementTooltipProvider<AttributeAbility> {
 		@Override
 		public @Nullable ClientTooltipComponent getTooltip(ClientLevel level, AttributeAbility element, boolean includeCount) {
+			boolean distinct = element.value().getValueComponents(4, includeCount).size() == 1;
 			List<Component> modifiers = new ArrayList<>();
 			for (int i = 1; i <= 4; i++) {
 				int count = i;
 				//? if >=1.21.8 {
 				ItemAttributeModifiers.Display.attributeModifiers().apply(
-						//?} else {
-						/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
-						 *///?}
+				//?} else {
+				/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
+				 *///?}
 						component -> {
-							if (includeCount) {
+							if (includeCount && !distinct) {
 								component = Styler.trim(Component.literal("[%d]".formatted(count)))
 										.append(": ")
 										.append(component);

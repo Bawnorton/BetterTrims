@@ -94,8 +94,8 @@ public interface CountBasedValue {
 			if(value == null) continue;
 
 			Component valueComponent = Styler.number(formatter.apply(value).copy());
-			MutableComponent countComponent = Styler.trim(Component.literal("[%d]".formatted(i))).append(": ");
 			if (includeCount) {
+				MutableComponent countComponent = Styler.trim(Component.literal("[%d]".formatted(i))).append(": ");
 				components.add(countComponent.append(valueComponent));
 			} else {
 				components.add(valueComponent);

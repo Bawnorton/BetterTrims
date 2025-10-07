@@ -3,8 +3,6 @@ package com.bawnorton.bettertrims.mixin;
 import com.bawnorton.bettertrims.registry.BetterTrimsAttributes;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import dev.kikugie.fletching_table.annotation.MixinEnvironment;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -30,5 +28,16 @@ abstract class LivingEntityMixin extends EntityMixin {
 	@Override
 	protected boolean isTrulyInvisible(Operation<Boolean> original) {
 		return super.isTrulyInvisible(original) || attributes.getValue(BetterTrimsAttributes.TRUE_INVISIBILITY) >= 1;
+	}
+
+	@ModifyReturnValue(
+			method = "getVisibilityPercent",
+			at = @At("RETURN")
+	)
+	private double applyTrueInvisibility(double original) {
+		double value = attributes.getValue(BetterTrimsAttributes.TRUE_INVISIBILITY);
+		if(value < 1) return original;
+
+		return Math.max(0.1, original * 0.1);
 	}
 }

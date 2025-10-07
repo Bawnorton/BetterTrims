@@ -33,10 +33,9 @@ public record MultiplyValue(CountBasedValue value) implements TrimValueAbility {
 		@Override
 		public ClientTooltipComponent getTooltip(ClientLevel level, MultiplyValue element, boolean includeCount) {
 			return CompositeContainerComponent.builder()
-					.translate("bettertrims.tooltip.ability.multiply_value.multiply", Styler::positive)
+					.translate("bettertrims.tooltip.ability.multiply_value", Styler::positive)
+					.space()
 					.cycle(builder -> element.value().getValueComponents(4, includeCount).forEach(builder::textComponent))
-					.translate("bettertrims.tooltip.ability.multiply_value.to_value", Styler::positive)
-					.spaced()
 					.build();
 		}
 	}

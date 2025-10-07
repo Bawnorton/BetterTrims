@@ -1,9 +1,7 @@
-//? if fabric {
 package com.bawnorton.bettertrims.networking.packet;
 
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.BetterTrimsClient;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -16,6 +14,12 @@ import net.minecraft.world.item.equipment.trim.TrimPattern;
 
 import java.util.HashMap;
 import java.util.Map;
+
+//? if fabric {
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+//?} else {
+/*import net.neoforged.neoforge.network.handling.IPayloadContext;
+*///?}
 
 public record TrimPatternSourcePayload(
 		Map<Holder<TrimPattern>, HolderSet<Item>> patternSources) implements CustomPacketPayload {
@@ -31,8 +35,13 @@ public record TrimPatternSourcePayload(
 		return TYPE;
 	}
 
+	//? if fabric {
 	public void handle(ClientPlayNetworking.Context context) {
 		BetterTrimsClient.setPatternSources(patternSources);
 	}
+	//?} else {
+	/*public void handle(IPayloadContext context) {
+		BetterTrimsClient.setPatternSources(patternSources);
+	}
+	*///?}
 }
-//?}

@@ -415,8 +415,7 @@ public interface LootConditionTooltips {
 							NumberProvider max = accessor.bettertrims$max();
 
 							Function<Float, MutableComponent> formatter = ticks -> {
-								float tickrate = level.tickRateManager().tickrate();
-								long totalSeconds = Math.round(ticks / tickrate) * 72L;
+								long totalSeconds = Math.round(ticks / 20) * 72L;
 								long totalMinutes = TimeUnit.SECONDS.toMinutes(totalSeconds);
 								long totalHours = TimeUnit.MINUTES.toHours(totalMinutes);
 								long days = TimeUnit.HOURS.toDays(totalHours);
@@ -452,8 +451,7 @@ public interface LootConditionTooltips {
 									.cycle(cycleBuilder -> maxComps.forEach(cycleBuilder::textComponent));
 							if (period.isPresent()) {
 								float periodTicks = period.orElseThrow();
-								float tickrate = level.tickRateManager().tickrate();
-								long totalSeconds = Math.round(periodTicks / tickrate) * 72L;
+								long totalSeconds = Math.round(periodTicks / 20) * 72L;
 								long totalMinutes = TimeUnit.SECONDS.toMinutes(totalSeconds);
 								long totalHours = TimeUnit.MINUTES.toHours(totalMinutes);
 								long days = TimeUnit.HOURS.toDays(totalHours);
