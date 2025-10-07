@@ -136,7 +136,6 @@ stonecutter {
     }
 }
 
-
 tasks {
     register<Copy>("buildAndCollect") {
         group = "build"

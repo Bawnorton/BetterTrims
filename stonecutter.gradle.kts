@@ -6,6 +6,7 @@ plugins {
     id("fabric-loom") version "1.11-SNAPSHOT" apply false
     id("net.neoforged.moddev") version "2.0.112" apply false
     id("me.modmuss50.mod-publish-plugin") version "0.8.+" apply false
+    id("org.moddedmc.wiki.toolkit") version "0.3.2"
 }
 
 stonecutter active "1.21.8-fabric"
@@ -26,4 +27,10 @@ stonecutter tasks {
 for (version in stonecutter.versions.map { it.version }.distinct()) tasks.register("publish$version") {
     group = "publishing"
     dependsOn(stonecutter.tasks.named("publishMods") { metadata.version == version })
+}
+
+wiki {
+    docs.create("bettertrims") {
+        root = file("docs")
+    }
 }
