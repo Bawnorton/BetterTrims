@@ -1,8 +1,7 @@
 {
   "id": "bettertrims",
   "platforms": {
-    "modrinth": "bettertrims",
-    "curseforge": "821752"
+    "modrinth": "bettertrims"
   },
   "owners": ["Bawnorton"]
 }
