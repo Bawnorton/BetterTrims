@@ -12,8 +12,8 @@ BetterTrims 4.0 :warning: (Not Released Yet)
 #### Bespoke Data-Driven Armour Trim Property System
 
 <p float="left">
-    <img src="docs/.assets/bettertrims/example_data_file.png" alt="data_file" height="320"/>
-    <img src="docs/.assets/bettertrims/redstone.gif" alt="in_game" height="320"/>
+    <img src="docs/.assets/bettertrims/example_data_file.png" alt="data_file" height="300"/>
+    <img src="docs/.assets/bettertrims/redstone.gif" alt="in_game" height="300"/>
 
   - Includes Worn Properties, In-World Properties, Set Bonuses and More
   - Almost Infinite Extensbility and Customisation
