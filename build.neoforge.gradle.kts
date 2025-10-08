@@ -182,7 +182,7 @@ publishMods {
 
     type = BETA
     file = tasks.jar.map { it.archiveFile.get() }
-    additionalFiles.from(tasks.named<org.gradle.jvm.tasks.Jar>("sourcesJar").map { it.archiveFile.get() })
+    additionalFiles.from(tasks.named<Jar>("sourcesJar").map { it.archiveFile.get() })
 
     displayName = "${mod("name")} Neoforge ${mod("version")} for $minecraft"
     version = mod("version")

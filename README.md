@@ -1,4 +1,4 @@
-BetterTrims 4.0 :warning: (Not Released Yet)
+BetterTrims 4.0
 ================
 ## Gives each armour trim material a unique effect when worn.
 
