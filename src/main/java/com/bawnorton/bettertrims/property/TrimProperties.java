@@ -27,14 +27,17 @@ import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.predicates.DataComponentPredicates;
 import net.minecraft.core.component.predicates.EnchantmentsPredicate;
 import net.minecraft.core.component.predicates.TrimPredicate;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.ConstantFloat;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -61,7 +64,6 @@ import net.minecraft.core.component.predicates.DataComponentPredicates;
 //?}
 
 public interface TrimProperties {
-	ResourceKey<TrimProperty> SHADOWY = key("shadowy");
 	ResourceKey<TrimProperty> CONDUCTIVE = key("conductive");
 	ResourceKey<TrimProperty> CHARGED = key("charged");
 	ResourceKey<TrimProperty> FIREPROOF = key("fireproof");
@@ -72,6 +74,8 @@ public interface TrimProperties {
 	ResourceKey<TrimProperty> LUNAR_BONUSES = key("lunar_bonuses");
 	ResourceKey<TrimProperty> TOUGHER = key("tougher");
 	ResourceKey<TrimProperty> RESILIENT = key("resilient");
+	ResourceKey<TrimProperty> RESONANT = key("resonant");
+	ResourceKey<TrimProperty> SHADOWY = key("shadowy");
 	ResourceKey<TrimProperty> SOLAR_BONUSES = key("solar_bonuses");
 	ResourceKey<TrimProperty> WEARING_GOLD = key("wearing_gold");
 
@@ -99,6 +103,7 @@ public interface TrimProperties {
 		HolderGetter<EntityType<?>> entityTypeGetter = context.lookup(Registries.ENTITY_TYPE);
 		HolderGetter<Enchantment> enchantmentGetter = context.lookup(Registries.ENCHANTMENT);
 		HolderGetter<DimensionType> dimensionGetter = context.lookup(Registries.DIMENSION_TYPE);
+		HolderGetter<SoundEvent> soundEventGetter = context.lookup(Registries.SOUND_EVENT);
 		register(
 				context, SHADOWY, TrimProperty.builder(getMaterialMatcher(materialGetter, TrimMaterialTags.RESIN)).ability(
 						TrimAbilityComponents.TICK,
@@ -179,6 +184,31 @@ public interface TrimProperties {
 				).build()
 		);
 		register(
+				context, RESONANT, TrimProperty.builder(getMaterialMatcher(materialGetter, TrimMaterialTags.AMETHYST)).ability(
+						TrimAbilityComponents.POST_ATTACK,
+						new PlaySoundAbility(
+								Holder.direct(SoundEvents.AMETHYST_BLOCK_RESONATE),
+								UniformFloat.of(0.8f, 1.2f),
+								UniformFloat.of(0.8f, 1.2f)
+						)
+				).ability(
+						TrimAbilityComponents.HIT_BLOCK,
+						new PlaySoundAbility(
+								Holder.direct(SoundEvents.AMETHYST_BLOCK_RESONATE),
+								UniformFloat.of(0.8f, 1.2f),
+								UniformFloat.of(0.8f, 1.2f)
+						)
+				).ability(
+						TrimAbilityComponents.INCOMING_DAMAGE,
+						TrimValueAbility.multiply(CountBasedValue.clamped(CountBasedValue.linear(0.75f, -0.25f), 0, 1f)),
+						LootItemRandomChanceCondition.randomChance(0.05f)
+				).ability(
+						TrimAbilityComponents.DAMAGE,
+						TrimValueAbility.multiply(CountBasedValue.linear(5)),
+						LootItemRandomChanceCondition.randomChance(0.05f)
+				).build()
+		);
+		register(
 				context, TOUGHER, TrimProperty.builder(getMaterialMatcher(materialGetter, TrimMaterialTags.NETHERITE)).ability(
 						TrimAbilityComponents.EQUIPPED, AllOf.toggleAbilities(
 								new AttributeAbility(BetterTrims.rl("trim_armour_toughness"), Attributes.ARMOR_TOUGHNESS, CountBasedValue.linear(1), AttributeModifier.Operation.ADD_VALUE),
@@ -208,7 +238,7 @@ public interface TrimProperties {
 				context,
 				INCREASE_EXPERIENCE_GAIN,
 				TrimProperty.builder(getMaterialMatcher(materialGetter, TrimMaterialTags.QUARTZ))
-						.ability(TrimAbilityComponents.EXPERIENCE_GAINED, TrimValueAbility.multiply(CountBasedValue.linear(1, 0.25f)))
+						.ability(TrimAbilityComponents.EXPERIENCE_GAINED, TrimValueAbility.multiply(CountBasedValue.linear(1.25f, 0.25f)))
 						.build()
 		);
 		register(

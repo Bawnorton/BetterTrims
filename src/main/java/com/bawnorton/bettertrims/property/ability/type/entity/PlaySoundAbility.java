@@ -28,6 +28,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Function;
+
 public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch) implements TrimEntityAbility {
 	public static final MapCodec<PlaySoundAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			SoundEvent.CODEC.fieldOf("sound").forGetter(PlaySoundAbility::soundEvent),
@@ -37,6 +39,10 @@ public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volu
 
 	public static Component getSoundName(Registry<SoundEvent> registry, Holder<SoundEvent> soundHolder) {
 		ResourceLocation sound = soundHolder.unwrap().map(ResourceKey::location, registry::getKey);
+		if(sound == null) {
+			SoundEvent soundEvent = soundHolder.unwrap().map(registry::getValueOrThrow, Function.identity());
+			sound = soundEvent.location();
+		}
 		Component soundName = Component.literal(sound.toString());
 		WeighedSoundEvents soundEvents = Minecraft.getInstance().getSoundManager().getSoundEvent(sound);
 		if (soundEvents != null && soundEvents.getSubtitle() != null) {

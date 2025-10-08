@@ -2,17 +2,19 @@ package com.bawnorton.bettertrims.client.tooltip.util;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 
 public interface Formatter {
 	static MutableComponent decimal(Double value) {
 		if (value == null) return Component.literal("null");
 
-		if (value % 1 == 0) {
-			return Component.literal("%.0f".formatted(value));
-		} else if ((value * 10) % 1 == 0) {
-			return Component.literal("%.1f".formatted(value));
+		int intValue = (int) (value * 100);
+		if (intValue % 100 == 0) {
+			return Component.literal(String.valueOf(intValue / 100));
+		} else if (intValue % 10 == 0) {
+			return Component.literal(String.format("%.1f", value));
 		} else {
-			return Component.literal("%.2f".formatted(value));
+			return Component.literal(String.format("%.2f", value));
 		}
 	}
 

@@ -160,16 +160,17 @@ public interface LootConditionTooltips {
 						LootItemConditions.RANDOM_CHANCE, (level, condition, parentBuilder, state) -> {
 							LootItemRandomChanceCondition chanceCondition = (LootItemRandomChanceCondition) condition;
 							parentBuilder.cycle(chanceCycler -> {
-								List<Component> numberComp = numberCompFromNumberProvider(
+								numberCompFromNumberProvider(
 										chanceCondition.chance(), value -> {
 											if (state.doInvert()) {
 												value = 1 - value;
 											}
 											return Formatter.percentage(value);
 										}, comp -> comp.copy().append("%")
-								);
-								Component tooltip = Styler.condition(Component.translatable("bettertrims.tooltip.condition.random_chance", numberComp));
-								chanceCycler.textComponent(tooltip);
+								).forEach(numberComp -> {
+									Component tooltip = Styler.condition(Component.translatable("bettertrims.tooltip.condition.random_chance", numberComp));
+									chanceCycler.textComponent(tooltip);
+								});
 							});
 						}
 				);

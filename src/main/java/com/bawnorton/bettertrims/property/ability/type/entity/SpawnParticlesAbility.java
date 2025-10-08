@@ -11,11 +11,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -25,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.effects.SpawnParticlesEffect;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,17 +76,31 @@ public record SpawnParticlesAbility(
 		@Nullable
 		@Override
 		public ClientTooltipComponent getTooltip(ClientLevel level, SpawnParticlesAbility element, boolean includeCount) {
-			Registry<ParticleType<?>> registry = VRegistry.get(level, Registries.PARTICLE_TYPE);
-			ResourceLocation particleType = registry.getKey(element.particle().getType());
-			if (particleType == null) return null;
-
-			Component particleName = Styler.name(Component.literal(particleType.toString()));
+			Component particleName = getParticleName(level, element);
+			if (particleName == null) return null;
 			return CompositeContainerComponent.builder()
 					.translate("bettertrims.tooltip.ability.spawn_particles.spawns", Styler::positive)
 					.textComponent(particleName)
 					.translate("bettertrims.tooltip.ability.spawn_particles.particles", Styler::positive)
 					.spaced()
 					.build();
+		}
+
+		private static @Nullable Component getParticleName(ClientLevel level, SpawnParticlesAbility element) {
+			return switch (element.particle()) {
+				case BlockParticleOption blockParticle -> {
+					BlockState state = blockParticle.getState();
+					MutableComponent blockName = state.getBlock().getName();
+					yield Styler.positive(Component.translatable("bettertrims.tooltip.ability.spawn_particles.block", Styler.name(blockName)));
+				}
+				default -> {
+					Registry<ParticleType<?>> registry = VRegistry.get(level, Registries.PARTICLE_TYPE);
+					ResourceLocation particleType = registry.getKey(element.particle().getType());
+					if (particleType == null) yield null;
+
+					yield Styler.name(Component.literal(particleType.toString()));
+				}
+			};
 		}
 	}
 }
