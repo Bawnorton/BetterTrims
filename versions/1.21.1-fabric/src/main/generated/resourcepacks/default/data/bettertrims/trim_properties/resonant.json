@@ -1,0 +1,84 @@
+{
+  "abilities": {
+    "bettertrims:damage": [
+      {
+        "ability": {
+          "type": "bettertrims:multiply",
+          "value": {
+            "type": "bettertrims:linear",
+            "base": 5.0,
+            "per_count_above_first": 5.0
+          }
+        },
+        "requirements": {
+          "chance": 0.05,
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ],
+    "bettertrims:hit_block": [
+      {
+        "ability": {
+          "type": "bettertrims:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:block.amethyst_block.resonate"
+          },
+          "volume": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          }
+        }
+      }
+    ],
+    "bettertrims:incoming_damage": [
+      {
+        "ability": {
+          "type": "bettertrims:multiply",
+          "value": {
+            "type": "bettertrims:clamped",
+            "max": 1.0,
+            "min": 0.0,
+            "value": {
+              "type": "bettertrims:linear",
+              "base": 0.75,
+              "per_count_above_first": -0.25
+            }
+          }
+        },
+        "requirements": {
+          "chance": 0.05,
+          "condition": "minecraft:random_chance"
+        }
+      }
+    ],
+    "bettertrims:post_attack": [
+      {
+        "ability": {
+          "type": "bettertrims:play_sound",
+          "pitch": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          },
+          "sound": {
+            "sound_id": "minecraft:block.amethyst_block.resonate"
+          },
+          "volume": {
+            "type": "minecraft:uniform",
+            "max_exclusive": 1.2,
+            "min_inclusive": 0.8
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:amethyst"
+  }
+}

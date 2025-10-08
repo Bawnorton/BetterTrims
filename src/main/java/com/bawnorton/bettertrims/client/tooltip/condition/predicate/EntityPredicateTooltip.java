@@ -16,6 +16,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.inventory.SlotRange;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;

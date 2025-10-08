@@ -14,8 +14,15 @@
               1.0
             ]
           },
-          "duration": 9.0,
-          "effect": "minecraft:night_vision"
+          "duration": 16.0,
+          "effect": "minecraft:absorption"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "periodic_tick": 300
+          }
         }
       }
     ]

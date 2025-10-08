@@ -6,7 +6,7 @@
           "type": "bettertrims:multiply",
           "value": {
             "type": "bettertrims:linear",
-            "base": 1.0,
+            "base": 1.25,
             "per_count_above_first": 0.25
           }
         }

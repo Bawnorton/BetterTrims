@@ -143,6 +143,10 @@ tasks {
         dependsOn("build")
     }
 
+    build {
+        dependsOn("runData")
+    }
+
     processResources {
         exclude("fabric.mod.json", "bettertrims.fabric.mixins.json")
         exclude { it.name.endsWith(".accesswidener") }

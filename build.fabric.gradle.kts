@@ -144,6 +144,14 @@ tasks {
         dependsOn("build")
     }
 
+    remapJar {
+        dependsOn("runDatagen")
+    }
+
+    named<Jar>("sourcesJar") {
+        dependsOn("runDatagen")
+    }
+
     processResources {
         exclude("META-INF/neoforge.mods.toml")
         exclude { it.name.endsWith("-accesstransformer.cfg") }
