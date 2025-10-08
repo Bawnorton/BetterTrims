@@ -57,11 +57,17 @@ import java.util.function.UnaryOperator;
 
 public interface LootConditionTooltips {
 	static CompositeContainerComponent getTooltip(ClientLevel level, Font font, LootItemCondition condition) {
-		CompositeContainerComponent.Builder root = CompositeContainerComponent.builder().translate("bettertrims.tooltip.condition.if", Styler::condition).space();
 
+		State state = new State();
 		CompositeContainerComponent.Builder conditionBuilder = CompositeContainerComponent.builder();
-		addConditionToTooltip(level, condition, conditionBuilder, new State());
+		addConditionToTooltip(level, condition, conditionBuilder, state);
 		CompositeContainerComponent conditionComponent = conditionBuilder.build();
+
+		CompositeContainerComponent.Builder root = CompositeContainerComponent.builder();
+		if (state.doUseIf()) {
+				root.translate("bettertrims.tooltip.condition.if", Styler::condition)
+						.space();
+		}
 
 		if (conditionComponent.isOneLine()) {
 			return root.component(conditionComponent).build();
@@ -172,6 +178,7 @@ public interface LootConditionTooltips {
 									chanceCycler.textComponent(tooltip);
 								});
 							});
+							state.withUseIf(false);
 						}
 				);
 
@@ -548,6 +555,7 @@ public interface LootConditionTooltips {
 		private final StateEntry inverted = entry("inverted", false, true);
 		private final StateEntry useWith = entry("with", false, true);
 		private final StateEntry prefixSpace = entry("space", true, false);
+		private final StateEntry useIf = entry("if", true, false);
 
 		public static String normalKey() {
 			return "normal";
@@ -574,6 +582,11 @@ public interface LootConditionTooltips {
 			return this;
 		}
 
+		public State withUseIf(boolean useIf) {
+			this.useIf.switchTo(useIf);
+			return this;
+		}
+
 		public boolean doInvert() {
 			return inverted.value();
 		}
@@ -584,6 +597,10 @@ public interface LootConditionTooltips {
 
 		public boolean doUseWith() {
 			return useWith.value();
+		}
+
+		public boolean doUseIf() {
+			return useIf.value();
 		}
 
 		public String key() {
