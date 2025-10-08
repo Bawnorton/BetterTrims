@@ -1,5 +1,6 @@
 package com.bawnorton.bettertrims.client.tooltip.condition;
 
+import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.client.mixin.accessor.CompositeLootItemConditionAccessor;
 import com.bawnorton.bettertrims.client.mixin.accessor.IntRangeAccessor;
 import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
@@ -71,7 +72,7 @@ public interface LootConditionTooltips {
 							Styler.trim(Component.literal("[LSHFT]"))
 					)).getVisualOrderText()),
 					conditionComponent,
-					() -> !Screen.hasShiftDown()
+					() -> !Screen.hasShiftDown() && !BetterTrims.debug
 			)).build()).build();
 		}
 	}

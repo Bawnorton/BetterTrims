@@ -55,7 +55,7 @@ public final class AbilityTooltipRenderer {
 		ClientLevel level = minecraft.level;
 		if (level == null) return;
 
-		if (!Screen.hasAltDown()) {
+		if (!Screen.hasAltDown() && !BetterTrims.debug) {
 			boolean shouldFlip = mouseX + tooltipBounds.getWidth() + 38 > graphics.guiWidth();
 			renderPrompt(graphics, font, tooltipBounds, shouldFlip, background);
 			return;

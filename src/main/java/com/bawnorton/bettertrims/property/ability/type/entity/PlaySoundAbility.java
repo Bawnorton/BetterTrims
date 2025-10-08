@@ -28,8 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volume,
-                               FloatProvider pitch) implements TrimEntityAbility {
+public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volume, FloatProvider pitch) implements TrimEntityAbility {
 	public static final MapCodec<PlaySoundAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			SoundEvent.CODEC.fieldOf("sound").forGetter(PlaySoundAbility::soundEvent),
 			FloatProvider.codec(1.0E-5F, 10.0F).fieldOf("volume").forGetter(PlaySoundAbility::volume),

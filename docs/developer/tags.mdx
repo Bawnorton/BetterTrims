@@ -1,0 +1,48 @@
+# Tags
+
+Better Trims provides a few tags to help with property matching and functionality.
+
+## Trim Material Tags
+These tags are what are used in the provided datapacks to match trim materials.<br/>
+They are located at:
+```
+data/c/tags/trim_material
+```
+
+The entries of each tag should be the registry names of the trim materials (Not what the material is made from) <br/>
+E.g. `c:amethyst`:
+```json5
+{
+    "values": [
+        "minecraft:amethyst" // Not "minecraft:amethyst_shard"
+    ]
+}
+```
+
+| Tag Name    | Description                               |
+|-------------|-------------------------------------------|
+| `amethyst`  | All trim materials made from amethyst     |
+| `copper`    | All trim materials made from copper       |
+| `diamond`   | All trim materials made from diamond      |
+| `emerald`   | All trim materials made from emerald      |
+| `gold`      | All trim materials made from gold         |
+| `iron`      | All trim materials made from iron         |
+| `lapis`     | All trim materials made from lapis lazuli |
+| `netherite` | All trim materials made from netherite    |
+| `quartz`    | All trim materials made from quartz       |
+| `redstone`  | All trim materials made from redstone     |
+| `resin`     | All trim materials made from resin        |
+| `silver`    | All trim materials made from silver       |
+
+
+
+## Entity Type Tags
+| Tag Name                 | Description                                                                                 |
+|--------------------------|---------------------------------------------------------------------------------------------|
+| `conductive_projectiles` | Projectiles that will trigger the Charged proprety abilities (e.g. Trident, Spectral Arrow) |
+
+## Dimension Type Tags
+| Tag Name   | Description                                                          |
+|------------|----------------------------------------------------------------------|
+| `has_sun`  | Dimensions that have a sun (Defaults to just `minecraft:overworld`)  |
+| `has_moon` | Dimensions that have a moon (Defaults to just `minecraft:overworld`) |

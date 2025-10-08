@@ -15,8 +15,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public record TrimValueAbilityRunner<T extends TrimValueAbility>(T ability, Predicate<LootContext> conditionChecker,
-                                                                 Matcher matcher) implements ContextChecker {
+public record TrimValueAbilityRunner<T extends TrimValueAbility>(T ability, Predicate<LootContext> conditionChecker, Matcher matcher) implements ContextChecker {
 	public float runEquipment(ServerLevel level, LivingEntity wearer, float value) {
 		return runEquipment(level, wearer, null, value);
 	}

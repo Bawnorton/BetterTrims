@@ -30,8 +30,7 @@ import java.util.List;
 /*import com.bawnorton.bettertrims.mixin.accessor.ItemStackAccessor;
 *///?}
 
-public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value,
-                               AttributeModifier.Operation operation) implements TrimToggleAbility {
+public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value, AttributeModifier.Operation operation) implements TrimToggleAbility {
 	public static final MapCodec<AttributeAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ResourceLocation.CODEC.fieldOf("id").forGetter(AttributeAbility::id),
 			Attribute.CODEC.fieldOf("attribute").forGetter(AttributeAbility::attribute),

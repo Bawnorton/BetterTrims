@@ -74,11 +74,11 @@ public interface TrimAbilityComponents {
 	);
 	DataComponentType<List<ConditionalElement<TrimValueAbility>>> EXPERIENCE_GAINED = register(
 			"experience_gained",
-			builder -> builder.persistent(ConditionalElement.ability(TrimValueAbility.CODEC, TrimContextParamSets.TRIM_ENTITY).listOf())
+			builder -> builder.persistent(ConditionalElement.ability(TrimValueAbility.CODEC, TrimContextParamSets.TRIM_EQUIPMENT).listOf())
 	);
 	DataComponentType<List<ConditionalElement<TrimValueAbility>>> TRADE_COST = register(
 			"trade_cost",
-			builder -> builder.persistent(ConditionalElement.ability(TrimValueAbility.CODEC, TrimContextParamSets.TRIM_ENTITY).listOf())
+			builder -> builder.persistent(ConditionalElement.ability(TrimValueAbility.CODEC, TrimContextParamSets.TRIM_EQUIPMENT).listOf())
 	);
 	DataComponentType<List<ConditionalElement<PiglinSafeAbility>>> PIGLIN_SAFE = register(
 			"piglin_safe",

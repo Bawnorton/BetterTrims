@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims;
 
 import com.bawnorton.bettertrims.networking.Networking;
+import com.bawnorton.configurable.Configurable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -18,6 +19,9 @@ public final class BetterTrims {
 
 	public static final ResourceLocation DEFAULT = BetterTrims.rl("default");
 	public static final ResourceLocation TRIM_EFFECTS = BetterTrims.rl("trim_effects");
+
+	@Configurable
+	public static boolean debug = false;
 
 	public static void init() {
 		Networking.init();

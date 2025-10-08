@@ -1,0 +1,74 @@
+# Count Based Values
+
+Better Trims provides a flexible system for defining values that scale based on the number of matching trims the player is wearing. These are known as "count-based values".
+
+## Types
+### Constant
+A constant value is a fixed value that does not change based on the number of matching trims.
+```json5
+{
+  "type": "bettertrims:constant",
+  "value": 5.0
+}
+```
+<Callout variant="info" title="Note">
+Constant values can be in-lined directly where a count-based value is expected, without needing to wrap them in an object.
+</Callout>
+
+*Inside a Value Ability:*
+```json5
+{
+  "type": "bettertrims:add",
+  "value": 5.0 // Where a <count-based-value> is expected a constant can be used directly
+}
+```
+### Linear
+A linear value scales linearly with the number of matching trims.
+```json5
+{
+    "type": "bettertrims:linear",
+    "base": 2.0, // The base value when 1 matching trim is present
+    "per_count_above_first": 1.5, // The amount to add for each additional matching trim above the first
+}
+```
+### Clamped
+A clamped value accepts another count-based value and clamps it between a minimum and maximum value.
+```json5
+{
+    "type": "bettertrims:clamped",
+    "value": <count-based-value>,
+    "min": 1.0,
+    "max": 10.0
+}
+```
+### Count Squared
+A count squared value scales with the square of the number of matching trims, plus a constant.
+```json5
+{
+    "type": "bettertrims:count_squared",
+    "constant": 3.0
+}
+```
+### Fraction
+A fraction value divides a count-based value by another count-based value.
+```json5
+{
+    "type": "bettertrims:fraction",
+    "numerator": <count-based-value>,
+    "denominator": <count-based-value>
+}
+```
+<Callout variant="warning" title="Warning">
+If the denominator evaluates to 0, the entire fraction will evaluate to 0 to avoid division by zero errors.
+</Callout>
+
+### Lookup
+A lookup value uses a predefined list of values, where the index corresponds to the count of matching trims.
+It also accepts a count-based value as a fallback, which is used if the count exceeds the length of the lookup list.
+```json5
+{
+    "type": "bettertrims:lookup",
+    "values": [0.0, 1.5, 3.0, 5.0],
+    "fallback": <count-based-value>
+}
+```

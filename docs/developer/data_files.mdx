@@ -1,0 +1,25 @@
+# Trim Property Data Files
+
+The Better Trims property data files are stored in the following structure:
+```markdown
+data/
+  <namespace>/
+    bettertrims/
+        trim_properties/
+            <property_name>.json
+            <property_name_2>.json
+            ...
+  <other_namespace>/
+    bettertrims/
+        trim_properties/
+            <property_name>.json
+            <property_name_2>.json
+            ...
+```
+The name of the property is determined by the filename of the JSON file.
+
+The translation key for the property is inferred from the namespace and property name as follows:
+```markdown
+bettertrims.property.<namespace>.<property_name>
+```
+This key is what the property's name will be translated to in-game.

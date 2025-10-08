@@ -19,8 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public record TrimEntityAbilityRunner<T extends TrimEntityAbility>(T ability, Predicate<LootContext> conditionChecker,
-                                                                   Matcher matcher) implements ContextChecker {
+public record TrimEntityAbilityRunner<T extends TrimEntityAbility>(T ability, Predicate<LootContext> conditionChecker, Matcher matcher) implements ContextChecker {
 	public void runTick(ServerLevel level, LivingEntity wearer, Entity target, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
 		Map<EquipmentSlot, ItemStack> matchingStacks = matcher.getMatchingStacks(wearer);
 		TrimmedItems items = TrimmedItems.of(matchingStacks, wearer);

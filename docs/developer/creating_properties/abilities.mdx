@@ -1,0 +1,465 @@
+# Abilities
+
+Better Trims provides many built-in abilities of varying types.
+
+### Count Based Values
+A lot of the abilities use "count-based values". These are values that scale based on the number of matching trims the player is wearing.
+See [Count Based Values]($creating-properties/count_based_values) for more information.
+
+## Ability Types
+### Value Abilities
+Abilities that modify the numerical value of a specific ability component. I.e. Incoming Damage, Trade Offer Costs, etc.
+
+<details>
+    <summary>
+        #### Add Value
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:add",
+        "value": <count-based-value>
+    }
+    ```
+</details>
+<details>
+    <summary>
+        #### Multiply Value
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:multiply",
+        "value": <count-based-value>
+    }
+    ```
+</details>
+<details>
+    <summary>
+        #### Set Value
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:set",
+        "value": <count-based-value>
+    }
+    ```
+</details>
+<details>
+    <summary>
+        #### Remove Binomial
+    </summary>
+    Chance to subtract the value provided by the component by 1, based on a binomial distribution.
+    ```json5
+    {
+        "type": "bettertrims:remove_binomial",
+        "chance": <count-based-value>
+    }
+    ```
+
+</details>
+<details>
+    <summary>
+        #### All Of
+    </summary>
+    Combines multiple value abilities together. The abilities are applied in the order they are listed and the result of one ability is passed to the next.
+    ```json5
+    {
+        "type": "bettertrims:all_of",
+        "abilities": [
+            {
+                "type": "<value_ability_type>",
+                // Ability specific fields here
+            },
+            {
+                "type": "<value_ability_type>",
+                // Ability specific fields here
+            }
+        ]
+    }
+    ```
+</details>
+
+### Event Abilities
+Abilities that trigger on specific events, such as after attacking, when the game ticks, when hitting a block, etc.
+
+<details>
+    <summary>
+        #### Apply Status Effect
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:apply_mob_effect",
+        "effect": "<namespace>:<effect_id>",
+        "duration": <count-based-value>,
+        "amplifier": <count-based-value>
+    }
+    ```
+    | Field       | Type              | Required | Description                                                                                  |
+    |-------------|-------------------|----------|----------------------------------------------------------------------------------------------|
+    | `effect`    | string            | Yes      | The ID of the status effect to apply (see [Status Effect](https://minecraft.wiki/w/Effect)). |
+    | `duration`  | count-based-value | Yes      | The duration of the effect in seconds.                                                       |
+    | `amplifier` | count-based-value | Yes      | The amplifier level of the effect (0 for level 1, 1 for level 2, etc.).                      |
+</details>
+<details>
+    <summary>
+        #### Change Item Damage
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:change_item_damage",
+        "amount": <count-based-value>
+    }
+    ```
+    | Field   | Type              | Required | Description                                                     |
+    |---------|-------------------|----------|-----------------------------------------------------------------|
+    | `amount`| count-based-value | Yes      | The amount to change the item's damage by (negative to repair). |
+</details>
+<details>
+    <summary>
+        #### Damage Entity
+    </summary>
+    Deals between `min_damage` and `max_damage` damage of `damage_type` to the entity in context.
+    ```json5
+    {
+        "type": "bettertrims:damage_entity",
+        "min_damage": <count-based-value>,
+        "max_damage": <count-based-value>,
+        "damage_type": "<namespace>:<damage_type_id>"
+    }
+    ```
+    | Field        | Type              | Required | Description                                                                           |
+    |--------------|-------------------|----------|---------------------------------------------------------------------------------------|
+    | `min_damage` | count-based-value | Yes      | The minimum amount of damage to deal.                                                 |
+    | `max_damage` | count-based-value | Yes      | The maximum amount of damage to deal.                                                 |
+    | `damage_type`| string            | Yes      | The type of damage to deal (see [Damage Type](https://minecraft.wiki/w/Damage_type)). |
+
+    <Callout variant="warning" title="Warning">
+        If this is used in a `post_attack` ability, the damage may not be applied as expected as the target may have invulnerability frames.
+    </Callout>
+</details>
+<details>
+    <summary>
+        #### Explode
+    </summary>
+
+    ```json5
+    {
+        "type": "bettertrims:explode",
+        "attribute_to_wearer": <boolean>,
+        "damage_type": "<namespace>:<damage_type_id>",
+        "knockback_multiplier": <count-based-value>,
+        "immune_blocks": "#<namespace>:<tag_id>",
+        "offset": <vector>,
+        "radius": <count-based-value>,
+        "create_fire": <boolean>,
+        "block_interaction": "<block_interaction_type>"
+        "small_particle": "<namespace>:<particle_type_id>",
+        "large_particle": "<namespace>:<particle_type_id>",
+        "sound": "<namespace>:<sound_event_id>"
+    }
+    ```
+    | Field                  | Type              | Required | Description                                                                                                                                                                                                       |
+    |------------------------|-------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `attribute_to_wearer`  | boolean           | No       | Whether the explosion should be attributed to the wearer. Defaults to false.                                                                                                                                      |
+    | `damage_type`          | string            | No       | The type of damage to deal (see [Damage Type](https://minecraft.wiki/w/Damage_type)). If not provided, the explosion will not deal damage.                                                                        |
+    | `knockback_multiplier` | count-based-value | No       | The multiplier for knockback applied by the explosion. Defaults to 1.0.                                                                                                                                           |
+    | `immune_blocks`        | string            | No       | A tag of blocks that the explosion will not destroy regardless of the explosion's strength.                                                                                                                       |
+    | `offset`               | vector            | No       | The offset from the context position to create the explosion at. Defaults to (0, 0, 0).                                                                                                                           |
+    | `radius`               | count-based-value | Yes      | The radius of the explosion.                                                                                                                                                                                      |
+    | `create_fire`          | boolean           | No       | Whether the explosion should create fire. Defaults to false.                                                                                                                                                      |
+    | `block_interaction`    | string            | Yes      | How the explosion should interact with blocks. One of `none` (no effect), `block` (like a bed explosion), `mob` (like a creeper explosion), `tnt` (like tnt explosion), `trigger` (like a wind-charge explosion). |
+    | `small_particle`       | string            | Yes      | The small particles in the explosion effect (see [Particles](https://minecraft.wiki/w/Particles_(Java_Edition))).                                                                                                 |
+    | `large_particle`       | string            | Yes      | The large particles in the explosion effect (see [Particles](https://minecraft.wiki/w/Particles_(Java_Edition))).                                                                                                 |
+    | `sound`                | string            | Yes      | The sound to play when the explosion occurs.                                                                                                                                                                      |
+</details>
+<details>
+    <summary>
+        #### Ignite
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:ignite",
+        "duration": <count-based-value>
+    }
+    ```
+    | Field      | Type              | Required | Description                                             |
+    |------------|-------------------|----------|---------------------------------------------------------|
+    | `duration` | count-based-value | Yes      | The duration to set the entity on fire for, in seconds. |
+</details>
+<details>
+    <summary>
+        #### Play Sound
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:play_sound",
+        "sound": "<namespace>:<sound_event_id>",
+        "volume": <float-provider>,
+        "pitch": <float-provider>
+    }
+    ```
+    | Field   | Type               | Required | Description                                                                                                  |
+    |---------|--------------------|----------|--------------------------------------------------------------------------------------------------------------|
+    | `sound` | string             | Yes      | The sound event to play.                                                                                     |
+    | `volume`| float-provider     | Yes      | The volume of the sound (see [Float Provider](https://minecraft.wiki/w/Configured_feature/float_provider)).  |
+    | `pitch` | float-provider     | Yes      | The pitch of the sound (see [Float Provider](https://minecraft.wiki/w/Configured_feature/float_provider)).   |
+</details>
+<details>
+    <summary>
+        #### Replace Block
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:replace_block",
+        "offset": <vector>,
+        "predicate": <block-predicate>,
+        "block_state": <block-state-provider>
+        "trigger_game_event": "<namespace>:<game_event_id>",
+        "replace_translation_key": "<lang_key>"
+        "offset_translation_key": "<lang_key>"
+        "with_translation_key": "<lang_key>"
+    }
+    ```
+    | Field                     | Type                 | Required | Description                                                                                                                                                     |
+    |---------------------------|----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `offset`                  | vector               | No       | The offset from the context position to replace the block at. Defaults to (0, 0, 0).                                                                            |
+    | `predicate`               | block-predicate      | No       | A predicate that the block to replace must match. If not provided, any block can be replaced (see [Block Predicate](https://minecraft.wiki/w/Block_predicate)). |
+    | `block_state`             | block-state-provider | Yes      | The block state to replace the block with (see [Block State Provider](https://minecraft.wiki/w/Block_state_provider)).                                          |
+    | `trigger_game_event`      | string               | No       | A game event to trigger at the position of the replaced block (see [Game Event](https://minecraft.wiki/w/Sculk_Sensor#Vibration_frequencies)).                  |
+    | `replace_translation_key` | string               | No       | A translation key for the replaced block to use in the ability tooltip. Eg. "Lit Redstone Lamp"                                                                 |
+    | `offset_translation_key`  | string               | No       | A translation key for the offset to use in the ability tooltip. Eg. "Below"                                                                                     |
+    | `with_translation_key`    | string               | No       | A translation key for the new block state to use in the ability tooltip. Eg. "Glowstone"                                                                        |
+</details>
+<details>
+    <summary>
+        #### Replace Disk
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:replace_disk",
+        "radius": <count-based-value>,
+        "height": <count-based-value>,
+        "offset": <vector>,
+        "predicate": <block-predicate>,
+        "block_state": <block-state-provider>
+        "replace_translation_key": "<lang_key>"
+        "offset_translation_key": "<lang_key>"
+        "with_translation_key": "<lang_key>"
+    }
+    ```
+    | Field                     | Type                 | Required | Description                                                                                                                                                     |
+    |---------------------------|----------------------|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `radius`                  | count-based-value    | Yes      | The radius of the disk to replace blocks in.                                                                                                                    |
+    | `height`                  | count-based-value    | Yes      | The height of the disk to replace blocks in.                                                                                                                    |
+    | `offset`                  | vector               | No       | The offset from the context position to replace the block at. Defaults to (0, 0, 0).                                                                            |
+    | `predicate`               | block-predicate      | No       | A predicate that the block to replace must match. If not provided, any block can be replaced (see [Block Predicate](https://minecraft.wiki/w/Block_predicate)). |
+    | `block_state`             | block-state-provider | Yes      | The block state to replace the block with (see [Block State Provider](https://minecraft.wiki/w/Block_state_provider)).                                          |
+    | `trigger_game_event`      | string               | No       | A game event to trigger at the position of the replaced block (see [Game Event](https://minecraft.wiki/w/Sculk_Sensor#Vibration_frequencies)).                  |
+    | `replace_translation_key` | string               | No       | A translation key for the replaced block to use in the ability tooltip. Eg. "Lit Redstone Lamp"                                                                 |
+    | `offset_translation_key`  | string               | No       | A translation key for the offset to use in the ability tooltip. Eg. "Below"                                                                                     |
+    | `with_translation_key`    | string               | No       | A translation key for the new block state to use in the ability tooltip. Eg. "Glowstone"                                                                        |
+</details>
+<details>
+    <summary>
+        #### Run Function
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:run_function",
+        "function": "<namespace>:<function_id>",
+        "tooltip_translation_key": "<lang_key>"
+    }
+    ```
+    | Field                     | Type   | Required | Description                                                                   |
+    |---------------------------|--------|----------|-------------------------------------------------------------------------------|
+    | `function`                | string | Yes      | The ID of the function to run.                                                |
+    | `tooltip_translation_key` | string | Yes      | A translation key for the ability tooltip to describe the function being run. |
+</details>
+<details>
+    <summary>
+        #### Set Block Properties
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:set_block_properties",
+        "properties": {
+            "<property_name>": "<property_value>",
+            ...
+        },
+        "offset": <vector>,
+        "trigger_game_event": "<namespace>:<game_event_id>",
+        "properties_translation_key": "<lang_key>"
+        "offset_translation_key": "<lang_key>"
+    }
+    ```
+    | Field                        | Type                 | Required | Description                                                                                                                           |
+    |------------------------------|----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------|
+    | `properties`                 | object               | Yes      | The block properties to set on the block (see [Block States](https://minecraft.wiki/w/Block_states)).                                 |
+    | `offset`                     | vector               | No       | The offset from the context position to set the block properties at. Defaults to (0, 0, 0).                                           |
+    | `trigger_game_event`         | string               | No       | A game event to trigger at the position of the block (see [Game Event](https://minecraft.wiki/w/Sculk_Sensor#Vibration_frequencies)). |
+    | `properties_translation_key` | string               | Yes      | A translation key for the block properties to use in the ability tooltip. Eg. "Facing North, Lit"                                     |
+    | `offset_translation_key`     | string               | Yes      | A translation key for the offset to use in the ability tooltip. Eg. "Below"                                                           |
+</details>
+<details>
+    <summary>
+        #### Spawn Particles
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:spawn_particles",
+        "particle": "<namespace>:<particle_type_id>",
+        "horizontal_position": <position-source>,
+        "vertical_position": <position-source>,
+        "horizontal_velocity": <velocity-source>,
+        "vertical_velocity": <velocity-source>
+        "speed": <float-provider>
+    }
+    ```
+    | Field                 | Type              | Required | Description                                                                                                            |
+    |-----------------------|-------------------|----------|------------------------------------------------------------------------------------------------------------------------|
+    | `particle`            | string            | Yes      | The particle type to spawn (see [Particles](https://minecraft.wiki/w/Particles_(Java_Edition))).                       |
+    | `horizontal_position` | position-source   | Yes      | The source for the horizontal position to spawn the particles at (see below).                                          |
+    | `vertical_position`   | position-source   | Yes      | The source for the vertical position to spawn the particles at (see below).                                            |
+    | `horizontal_velocity` | velocity-source   | Yes      | The source for the horizontal velocity of the spawned particles (see below).                                           |
+    | `vertical_velocity`   | velocity-source   | Yes      | The source for the vertical velocity of the spawned particles (see below).                                             |
+    | `speed`               | float-provider    | Yes      | The speed of the spawned particles (see [Float Provider](https://minecraft.wiki/w/Configured_feature/float_provider)). |
+
+    **Position Source:**
+    ```json5
+    {
+        "type": "<position_source_type>",
+        "offset": <float>,
+        "scale": <float>
+    }
+    ```
+    | Field   | Type    | Required | Description                                                                                                                                  |
+    |---------|---------|----------|----------------------------------------------------------------------------------------------------------------------------------------------|
+    | `type`  | string  | Yes      | One of `entity_position` (spawn at position of entity) or `in_bounding_box` (spawn at random position inside the bounding box of the entity) |
+    | `offset`| float   | No       | An offset to add to the position. Defaults to 0.                                                                                             |
+    | `scale` | float   | No       | A scale to multiply the `in_bounding_box` random position by. Defaults to 1. Only used if `type` is `in_bounding_box`.                       |
+
+    **Velocity Source:**
+    ```json5
+    {
+        "base": <float-provider>,
+        "movement_scale": <float>
+    }
+    ```
+    | Field            | Type          | Required | Description                                                                                                                                |
+    |------------------|---------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------|
+    | `base`           | float-provider | No      | A base velocity to add to the particle. Defaults to 0. (see [Float Provider](https://minecraft.wiki/w/Configured_feature/float_provider)). |
+    | `movement_scale` | float          | No      | A scale to multiply the entity's movement by and add to the particle's velocity. Defaults to 1.                                            |
+</details>
+<details>
+    <summary>
+        #### Summon Entity
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:summon_entity",
+        "entity": "<namespace>:<entity_id>"
+    }
+    ```
+    | Field   | Type   | Required | Description                     |
+    |---------|--------|----------|---------------------------------|
+    | `entity`| string | Yes      | The ID of the entity to summon. |
+    <Callout variant="info" title="Note">
+        If the entity is a lightning bolt, it will be attributed to the wearer.
+    </Callout>
+</details>
+<details>
+    <summary>
+        #### All Of
+    </summary>
+    Combines multiple event abilities together. The abilities are applied in the order they are listed.
+    ```json5
+    {
+        "type": "bettertrims:all_of",
+        "abilities": [
+            {
+                "type": "<event_ability_type>",
+                // Ability specific fields here
+            },
+            {
+                "type": "<event_ability_type>",
+                // Ability specific fields here
+            }
+        ]
+    }
+    ```
+</details>
+
+### Toggle Abilities
+Abilities that are active while the property is equipped, this is mostly useful for attribute modifiers.
+<details>
+    <summary>
+        #### Attribute
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:attribute",
+        "attribute": "<namespace>:<attribute_id>",
+        "value": <count-based-value>,
+        "operation": "<operation_type>"
+    }
+    ```
+    | Field       | Type              | Required | Description                                                                                         |
+    |-------------|-------------------|----------|-----------------------------------------------------------------------------------------------------|
+    | `attribute` | string            | Yes      | The ID of the attribute to modify (see [Attribute](https://minecraft.wiki/w/Attribute)).            |
+    | `value`     | count-based-value | Yes      | The value to modify the attribute by.                                                               |
+    | `operation` | string            | Yes      | The operation to perform (see [Operation](https://minecraft.wiki/w/Attribute#Operations)).          |
+</details>
+<details>
+    <summary>
+        #### Toggle Status Effect
+    </summary>
+    ```json5
+    {
+        "type": "bettertrims:toggle_mob_effect",
+        "effect": "<namespace>:<effect_id>",
+        "amplifier": <count-based-value>,
+        "visible": <boolean>
+    }
+    ```
+    | Field       | Type              | Required | Description                                                                                     |
+    |-------------|-------------------|----------|-------------------------------------------------------------------------------------------------|
+    | `effect`    | string            | Yes      | The ID of the status effect to apply (see [Status Effect](https://minecraft.wiki/w/Effet)).     |
+    | `amplifier` | count-based-value | Yes      | The amplifier level of the effect (0 for level 1, 1 for level 2, etc.).                         |
+    | `visible`   | boolean           | No       | Whether the effect should be visible on the player (particles and icon). Defaults to true.      |
+    <Callout variant="warning" title="Warning">
+        Based on the nature of status effects, when unequipping the property any pre-existing effects of the same type will also be removed.
+    </Callout>
+</details>
+<details>
+    <summary>
+        #### All Of
+    </summary>
+    Combines multiple toggle abilities together. The abilities are applied in the order they are listed.
+    ```json5
+    {
+        "type": "bettertrims:all_of",
+        "abilities": [
+            {
+                "type": "<toggle_ability_type>",
+                // Ability specific fields here
+            },
+            {
+                "type": "<toggle_ability_type>",
+                // Ability specific fields here
+            }
+        ]
+    }
+    ```
+</details>
+
+### Flag Abilities
+Abilities that toggle a boolean flag, such as Damage Immunity or Piglin Safety do not require any additional parameters.<br/>
+Flag abilities are simply defined by the component type:
+```json5
+{
+    "bettertrims:piglin_safe": [
+        {
+            "ability": {}
+        }
+    ]
+}
+```

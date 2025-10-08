@@ -1,0 +1,85 @@
+# Components
+
+Better Trims provides a variety of property components that can be used determine how a trim ability or item property
+behaves.
+
+All components are optional, and each component can have multiple abilities or properties using it.
+Additionally, each ability or property can have optional requirements that must be met for it to activate.
+
+See [Abilities]($creating-properties/abilities) and [Item Properties]($creating-properties/item_properties )for more information on how to define abilities and item properties.
+
+## Structure
+```json5
+{
+    "abilities": {
+        "<ability_component>": [
+            {
+                "ability": {
+                    "type": "<ability_type>",
+                    // Ability specific fields here
+                },
+                "requirements": {
+                    // Optional requirements that must be met for the ability to activate
+                }
+            }
+        ],
+        "<ability_component_2>": [
+            ...
+        ],
+        ...
+    },
+    "item_properties": {
+        "<item_property_component>": [
+            {
+                "item_property": {
+                    "type": "<property_type>",
+                    // Property specific fields here
+                },
+                "requirements": {
+                    // Optional requirements that must be met for the property to activate
+                }
+            }
+        ],
+        "<item_property_component_2>": [
+            ...
+        ],
+        ...
+    }
+}
+```
+### Fields
+| Field           | Type   | Required | Description                                                                                                                                                 |
+|-----------------|--------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `<component>`   | array  | No       | The component name. Each component can have multiple abilities or properties using it.                                                                      |
+| `ability`       | object | Yes      | The ability object defining the ability granted by the component.                                                                                           |
+| `item_property` | object | Yes      | The item property object defining the item property granted by the component.                                                                               |
+| `requirements`  | object | No       | Optional requirements that must be met for the ability or property to activate. See [Requirements]($creating-properties/requirements) for more information. |
+
+
+## Ability Components
+| Component Name         | Type   | Description                                                          |
+|------------------------|--------|----------------------------------------------------------------------|
+| `incoming_damage`      | value  | Modifies the amount of damage the wearer takes.                      |
+| `damage_immunity`      | flag   | Makes the wearer immune to incoming damage.                          |
+| `damage`               | value  | Increases the damage dealt by the wearer.                            |
+| `armour_effectiveness` | value  | Modifies the effectiveness of the target's armour.                   |
+| `post_attack`          | event  | Runs after the wearer attacks an entity.                             |
+| `hit_block`            | event  | Runs when the wearer hits a block.                                   |
+| `item_damage`          | value  | Modifies the amount of durability damage the item takes.             |
+| `equipped`             | toggle | Activate while the property is equipped.                             |
+| `tick`                 | event  | Runs every tick while the property is active.                        |
+| `second`               | event  | Runs every second while the property is active.                      |
+| `projectile_tick`      | event  | Runs every tick while a projectile fired by the wearer is in flight. |
+| `experience_gained`    | value  | Modifies the amount of experience the wearer gains.                  |
+| `trade_cost`           | value  | Modifies the cost of trades with villagers.                          |
+| `piglin_safe`          | flag   | Makes the wearer safe from Piglin aggression.                        |
+
+
+## Item Property Components
+| Component Name    | Type | Description                             |
+|-------------------|------|-----------------------------------------|
+| `damage_immunity` | flag | Makes the item entity immune to damage. |
+
+<Callout variant="info" title="Note">
+ More item property components may be added in future updates. Only the `damage_immunity` component is currently implemented as there hasn't been a need for more.
+</Callout>

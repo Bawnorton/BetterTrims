@@ -1,0 +1,142 @@
+# Requirements
+
+Requirements are a cruical part of defining how and when an ability or item property activates.
+They allow you to set conditions that must be met for the ability or property to function.
+
+## Requirement Contexts
+Contexts define the situations in which requirements are evaluated.
+<Callout variant="warning" title="Warning">
+    Not all requirements fit all ability or item property types as some may not make sense in certain contexts. Consult the
+    below tables to see what context each ability or item property type supports.
+</Callout>
+
+#### Parameters:
+| Parameter Name            | Description                                                                                                                                            |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `this_entity`             | The entity in context. For example in `post_attack` this is the entity that was hit, in `piglin_safe` this is the piglin                               |
+| `items`                   | The list of all items that granted the property. (Mostly unused)                                                                                       |
+| `origin`                  | The origin in context. For example in `hit_block` this is the position of the block that was hit, in `tick` this is the position of the wearer         |
+| `damage_source`           | The damage source, useful for filtering by damage type.                                                                                                |
+| `direct_attacking_entity` | The direct entity that caused the damage. For example the arrow shot from a bow.                                                                       |
+| `attacking_entity`        | The entity that caused the damage. For example the player that shot the arrow.                                                                         |
+| `tool`                    | The tool in context. For example in `hit_block` this is the item used to hit the block, in `item_damage` its the item that is about to lose durability |
+| `block_state`             | The state of the block that was hit.                                                                                                                   |
+
+### For Abilities
+| Context Name               | Applicable To                                                                         | Provides Parameters                                                                                      |
+|----------------------------|---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| `trim_entity`              | `tick`, `second`, `projectile_tick`, `piglin_safe`                                    | `this_entity`, `items`, `origin`                                                                         |
+| `trim_damage`              | `incoming_damage`, `damage_immunity`, `damage`, `armour_effectiveness`, `post_attack` | `this_entity`, `items`, `origin`, `damage_source`, `direct_attacking_entity`, `attacking_entity`, `tool` |
+| `trim_equipment`           | `item_damage`, `equipped`, `experience_gained`, `trade_cost`                          | `this_entity`, `items`, `origin`, `tool`                                                                 |
+| `hit_block_with_held_item` | `hit_block`                                                                           | `this_entity`, `items`, `origin`, `block_state`, `tool`                                                  |
+
+### For Item Properties
+| Context Name       | Applicable To     | Provides Parameters                                                                             |
+|--------------------|-------------------|-------------------------------------------------------------------------------------------------|
+| `trim_item_damage` | `damage_immunity` | `this_entity`, `origin`, `damage_source`, `direct_attacking_entity`, `attacking_entity`, `tool` |
+
+## Structure
+```json5
+{
+    "<ability_component>": [
+        {
+            "ability": {...},
+            "requirements": {
+                "type": "<requirement_type>",
+                // Requirement specific fields here
+            }
+        }
+    ],
+}
+```
+
+<Callout title="Note">
+    Since there are many types of requirements, refer to the [Predicate](https://minecraft.wiki/Predicate) page for detailed information on each type and its specific fields.
+    The parameters needed are stated on each type's documentation.
+</Callout>
+
+## Examples:
+### Example 1: Damage Immunity to Lightning Damage
+```json5
+{
+  "bettertrims:damage_immunity": [
+    {
+      "ability": {},
+      "requirements": {
+        "condition": "minecraft:damage_source_properties",
+        "predicate": {
+          "tags": [
+            {
+              "expected": true,
+              "id": "minecraft:is_lightning"
+            },
+            {
+              "expected": false,
+              "id": "minecraft:bypasses_invulnerability"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+### Example 2: Invisible When Still
+```json5
+{
+  "bettertrims:equipped": [
+    {
+      "ability": {
+        "type": "bettertrims:toggle_mob_effect",
+        "effect": "minecraft:invisibility",
+        "amplifier": 0,
+        "visible": false
+      },
+      "requirements": {
+        "condition": "minecraft:entity_properties",
+        "entity": "this",
+        "predicate": {
+          "movement": {
+            "speed": {
+              "max": 0.1
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+```
+### Example 3: Extra Damage During Day in Sunlit Dimensions
+```json5
+{
+  "bettertrims:damage": [
+    {
+      "ability": {
+        "type": "bettertrims:add",
+        "value": {
+          "type": "bettertrims:liner",
+          "base": 2.0,
+          "per_count_above_first": 1.0
+        }
+      },
+      "requirements": {
+        "condition": "minecraft:all_of",
+        "terms": [
+          {
+            "condition": "minecraft:time_check",
+            "period": 24000,
+            "value": {
+              "max": 13000.0
+            }
+          },
+          {
+            "condition": "bettertrims:dimension_check",
+            "dimensions": "#bettertrims:has_sun"
+          }
+        ]
+      }
+    }
+  ]
+}
+```

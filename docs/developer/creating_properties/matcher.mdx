@@ -1,0 +1,24 @@
+# Matcher
+
+The matcher section of a property, denoted by the `trim` key, determines which armour trims the property applies to
+and how many of those trims must be present for the property to activate.
+
+## Structure
+The structure of the matcher section is as follows:
+```json5
+{
+  "trim": {
+    "material": "example:copper",
+    "pattern": "example:silence",
+    "min_count": 2
+  }
+}
+```
+### Fields
+| Field       | Type               | Required        | Description                                                                                                 |
+|-------------|--------------------|-----------------|-------------------------------------------------------------------------------------------------------------|
+| `material`  | string or string[] | No <sup>1</sup> | The trim material(s) to match. Can be a single material id, a tag (prefixed with `#`), or a list of either. |
+| `pattern`   | string or string[] | No <sup>1</sup> | The trim pattern(s) to match. Can be a single pattern id, a tag (prefixed with `#`), or a list of either.   |
+| `min_count` | integer            | No              | The minimum number of matching trims that must be present for the property to activate. Defaults to 1.      |
+
+1. One of `material` or `pattern` must be provided. If both are provided, a trim must match both to be counted.

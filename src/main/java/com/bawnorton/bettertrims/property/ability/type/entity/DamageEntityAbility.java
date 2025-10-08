@@ -31,8 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public record DamageEntityAbility(CountBasedValue minDamage, CountBasedValue maxDamage,
-                                  Holder<DamageType> damageType) implements TrimEntityAbility {
+public record DamageEntityAbility(CountBasedValue minDamage, CountBasedValue maxDamage, Holder<DamageType> damageType) implements TrimEntityAbility {
 	public static final MapCodec<DamageEntityAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			CountBasedValue.CODEC.fieldOf("min_damage").forGetter(DamageEntityAbility::minDamage),
 			CountBasedValue.CODEC.fieldOf("max_damage").forGetter(DamageEntityAbility::maxDamage),
