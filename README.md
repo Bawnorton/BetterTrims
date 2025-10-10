@@ -7,7 +7,7 @@ BetterTrims 4.0
 
 :warning: For 3.0 go [here](<https://github.com/Bawnorton/BetterTrims/blob/stonecutter/README.md>) :warning: For 2.0 go [here](<https://github.com/Bawnorton/BetterTrims/blob/main/README.md>) :warning:
 
-#### See the [Wiki](https://moddedmc.wiki/en/project/bettertrims/latest/docs) for Developer Documentaion and User Information about the included Datapacks.
+#### See the [Wiki](https://moddedmc.wiki/en/project/bettertrims/latest/docs) for Developer Documentaion (adding your own effects) and User Information about the included Datapacks.
 
 ### Features
 #### Bespoke Data-Driven Armour Trim Property System
