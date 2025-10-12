@@ -17,7 +17,7 @@ import java.util.Map;
 
 //? if fabric {
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-//?} else {
+ //?} else {
 /*import net.neoforged.neoforge.network.handling.IPayloadContext;
 *///?}
 

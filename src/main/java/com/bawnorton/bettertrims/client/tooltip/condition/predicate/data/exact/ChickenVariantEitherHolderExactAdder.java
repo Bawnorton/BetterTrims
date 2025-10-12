@@ -10,7 +10,7 @@ import net.minecraft.world.item.EitherHolder;
 public class ChickenVariantEitherHolderExactAdder implements ExactAdder<EitherHolder<ChickenVariant>> {
 	@Override
 	public void addToBuilder(ClientLevel level, EitherHolder<ChickenVariant> object, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-
+		// TODO
 	}
 }
 //?}

@@ -15,10 +15,9 @@ import net.minecraft.world.item.equipment.trim.ArmorTrim;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.minecraft.world.item.equipment.trim.TrimPattern;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public record Matcher(HolderSet<TrimMaterial> material, HolderSet<TrimPattern> pattern, int minCount) {
+public final class Matcher {
 	public static final Codec<Matcher> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			HolderSetCodec.create(Registries.TRIM_MATERIAL, TrimMaterial.CODEC, false)
 					.optionalFieldOf("material", HolderSet.empty())
@@ -30,6 +29,18 @@ public record Matcher(HolderSet<TrimMaterial> material, HolderSet<TrimPattern> p
 					.optionalFieldOf("min_count", 1)
 					.forGetter(Matcher::minCount)
 	).apply(instance, Matcher::new));
+
+	private final HolderSet<TrimMaterial> material;
+	private final HolderSet<TrimPattern> pattern;
+	private final int minCount;
+
+	private final Map<ArmorTrim, Boolean> matchingCache = new WeakHashMap<>();
+
+	public Matcher(HolderSet<TrimMaterial> material, HolderSet<TrimPattern> pattern, int minCount) {
+		this.material = material;
+		this.pattern = pattern;
+		this.minCount = minCount;
+	}
 
 	public static Matcher forMaterial(HolderSet<TrimMaterial> material, int minCount) {
 		return new Matcher(material, HolderSet.empty(), minCount);
@@ -66,10 +77,51 @@ public record Matcher(HolderSet<TrimMaterial> material, HolderSet<TrimPattern> p
 	}
 
 	public boolean matches(ArmorTrim trim) {
+		if(matchingCache.containsKey(trim)) {
+			return matchingCache.get(trim);
+		}
+
 		Holder<TrimMaterial> material = trim.material();
 		Holder<TrimPattern> pattern = trim.pattern();
 		boolean matchesMaterial = this.material.contains(material) || (!(this.material instanceof HolderSet.Named) && this.material.size() == 0);
 		boolean matchesPattern = this.pattern.contains(pattern) || (!(this.pattern instanceof HolderSet.Named) && this.pattern.size() == 0);
-		return matchesMaterial && matchesPattern;
+		boolean result = matchesMaterial && matchesPattern;
+		matchingCache.put(trim, result);
+		return result;
+	}
+
+	public HolderSet<TrimMaterial> material() {
+		return material;
+	}
+
+	public HolderSet<TrimPattern> pattern() {
+		return pattern;
+	}
+
+	public int minCount() {
+		return minCount;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj == null || obj.getClass() != this.getClass()) return false;
+		var that = (Matcher) obj;
+		return Objects.equals(this.material, that.material) &&
+				Objects.equals(this.pattern, that.pattern) &&
+				this.minCount == that.minCount;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(material, pattern, minCount);
+	}
+
+	@Override
+	public String toString() {
+		return "Matcher[" +
+				"material=" + material + ", " +
+				"pattern=" + pattern + ", " +
+				"minCount=" + minCount + ']';
 	}
 }

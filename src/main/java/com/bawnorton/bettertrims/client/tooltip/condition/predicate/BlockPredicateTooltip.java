@@ -29,11 +29,11 @@ public interface BlockPredicateTooltip {
 		}
 
 		//? if >=1.21.8 {
-    DataComponentMatchers components = predicate.components();
-    if (!components.isEmpty()) {
-        addDataComponentMatchersToBuilder(level, components, state, builder);
-    }
-    //?}
+		DataComponentMatchers components = predicate.components();
+		if (!components.isEmpty()) {
+			addDataComponentMatchersToBuilder(level, components, state, builder);
+		}
+		//?}
 
 		Optional<NbtPredicate> nbt = predicate.nbt();
 		if (nbt.isPresent()) {
@@ -55,10 +55,10 @@ public interface BlockPredicateTooltip {
 	}
 
 	//? if >=1.21.8 {
-  static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-      DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
-  }
-  //?}
+	static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
+	}
+	//?}
 
 	static void addNbtPredicateToBuilder(ClientLevel level, NbtPredicate nbt, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
 		EntityPredicateTooltip.addNbtPredicateToBuilder(level, key("nbt"), nbt, state, builder);

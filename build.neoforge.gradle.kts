@@ -40,7 +40,7 @@ neoForge {
     accessTransformers.from(rootProject.file("src/main/resources/$minecraft-accesstransformer.cfg"))
 
     mods {
-        register("bettertrims") {
+        register(mod("id")!!) {
             sourceSet(sourceSets["main"])
         }
     }

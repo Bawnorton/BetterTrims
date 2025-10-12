@@ -1,0 +1,19 @@
+{
+  "abilities": {
+    "bettertrims:trade_cost": [
+      {
+        "ability": {
+          "type": "bettertrims:multiply",
+          "value": {
+            "type": "bettertrims:linear",
+            "base": 0.9,
+            "per_count_above_first": -0.1
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:emerald"
+  }
+}

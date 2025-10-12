@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-public record TrimmedItems(Map<EquipmentSlot, ItemStack> stacks, LivingEntity owner,
-                           BiConsumer<Item, EquipmentSlot> onBreak) implements Iterable<Map.Entry<EquipmentSlot, ItemStack>> {
+public record TrimmedItems(Map<EquipmentSlot, ItemStack> stacks, LivingEntity owner, BiConsumer<Item, EquipmentSlot> onBreak) implements Iterable<Map.Entry<EquipmentSlot, ItemStack>> {
 	public static TrimmedItems of(Map<EquipmentSlot, ItemStack> stacks, LivingEntity owner) {
 		return new TrimmedItems(stacks, owner, owner::onEquippedItemBroken);
 	}

@@ -17,11 +17,11 @@ public record StackedComponent(List<? extends ClientTooltipComponent> components
 	}
 
 	@Override
-			//? if >=1.21.8 {
+		//? if >=1.21.8 {
 	public int getHeight(Font font) {
-	 //?} else {
-	/*public int getHeight() {
-		*///?}
+		//?} else {
+		/*public int getHeight() {
+		 *///?}
 		return 16;
 	}
 
@@ -31,28 +31,28 @@ public record StackedComponent(List<? extends ClientTooltipComponent> components
 	}
 
 	//? if >=1.21.8 {
-    @Override
-    public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
-        if (components.isEmpty()) return;
+	@Override
+	public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
+		if (components.isEmpty()) return;
 
-        int currentOffset = components.size() - 1;
-        for (ClientTooltipComponent component : components) {
-            component.renderImage(font, x + (offset * currentOffset), y, width, height, graphics);
-            currentOffset--;
-        }
-    }
+		int currentOffset = components.size() - 1;
+		for (ClientTooltipComponent component : components) {
+			component.renderImage(font, x + (offset * currentOffset), y, width, height, graphics);
+			currentOffset--;
+		}
+	}
 
-    @Override
-    public void renderText(GuiGraphics guiGraphics, Font font, int x, int y) {
-        if (components.isEmpty()) return;
+	@Override
+	public void renderText(GuiGraphics guiGraphics, Font font, int x, int y) {
+		if (components.isEmpty()) return;
 
-        int currentOffset = components.size() - 1;
-        for (ClientTooltipComponent component : components) {
-            component.renderText(guiGraphics, font, x + (offset * currentOffset), y);
-            currentOffset--;
-        }
-    }
-    //?} else {
+		int currentOffset = components.size() - 1;
+		for (ClientTooltipComponent component : components) {
+			component.renderText(guiGraphics, font, x + (offset * currentOffset), y);
+			currentOffset--;
+		}
+	}
+	//?} else {
 
 	/*@Override
 	public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {

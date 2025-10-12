@@ -23,12 +23,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 //? if <1.21.8 {
 /*import com.bawnorton.bettertrims.mixin.accessor.ItemStackAccessor;
-*///?}
+ *///?}
 
 public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute, CountBasedValue value, AttributeModifier.Operation operation) implements TrimToggleAbility {
 	public static final MapCodec<AttributeAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -77,9 +78,9 @@ public record AttributeAbility(ResourceLocation id, Holder<Attribute> attribute,
 				int count = i;
 				//? if >=1.21.8 {
 				ItemAttributeModifiers.Display.attributeModifiers().apply(
-				//?} else {
-				/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
-				 *///?}
+						//?} else {
+						/*((ItemStackAccessor) (Object) ItemStack.EMPTY).bettertrims$addModifierTooltip(
+						 *///?}
 						component -> {
 							if (includeCount && !distinct) {
 								component = Styler.trim(Component.literal("[%d]".formatted(count)))

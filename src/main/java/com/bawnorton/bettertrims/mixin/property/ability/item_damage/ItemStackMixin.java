@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 abstract class ItemStackMixin {
 	//? if fabric {
 	@ModifyExpressionValue(
-			//? if 1.21.8 {
+			//? if >=1.21.8 {
 			method = "processDurabilityChange",
-			//?} elif 1.21.1 {
+			//?} else {
 			/*method = "hurtAndBreak(ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V",
 			*///?}
 			at = @At(

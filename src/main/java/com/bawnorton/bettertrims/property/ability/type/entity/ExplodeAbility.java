@@ -32,6 +32,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+//? if >=1.21.10 {
+import net.minecraft.core.particles.ExplosionParticleInfo;
+import net.minecraft.util.random.WeightedList;
+//?}
+
 public record ExplodeAbility(
 		boolean attributeToWearer,
 		Optional<Holder<DamageType>> damageType,
@@ -43,6 +48,9 @@ public record ExplodeAbility(
 		Level.ExplosionInteraction blockInteraction,
 		ParticleOptions smallParticle,
 		ParticleOptions largeParticle,
+		//? if >=1.21.10 {
+		WeightedList<ExplosionParticleInfo> blockParticles,
+		//?}
 		Holder<SoundEvent> sound
 ) implements TrimEntityAbility {
 	public static final MapCodec<ExplodeAbility> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -56,6 +64,9 @@ public record ExplodeAbility(
 			Level.ExplosionInteraction.CODEC.fieldOf("block_interaction").forGetter(ExplodeAbility::blockInteraction),
 			ParticleTypes.CODEC.fieldOf("small_particle").forGetter(ExplodeAbility::smallParticle),
 			ParticleTypes.CODEC.fieldOf("large_particle").forGetter(ExplodeAbility::largeParticle),
+			//? if >=1.21.10 {
+			WeightedList.codec(ExplosionParticleInfo.CODEC).optionalFieldOf("block_particles", WeightedList.of()).forGetter(ExplodeAbility::blockParticles),
+			//?}
 			SoundEvent.CODEC.fieldOf("sound").forGetter(ExplodeAbility::sound)
 	).apply(instance, ExplodeAbility::new));
 
@@ -79,6 +90,9 @@ public record ExplodeAbility(
 				blockInteraction,
 				smallParticle,
 				largeParticle,
+				//? if >=1.21.10 {
+				blockParticles,
+				//?}
 				sound
 		);
 	}

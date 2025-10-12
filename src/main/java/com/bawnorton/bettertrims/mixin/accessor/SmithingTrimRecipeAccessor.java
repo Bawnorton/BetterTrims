@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(SmithingTrimRecipe.class)
 public interface SmithingTrimRecipeAccessor {
 	//? if >=1.21.8 {
-    @Accessor("pattern")
-    Holder<TrimPattern> bettertrims$pattern();
-    //?} else {
+	@Accessor("pattern")
+	Holder<TrimPattern> bettertrims$pattern();
+	//?} else {
 	/*@Accessor("template")
 	Ingredient bettertrims$template();
 	*///?}

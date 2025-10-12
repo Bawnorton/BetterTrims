@@ -52,7 +52,8 @@ public class Networking {
 		ServerPlayNetworking.send(player, payload);
 	}
 	//?} else {
-	/*public static void init() {}
+	/*public static void init() {
+	}
 
 	@SubscribeEvent
 	public static void registerPackets(RegisterPayloadHandlersEvent event) {
@@ -62,7 +63,7 @@ public class Networking {
 
 	@SubscribeEvent
 	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-		if(!(event.getEntity() instanceof ServerPlayer player)) return;
+		if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
 		send(player, new TrimPatternSourcePayload(patternProviders));
 	}

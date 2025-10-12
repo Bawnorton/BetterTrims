@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//? if 1.21.8 {
+//? if >=1.21.8 {
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.util.ARGB;
 //?} else {
@@ -54,8 +54,14 @@ public final class AbilityTooltipRenderer {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientLevel level = minecraft.level;
 		if (level == null) return;
+		if (!hasProperties(level, trim)) return;
 
-		if (!Screen.hasAltDown() && !BetterTrims.debug) {
+		//? if >=1.21.10 {
+		boolean hasAltDown = Minecraft.getInstance().hasAltDown();
+		//?} else {
+		/*boolean hasAltDown = Screen.hasAltDown();
+		*///?}
+		if (!hasAltDown && !BetterTrims.debug) {
 			boolean shouldFlip = mouseX + tooltipBounds.getWidth() + 38 > graphics.guiWidth();
 			renderPrompt(graphics, font, tooltipBounds, shouldFlip, background);
 			return;
@@ -77,6 +83,15 @@ public final class AbilityTooltipRenderer {
 			}
 			renderError(graphics, font, tooltipBounds, shouldFlip, background);
 		}
+	}
+
+	private static boolean hasProperties(ClientLevel level, ArmorTrim trim) {
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			if (property.matcher().matches(trim)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static void renderProperties(GuiGraphics graphics, ClientLevel level, Font font, ArmorTrim trim, Rect2i tooltipBounds, boolean horizontallyFlipped, ResourceLocation background) {

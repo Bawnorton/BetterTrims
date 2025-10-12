@@ -34,6 +34,7 @@ public final class PartialDataComponentPredicateTooltipAdders {
 		register(DataComponentPredicates.POTIONS, new PotionsPredicatePartialAdder());
 		register(DataComponentPredicates.WRITABLE_BOOK, new WritableBookPartialAdder());
 		register(DataComponentPredicates.WRITTEN_BOOK, new WrittenBookPartialAdder());
+		register(DataComponentPredicates.JUKEBOX_PLAYABLE, new JukeboxPlayablePartialAdder());
 	}
 
 	private static <T extends /*$ item_data_predicate >>*/ DataComponentPredicate > void register(/*$ item_data_predicate >>*/ DataComponentPredicate .Type<T> type, PartialAdder<T> adder) {

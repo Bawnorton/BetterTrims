@@ -42,11 +42,11 @@ public record DamageEntityAbility(CountBasedValue minDamage, CountBasedValue max
 	public void apply(ServerLevel level, LivingEntity wearer, Entity target, TrimmedItems items, @Nullable EquipmentSlot targetSlot, Vec3 origin) {
 		int count = items.size();
 		float damage = Mth.randomBetween(target.getRandom(), minDamage.calculate(count), maxDamage.calculate(count));
-		//? if 1.21.8 {
+		//? if >=1.21.8 {
 		target.hurtServer(level, new DamageSource(damageType, wearer), damage);
-		 //?} elif 1.21.1 {
+		 //?} else {
 		/*target.hurt(new DamageSource(damageType, wearer), damage);
-		*///?}
+		 *///?}
 	}
 
 	@Override

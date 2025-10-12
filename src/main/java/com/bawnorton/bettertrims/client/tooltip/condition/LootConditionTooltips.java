@@ -22,6 +22,7 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
@@ -65,8 +66,8 @@ public interface LootConditionTooltips {
 
 		CompositeContainerComponent.Builder root = CompositeContainerComponent.builder();
 		if (state.doUseIf()) {
-				root.translate("bettertrims.tooltip.condition.if", Styler::condition)
-						.space();
+			root.translate("bettertrims.tooltip.condition.if", Styler::condition)
+					.space();
 		}
 
 		if (conditionComponent.isOneLine()) {
@@ -78,7 +79,11 @@ public interface LootConditionTooltips {
 							Styler.trim(Component.literal("[LSHFT]"))
 					)).getVisualOrderText()),
 					conditionComponent,
-					() -> !Screen.hasShiftDown() && !BetterTrims.debug
+					//? if >=1.21.10 {
+					() -> !Minecraft.getInstance().hasShiftDown() && !BetterTrims.debug
+					//?} else {
+					/*() -> !Screen.hasShiftDown() && !BetterTrims.debug
+					*///?}
 			)).build()).build();
 		}
 	}

@@ -15,18 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Properties {Material Provider Icon - Pattern Provider Icon} - [1/n]
- * Any of [Slots]
- * {Ability Icon} {Name} - [Conditions]
- * ...
- * N of [Slots]
- * {Ability Icon} {Name} - [Conditions]
- * ...
- * As Item
- * {Property Icon} {Name} - [Conditions]
- * ...
- */
 public class TrimPropertiesTooltip {
 	private final Map<Matcher, List<TrimProperty>> properties;
 	private final List<TrimTooltipPage> pages;

@@ -22,18 +22,19 @@ import java.util.function.Consumer;
 @Mixin(EnchantmentHelper.class)
 abstract class EnchantmentHelperMixin {
 	@Inject(
-			//? if 1.21.8 {
+			//? if >=1.21.8 {
 			method = "doPostAttackEffectsWithItemSourceOnBreak",
-			//?} elif 1.21.1 {
+			//?} else {
 			/*method = "doPostAttackEffectsWithItemSource",
 			*///?}
 			at = @At("TAIL")
 	)
-	private static void doTrimPostAttackAbilities(CallbackInfo ci,
-	                                              @Local(argsOnly = true) ServerLevel level,
-	                                              @Local(argsOnly = true) Entity entity,
-	                                              @Local(argsOnly = true) DamageSource damageSource,
-	                                              @Local(argsOnly = true) ItemStack itemSource
+	private static void doTrimPostAttackAbilities(
+			CallbackInfo ci,
+			@Local(argsOnly = true) ServerLevel level,
+			@Local(argsOnly = true) Entity entity,
+			@Local(argsOnly = true) DamageSource damageSource,
+			@Local(argsOnly = true) ItemStack itemSource
 	) {
 		Entity source = damageSource.getEntity();
 		if (!(source instanceof LivingEntity wearer)) return;

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.animal.wolf.WolfSoundVariant;
 public final class WolfSoundVariantHolderExactAdder implements ExactAdder<Holder<WolfSoundVariant>> {
 	@Override
 	public void addToBuilder(ClientLevel level, Holder<WolfSoundVariant> object, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-
+		// TODO
 	}
 }
 //?}

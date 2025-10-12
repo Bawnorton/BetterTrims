@@ -18,41 +18,45 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >=1.21.8 {
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
- //?}
+		//?}
 
 @MixinEnvironment("client")
 @Mixin(LivingEntityRenderer.class)
 //? if >=1.21.8 {
 abstract class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>> {
-    @SuppressWarnings("InvalidInjectorMethodSignature")
-    @WrapOperation(
-        method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z"
-        )
-    )
-    private boolean dontRenderLayersOnTrueInvisible(LivingEntityRenderer<T, S, M> instance, S renderState, Operation<Boolean> original) {
-        if (renderState instanceof LivingEntityRenderStateExtension extension && extension.bettertrims$isTrulyInvisible()) {
-            return false;
-        }
-        return original.call(instance, renderState);
-    }
+	@SuppressWarnings("InvalidInjectorMethodSignature")
+	@WrapOperation(
+			//? if >=1.21.10 {
+			method = "submit(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V",
+			//?} else {
+			/*method = "render(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
+			*///?}
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;shouldRenderLayers(Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;)Z"
+			)
+	)
+	private boolean dontRenderLayersOnTrueInvisible(LivingEntityRenderer<T, S, M> instance, S renderState, Operation<Boolean> original) {
+		if (renderState instanceof LivingEntityRenderStateExtension extension && extension.bettertrims$isTrulyInvisible()) {
+			return false;
+		}
+		return original.call(instance, renderState);
+	}
 
-    @Inject(
-        method = "extractRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;F)V",
-        at = @At("TAIL")
-    )
-    private void extractExtendedState(T livingEntity, S renderState, float f, CallbackInfo ci) {
-        if(renderState instanceof LivingEntityRenderStateExtension extension) {
-            AttributeInstance attribute = livingEntity.getAttribute(BetterTrimsAttributes.TRUE_INVISIBILITY);
-            if (attribute == null) {
-                extension.bettertrims$setTrulyInvisible(false);
-            } else {
-                extension.bettertrims$setTrulyInvisible(attribute.getValue() >= 1);
-            }
-        }
-    }
+	@Inject(
+			method = "extractRenderState(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/client/renderer/entity/state/LivingEntityRenderState;F)V",
+			at = @At("TAIL")
+	)
+	private void extractExtendedState(T livingEntity, S renderState, float f, CallbackInfo ci) {
+		if (renderState instanceof LivingEntityRenderStateExtension extension) {
+			AttributeInstance attribute = livingEntity.getAttribute(BetterTrimsAttributes.TRUE_INVISIBILITY);
+			if (attribute == null) {
+				extension.bettertrims$setTrulyInvisible(false);
+			} else {
+				extension.bettertrims$setTrulyInvisible(attribute.getValue() >= 1);
+			}
+		}
+	}
 }
 //?} else {
 /*abstract class LivingEntityRendererMixin {

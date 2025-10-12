@@ -45,6 +45,7 @@ fun getSwaps() = listOf(
     Swap("writable_book_predicate", "<1.21.8", "WritableBookPredicate", "ItemWritableBookPredicate"),
     Swap("written_book_predicate", "<1.21.8", "WrittenBookPredicate", "ItemWrittenBookPredicate"),
     Swap("attribute_modifiers_predicate", "<1.21.8", "AttributeModifiersPredicate", "ItemAttributeModifiersPredicate"),
+    Swap("jukebox_playable_predicate", "<1.21.8", "JukeboxPlayablePredicate", "ItemJukeboxPlayablePredicate"),
     Swap("trim_predicate", "<1.21.8", "TrimPredicate", "ItemTrimPredicate")
 )
 
@@ -79,5 +80,6 @@ fun getReplacements() = listOf(
     Replacement("<1.21.8", "net.minecraft.core.component.predicates.WritableBookPredicate", "net.minecraft.advancements.critereon.ItemWritableBookPredicate"),
     Replacement("<1.21.8", "net.minecraft.core.component.predicates.WrittenBookPredicate", "net.minecraft.advancements.critereon.ItemWrittenBookPredicate"),
     Replacement("<1.21.8", "net.minecraft.core.component.predicates.AttributeModifiersPredicate", "net.minecraft.advancements.critereon.ItemAttributeModifiersPredicate"),
+    Replacement("<1.21.8", "net.minecraft.core.component.predicates.JukeboxPlayablePredicate", "net.minecraft.advancements.critereon.ItemJukeboxPlayablePredicate"),
     Replacement("<1.21.8", "net.minecraft.core.component.predicates.TrimPredicate", "net.minecraft.advancements.critereon.ItemTrimPredicate")
 )

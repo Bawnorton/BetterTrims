@@ -20,7 +20,7 @@ public interface EntitySubPredicateTooltip {
 			case RaiderPredicate raiderPredicate -> addRaiderPredicateToBuilder(level, raiderPredicate, state, builder);
 			//? if >=1.21.8 {
 			case SheepPredicate sheepPredicate -> addSheepPredicateToBuilder(level, sheepPredicate, state, builder);
-			 //?}
+			//?}
 			default -> builder.translate(key("unknown"), Styler::negative);
 		}
 	}
@@ -75,16 +75,16 @@ public interface EntitySubPredicateTooltip {
 	}
 
 	//? if >=1.21.8 {
-    static void addSheepPredicateToBuilder(ClientLevel level, SheepPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-        Optional<Boolean> sheared = predicate.sheared();
-        if (sheared.isPresent()) {
-            builder.component(CompositeContainerComponent.builder()
-                .space()
-                .translate(key("sheep.sheared.%s".formatted(sheared.orElse(false) ? "true" : "false")), Styler::value)
-                .build());
-        }
-    }
-    //?}
+	static void addSheepPredicateToBuilder(ClientLevel level, SheepPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		Optional<Boolean> sheared = predicate.sheared();
+		if (sheared.isPresent()) {
+			builder.component(CompositeContainerComponent.builder()
+					.space()
+					.translate(key("sheep.sheared.%s".formatted(sheared.orElse(false) ? "true" : "false")), Styler::value)
+					.build());
+		}
+	}
+	//?}
 
 	static void addSlimePredicateToBuilder(ClientLevel level, SlimePredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
 		MinMaxBounds.Ints size = predicate.size();

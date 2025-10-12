@@ -1,7 +1,6 @@
 package com.bawnorton.bettertrims.data;
 
 //? if fabric {
-
 import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.data.provider.BetterTrimsDimensionTypeTagProvider;
 import com.bawnorton.bettertrims.data.provider.BetterTrimsEntityTypeTagProvider;
@@ -12,10 +11,12 @@ import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.DetectedVersion;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.util.InclusiveRange;
 
 import java.util.Optional;
 
@@ -28,40 +29,51 @@ public final class BetterTrimsDataGen implements DataGeneratorEntrypoint {
 		mainPack.addProvider(TrimMaterialTagsProvider::new);
 		mainPack.addProvider(BetterTrimsEntityTypeTagProvider::new);
 		mainPack.addProvider(BetterTrimsDimensionTypeTagProvider::new);
+		mainPack.addProvider((FabricDataGenerator.Pack.Factory<PackMetadataGenerator>) output ->
+				getMetadataGenerator(output, "${mod_description}")
+		);
 
 		FabricDataGenerator.Pack defaultPack = fabricDataGenerator.createBuiltinResourcePack(BetterTrims.DEFAULT);
 		defaultPack.addProvider(BetterTrimsRegistriesDataProvider::new);
-		defaultPack.addProvider((FabricDataGenerator.Pack.Factory<PackMetadataGenerator>) output -> new PackMetadataGenerator(output)
-				.add(
-						PackMetadataSection.TYPE,
-						new PackMetadataSection(
-								Component.literal("Default Better Trims Datapack"),
-								//? if >=1.21.8 {
-								DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
-								//?} else {
-								/*DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-								*///?}
-								Optional.empty()
-						)
-				)
+		defaultPack.addProvider((FabricDataGenerator.Pack.Factory<PackMetadataGenerator>) output ->
+				getMetadataGenerator(output, "Default Better Trims Datapack")
 		);
 
 		FabricDataGenerator.Pack trimEffectsDatapack = fabricDataGenerator.createBuiltinResourcePack(BetterTrims.TRIM_EFFECTS);
 		trimEffectsDatapack.addProvider(BetterTrimsTrimEffectsRegistriesDataProvider::new);
-		trimEffectsDatapack.addProvider((FabricDataGenerator.Pack.Factory<PackMetadataGenerator>) output -> new PackMetadataGenerator(output)
+		trimEffectsDatapack.addProvider((FabricDataGenerator.Pack.Factory<PackMetadataGenerator>) output ->
+				getMetadataGenerator(output, "Better Trims Trim Effects Datapack")
+		);
+	}
+
+	private PackMetadataGenerator getMetadataGenerator(PackOutput output, String description) {
+		//? if >=1.21.10 {
+		return new PackMetadataGenerator(output)
+				.add(
+						PackMetadataSection.SERVER_TYPE,
+						new PackMetadataSection(
+								Component.literal(description),
+								InclusiveRange.create(
+										DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
+										DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA)
+								).getOrThrow()
+						)
+				);
+		//?} else {
+		/*return new PackMetadataGenerator(output)
 				.add(
 						PackMetadataSection.TYPE,
 						new PackMetadataSection(
-								Component.literal("Better Trims Trim Effects Datapack"),
+								Component.literal(description),
 								//? if >=1.21.8 {
 								DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
 								//?} else {
-								/*DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-								*///?}
+								/^DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+								 ^///?}
 								Optional.empty()
 						)
-				)
-		);
+				);
+		*///?}
 	}
 }
 //?} else if neoforge {
@@ -74,6 +86,7 @@ import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
@@ -90,66 +103,71 @@ import java.util.concurrent.CompletableFuture;
 
 //? if <1.21.8 {
 /^import net.neoforged.neoforge.common.data.ExistingFileHelper;
-^///?}
+ ^///?}
 
 @EventBusSubscriber(modid = BetterTrims.MOD_ID)
 public final class BetterTrimsDataGen {
-    @SubscribeEvent
-    //? if >=1.21.8 {
-    public static void gatherData(GatherDataEvent.Server event) {
-    //?} else {
-    /^public static void gatherData(GatherDataEvent event) {
-		^///?}
-			DataGenerator gen = event.getGenerator();
-	    CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-			//? if <1.21.8 {
-      /^ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-			^///?}
-
-	    PackOutput mainPack = gen.getPackOutput();
+	@SubscribeEvent
 			//? if >=1.21.8 {
-	    gen.addProvider(true, new TrimMaterialTagsProvider(mainPack, lookupProvider));
-	    gen.addProvider(true, new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider));
-	    gen.addProvider(true, new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider));
-	    //?} else {
-			/^gen.addProvider(true, new TrimMaterialTagsProvider(mainPack, lookupProvider, existingFileHelper));
-			gen.addProvider(true, new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
-			gen.addProvider(true, new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
-	    ^///?}
+	public static void gatherData(GatherDataEvent.Server event) {
+		//?} else {
+		/^public static void gatherData(GatherDataEvent event) {
+		 ^///?}
+		DataGenerator gen = event.getGenerator();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+		//? if <1.21.8 {
+		/^ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+		 ^///?}
 
-	    DataGenerator.PackGenerator defaultPack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.DEFAULT.getPath());
-			defaultPack.addProvider(output -> new BetterTrimsRegistriesDataProvider(output, lookupProvider));
-			defaultPack.addProvider(output -> new PackMetadataGenerator(output)
-					.add(
-							PackMetadataSection.TYPE,
-							new PackMetadataSection(
-									Component.literal("Default Better Trims Datapack"),
-									//? if >=1.21.8 {
-									DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
-									//?} else {
-									/^DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-									^///?}
-									Optional.empty()
-							)
-					)
-			);
+		PackOutput mainPack = gen.getPackOutput();
+		//? if >=1.21.8 {
+		gen.addProvider(true, new TrimMaterialTagsProvider(mainPack, lookupProvider));
+		gen.addProvider(true, new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider));
+		gen.addProvider(true, new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider));
+		//?} else {
+		/^gen.addProvider(true, new TrimMaterialTagsProvider(mainPack, lookupProvider, existingFileHelper));
+		gen.addProvider(true, new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
+		gen.addProvider(true, new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
+    ^///?}
+		gen.addProvider(true, getMetadataGenerator(mainPack, "${mod_description}"));
 
-	    DataGenerator.PackGenerator trimEffectsDatapack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.TRIM_EFFECTS.getPath());
-			trimEffectsDatapack.addProvider(output -> new BetterTrimsTrimEffectsRegistriesDataProvider(output, lookupProvider));
-			trimEffectsDatapack.addProvider(output -> new PackMetadataGenerator(output)
-					.add(
-							PackMetadataSection.TYPE,
-							new PackMetadataSection(
-									Component.literal("Better Trims Trim Effects Datapack"),
-									//? if >=1.21.8 {
-									DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
-									//?} else {
-									/^DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-									^///?}
-									Optional.empty()
-							)
-					)
-			);
-    }
+		DataGenerator.PackGenerator defaultPack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.DEFAULT.getPath());
+		defaultPack.addProvider(output -> new BetterTrimsRegistriesDataProvider(output, lookupProvider));
+		defaultPack.addProvider(output -> getMetadataGenerator(output, "Default Better Trims Datapack"));
+
+		DataGenerator.PackGenerator trimEffectsDatapack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.TRIM_EFFECTS.getPath());
+		trimEffectsDatapack.addProvider(output -> new BetterTrimsTrimEffectsRegistriesDataProvider(output, lookupProvider));
+		trimEffectsDatapack.addProvider(output -> getMetadataGenerator(output, "Better Trims Trim Effects Datapack"));
+	}
+
+	private static PackMetadataGenerator getMetadataGenerator(PackOutput output, String description) {
+		//? if >=1.21.10 {
+		return new PackMetadataGenerator(output)
+				.add(
+						PackMetadataSection.SERVER_TYPE,
+						new PackMetadataSection(
+								Component.literal(description),
+								InclusiveRange.create(
+										DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
+										DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA)
+								).getOrThrow()
+						)
+				);
+		//?} else {
+		/^return new PackMetadataGenerator(output)
+				.add(
+						PackMetadataSection.TYPE,
+						new PackMetadataSection(
+								Component.literal(description),
+								//? if >=1.21.8 {
+								DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
+								//?} else {
+								/^¹DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+						¹^///?}
+				Optional.empty()
+						)
+				);
+		^///?}
+	}
 }
 *///?}

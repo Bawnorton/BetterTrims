@@ -20,10 +20,10 @@ public record ConditionalElement<T extends TrimElement>(T element, Optional<Loot
 							ValidationContext validationContext = new ValidationContext(collector, contextKeySet);
 							lootItemCondition.validate(validationContext);
 							//? if >=1.21.8 {
-              return collector.isEmpty() ?
-                  DataResult.success(lootItemCondition) :
-                  DataResult.error(() -> "Validation error in trim element condition: " + collector.getReport());
-              //?} else {
+							return collector.isEmpty() ?
+									DataResult.success(lootItemCondition) :
+									DataResult.error(() -> "Validation error in trim element condition: " + collector.getReport());
+							//?} else {
 							/*return collector.getReport()
 									.map(string -> DataResult.<LootItemCondition>error(() -> "Validation error in trim element condition: " + string))
 									.orElseGet(() -> DataResult.success(lootItemCondition));

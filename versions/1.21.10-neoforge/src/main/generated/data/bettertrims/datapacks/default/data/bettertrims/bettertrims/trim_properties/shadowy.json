@@ -1,0 +1,113 @@
+{
+  "abilities": {
+    "bettertrims:damage": [
+      {
+        "ability": {
+          "type": "bettertrims:multiply",
+          "value": {
+            "type": "bettertrims:linear",
+            "base": 1.25,
+            "per_count_above_first": 0.25
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "movement": {
+              "speed": {
+                "max": 0.1
+              }
+            }
+          }
+        }
+      }
+    ],
+    "bettertrims:equipped": [
+      {
+        "ability": {
+          "type": "bettertrims:attribute",
+          "attribute": "bettertrims:true_invisibility",
+          "id": "bettertrims:trim_true_invisibility",
+          "operation": "add_value",
+          "value": 1.0
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "movement": {
+              "speed": {
+                "max": 0.1
+              }
+            }
+          }
+        }
+      }
+    ],
+    "bettertrims:tick": [
+      {
+        "ability": {
+          "type": "bettertrims:spawn_particles",
+          "horizontal_position": {
+            "type": "in_bounding_box"
+          },
+          "horizontal_velocity": {
+            "movement_scale": -0.2
+          },
+          "particle": {
+            "type": "minecraft:trial_spawner_detection"
+          },
+          "speed": 0.5,
+          "vertical_position": {
+            "type": "in_bounding_box"
+          },
+          "vertical_velocity": {
+            "base": 0.1
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "movement": {
+              "speed": {
+                "min": 0.1
+              }
+            }
+          }
+        }
+      },
+      {
+        "ability": {
+          "type": "bettertrims:spawn_particles",
+          "horizontal_position": {
+            "type": "in_bounding_box"
+          },
+          "horizontal_velocity": {},
+          "particle": {
+            "type": "minecraft:ash"
+          },
+          "vertical_position": {
+            "type": "in_bounding_box"
+          },
+          "vertical_velocity": {}
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "movement": {
+              "speed": {
+                "max": 0.1
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:resin"
+  }
+}

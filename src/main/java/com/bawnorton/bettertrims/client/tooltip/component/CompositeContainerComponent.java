@@ -48,16 +48,16 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 	}
 
 	//? if >=1.21.8 {
-  @Override
-  public boolean showTooltipWithItemInHand() {
-      for (ClientTooltipComponent component : components) {
-          if (component.showTooltipWithItemInHand()) {
-              return true;
-          }
-      }
-      return false;
-  }
-  //?}
+	@Override
+	public boolean showTooltipWithItemInHand() {
+		for (ClientTooltipComponent component : components) {
+			if (component.showTooltipWithItemInHand()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	//?}
 
 	@Override
 	public String toString() {
@@ -205,17 +205,17 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		@Override
-		//? if >=1.21.8 {
-    public int getHeight(Font font) {
-        int maxHeight = 0;
-        for (ClientTooltipComponent component : components) {
-            if (component.getHeight(font) > maxHeight) {
-                maxHeight = component.getHeight(font);
-            }
-        }
-        return maxHeight;
-    }
-    //?} else {
+				//? if >=1.21.8 {
+		public int getHeight(Font font) {
+			int maxHeight = 0;
+			for (ClientTooltipComponent component : components) {
+				if (component.getHeight(font) > maxHeight) {
+					maxHeight = component.getHeight(font);
+				}
+			}
+			return maxHeight;
+		}
+		//?} else {
 		/*public int getHeight() {
 			int maxHeight = 0;
 			for (ClientTooltipComponent component : components) {
@@ -250,32 +250,32 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		//? if >=1.21.8 {
-    @Override
-    public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
-        int currentX = x;
-        for (ClientTooltipComponent component : components) {
-            int componentWidth = component.getWidth(font);
-            component.renderImage(font, currentX, y, componentWidth, height, graphics);
-            currentX += componentWidth;
-        }
-    }
+		@Override
+		public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
+			int currentX = x;
+			for (ClientTooltipComponent component : components) {
+				int componentWidth = component.getWidth(font);
+				component.renderImage(font, currentX, y, componentWidth, height, graphics);
+				currentX += componentWidth;
+			}
+		}
 
-    @Override
-    public void renderText(GuiGraphics graphics, Font font, int x, int y) {
-        int currentX = x;
-        int height = getHeight(font);
-        for (ClientTooltipComponent component : components) {
-            int componentWidth = component.getWidth(font);
-            if(centred) {
-                int componentHeight = component.getHeight(font);
-                component.renderText(graphics, font, currentX, y + (height - componentHeight) / 2);
-            } else {
-                component.renderText(graphics, font, currentX, y);
-            }
-            currentX += componentWidth;
-        }
-    }
-    //?} else {
+		@Override
+		public void renderText(GuiGraphics graphics, Font font, int x, int y) {
+			int currentX = x;
+			int height = getHeight(font);
+			for (ClientTooltipComponent component : components) {
+				int componentWidth = component.getWidth(font);
+				if (centred) {
+					int componentHeight = component.getHeight(font);
+					component.renderText(graphics, font, currentX, y + (height - componentHeight) / 2);
+				} else {
+					component.renderText(graphics, font, currentX, y);
+				}
+				currentX += componentWidth;
+			}
+		}
+		//?} else {
 		/*@Override
 		public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
 			int currentX = x;
@@ -320,15 +320,15 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		@Override
-		//? if >=1.21.8 {
-    public int getHeight(Font font) {
-        int totalHeight = 0;
-        for (ClientTooltipComponent component : components) {
-            totalHeight += component.getHeight(font);
-        }
-        return totalHeight;
-    }
-    //?} else {
+				//? if >=1.21.8 {
+		public int getHeight(Font font) {
+			int totalHeight = 0;
+			for (ClientTooltipComponent component : components) {
+				totalHeight += component.getHeight(font);
+			}
+			return totalHeight;
+		}
+		//?} else {
 		/*public int getHeight() {
 			int totalHeight = 0;
 			for (ClientTooltipComponent component : components) {
@@ -350,30 +350,30 @@ public abstract class CompositeContainerComponent implements CompositeComponent 
 		}
 
 		//? if >=1.21.8 {
-    @Override
-    public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
+		@Override
+		public void renderImage(Font font, int x, int y, int width, int height, GuiGraphics graphics) {
 			int currentY = y;
 			int offsetX = x - horizontalOffset;
-	    for (int i = 0; i < components.size(); i++) {
-		    ClientTooltipComponent component = components.get(i);
-		    int componentHeight = component.getHeight(font);
-		    component.renderImage(font, i == 0 ? x : offsetX, currentY, width, componentHeight, graphics);
-		    currentY += componentHeight;
-	    }
-    }
+			for (int i = 0; i < components.size(); i++) {
+				ClientTooltipComponent component = components.get(i);
+				int componentHeight = component.getHeight(font);
+				component.renderImage(font, i == 0 ? x : offsetX, currentY, width, componentHeight, graphics);
+				currentY += componentHeight;
+			}
+		}
 
-    @Override
-    public void renderText(GuiGraphics graphics, Font font, int x, int y) {
+		@Override
+		public void renderText(GuiGraphics graphics, Font font, int x, int y) {
 			int currentY = y;
 			int offsetX = x - horizontalOffset;
-	    for (int i = 0; i < components.size(); i++) {
-		    ClientTooltipComponent component = components.get(i);
-		    int componentHeight = component.getHeight(font);
+			for (int i = 0; i < components.size(); i++) {
+				ClientTooltipComponent component = components.get(i);
+				int componentHeight = component.getHeight(font);
 				component.renderText(graphics, font, i == 0 ? x : offsetX, currentY);
-		    currentY += componentHeight;
-	    }
-    }
-    //?} else {
+				currentY += componentHeight;
+			}
+		}
+		//?} else {
 		/*@Override
 		public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
 			int currentY = y;

@@ -39,13 +39,13 @@ public record PlaySoundAbility(Holder<SoundEvent> soundEvent, FloatProvider volu
 
 	public static Component getSoundName(Registry<SoundEvent> registry, Holder<SoundEvent> soundHolder) {
 		ResourceLocation sound = soundHolder.unwrap().map(ResourceKey::location, registry::getKey);
-		if(sound == null) {
+		if (sound == null) {
 			SoundEvent soundEvent = soundHolder.unwrap().map(registry::getValueOrThrow, Function.identity());
 			//? if >=1.21.8 {
 			sound = soundEvent.location();
 			//?} else {
 			/*sound = soundEvent.getLocation();
-			*///?}
+			 *///?}
 		}
 		Component soundName = Component.literal(sound.toString());
 		WeighedSoundEvents soundEvents = Minecraft.getInstance().getSoundManager().getSoundEvent(sound);

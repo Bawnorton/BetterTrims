@@ -32,13 +32,13 @@ abstract class LivingEntityMixin extends Entity {
 		super(entityType, level);
 	}
 
-	//? if 1.21.8 {
-    @Inject(
-        method = "stopLocationBasedEffects",
-        at = @At("TAIL")
-    )
-    private void stopTrimEquipmentBasedEffects(ItemStack stack, EquipmentSlot slot, AttributeMap attributeMap, CallbackInfo ci) {
-    //?} elif 1.21.1 {
+	//? if >=1.21.8 {
+	@Inject(
+			method = "stopLocationBasedEffects",
+			at = @At("TAIL")
+	)
+	private void stopTrimEquipmentBasedEffects(ItemStack stack, EquipmentSlot slot, AttributeMap attributeMap, CallbackInfo ci) {
+		//?} else {
 	/*@WrapOperation(
 			method = "collectEquipmentChanges",
 			at = @At(
@@ -59,17 +59,17 @@ abstract class LivingEntityMixin extends Entity {
 		}
 	}
 
-	//? if 1.21.8 {
-    @WrapOperation(
-        method = "collectEquipmentChanges",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;runLocationChangedEffects(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V"
-        )
-    )
-    private void startTrimLocationBasedEffects(ServerLevel level, ItemStack stack, LivingEntity entity, EquipmentSlot slot, Operation<Void> original) {
-        original.call(level, stack, entity, slot);
-    //?} elif 1.21.1 {
+	//? if >=1.21.8 {
+	@WrapOperation(
+			method = "collectEquipmentChanges",
+			at = @At(
+					value = "INVOKE",
+					target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;runLocationChangedEffects(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V"
+			)
+	)
+	private void startTrimLocationBasedEffects(ServerLevel level, ItemStack stack, LivingEntity entity, EquipmentSlot slot, Operation<Void> original) {
+		original.call(level, stack, entity, slot);
+		//?} else {
 	/*@WrapOperation(
 			method = "collectEquipmentChanges",
 			at = @At(

@@ -24,9 +24,9 @@ abstract class EntityMixin {
 
 	@SuppressWarnings("ConstantValue")
 	@ModifyReturnValue(
-			//? if 1.21.8 {
+			//? if >=1.21.8 {
 			method = "isInvulnerableToBase",
-			//?} elif 1.21.1 {
+			//?} else {
 			/*method = "isInvulnerableTo",
 			*///?}
 			at = @At("RETURN")

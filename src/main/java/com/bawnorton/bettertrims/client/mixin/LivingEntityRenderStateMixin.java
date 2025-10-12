@@ -10,17 +10,17 @@ import org.spongepowered.asm.mixin.Unique;
 @MixinEnvironment("client")
 @Mixin(LivingEntityRenderState.class)
 abstract class LivingEntityRenderStateMixin implements LivingEntityRenderStateExtension {
-    @Unique
-    private boolean bettertrims$isTrulyInvisible = false;
+	@Unique
+	private boolean bettertrims$isTrulyInvisible = false;
 
-    @Override
-    public boolean bettertrims$isTrulyInvisible() {
-        return bettertrims$isTrulyInvisible;
-    }
+	@Override
+	public boolean bettertrims$isTrulyInvisible() {
+		return bettertrims$isTrulyInvisible;
+	}
 
-    @Override
-    public void bettertrims$setTrulyInvisible(boolean trulyInvisible) {
-        this.bettertrims$isTrulyInvisible = trulyInvisible;
-    }
+	@Override
+	public void bettertrims$setTrulyInvisible(boolean trulyInvisible) {
+		this.bettertrims$isTrulyInvisible = trulyInvisible;
+	}
 }
 //?}

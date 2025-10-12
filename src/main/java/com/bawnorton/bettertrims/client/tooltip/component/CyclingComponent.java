@@ -30,10 +30,10 @@ public final class CyclingComponent implements CompositeComponent {
 
 	@Override
 	//? if >=1.21.8 {
-  public int getHeight(Font font) {
-        return components.get(index).getHeight(font);
-    }
-  //?} else {
+	public int getHeight(Font font) {
+		return components.get(index).getHeight(font);
+	}
+	//?} else {
 	/*public int getHeight() {
 		return components.get(index).getHeight();
 	}
@@ -45,25 +45,25 @@ public final class CyclingComponent implements CompositeComponent {
 	}
 
 	//? if >=1.21.8 {
-  @Override
-  public void renderText(GuiGraphics graphics, Font font, int x, int y) {
-    if(components.isEmpty()) return;
+	@Override
+	public void renderText(GuiGraphics graphics, Font font, int x, int y) {
+		if (components.isEmpty()) return;
 
-    if(frameCounter++ >= Minecraft.getInstance().getFps()) {
-      frameCounter = 0;
-      index = (index + 1) % components.size();
-    }
+		if (frameCounter++ >= Minecraft.getInstance().getFps()) {
+			frameCounter = 0;
+			index = (index + 1) % components.size();
+		}
 
-    components.get(index).renderText(graphics, font, x, y);
-  }
+		components.get(index).renderText(graphics, font, x, y);
+	}
 
-  @Override
-  public void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull GuiGraphics graphics) {
-    if(components.isEmpty()) return;
+	@Override
+	public void renderImage(@NotNull Font font, int x, int y, int width, int height, @NotNull GuiGraphics graphics) {
+		if (components.isEmpty()) return;
 
-    components.get(index).renderImage(font, x, y, width, height, graphics);
-  }
-  //?} else {
+		components.get(index).renderImage(font, x, y, width, height, graphics);
+	}
+	//?} else {
 	/*@Override
 	public void renderText(Font font, int mouseX, int mouseY, Matrix4f matrix, MultiBufferSource.BufferSource bufferSource) {
 		if (components.isEmpty()) return;

@@ -36,7 +36,7 @@ abstract class LivingEntityMixin extends EntityMixin {
 	)
 	private double applyTrueInvisibility(double original) {
 		double value = attributes.getValue(BetterTrimsAttributes.TRUE_INVISIBILITY);
-		if(value < 1) return original;
+		if (value < 1) return original;
 
 		return Math.max(0.1, original * 0.1);
 	}

@@ -65,20 +65,20 @@ public class TrimTooltipPage {
 		for (Map.Entry<Holder<TrimPattern>, HolderSet<Item>> entry : BetterTrimsClient.getPatternSources().entrySet()) {
 			Holder<TrimPattern> patternHolder = entry.getKey();
 			TrimPattern pattern = patternHolder.unwrap()
-					//? if >=1.21.8 {
+			//? if >=1.21.8 {
 					.map(key -> VRegistry.get(level, Registries.TRIM_PATTERN).getValueOrThrow(key), Function.identity());
-					 //?} else {
-					/*.map(key -> VRegistry.get(level, Registries.TRIM_PATTERN).getOrThrow(key), Function.identity());
-			*///?}
+			//?} else {
+			/*.map(key -> VRegistry.get(level, Registries.TRIM_PATTERN).getOrThrow(key), Function.identity());
+			 *///?}
 			if (patterns.contains(pattern)) {
 				HolderSet<Item> itemHolders = entry.getValue();
 				patternProviders.addAll(itemHolders.stream()
 						.map(holder -> holder.unwrap()
-								//? if >=1.21.8 {
+						//? if >=1.21.8 {
 								.map(key -> VRegistry.get(level, Registries.ITEM).getValueOrThrow(key), Function.identity()))
-								 //?} else {
-								/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity()))
-						*///?}
+						//?} else {
+						/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity()))
+						 *///?}
 						.map(Item::getDefaultInstance)
 						.toList());
 			}
@@ -158,9 +158,9 @@ public class TrimTooltipPage {
 				.flatMap(stream -> stream.map(holder -> holder.unwrap()
 						//? if >=1.21.8 {
 						.map(key -> VRegistry.get(level, Registries.ITEM).getValueOrThrow(key), Function.identity())))
-						 //?} else {
-						/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity())))
-				*///?}
+				//?} else {
+				/*.map(key -> VRegistry.get(level, Registries.ITEM).getOrThrow(key), Function.identity())))
+				 *///?}
 				.map(Item::getDefaultInstance)
 				.toList();
 	}

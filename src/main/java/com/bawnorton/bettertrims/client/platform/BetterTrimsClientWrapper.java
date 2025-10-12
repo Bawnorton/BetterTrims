@@ -20,8 +20,8 @@ import net.neoforged.fml.common.Mod;
 
 @Mod(value = BetterTrims.MOD_ID, dist = Dist.CLIENT)
 public final class BetterTrimsClientWrapper {
-    public BetterTrimsClientWrapper() {
-        BetterTrimsClient.init();
-    }
+	public BetterTrimsClientWrapper() {
+		BetterTrimsClient.init();
+	}
 }
 *///?}

@@ -39,11 +39,11 @@ public interface ItemPredicateTooltip {
 		}
 
 		//? if >=1.21.8 {
-        DataComponentMatchers components = predicate.components();
-        if (!components.isEmpty()) {
-            addDataComponentMatchersToBuilder(level, components, state, builder);
-        }
-        //?} else {
+		DataComponentMatchers components = predicate.components();
+		if (!components.isEmpty()) {
+			addDataComponentMatchersToBuilder(level, components, state, builder);
+		}
+		//?} else {
 		/*DataComponentPredicate components = predicate.components();
 		if (!components.asPatch().isEmpty()) {
 			addDataComponentMatchersToBuilder(level, components, state, builder);
@@ -74,23 +74,23 @@ public interface ItemPredicateTooltip {
 				items,
 				//? if >=1.21.8 {
 				item -> item.getName(),
-				 //?} else {
+				//?} else {
 				/*item -> item.getName(item.getDefaultInstance()),
-				*///?}
+				 *///?}
 				state,
 				builder
 		);
 	}
 
 	//? if >=1.21.8 {
-    static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-        if (state.doPrefixSpace()) {
-            builder.space();
-        }
-        builder.translate("bettertrims.tooltip.condition.match_tool.has.%s".formatted(state.key()), Styler::condition);
-        DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
-    }
-    //?} else {
+	static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentMatchers components, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		if (state.doPrefixSpace()) {
+			builder.space();
+		}
+		builder.translate("bettertrims.tooltip.condition.match_tool.has.%s".formatted(state.key()), Styler::condition);
+		DataComponentMatchersTooltip.addToBuilder(level, components, state, builder);
+	}
+	//?} else {
 	/*static void addDataComponentMatchersToBuilder(ClientLevel level, DataComponentPredicate predicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
 		if (state.doPrefixSpace()) {
 			builder.space();

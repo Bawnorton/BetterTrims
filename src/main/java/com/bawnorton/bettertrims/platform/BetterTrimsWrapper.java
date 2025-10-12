@@ -18,8 +18,8 @@ public final class BetterTrimsWrapper implements ModInitializer {
 
 @Mod(BetterTrims.MOD_ID)
 public final class BetterTrimsWrapper {
-    public BetterTrimsWrapper() {
-        BetterTrims.init();
-    }
+	public BetterTrimsWrapper() {
+		BetterTrims.init();
+	}
 }
 *///?}

@@ -21,9 +21,9 @@ abstract class PiglinSpecificSensorMixin {
 			method = "doTick",
 			at = @At(
 					value = "INVOKE",
-					//? if 1.21.8 {
+					//? if >=1.21.8 {
 					target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingSafeArmor(Lnet/minecraft/world/entity/LivingEntity;)Z"
-					//?} elif 1.21.1 {
+					//?} else {
 					/*target = "Lnet/minecraft/world/entity/monster/piglin/PiglinAi;isWearingGold(Lnet/minecraft/world/entity/LivingEntity;)Z"
 					*///?}
 			)

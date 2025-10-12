@@ -39,9 +39,9 @@ public interface PlayerPredicateTooltip {
 
 		//? if >=1.21.8 {
 		Object2BooleanMap<ResourceKey<Recipe<?>>> recipes = predicate.recipes();
-		 //?} else {
+		//?} else {
 		/*Object2BooleanMap<ResourceLocation> recipes = predicate.recipes();
-		*///?}
+		 *///?}
 		addRecipesToBuilder(level, recipes, state, builder);
 
 		Map<ResourceLocation, PlayerPredicate.AdvancementPredicate> advancements = predicate.advancements();
@@ -53,11 +53,11 @@ public interface PlayerPredicateTooltip {
 		}
 
 		//? if >=1.21.8 {
-        Optional<InputPredicate> input = predicate.input();
-        if (input.isPresent()) {
-            addInputToBuilder(level, input.orElseThrow(), state, builder);
-        }
-        //?}
+		Optional<InputPredicate> input = predicate.input();
+		if (input.isPresent()) {
+			addInputToBuilder(level, input.orElseThrow(), state, builder);
+		}
+		//?}
 	}
 
 	static String key(String key) {
@@ -99,24 +99,24 @@ public interface PlayerPredicateTooltip {
 	}
 
 	//? if >=1.21.8 {
-    static void addRecipesToBuilder(ClientLevel level, Object2BooleanMap<ResourceKey<Recipe<?>>> recipes, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-        if (recipes.isEmpty()) return;
+	static void addRecipesToBuilder(ClientLevel level, Object2BooleanMap<ResourceKey<Recipe<?>>> recipes, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		if (recipes.isEmpty()) return;
 
-        CompositeContainerComponent.Builder recipesBuilder = CompositeContainerComponent.builder()
-            .space()
-            .translate(key("recipes.matches"), Styler::condition)
-            .space()
-            .cycle(cycleBuilder -> recipes.object2BooleanEntrySet().forEach(entry -> {
-                boolean knows = entry.getBooleanValue();
-                ResourceLocation id = entry.getKey().location();
-                Component name = Styler.name(Component.literal(id.toString()));
-                cycleBuilder.component(CompositeContainerComponent.builder()
-                    .translate(key("recipe.%s".formatted(knows ? "knows" : "does_not_know")), Styler::condition, name)
-                    .build());
-            }));
-        builder.component(recipesBuilder.build());
-    }
-    //?} else {
+		CompositeContainerComponent.Builder recipesBuilder = CompositeContainerComponent.builder()
+				.space()
+				.translate(key("recipes.matches"), Styler::condition)
+				.space()
+				.cycle(cycleBuilder -> recipes.object2BooleanEntrySet().forEach(entry -> {
+					boolean knows = entry.getBooleanValue();
+					ResourceLocation id = entry.getKey().location();
+					Component name = Styler.name(Component.literal(id.toString()));
+					cycleBuilder.component(CompositeContainerComponent.builder()
+							.translate(key("recipe.%s".formatted(knows ? "knows" : "does_not_know")), Styler::condition, name)
+							.build());
+				}));
+		builder.component(recipesBuilder.build());
+	}
+	//?} else {
 	/*static void addRecipesToBuilder(ClientLevel level, Object2BooleanMap<ResourceLocation> recipes, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
 		if (recipes.isEmpty()) return;
 
@@ -191,29 +191,29 @@ public interface PlayerPredicateTooltip {
 	}
 
 	//? if >=1.21.8 {
-    static void addInputToBuilder(ClientLevel level, InputPredicate inputPredicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-        Map<String, Optional<Boolean>> inputs = Map.of(
-            "forward", inputPredicate.forward(),
-            "backward", inputPredicate.backward(),
-            "left", inputPredicate.left(),
-            "right", inputPredicate.right(),
-            "jump", inputPredicate.jump(),
-            "sneak", inputPredicate.sneak(),
-            "sprint", inputPredicate.sprint()
-        );
-        CompositeContainerComponent.Builder inputBuilder = CompositeContainerComponent.builder()
-            .space()
-            .translate(key("input.matches"), Styler::condition)
-            .space()
-            .cycle(cycleBuilder -> inputs.forEach((inputName, input) -> {
-                if (input.isPresent()) {
-                    boolean isHeld = input.orElse(false);
-                    cycleBuilder.component(CompositeContainerComponent.builder()
-                        .translate(key("input.%s.%s".formatted(inputName, isHeld ? "true" : "false")), Styler::value)
-                        .build());
-                }
-            }));
-        builder.component(inputBuilder.build());
-    }
-    //?}
+	static void addInputToBuilder(ClientLevel level, InputPredicate inputPredicate, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
+		Map<String, Optional<Boolean>> inputs = Map.of(
+				"forward", inputPredicate.forward(),
+				"backward", inputPredicate.backward(),
+				"left", inputPredicate.left(),
+				"right", inputPredicate.right(),
+				"jump", inputPredicate.jump(),
+				"sneak", inputPredicate.sneak(),
+				"sprint", inputPredicate.sprint()
+		);
+		CompositeContainerComponent.Builder inputBuilder = CompositeContainerComponent.builder()
+				.space()
+				.translate(key("input.matches"), Styler::condition)
+				.space()
+				.cycle(cycleBuilder -> inputs.forEach((inputName, input) -> {
+					if (input.isPresent()) {
+						boolean isHeld = input.orElse(false);
+						cycleBuilder.component(CompositeContainerComponent.builder()
+								.translate(key("input.%s.%s".formatted(inputName, isHeld ? "true" : "false")), Styler::value)
+								.build());
+					}
+				}));
+		builder.component(inputBuilder.build());
+	}
+	//?}
 }

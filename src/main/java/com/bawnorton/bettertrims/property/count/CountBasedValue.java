@@ -91,7 +91,7 @@ public interface CountBasedValue {
 		List<Component> components = new ArrayList<>();
 		for (int i = 1; i <= values.size(); i++) {
 			Float value = values.get(i - 1);
-			if(value == null) continue;
+			if (value == null) continue;
 
 			Component valueComponent = Styler.number(formatter.apply(value).copy());
 			if (includeCount) {

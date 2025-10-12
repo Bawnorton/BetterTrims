@@ -1,0 +1,68 @@
+{
+  "abilities": {
+    "bettertrims:equipped": [
+      {
+        "ability": {
+          "type": "bettertrims:all_of",
+          "abilities": [
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:armor_toughness",
+              "id": "bettertrims:trim_armour_toughness",
+              "operation": "add_value",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 1.0,
+                "per_count_above_first": 1.0
+              }
+            },
+            {
+              "type": "bettertrims:attribute",
+              "attribute": "minecraft:armor",
+              "id": "bettertrims:trim_armour",
+              "operation": "add_value",
+              "value": {
+                "type": "bettertrims:linear",
+                "base": 2.0,
+                "per_count_above_first": 2.0
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "bettertrims:item_damage": [
+      {
+        "ability": {
+          "type": "bettertrims:remove_binomial",
+          "chance": {
+            "type": "bettertrims:fraction",
+            "denominator": {
+              "type": "bettertrims:linear",
+              "base": 2.0,
+              "per_count_above_first": 1.0
+            },
+            "numerator": {
+              "type": "bettertrims:linear",
+              "base": 1.0,
+              "per_count_above_first": 1.0
+            }
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:trim": {
+                "material": "#c:netherite"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "material": "#c:netherite"
+  }
+}

@@ -42,6 +42,7 @@ public class TrimMaterialTagsProvider extends FabricTagProvider<TrimMaterial> {
 	*///?}
 }
 //?} else {
+
 /*import com.bawnorton.bettertrims.BetterTrims;
 import com.bawnorton.bettertrims.data.TrimMaterialTags;
 import net.minecraft.core.HolderLookup;
@@ -89,7 +90,7 @@ public class TrimMaterialTagsProvider extends TagsProvider<TrimMaterial> {
 		tag(TrimMaterialTags.SILVER).replace(false);
 		//? if >=1.21.8 {
 		tag(TrimMaterialTags.RESIN).replace(false).add(TrimMaterials.RESIN);
-		 //?}
+		//?}
 	}
 
 	//? if >=1.21.8 {

@@ -75,9 +75,7 @@ public final class ExactDataComponentPredicateTooltipAdders {
 		register(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContentExactAdder());
 		register(DataComponents.TRIM, new ArmorTrimExactAdder());
 		register(DataComponents.DEBUG_STICK_STATE, new DebugStickStateExactAdder());
-		register(DataComponents.ENTITY_DATA, new CustomDataExactAdder("entity"));
 		register(DataComponents.BUCKET_ENTITY_DATA, new CustomDataExactAdder("bucket_entity"));
-		register(DataComponents.BLOCK_ENTITY_DATA, new CustomDataExactAdder("block_entity"));
 		register(DataComponents.JUKEBOX_PLAYABLE, new JukeboxPlayableExactAdder());
 		register(DataComponents.LODESTONE_TRACKER, new LodestoneTrackerExactAdder());
 		register(DataComponents.FIREWORK_EXPLOSION, new FireworkExplosionExactAdder());
@@ -92,20 +90,14 @@ public final class ExactDataComponentPredicateTooltipAdders {
 		register(DataComponents.CONTAINER, new ItemContainerContentsExactAdder());
 		register(DataComponents.BLOCK_STATE, new BlockItemStatePropertiesExactAdder());
 		register(DataComponents.CONTAINER_LOOT, new SeededContainerLootExactAdder());
-		//? if <1.21.8 {
-		/*register(DataComponents.LOCK, ExactAdder.simple((lock, builder) ->
-				builder.translate(key("lock"), Styler::condition, Styler.value(Component.literal(lock.key())))
-		));
-		register(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, ExactAdder.simple((amplifier, builder) ->
-				builder.translate(key("ominous_bottle_amplifier"), Styler::condition, Styler.number(amplifier))
-		));
-		register(DataComponents.INSTRUMENT, new InstrumentHolderExactAdder());
-		register(DataComponents.RECIPES, new IdListExactAdder());
-		register(DataComponents.BEES, new BeehiveBlockEntityOccupantListExactAdder());
-		register(DataComponents.FIRE_RESISTANT, ExactAdder.simple((unit, builder) ->
-				builder.translate(key("fire_resistant"), Styler::condition)
-		));
-		*///?} else {
+		//? if >=1.21.8 {
+		//? if >=1.21.10 {
+		register(DataComponents.ENTITY_DATA, new TypedEntityDataExactAdder<>("entity"));
+		register(DataComponents.BLOCK_ENTITY_DATA, new TypedEntityDataExactAdder<>("block_entity"));
+		//?} else {
+		/*register(DataComponents.ENTITY_DATA, new CustomDataExactAdder("entity"));
+		register(DataComponents.BLOCK_ENTITY_DATA, new CustomDataExactAdder("block_entity"));
+		*///?}
 		register(DataComponents.ITEM_MODEL, ExactAdder.simple((itemModel, builder) ->
 				builder.translate(key("item_model"), Styler::condition, Styler.value(Component.literal(itemModel.toString())))
 		));
@@ -164,11 +156,24 @@ public final class ExactDataComponentPredicateTooltipAdders {
 		register(DataComponents.CAT_COLLAR, ExactAdder.ofEnum("cat_collar"));
 		register(DataComponents.SHEEP_COLOR, ExactAdder.ofEnum("sheep_color"));
 		register(DataComponents.SHULKER_COLOR, ExactAdder.ofEnum("shulker_color"));
-		//?}
+		//?} else {
+		/*register(DataComponents.LOCK, ExactAdder.simple((lock, builder) ->
+				builder.translate(key("lock"), Styler::condition, Styler.value(Component.literal(lock.key())))
+		));
+		register(DataComponents.OMINOUS_BOTTLE_AMPLIFIER, ExactAdder.simple((amplifier, builder) ->
+				builder.translate(key("ominous_bottle_amplifier"), Styler::condition, Styler.number(amplifier))
+		));
+		register(DataComponents.INSTRUMENT, new InstrumentHolderExactAdder());
+		register(DataComponents.RECIPES, new IdListExactAdder());
+		register(DataComponents.BEES, new BeehiveBlockEntityOccupantListExactAdder());
+		register(DataComponents.FIRE_RESISTANT, ExactAdder.simple((unit, builder) ->
+				builder.translate(key("fire_resistant"), Styler::condition)
+		));
+		*///?}
 	}
-	
+
 	private static <T> void register(DataComponentType<T> type, ExactAdder<T> adder) {
-		if(EXACT_ADDERS.containsKey(type)) {
+		if (EXACT_ADDERS.containsKey(type)) {
 			throw new IllegalStateException("Duplicate data component type: " + type);
 		}
 		EXACT_ADDERS.put(type, adder);

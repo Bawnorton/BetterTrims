@@ -128,6 +128,7 @@ public interface AllOf {
 
 	record ItemProperties(List<TrimItemProperty> properties) implements TrimItemProperty {
 		public static final MapCodec<ItemProperties> CODEC = AllOf.codec(TrimItemProperty.CODEC, ItemProperties::properties, ItemProperties::new);
+
 		@Override
 		public MapCodec<? extends TrimItemProperty> codec() {
 			return CODEC;
@@ -141,7 +142,8 @@ public interface AllOf {
 		}
 	}
 
-	final class TooltipProvider { static CompositeContainerComponent getAllOfTooltip(ClientLevel level, boolean includeCount, List<? extends TrimElement> elements) {
+	final class TooltipProvider {
+		static CompositeContainerComponent getAllOfTooltip(ClientLevel level, boolean includeCount, List<? extends TrimElement> elements) {
 			if (elements.isEmpty()) return null;
 
 			CompositeContainerComponent.Builder allOfBuilder = CompositeContainerComponent.builder()

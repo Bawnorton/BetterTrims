@@ -26,27 +26,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({ThrownSplashPotion.class, ThrownLingeringPotion.class})
 abstract class AbstractThrownPotionMixin extends AbstractThrownPotion {
-    AbstractThrownPotionMixin(EntityType<? extends AbstractThrownPotion> entityType, Level level) {
-        super(entityType, level);
-    }
+	AbstractThrownPotionMixin(EntityType<? extends AbstractThrownPotion> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    @Inject(
-        method = "onHitAsPotion",
-        at = @At("HEAD")
-    )
-    private void triggerTrimOnHit(ServerLevel level, ItemStack stack, HitResult hitResult, CallbackInfo ci) {
-        if(!(getEffectSource() instanceof LivingEntity wearer)) return;
+	@Inject(
+			method = "onHitAsPotion",
+			at = @At("HEAD")
+	)
+	private void triggerTrimOnHit(ServerLevel level, ItemStack stack, HitResult hitResult, CallbackInfo ci) {
+		if (!(getEffectSource() instanceof LivingEntity wearer)) return;
 
-        if(hitResult.getType() == HitResult.Type.BLOCK) {
-            BlockHitResult blockHitResult = (BlockHitResult) hitResult;
-            for(TrimProperty property : TrimProperties.getProperties(level)) {
-                for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.HIT_BLOCK)) {
-                    Vec3 pos = blockHitResult.getLocation();
-                    BlockState state = level.getBlockState(BlockPos.containing(pos));
-                    ability.runHitBlock(level, wearer, wearer, pos, state, stack);
-                }
-            }
-        }
-    }
+		if (hitResult.getType() == HitResult.Type.BLOCK) {
+			BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+			for (TrimProperty property : TrimProperties.getProperties(level)) {
+				for (TrimEntityAbilityRunner<?> ability : property.getEntityAbilityRunners(TrimAbilityComponents.HIT_BLOCK)) {
+					Vec3 pos = blockHitResult.getLocation();
+					BlockState state = level.getBlockState(BlockPos.containing(pos));
+					ability.runHitBlock(level, wearer, wearer, pos, state, stack);
+				}
+			}
+		}
+	}
 }
 //?}

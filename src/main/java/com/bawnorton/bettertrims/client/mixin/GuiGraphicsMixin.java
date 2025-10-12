@@ -31,38 +31,39 @@ abstract class GuiGraphicsMixin {
 	@Unique
 	private static final ThreadLocal<Rect2i> TOOLTIP_DIMENSION_CAPTURE = new ThreadLocal<>();
 
-	 //? if >=1.21.8 {
-    @Definition(id = "deferredTooltip", field = "Lnet/minecraft/client/gui/GuiGraphics;deferredTooltip:Ljava/lang/Runnable;")
-    @Expression("this.deferredTooltip = @(?)")
-    @ModifyExpressionValue(
-        method = "setTooltipForNextFrameInternal",
-        at = @At("MIXINEXTRAS:EXPRESSION")
-    )
-    private Runnable renderTrimTooltip(
-        Runnable original,
-        Font font,
-        List<ClientTooltipComponent> components,
-        int x,
-        int y,
-        ClientTooltipPositioner positioner,
-        @Nullable ResourceLocation background,
-        boolean focused
-    ) {
-        ItemStack stack = AbilityTooltipRenderer.getStack();
-        if (stack.isEmpty()) {
-            AbilityTooltipRenderer.clearRendering();
-            return original;
-        }
+	//? if >=1.21.8 {
+	@Definition(id = "deferredTooltip", field = "Lnet/minecraft/client/gui/GuiGraphics;deferredTooltip:Ljava/lang/Runnable;")
+	@Expression("this.deferredTooltip = @(?)")
+	@ModifyExpressionValue(
+			method = "setTooltipForNextFrameInternal",
+			at = @At("MIXINEXTRAS:EXPRESSION")
+	)
+	private Runnable renderTrimTooltip(
+			Runnable original,
+			Font font,
+			List<ClientTooltipComponent> components,
+			int x,
+			int y,
+			ClientTooltipPositioner positioner,
+			@Nullable ResourceLocation background,
+			boolean focused
+	) {
+		ItemStack stack = AbilityTooltipRenderer.getStack();
+		if (stack.isEmpty()) {
+			AbilityTooltipRenderer.clearRendering();
+			return original;
+		}
 
-        GuiGraphics self = (GuiGraphics) (Object) this;
-        AbilityTooltipRenderer.clearStack();
-        return () -> {
-            original.run();
-            AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), x, background);
-            TOOLTIP_DIMENSION_CAPTURE.remove();
-        };
-    }
-  //?} else {
+		GuiGraphics self = (GuiGraphics) (Object) this;
+		AbilityTooltipRenderer.clearStack();
+		return () -> {
+			original.run();
+			AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), x, background);
+			TOOLTIP_DIMENSION_CAPTURE.remove();
+		};
+	}
+
+	//?} else {
 	/*@Inject(
 			method = "renderTooltipInternal",
 			at = @At("TAIL")

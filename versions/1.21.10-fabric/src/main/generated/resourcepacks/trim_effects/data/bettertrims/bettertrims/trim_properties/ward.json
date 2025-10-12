@@ -1,0 +1,34 @@
+{
+  "abilities": {
+    "bettertrims:second": [
+      {
+        "ability": {
+          "type": "bettertrims:apply_mob_effect",
+          "amplifier": {
+            "type": "bettertrims:lookup",
+            "fallback": 0.0,
+            "values": [
+              -1.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          "duration": 16.0,
+          "effect": "minecraft:absorption"
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "periodic_tick": 300
+          }
+        }
+      }
+    ]
+  },
+  "trim": {
+    "min_count": 2,
+    "pattern": "minecraft:ward"
+  }
+}

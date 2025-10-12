@@ -12,18 +12,18 @@ import java.util.Optional;
 
 //? if >=1.21.8 {
 import net.minecraft.world.item.component.ProvidesTrimMaterial;
- //?}
+		//?}
 
 public interface VTrims {
 	static TrimMaterial getMaterialFromStack(ClientLevel level, ItemStack stack) {
 		//? if >=1.21.8 {
-        ProvidesTrimMaterial providesTrimMaterial = stack.get(DataComponents.PROVIDES_TRIM_MATERIAL);
-        if (providesTrimMaterial == null) return null;
+		ProvidesTrimMaterial providesTrimMaterial = stack.get(DataComponents.PROVIDES_TRIM_MATERIAL);
+		if (providesTrimMaterial == null) return null;
 
-        return providesTrimMaterial.material()
-            .unwrap(level.registryAccess().lookupOrThrow(Registries.TRIM_MATERIAL))
-            .orElse(null);
-        //?} else {
+		return providesTrimMaterial.material()
+				.unwrap(level.registryAccess().lookupOrThrow(Registries.TRIM_MATERIAL))
+				.orElse(null);
+		//?} else {
 		/*Optional<Holder.Reference<TrimMaterial>> materialReference = TrimMaterials.getFromIngredient(level.registryAccess(), stack);
 		return materialReference.map(Holder::value).orElse(null);
 		*///?}

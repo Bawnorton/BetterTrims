@@ -9,7 +9,7 @@ import net.minecraft.world.item.component.InstrumentComponent;
 public final class InstrumentComponentExactAdder implements ExactAdder<InstrumentComponent> {
 	@Override
 	public void addToBuilder(ClientLevel level, InstrumentComponent object, LootConditionTooltips.State state, CompositeContainerComponent.Builder builder) {
-
+		// TODO
 	}
 }
 //?}

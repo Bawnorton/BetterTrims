@@ -6,11 +6,11 @@ import org.jetbrains.annotations.NotNull;
 
 public record GapComponent(int width, int height) implements ClientTooltipComponent {
 	@Override
-			//? if >=1.21.8 {
+	//? if >=1.21.8 {
 	public int getHeight(Font font) {
-	 //?} else {
-	/*public int getHeight() {
-		*///?}
+		//?} else {
+		/*public int getHeight() {
+		 *///?}
 		return height;
 	}
 

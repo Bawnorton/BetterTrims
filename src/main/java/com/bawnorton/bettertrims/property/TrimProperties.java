@@ -57,6 +57,7 @@ import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Optional;
 //? if >=1.21.8 {
@@ -444,11 +445,11 @@ public interface TrimProperties {
 	}
 
 	private static EntityTypePredicate getEntityTypePredicate(HolderGetter<EntityType<?>> entityTypeGetter, TagKey<EntityType<?>> tag) {
-		//? if 1.21.8 {
+		//? if >=1.21.8 {
 		return EntityTypePredicate.of(entityTypeGetter, tag);
-		 //?} elif 1.21.1 {
+		 //?} else {
 		/*return EntityTypePredicate.of(tag);
-		*///?}
+		 *///?}
 	}
 
 	private static LootItemCondition.Builder wearingInSlot(HolderGetter<TrimMaterial> materialGetter, TagKey<TrimMaterial> material, EquipmentSlot slot) {
@@ -490,11 +491,11 @@ public interface TrimProperties {
 
 	private static ItemPredicate.Builder itemMaterialPredicate(HolderGetter<TrimMaterial> materialGetter, TagKey<TrimMaterial> material) {
 		return ItemPredicate.Builder.item()
-				//? if 1.21.8 {
+		//? if >=1.21.8 {
 				.withComponents(DataComponentMatchers.Builder.components()
 						.partial(DataComponentPredicates.ARMOR_TRIM, new TrimPredicate(Optional.of(materialGetter.getOrThrow(material)), Optional.empty()))
 						.build());
-		//?} elif 1.21.1 {
+		//?} else {
 				/*.withSubPredicate(
 						ItemSubPredicates.ARMOR_TRIM,
 						new ItemTrimPredicate(
@@ -507,12 +508,12 @@ public interface TrimProperties {
 
 	private static ItemPredicate.Builder itemEnchantedPredicate(HolderGetter<Enchantment> enchantmentGetter, ResourceKey<Enchantment> enchantment) {
 		return ItemPredicate.Builder.item()
-				//? if 1.21.8 {
+		//? if >=1.21.8 {
 				.withComponents(DataComponentMatchers.Builder.components().partial(
 						DataComponentPredicates.ENCHANTMENTS,
 						EnchantmentsPredicate.Enchantments.enchantments(List.of(new EnchantmentPredicate(enchantmentGetter.getOrThrow(enchantment), MinMaxBounds.Ints.ANY)))
 				).build());
-		//?} elif 1.21.1 {
+		//?} else {
 				/*.withSubPredicate(
 						ItemSubPredicates.ENCHANTMENTS,
 						ItemEnchantmentsPredicate.enchantments(
@@ -532,11 +533,10 @@ public interface TrimProperties {
 	}
 
 	static Iterable<TrimProperty> getProperties(Level level) {
-		return level.registryAccess().lookupOrThrow(BetterTrimsRegistries.Keys.TRIM_PROPERTIES).listElements().map(Holder.Reference::value).toList();
-	}
-
-	static HolderSet<TrimProperty> getPropertySet(Level level) {
-		return HolderSet.direct(level.registryAccess().lookupOrThrow(BetterTrimsRegistries.Keys.TRIM_PROPERTIES).listElements().toList());
+		return level.registryAccess()
+				.lookupOrThrow(BetterTrimsRegistries.Keys.TRIM_PROPERTIES)
+				.listElements()
+				.map(Holder.Reference::value)::iterator;
 	}
 
 	private static void register(BootstrapContext<TrimProperty> context, ResourceKey<TrimProperty> key, TrimProperty property) {
