@@ -1,6 +1,7 @@
 package com.bawnorton.bettertrims.client.mixin;
 
 import com.bawnorton.bettertrims.client.tooltip.AbilityTooltipRenderer;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.VanillaAbilityTooltipRenderer;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;

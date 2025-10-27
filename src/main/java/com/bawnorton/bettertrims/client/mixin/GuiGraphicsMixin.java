@@ -1,10 +1,10 @@
 package com.bawnorton.bettertrims.client.mixin;
 
 import com.bawnorton.bettertrims.client.tooltip.AbilityTooltipRenderer;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.VanillaAbilityTooltipRenderer;
 import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.kikugie.fletching_table.annotation.MixinEnvironment;
@@ -20,7 +20,6 @@ import org.joml.Vector2ic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -50,7 +49,7 @@ abstract class GuiGraphicsMixin {
 	) {
 		ItemStack stack = AbilityTooltipRenderer.getStack();
 		if (stack.isEmpty()) {
-			AbilityTooltipRenderer.clearRendering();
+			AbilityTooltipRenderer.INSTANCE.clearRendering();
 			return original;
 		}
 
@@ -58,7 +57,7 @@ abstract class GuiGraphicsMixin {
 		AbilityTooltipRenderer.clearStack();
 		return () -> {
 			original.run();
-			AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), x, background);
+			AbilityTooltipRenderer.INSTANCE.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), x, background);
 			TOOLTIP_DIMENSION_CAPTURE.remove();
 		};
 	}
@@ -77,7 +76,7 @@ abstract class GuiGraphicsMixin {
 
 		GuiGraphics self = (GuiGraphics) (Object) this;
 		AbilityTooltipRenderer.clearStack();
-		AbilityTooltipRenderer.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), mouseX, null);
+		AbilityTooltipRenderer.INSTANCE.render(self, stack, font, TOOLTIP_DIMENSION_CAPTURE.get(), mouseX, null);
 		TOOLTIP_DIMENSION_CAPTURE.remove();
 	}
 

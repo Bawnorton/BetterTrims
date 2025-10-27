@@ -1,8 +1,8 @@
 package com.bawnorton.bettertrims.property.ability.type.toggle;
 
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
@@ -20,7 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.jetbrains.annotations.Nullable;
 

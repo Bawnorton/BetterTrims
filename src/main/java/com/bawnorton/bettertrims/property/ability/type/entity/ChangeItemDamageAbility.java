@@ -1,8 +1,8 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Styler;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.component.CompositeContainerComponent;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
@@ -11,7 +11,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;

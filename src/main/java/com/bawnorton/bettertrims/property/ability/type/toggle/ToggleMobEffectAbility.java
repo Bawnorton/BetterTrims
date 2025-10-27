@@ -1,6 +1,6 @@
 package com.bawnorton.bettertrims.property.ability.type.toggle;
 
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.ability.type.entity.ApplyMobEffectAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;

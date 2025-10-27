@@ -1,8 +1,8 @@
 package com.bawnorton.bettertrims.property.ability.type.value;
 
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;
 import com.mojang.serialization.MapCodec;

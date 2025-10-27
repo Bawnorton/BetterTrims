@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.property.ability.type.entity;
 
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.context.TrimmedItems;
 import com.bawnorton.bettertrims.property.count.CountBasedValue;

@@ -1,9 +1,9 @@
 package com.bawnorton.bettertrims.property;
 
-import com.bawnorton.bettertrims.client.tooltip.component.CompositeContainerComponent;
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltipProvider;
-import com.bawnorton.bettertrims.client.tooltip.element.TrimElementTooltips;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.component.CompositeContainerComponent;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltipProvider;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.element.TrimElementTooltips;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Styler;
 import com.bawnorton.bettertrims.property.ability.type.TrimEntityAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimToggleAbility;
 import com.bawnorton.bettertrims.property.ability.type.TrimValueAbility;

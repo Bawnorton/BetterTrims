@@ -1,7 +1,7 @@
 package com.bawnorton.bettertrims.property.count;
 
-import com.bawnorton.bettertrims.client.tooltip.util.Formatter;
-import com.bawnorton.bettertrims.client.tooltip.util.Styler;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Formatter;
+import com.bawnorton.bettertrims.client.tooltip.vanilla.util.Styler;
 import com.google.common.base.Predicates;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
