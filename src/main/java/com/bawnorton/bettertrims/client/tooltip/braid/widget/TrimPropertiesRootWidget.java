@@ -77,7 +77,7 @@ public class TrimPropertiesRootWidget extends StatefulWidget {
 									MainAxisAlignment.SPACE_BETWEEN,
 									CrossAxisAlignment.CENTER,
 									new Label(Component.translatable("bettertrims.property.%s.%s".formatted(id.getNamespace(), id.getPath()))),
-									new NumberStepperWidget(0, properties.size() - 1, 0, newPage -> currentProperty = properties.get(newPage))
+									new NumberStepperWidget(0, properties.size() - 1, 0, newPage -> setState(() -> currentProperty = properties.get(newPage)))
 							),
 							new Stack(
 									new Label(Component.literal("content"))

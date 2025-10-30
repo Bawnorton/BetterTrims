@@ -19,13 +19,13 @@ import java.util.function.Consumer;
 public class NumberStepperWidget extends StatefulWidget {
 	private final int min;
 	private final int max;
-	private final int page;
+	private final int number;
 	private final Consumer<Integer> onValueChanged;
 
-	public NumberStepperWidget(int min, int max, int page, Consumer<Integer> onValueChanged) {
+	public NumberStepperWidget(int min, int max, int number, Consumer<Integer> onValueChanged) {
 		this.min = min;
 		this.max = max;
-		this.page = page;
+		this.number = number;
 		this.onValueChanged = onValueChanged;
 	}
 
@@ -35,29 +35,29 @@ public class NumberStepperWidget extends StatefulWidget {
 	}
 
 	public static class State extends WidgetState<NumberStepperWidget> {
-		private int page = 0;
+		private int number = 0;
 
 		@Override
 		public void init() {
-			page = widget().page;
+			number = widget().number;
 		}
 
 		@Override
 		public Widget build(BuildContext context) {
 			List<Widget> widgets = new ArrayList<>();
-			if (page > widget().min) {
+			if (number > widget().min) {
 				widgets.add(new StepperButtonWidget("<", () -> {
-					page -= 1;
-					widget().onValueChanged.accept(page);
+					setState(() -> number -= 1);
+					widget().onValueChanged.accept(number);
 				}));
 			}
-			if (page != widget().min || page != widget().max) {
-				widgets.add(new Label(Component.literal(Integer.toString(page))));
+			if (number != widget().min || number != widget().max) {
+				widgets.add(new Label(Component.literal(Integer.toString(number))));
 			}
-			if (page < widget().max) {
+			if (number < widget().max) {
 				widgets.add(new StepperButtonWidget(">", () -> {
-					page += 1;
-					widget().onValueChanged.accept(page);
+					setState(() -> number += 1);
+					widget().onValueChanged.accept(number);
 				}));
 			}
 			return new Row(MainAxisAlignment.START, CrossAxisAlignment.CENTER, widgets);
