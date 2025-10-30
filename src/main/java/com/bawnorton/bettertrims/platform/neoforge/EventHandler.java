@@ -2,6 +2,8 @@
 /*package com.bawnorton.bettertrims.platform.neoforge;
 
 import com.bawnorton.bettertrims.BetterTrims;
+import com.bawnorton.bettertrims.property.TrimProperty;
+import com.bawnorton.bettertrims.registry.BetterTrimsRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -9,6 +11,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 
 import java.util.function.UnaryOperator;
 
@@ -33,6 +36,11 @@ public final class EventHandler {
 				false,
 				Pack.Position.TOP
 		);
+	}
+
+	@SubscribeEvent
+	public static void addDynamicReigstries(DataPackRegistryEvent.NewRegistry event) {
+		event.dataPackRegistry(BetterTrimsRegistries.Keys.TRIM_PROPERTIES, TrimProperty.DIRECT_CODEC, TrimProperty.DIRECT_CODEC);
 	}
 }
 *///?}
