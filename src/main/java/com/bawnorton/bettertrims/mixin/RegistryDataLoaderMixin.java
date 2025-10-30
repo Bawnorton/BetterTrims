@@ -1,3 +1,4 @@
+//? if fabric {
 package com.bawnorton.bettertrims.mixin;
 
 import com.bawnorton.bettertrims.property.TrimProperty;
@@ -36,3 +37,4 @@ abstract class RegistryDataLoaderMixin {
 		WORLDGEN_REGISTRIES = worldgenBuilder.build();
 	}
 }
+//?}
