@@ -56,8 +56,23 @@ abstract class LivingEntityMixin extends Entity {
 					target = "Lnet/neoforged/neoforge/common/CommonHooks;onArmorHurt(Lnet/minecraft/world/damagesource/DamageSource;[Lnet/minecraft/world/entity/EquipmentSlot;FLnet/minecraft/world/entity/LivingEntity;)V"
 			)
 	)
-	private void isTrimInvulnerableTo(DamageSource armorPiece, EquipmentSlot[] equippable, float damageAfterFireResist, LivingEntity slot, Operation<Void> original) {
+	private void isTrimInvulnerableTo(DamageSource damageSource, EquipmentSlot[] slots, float damage, LivingEntity wearer, Operation<Void> original) {
+		if (!(level() instanceof ServerLevel level)) {
+			original.call(damageSource, slots, damage, wearer);
+			return;
+		}
 
+		for (TrimProperty property : TrimProperties.getProperties(level)) {
+			for (ElementMatcher<?> elementMatcher : property.getItemPropertyElements(TrimItemPropertyComponents.DAMAGE_IMMUNITY)) {
+				for (EquipmentSlot slot : slots) {
+					ItemStack itemStack = wearer.getItemBySlot(slot);
+					if (elementMatcher.matches(itemStack, TrimContexts.damageItem(level, itemStack, null, damageSource))) {
+						return;
+					}
+				}
+			}
+		}
+		original.call(damageSource, slots, damage, wearer);
 	}
 	*///?}
 }

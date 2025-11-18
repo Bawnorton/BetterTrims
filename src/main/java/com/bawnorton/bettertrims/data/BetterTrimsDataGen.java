@@ -103,21 +103,21 @@ import java.util.concurrent.CompletableFuture;
 
 //? if <1.21.8 {
 /^import net.neoforged.neoforge.common.data.ExistingFileHelper;
- ^///?}
+		^///?}
 
 @EventBusSubscriber(modid = BetterTrims.MOD_ID)
 public final class BetterTrimsDataGen {
 	@SubscribeEvent
 			//? if >=1.21.8 {
 	public static void gatherData(GatherDataEvent.Server event) {
-		//?} else {
-		/^public static void gatherData(GatherDataEvent event) {
-		 ^///?}
+	 //?} else {
+	/^public static void gatherData(GatherDataEvent event) {
+		^///?}
 		DataGenerator gen = event.getGenerator();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 		//? if <1.21.8 {
 		/^ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
-		 ^///?}
+		^///?}
 
 		PackOutput mainPack = gen.getPackOutput();
 		//? if >=1.21.8 {
@@ -128,7 +128,7 @@ public final class BetterTrimsDataGen {
 		/^gen.addProvider(true, new TrimMaterialTagsProvider(mainPack, lookupProvider, existingFileHelper));
 		gen.addProvider(true, new BetterTrimsEntityTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
 		gen.addProvider(true, new BetterTrimsDimensionTypeTagProvider(mainPack, lookupProvider, existingFileHelper));
-    ^///?}
+		^///?}
 		gen.addProvider(true, getMetadataGenerator(mainPack, "${mod_description}"));
 
 		DataGenerator.PackGenerator defaultPack = gen.getBuiltinDatapack(true, BetterTrims.MOD_ID, BetterTrims.DEFAULT.getPath());
@@ -161,10 +161,10 @@ public final class BetterTrimsDataGen {
 								Component.literal(description),
 								//? if >=1.21.8 {
 								DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA),
-								//?} else {
+								 //?} else {
 								/^¹DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
-						¹^///?}
-				Optional.empty()
+								¹^///?}
+								Optional.empty()
 						)
 				);
 		^///?}
